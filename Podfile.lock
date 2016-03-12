@@ -1,0 +1,10 @@
+PODS:
+  - QuadratTouch (1.1.1)
+
+DEPENDENCIES:
+  - QuadratTouch (>= 1.0)
+
+SPEC CHECKSUMS:
+  QuadratTouch: 296d83c63a4328f6f40af9fc728fe24f0e3b00d4
+
+COCOAPODS: 0.39.0
