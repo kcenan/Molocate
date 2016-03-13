@@ -14,7 +14,16 @@ import QuadratTouch
 
 
 
-var locObject:NSMutableDictionary!
+var locationDict:[[String:locations]]!
+
+struct locations{
+    var id = ""
+    var name = ""
+    var lat:Float!
+    var lon:Float!
+    var adress = ""
+}
+
 private enum AVCamSetupResult: Int {
     case Success
     case CameraNotAuthorized
@@ -74,8 +83,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         bottomToolbar.barTintColor = swiftColor
         bottomToolbar.translucent = false
         bottomToolbar.clipsToBounds = true
-        locObject = NSMutableDictionary()
-
+        
+        locationDict = [[String:locations]]()
         
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -294,20 +303,21 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                         if(isVerified||enoughCheckin){
                             print(item)
                          placesArray.append(item["name"] as! String)
-//                         var name = item["name"] as! String
-//                         var id = item["id"] as! String
-//                         var lat = item["lat"] as! String
-//                         var lon = item["lng"] as! String
-//                         var adress = item["adress"] as! String
-                         //var loc = locations()
-//                         loc.name = name
-//                         loc.id = id
-//                         loc.lat = lat
-//                         loc.long = lon
-//                         loc.adress = adress
-//                            
+                         let name = item["name"] as! String
+                         let id = item["id"] as! String
+                         let lat = item["location"]!["lat"] as! Float
+                         let lon = item["location"]!["lng"] as! Float
+                         //let adress = item["location"]!["address"]
+                         var loc = locations()
+                         loc.name = name
+                         loc.id = id
+                         loc.lat = lat
+                         loc.lon = lon
+                         //loc.adress = adress
+
+                        var locationDictitem = [name:loc]
+                            locationDict.append(locationDictitem)
                         
-                         //locObject.setValue(loc, forKey: name)
                         }
                     }
                     

@@ -13,14 +13,7 @@ import AVKit
 
 
 class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    struct postVideo{
-        var videoID:String! = ""
-        var videoURL:String! = ""
-        var category:String! = ""
-        var caption:String! = ""
-        var taggedUsers = [String]()
-        var location = NSDictionary()
-    }
+    var categ:String!
     @IBOutlet var toolBar: UIToolbar!
     struct placeVar {
         var name: String!
@@ -45,7 +38,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
 
     @IBOutlet var textField: UITextField!
     var categories = ["Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
-
+    var videoLocation:locations!
     @IBOutlet var placeTable: UITableView!
     @IBAction func post(sender: AnyObject) {
         player?.pause()
@@ -83,20 +76,20 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                     if(statue == "success"){
                         let videoId = result["video_id"] as! String
                         let videoUrl = result["video_url"] as! String
-                        print(videoUrl)
+                        //print(self.videoLocation)
                         let json = [
                             "video_id": videoId,
                             "video_url": videoUrl,
                             "caption": "This city is awesome:)",
-                            "category": "travel",
+                            "category": self.categ,
                             "tagged_users": [],
                             "location": [
                                 [
-                                    "id": "mekmaekfmaıhjagej3ıo45j3kt348t3gkg",
-                                    "latitude": "35.342643",
-                                    "longitude": "32.345236",
-                                    "name": "Milas Merkez Kafasına göre herkes",
-                                    "address": "Milas aq"
+                                    "id": self.videoLocation.id,
+                                    "latitude": self.videoLocation.lat,
+                                    "longitude": self.videoLocation.lon,
+                                    "name": self.videoLocation.name,
+                                    "address": "İstanbul"
                                 ]
                             ]
                         ]
@@ -110,7 +103,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                         do {
                             
                             let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                            print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
+                           // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                             
                             // create post request
                             _ = NSURL(string: "http://molocate.elasticbeanstalk.com/video/update/")!
@@ -123,7 +116,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                             
                             
                             let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                                print(response)
+                                //print(response)
                                 print("=========================================")
                                 print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                                 dispatch_async(dispatch_get_main_queue(), {
@@ -204,7 +197,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
-        
+        var categ = "fail"
+        videoLocation = locations()
 //        comment = UITextField(frame: CGRectMake(0, 159, screenSize.width, screenSize.height - screenSize.width - 208))
 //        comment.attributedPlaceholder = .None
 //        comment.textColor = UIColor.blackColor()
@@ -304,7 +298,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
        
         
         
-        print(indexPath.row)
+        categ = categories[indexPath.row]
         
         
         
@@ -384,6 +378,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         textField.text = selectedCell.textLabel!.text
         placeTable.hidden = true
         self.view.endEditing(true)
+        videoLocation = locationDict[indexPath.row][placesArray[indexPath.row]]
+        print(videoLocation)
+        
     }
     
     

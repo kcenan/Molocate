@@ -192,22 +192,23 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         let front = ceil(y/rowHeight)
         //print(front * rowHeight/2 - y)
-        
+        dispatch_async(dispatch_get_main_queue()){
         if front * rowHeight-rowHeight/2 - y < 0 {
             if (front) % 2 == 1{
                 
-                if player1.playbackState.description != "Playing" {
-                    player2.stop()
-                    player1.playFromBeginning()
+                if self.player1.playbackState.description != "Playing" {
+                    self.player2.stop()
+                    self.player1.playFromBeginning()
                     //print("player1")
                 }
             }else{
-                if player2.playbackState.description != "Playing"{
-                    player1.stop()
-                    player2.playFromBeginning()
+                if self.player2.playbackState.description != "Playing"{
+                    self.player1.stop()
+                    self.player2.playFromBeginning()
                     //print("player2")
                 }
             }
+        }
         }
         
     }
@@ -277,21 +278,21 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
         cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
             , caption: videoArray[index].caption)
-        
+        dispatch_async(dispatch_get_main_queue()){
         if indexPath.row % 2 == 1 {
             //self.player1.stop()
-            self.player1.setUrl(videoArray[indexPath.row].urlSta)
+            self.player1.setUrl(self.videoArray[indexPath.row].urlSta)
             self.player1.view.frame = cell.newRect
             cell.contentView.addSubview(self.player1.view)
             //self.player1.playFromBeginning()
         }else{
             //self.player2.stop()
-            self.player2.setUrl(videoArray[indexPath.row].urlSta)
+            self.player2.setUrl(self.videoArray[indexPath.row].urlSta)
             self.player2.view.frame = cell.newRect
             cell.contentView.addSubview(self.player2.view)
             //self.player2.playFromBeginning()
         }
-        
+        }
         
         //        if(!cell.player.isSet()){
         //            cell.player = Videos(url: videoArray[indexPath.row].urlSta.absoluteString)

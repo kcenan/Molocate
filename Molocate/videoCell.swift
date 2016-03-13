@@ -67,6 +67,7 @@ class videoCell: UITableViewCell {
         placeName.frame = CGRectMake(59 , 27, screenSize.width - 100, 22)
         placeName.setTitleColor(swiftColor2, forState: .Normal)
         placeName.titleLabel?.sizeToFit()
+        placeName.titleLabel?.textAlignment = .Left
         placeName.setTitle("koç university", forState: .Normal)
         contentView.addSubview(placeName)
         
