@@ -12,6 +12,11 @@
 		3871AAA31C9488BA00DDD83E /* sideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3871AAA21C9488BA00DDD83E /* sideCell.swift */; };
 		38E621061C90D9AB00FB1AD5 /* editProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E621051C90D9AB00FB1AD5 /* editProfile.swift */; };
 		38E6210C1C90E49D00FB1AD5 /* changePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E6210B1C90E49D00FB1AD5 /* changePassword.swift */; };
+		38F770FF1C95028E0079FACD /* explore.png in Resources */ = {isa = PBXBuildFile; fileRef = 38F770FB1C95028E0079FACD /* explore.png */; };
+		38F771001C95028E0079FACD /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 38F770FC1C95028E0079FACD /* home.png */; };
+		38F771011C95028E0079FACD /* people.png in Resources */ = {isa = PBXBuildFile; fileRef = 38F770FD1C95028E0079FACD /* people.png */; };
+		38F771021C95028E0079FACD /* sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 38F770FE1C95028E0079FACD /* sound.png */; };
+		38F771041C9505670079FACD /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F771031C9505670079FACD /* Player.swift */; };
 		C60905361C4812A100614C7F /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60905351C4812A100614C7F /* ContainerController.swift */; };
 		C609053A1C48143C00614C7F /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60905391C48143C00614C7F /* MainController.swift */; };
 		C609053C1C48145700614C7F /* SideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C609053B1C48145700614C7F /* SideBarController.swift */; };
@@ -105,6 +110,11 @@
 		3871AAA21C9488BA00DDD83E /* sideCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sideCell.swift; sourceTree = "<group>"; };
 		38E621051C90D9AB00FB1AD5 /* editProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = editProfile.swift; sourceTree = "<group>"; };
 		38E6210B1C90E49D00FB1AD5 /* changePassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = changePassword.swift; sourceTree = "<group>"; };
+		38F770FB1C95028E0079FACD /* explore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explore.png; sourceTree = "<group>"; };
+		38F770FC1C95028E0079FACD /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
+		38F770FD1C95028E0079FACD /* people.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = people.png; sourceTree = "<group>"; };
+		38F770FE1C95028E0079FACD /* sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sound.png; sourceTree = "<group>"; };
+		38F771031C9505670079FACD /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		85240C29B79988CE027A1541 /* Pods-Molocate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Molocate.release.xcconfig"; path = "Pods/Target Support Files/Pods-Molocate/Pods-Molocate.release.xcconfig"; sourceTree = "<group>"; };
 		C60905351C4812A100614C7F /* ContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		C60905391C48143C00614C7F /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
@@ -251,6 +261,7 @@
 		3871AAA11C947F9E00DDD83E /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				3871AAA21C9488BA00DDD83E /* sideCell.swift */,
 				C689562F1C50441C00D391F2 /* notificationCell.swift */,
 				C68872851C8CED2800BDBE00 /* optionCell.swift */,
 				C6D0CDF21C44200F006AAFF0 /* TableViewCellFollowerFollowing.swift */,
@@ -310,9 +321,9 @@
 			isa = PBXGroup;
 			children = (
 				C61023091C19FDCA00E9CA73 /* Main.storyboard */,
-				3871AAA21C9488BA00DDD83E /* sideCell.swift */,
 				3871AA9F1C93695900DDD83E /* denemeViewController.swift */,
 				C64B601D1C81D6A500E510DC /* Mole.swift */,
+				38F771031C9505670079FACD /* Player.swift */,
 				C63FBD061BF3E5B900DBB34C /* AppDelegate.swift */,
 				385FC3531C926A8300F85B29 /* Giriş- Üyelik */,
 				C60905381C48140A00614C7F /* Navigation */,
@@ -356,6 +367,10 @@
 		C67C97721C44BE080001BEF5 /* ImagesForProfile */ = {
 			isa = PBXGroup;
 			children = (
+				38F770FB1C95028E0079FACD /* explore.png */,
+				38F770FC1C95028E0079FACD /* home.png */,
+				38F770FD1C95028E0079FACD /* people.png */,
+				38F770FE1C95028E0079FACD /* sound.png */,
 				C650C9C61C87EAB80067275B /* comment2.png */,
 				C6E074301C8D356F00C79299 /* balloon.png */,
 				C6E074311C8D356F00C79299 /* shapes-1.png */,
@@ -559,7 +574,9 @@
 				C650C9C51C87E8090067275B /* report1.png in Resources */,
 				C61FDAB71BFBD3A9007B940E /* FollowingViewController.xib in Resources */,
 				C6E0743B1C8D356F00C79299 /* web.png in Resources */,
+				38F771001C95028E0079FACD /* home.png in Resources */,
 				C63FBD0E1BF3E5B900DBB34C /* Assets.xcassets in Resources */,
+				38F771011C95028E0079FACD /* people.png in Resources */,
 				C6E53DC31C8A9C4E00379C31 /* Logo.png in Resources */,
 				C6E0743A1C8D356F00C79299 /* three.png in Resources */,
 				C6E074391C8D356F00C79299 /* technology.png in Resources */,
@@ -567,10 +584,12 @@
 				C61FDAB51BFBD393007B940E /* CameraViewController.xib in Resources */,
 				C6E074361C8D356F00C79299 /* balloon.png in Resources */,
 				C6E074381C8D356F00C79299 /* shapes.png in Resources */,
+				38F770FF1C95028E0079FACD /* explore.png in Resources */,
 				C6F7B26D1C1351BB0062E408 /* Tagged.xib in Resources */,
 				C650C9C71C87EAB80067275B /* comment2.png in Resources */,
 				C6D0D2B81C8BD74F00462BB7 /* FacebookButton.png in Resources */,
 				C610230A1C19FDCA00E9CA73 /* Main.storyboard in Resources */,
+				38F771021C95028E0079FACD /* sound.png in Resources */,
 				C67C976F1C44AB340001BEF5 /* IMG_0610.JPG in Resources */,
 				C6DA6BE61C43389800E24392 /* elmander.jpg in Resources */,
 			);
@@ -673,6 +692,7 @@
 				C6D0CDF31C44200F006AAFF0 /* TableViewCellFollowerFollowing.swift in Sources */,
 				3871AAA31C9488BA00DDD83E /* sideCell.swift in Sources */,
 				C61FDAB11BFBD16D007B940E /* FollowingViewController.swift in Sources */,
+				38F771041C9505670079FACD /* Player.swift in Sources */,
 				C642196C1BF92A14000CAD93 /* ExploreViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

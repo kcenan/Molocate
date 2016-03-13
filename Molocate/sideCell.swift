@@ -10,26 +10,27 @@ import UIKit
 
 class sideCell: UITableViewCell {
     
-    var label : UILabel!
     
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:)")
+    @IBOutlet var imageFrame: UIImageView!
+    @IBOutlet var label: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        
-        
-        
-        label = UILabel()
-        label.frame = CGRectMake( 2 ,5 , 5, 5)
-        //yazı ortalama ekle
-        label.textAlignment = .Left
-        label.textColor = UIColor.blackColor()
-        label.sizeToFit()
-        label.backgroundColor = UIColor.greenColor()
-        contentView.addSubview(label)
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
     }
+
+        
+//        label = UILabel()
+//        label.frame = CGRectMake( 0 ,0 , 20, 25)
+//        //yazı ortalama ekle
+//        label.textAlignment = .Left
+//        label.textColor = UIColor.blackColor()
+//        label.backgroundColor = UIColor.greenColor()
+//        label.text = "ddee"
+//        contentView.addSubview(label)
+
 
 }

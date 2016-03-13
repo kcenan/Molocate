@@ -16,6 +16,9 @@
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
         </mutableArray>
+        <mutableArray key="Lato-Light.ttf">
+            <string>Lato-Light</string>
+        </mutableArray>
         <mutableArray key="Lato-Regular.ttf">
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
@@ -47,7 +50,7 @@
                                 <rect key="frame" x="204" y="76" width="193" height="81"/>
                                 <string key="text">Label jdasjkadjkldasjkldajkl das adsşlasdldaskl şasdkladsklşadsşa dslşdasklşda skkasdasdkldas ds das sad ads das ads sad das dsa  sa das  das das   das das das d s ads  </string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -1283,8 +1286,8 @@
                                     <action selector="taggedButton:" destination="aR2-G9-Y6Y" eventType="touchUpInside" id="kIB-Kz-PmZ"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XUQ-wb-KMe">
-                                <rect key="frame" x="16" y="16" width="343" height="240"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XUQ-wb-KMe">
+                                <rect key="frame" x="16" y="-14" width="343" height="270"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="270" id="C6t-Zb-NXl"/>
@@ -1531,18 +1534,53 @@
         <scene sceneID="pVK-jr-jtJ">
             <objects>
                 <tableViewController id="hGb-1k-zG5" customClass="SideBarController" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="3JI-O2-u1D">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" id="3JI-O2-u1D">
                         <rect key="frame" x="0.0" y="0.0" width="120" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="JiF-BD-AYt">
-                                <rect key="frame" x="0.0" y="28" width="120" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="anM-Ny-BXk" customClass="sideCell" customModule="Molocate" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="120" height="91"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JiF-BD-AYt" id="FXo-aT-hc7">
-                                    <rect key="frame" x="0.0" y="0.0" width="120" height="43"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="anM-Ny-BXk" id="E3e-QF-pdg">
+                                    <rect key="frame" x="0.0" y="0.0" width="120" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
+                                            <rect key="frame" x="8" y="52" width="104" height="30"/>
+                                            <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="14"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XQN-J4-aRX">
+                                            <rect key="frame" x="38" y="3" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="38" id="Pcl-PT-Rqa"/>
+                                                <constraint firstAttribute="width" constant="38" id="Rgm-I3-GZM"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="top" secondItem="E3e-QF-pdg" secondAttribute="topMargin" constant="44" id="2Kv-Kn-Jmt"/>
+                                        <constraint firstItem="XQN-J4-aRX" firstAttribute="centerX" secondItem="E3e-QF-pdg" secondAttribute="centerX" id="C1h-Pz-my1"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ILq-mB-5vY" secondAttribute="trailing" id="J6F-3z-EIv"/>
+                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="leading" secondItem="E3e-QF-pdg" secondAttribute="leadingMargin" id="JUd-is-wov"/>
+                                        <constraint firstItem="XQN-J4-aRX" firstAttribute="centerY" secondItem="E3e-QF-pdg" secondAttribute="centerY" constant="-20" id="Kzf-ed-wIk"/>
+                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="top" secondItem="E3e-QF-pdg" secondAttribute="topMargin" id="ZiJ-5e-AQG"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="ILq-mB-5vY" secondAttribute="bottom" id="moJ-Dc-tHs"/>
+                                        <constraint firstItem="XQN-J4-aRX" firstAttribute="centerY" secondItem="E3e-QF-pdg" secondAttribute="centerY" constant="20" id="ngd-g5-asH"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="ngd-g5-asH"/>
+                                            <exclude reference="ZiJ-5e-AQG"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="imageFrame" destination="XQN-J4-aRX" id="X4O-oh-1ZO"/>
+                                    <outlet property="label" destination="ILq-mB-5vY" id="fJm-JB-sG0"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

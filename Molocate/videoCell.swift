@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import AVFoundation
-import AVKit
-import MobileCoreServices
+//import AVFoundation
+//import AVKit
+//import MobileCoreServices
 
 
 class videoCell: UITableViewCell {
@@ -34,7 +34,7 @@ class videoCell: UITableViewCell {
     let labelHeight: CGFloat = 30
     let labelWidth: CGFloat = 140
     var screenSize:CGRect!
-    var player: Videos!
+    //var player: Videos!
     
     
     
@@ -44,7 +44,7 @@ class videoCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        player = Videos()
+        //player = Videos()
         screenSize = UIScreen.mainScreen().bounds
         
         profilePhoto = UIButton()
@@ -155,13 +155,13 @@ class videoCell: UITableViewCell {
     }
     
     
-   deinit {
-            player.layer.removeFromSuperlayer()
-            player.layer.player = nil
-            player.player.pause()
-            NSNotificationCenter.defaultCenter().removeObserver(self)
-            self.removeFromSuperview()
-            self.contentView.removeFromSuperview()
+    deinit {
+        //player.layer.removeFromSuperlayer()
+        //player.layer.player = nil
+        //player.player.pause()
+        //NSNotificationCenter.defaultCenter().removeObserver(self)
+        //self.removeFromSuperview()
+        //sself.contentView.removeFromSuperview()
         
     }
     

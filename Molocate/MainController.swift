@@ -1,50 +1,50 @@
 import UIKit
 import Foundation
 import CoreLocation
-import AVFoundation
-import AVKit
-import MobileCoreServices
-import ObjectiveC
+//import AVFoundation
+//import AVKit
+//import MobileCoreServices
+//import ObjectiveC
 
-struct Videos{
-    var Asset : AVURLAsset
-    var playerItem: AVPlayerItem
-    var player: AVPlayer
-    var layer: AVPlayerLayer
-    
-    init(){
-        self.Asset = AVURLAsset(URL: NSURL(string: "")!)
-        self.playerItem = AVPlayerItem(asset: self.Asset);
-        self.player = AVPlayer(playerItem: self.playerItem);
-        self.layer = AVPlayerLayer(player: self.player)
-    }
-    
-    init(url: String){
-        self.Asset = AVURLAsset(URL: NSURL(string: url)!)
-        self.playerItem = AVPlayerItem(asset: self.Asset);
-        self.player = AVPlayer(playerItem: self.playerItem);
-        self.layer = AVPlayerLayer(player: self.player)
-        
-    }
-    
-    func Play(){
-        self.player.play()
-    }
-    func Pause(){
-        self.player.pause()
-    }
-    func getLayer() -> AVPlayerLayer{
-        return AVPlayerLayer(player: self.player)
-    }
-    
-    func isSet() -> Bool{
-        if self.Asset.URL.absoluteString == "" {
-            //print("false")
-            return false
-        }
-        return true
-    }
-}
+//struct Videos{
+//    var Asset : AVURLAsset
+//    var playerItem: AVPlayerItem
+//    var player: AVPlayer
+//    var layer: AVPlayerLayer
+//
+//    init(){
+//        self.Asset = AVURLAsset(URL: NSURL(string: "")!)
+//        self.playerItem = AVPlayerItem(asset: self.Asset);
+//        self.player = AVPlayer(playerItem: self.playerItem);
+//        self.layer = AVPlayerLayer(player: self.player)
+//    }
+//
+//    init(url: String){
+//        self.Asset = AVURLAsset(URL: NSURL(string: url)!)
+//        self.playerItem = AVPlayerItem(asset: self.Asset);
+//        self.player = AVPlayer(playerItem: self.playerItem);
+//        self.layer = AVPlayerLayer(player: self.player)
+//
+//    }
+//
+//    func Play(){
+//        self.player.play()
+//    }
+//    func Pause(){
+//        self.player.pause()
+//    }
+//    func getLayer() -> AVPlayerLayer{
+//        return AVPlayerLayer(player: self.player)
+//    }
+//
+//    func isSet() -> Bool{
+//        if self.Asset.URL.absoluteString == "" {
+//            //print("false")
+//            return false
+//        }
+//        return true
+//    }
+//}
 
 var sideClicked = false
 var profileOn = 0
@@ -53,15 +53,16 @@ let swiftColor = UIColor(netHex: 0xEB2B5D)
 let swiftColor2 = UIColor(netHex: 0xC92451)
 let swiftColor3 = UIColor(red: 249/255, green: 223/255, blue: 230/255, alpha: 1)
 
-class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,AVAssetResourceLoaderDelegate {
+class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate {
     
     var locationManager: CLLocationManager!
-   
+    
     var videoData:NSMutableData!
     var connection:NSURLConnection!
     var response:NSHTTPURLResponse!
     var pendingRequests:NSMutableArray!
-    var player:AVPlayer!
+    var player1:Player!
+    var player2: Player!
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
@@ -79,6 +80,14 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         super.viewDidLoad()
         
         //self.tableView = UITableView()
+        self.player1 = Player()
+        self.player1.delegate = self
+        self.player1.playbackLoops = true
+        
+        self.player2 = Player()
+        self.player2.delegate = self
+        self.player2.playbackLoops = true
+        
         self.tabBarController?.tabBar.hidden = true
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
@@ -143,6 +152,66 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
     }
     
+    func playerReady(player: Player) {
+    }
+    
+    func playerPlaybackStateDidChange(player: Player) {
+    }
+    
+    func playerBufferingStateDidChange(player: Player) {
+    }
+    
+    func playerPlaybackWillStartFromBeginning(player: Player) {
+    }
+    
+    func playerPlaybackDidEnd(player: Player) {
+    }
+    
+    func scrollViewEndDecelerating(scrollView: UIScrollView) {
+        
+        //        let rowHeight = screenSize.width + 138
+        //        let y = scrollView.contentOffset.y
+        //        let front = ceil(y/rowHeight)
+        //        if front * rowHeight - y > rowHeight/3 {
+        //            if (ceil(y) - 1 ) % 2 == 1{
+        //                player1.playFromBeginning()
+        //                print("player1")
+        //            }else{
+        //                player2.playFromBeginning()
+        //                 print("player2")
+        //            }
+        //        }
+        
+    }
+    
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        let rowHeight = screenSize.width + 138
+        let y = scrollView.contentOffset.y
+        
+        let front = ceil(y/rowHeight)
+        //print(front * rowHeight/2 - y)
+        
+        if front * rowHeight-rowHeight/2 - y < 0 {
+            if (front) % 2 == 1{
+                
+                if player1.playbackState.description != "Playing" {
+                    player2.stop()
+                    player1.playFromBeginning()
+                    //print("player1")
+                }
+            }else{
+                if player2.playbackState.description != "Playing"{
+                    player1.stop()
+                    player2.playFromBeginning()
+                    //print("player2")
+                }
+            }
+        }
+        
+    }
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         var rowHeight:CGFloat = 0
@@ -171,19 +240,19 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         
-        let videocell = cell as! videoCell
+        //let videocell = cell as! videoCell
         
-        NSNotificationCenter.defaultCenter().removeObserver(videocell)
-        if(videocell.player.isSet()){
-            videocell.player.Pause()
-            videocell.player.layer.removeFromSuperlayer()
-            
-            //videocell.player = Videos()
-            videocell.player.layer.removeFromSuperlayer()
-        }
+        //NSNotificationCenter.defaultCenter().removeObserver(videocell)
+        //        if(videocell.player.isSet()){
+        //            videocell.player.Pause()
+        //            videocell.player.layer.removeFromSuperlayer()
+        //
+        //            //videocell.player = Videos()
+        //            videocell.player.layer.removeFromSuperlayer()
+        //        }
         
         if( (indexPath.row%8 == 0)&&(nextU != nil)){
-    
+            
             Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     for item in data!{
@@ -209,13 +278,27 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
             , caption: videoArray[index].caption)
         
-        if(!cell.player.isSet()){
-            cell.player = Videos(url: videoArray[indexPath.row].urlSta.absoluteString)
-            cell.player.layer.frame = cell.newRect
-            cell.layer.addSublayer(cell.player.layer)
-            cell.player.Play()
-            
+        if indexPath.row % 2 == 1 {
+            //self.player1.stop()
+            self.player1.setUrl(videoArray[indexPath.row].urlSta)
+            self.player1.view.frame = cell.newRect
+            cell.contentView.addSubview(self.player1.view)
+            //self.player1.playFromBeginning()
+        }else{
+            //self.player2.stop()
+            self.player2.setUrl(videoArray[indexPath.row].urlSta)
+            self.player2.view.frame = cell.newRect
+            cell.contentView.addSubview(self.player2.view)
+            //self.player2.playFromBeginning()
         }
+        
+        
+        //        if(!cell.player.isSet()){
+        //            cell.player = Videos(url: videoArray[indexPath.row].urlSta.absoluteString)
+        //            cell.player.layer.frame = cell.newRect
+        //            cell.layer.addSublayer(cell.player.layer)
+        //            cell.player.Play()
+        //        }
         return cell
     }
     
@@ -360,6 +443,6 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
     }
     override func viewDidDisappear(animated: Bool) {
-        self.tableView.removeFromSuperview()
+        //self.tableView.removeFromSuperview()
     }
 }
