@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configuration.mode = "foursquare" // or "swarm"
         configuration.shouldControllNetworkActivityIndicator = true
         Session.setupSharedSessionWithConfiguration(configuration)
-        
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     

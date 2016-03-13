@@ -55,7 +55,8 @@ class videoCell: UITableViewCell {
         contentView.addSubview(profilePhoto)
         
         Username = UIButton()
-        Username.frame = CGRectMake(59 , 5, labelWidth, 22)
+        Username.frame = CGRectMake(59 , 5, screenSize.width - 100, 22)
+        Username.titleLabel?.sizeToFit()
         Username.setTitleColor(swiftColor, forState: .Normal)
         Username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         Username.setTitle("kcenan", forState: .Normal)
@@ -63,8 +64,9 @@ class videoCell: UITableViewCell {
         contentView.addSubview(Username)
         
         placeName = UIButton()
-        placeName.frame = CGRectMake(59 , 27, labelWidth, 22)
+        placeName.frame = CGRectMake(59 , 27, screenSize.width - 100, 22)
         placeName.setTitleColor(swiftColor2, forState: .Normal)
+        placeName.titleLabel?.sizeToFit()
         placeName.setTitle("koç university", forState: .Normal)
         contentView.addSubview(placeName)
         
@@ -78,7 +80,7 @@ class videoCell: UITableViewCell {
         contentView.addSubview(videoComment)
         
         followButton = UIButton()
-        followButton.frame = CGRectMake(screenSize.width - 54 , 5 , 44 , 44)
+        followButton.frame = CGRectMake(screenSize.width - 41 , 9 , 36 , 36)
         let followImage = UIImage(named: "follow1.png")! as UIImage
         followButton.setBackgroundImage(followImage, forState: UIControlState.Normal)
         //followButton.setTitleColor(swiftColor2, forState: .Normal)
@@ -86,7 +88,7 @@ class videoCell: UITableViewCell {
         contentView.addSubview(followButton)
         
         likeButton = UIButton()
-        likeButton.frame = CGRectMake( 5 , 89 + screenSize.width , 44 , 44)
+        likeButton.frame = CGRectMake( 5 , 93 + screenSize.width , 36 , 36)
         let likeImage = UIImage(named: "like1.png")! as UIImage
         likeButton.setBackgroundImage(likeImage, forState: UIControlState.Normal)
         // likeButton.setTitleColor(swiftColor, forState: .Normal)
@@ -94,7 +96,7 @@ class videoCell: UITableViewCell {
         contentView.addSubview(likeButton)
         
         likeCount = UILabel()
-        likeCount.frame = CGRectMake( 49 , 89 + screenSize.width , 44 , 44)
+        likeCount.frame = CGRectMake( 43 , 89 + screenSize.width , 44 , 44)
         //yazı ortalama ekle
         likeCount.text = "0"
         likeCount.textAlignment = .Center
@@ -102,7 +104,7 @@ class videoCell: UITableViewCell {
         contentView.addSubview(likeCount)
         
         commentButton = UIButton()
-        commentButton.frame = CGRectMake( 93 , 89 + screenSize.width , 44 , 44)
+        commentButton.frame = CGRectMake( 93 , 93 + screenSize.width , 36 , 36)
         let commentImage = UIImage(named: "comment2.png")! as UIImage
         commentButton.setBackgroundImage(commentImage, forState: UIControlState.Normal)
         //commentButton.setTitleColor(swiftColor, forState: .Normal)

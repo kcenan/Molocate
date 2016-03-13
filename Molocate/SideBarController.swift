@@ -12,8 +12,8 @@ var choosedIndex = 100
 
 class SideBarController: UITableViewController {
 
-    var menuArray = ["Haber Kaynağı","Keşfet","Activities","Profile"]
-   var tableData: [String] = ["home.png", "explore.png", "people.png", "sound.png"]
+    var menuArray = ["Haber Kaynağı","Keşfet","Bildirimler","Profil"]
+   var tableData: [String] = ["home.png", "explore.png", "sound.png","people.png"]
     let cellIdentifier = "cell"
     var attractionImages = [String]()
     override func viewDidLoad() {
@@ -80,6 +80,8 @@ class SideBarController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         //print(self.parentViewController?.description)
         //self.parentViewController.
+//        let currentCell = tableView.cellForRowAtIndexPath(indexPath)
+//        currentCell?.backgroundColor = swiftColor
         choosedIndex = indexPath.row
         self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedIndex = indexPath.row
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil )

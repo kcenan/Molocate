@@ -14,7 +14,7 @@ import QuadratTouch
 
 
 
-
+var locObject:NSMutableDictionary!
 private enum AVCamSetupResult: Int {
     case Success
     case CameraNotAuthorized
@@ -45,7 +45,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     var deviceLat: CLLocationDegrees?
     var deviceLon: CLLocationDegrees?
     //var placesClient: GMSPlacesClient?
+    @IBOutlet var toolbarYancı: UILabel!
     
+    @IBOutlet var bottomToolbar: UIToolbar!
+    @IBOutlet var toolbar: UIToolbar!
     private var setupResult: AVCamSetupResult = .Success
     private var sessionRunning: Bool = false
     private var backgroundRecordingID: UIBackgroundTaskIdentifier = 0
@@ -64,7 +67,14 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        toolbar.barTintColor = swiftColor
+        toolbar.translucent = false
+        toolbar.clipsToBounds = true
         
+        bottomToolbar.barTintColor = swiftColor
+        bottomToolbar.translucent = false
+        bottomToolbar.clipsToBounds = true
+        locObject = NSMutableDictionary()
 
         
         locationManager = CLLocationManager()
@@ -149,29 +159,24 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     self.previewLayer!.frame = newFrame
                     let y = (self.view.frame.height+self.view.frame.width)/2
                     let width = self.view.frame.width
-                    let height = (self.view.frame.height-self.view.frame.width)/2
-                    let topRect = CGRect(x: 0, y: y, width: width, height: height)
-                    let bottomRect = CGRect(x: 0, y: 0, width: width , height: height)
+                    let height = (self.view.frame.height-self.view.frame.width-2*self.toolbar.frame.height-self.toolbarYancı.frame.height)
+                    let topRect = CGRect(x: 0, y: self.view.frame.width+self.toolbar.frame.height+self.toolbarYancı.frame.height, width: width, height: height)
+                    //let bottomRect = CGRect(x: 0, y: 0, width: width , height: height)
                     self.topLayer.frame = topRect
-                    self.bottomLayer.frame = bottomRect
-                    self.topLayer.backgroundColor = UIColor.blackColor().CGColor
-                    self.bottomLayer.backgroundColor = UIColor.blackColor().CGColor
-                   
+                    //self.bottomLayer.frame = bottomRect
+                    self.topLayer.backgroundColor = UIColor.whiteColor().CGColor
+                    //self.bottomLayer.backgroundColor = UIColor.whiteColor().CGColor
                     self.topLayer.opacity = 0.6
                     self.bottomLayer.opacity = 0.6
                     self.view.layer.addSublayer(self.previewLayer!)
-//                    self.previewLayer!.addSublayer(self.bottomLayer)
-//                    self.previewLayer!.addSublayer(self.topLayer)
-//                    self.previewLayer!.addSublayer(self.camChange.layer)
-//                    self.previewLayer!.addSublayer(self.recordButton.layer)
-//                    self.previewLayer!.addSublayer(self.backer.layer)
-//                    self.previewLayer!.addSublayer(self.videoDoneOutlet.layer)
                     self.view.layer.addSublayer(self.bottomLayer)
+                    self.view.layer.addSublayer(self.bottomToolbar.layer)
                     self.view.layer.addSublayer(self.topLayer)
-                    self.view.layer.addSublayer(self.camChange.layer)
+                    self.view.layer.addSublayer(self.toolbar.layer)
+                    self.view.layer.addSublayer(self.toolbarYancı.layer)
                     self.view.layer.addSublayer(self.recordButton.layer)
-                    self.view.layer.addSublayer(self.backer.layer)
-                    self.view.layer.addSublayer(self.videoDoneOutlet.layer)
+
+                    //self.view.layer.addSublayer(self.videoDoneOutlet.layer)
                     
                     
                 }
@@ -287,7 +292,22 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     let enoughCheckin:Bool = (checkinsCount > 700)
                     if (distance < 400){
                         if(isVerified||enoughCheckin){
+                            print(item)
                          placesArray.append(item["name"] as! String)
+//                         var name = item["name"] as! String
+//                         var id = item["id"] as! String
+//                         var lat = item["lat"] as! String
+//                         var lon = item["lng"] as! String
+//                         var adress = item["adress"] as! String
+                         //var loc = locations()
+//                         loc.name = name
+//                         loc.id = id
+//                         loc.lat = lat
+//                         loc.long = lon
+//                         loc.adress = adress
+//                            
+                        
+                         //locObject.setValue(loc, forKey: name)
                         }
                     }
                     
@@ -356,10 +376,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     @IBOutlet var topView: UIView!
     @IBOutlet var bottomView: UIView!
-    @IBOutlet var camChange: UIButton!
+
+    @IBOutlet var cameraChange: UIBarButtonItem!
     @IBAction func cameraChange(sender: AnyObject) {
         
-        self.camChange.enabled = false
+        self.cameraChange.enabled = false
         self.recordButton.enabled = false
         
         
@@ -410,7 +431,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             self.captureSession!.commitConfiguration()
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.camChange.enabled = true
+                self.cameraChange.enabled = true
                 self.recordButton.enabled = true
                 
             }
@@ -489,7 +510,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         // Enable the Record button to let the user stop the recording.
         dispatch_async( dispatch_get_main_queue()) {
             self.recordButton.enabled = true
-            self.recordButton.setTitle(NSLocalizedString("Stop", comment: "Recording button stop title"), forState: .Normal)
+            //self.recordButton.setTitle(NSLocalizedString("Stop", comment: "Recording button stop title"), forState: .Normal)
         }
     }
     
@@ -631,12 +652,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
         dispatch_async( dispatch_get_main_queue()) {
             // Only enable the ability to change camera if the device has more than one camera.
-            self.camChange.enabled = (AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo).count > 1)
+            self.cameraChange.enabled = (AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo).count > 1)
             self.recordButton.enabled = true
-            self.recordButton.setTitle(NSLocalizedString("Record", comment: "Recording button record title"), forState: .Normal)
+            //self.recordButton.setTitle(NSLocalizedString("Record", comment: "Recording button record title"), forState: .Normal)
         }
     }
-    @IBOutlet var videoDoneOutlet: UIButton!
+
     @IBAction func videoDone(sender: AnyObject) {
         tempAssetURL = nil
         firstAsset = nil
@@ -767,7 +788,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
     
 
-    @IBOutlet var backer: UIButton!
+
+    @IBOutlet var backtoCont: UIBarButtonItem!
     @IBAction func backtoCont(sender: AnyObject) {
         dispatch_async(dispatch_get_main_queue()) {
             
@@ -791,7 +813,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
     func holdDown(){
         print("tuttu")
-        self.camChange.enabled = false
+        self.cameraChange.enabled = false
         self.recordButton.enabled = false
        
         

@@ -13,7 +13,14 @@ import AVKit
 
 
 class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+    struct postVideo{
+        var videoID:String! = ""
+        var videoURL:String! = ""
+        var category:String! = ""
+        var caption:String! = ""
+        var taggedUsers = [String]()
+        var location = NSDictionary()
+    }
     @IBOutlet var toolBar: UIToolbar!
     struct placeVar {
         var name: String!
@@ -37,7 +44,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
 //    
 
     @IBOutlet var textField: UITextField!
-    var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
+    var categories = ["Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
 
     @IBOutlet var placeTable: UITableView!
     @IBAction func post(sender: AnyObject) {
@@ -197,6 +204,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
+        
 //        comment = UITextField(frame: CGRectMake(0, 159, screenSize.width, screenSize.height - screenSize.width - 208))
 //        comment.attributedPlaceholder = .None
 //        comment.textColor = UIColor.blackColor()
@@ -225,7 +233,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         dispatch_async(dispatch_get_main_queue()) {
             
             //self.textField.backgroundColor = UIColor.whiteColor()
-            
+            self.textField.backgroundColor = swiftColor2
             self.textField.autocapitalizationType = .Words
         }
 //        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismisKeyboard")
@@ -236,7 +244,6 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         
         
         textField.delegate = self
-        
         placeTable.delegate = self
         placeTable.dataSource = self
         placeTable.scrollEnabled = true
@@ -250,7 +257,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         player = AVPlayer(playerItem: playerItem)
         playerLayer = AVPlayerLayer(player: player)
         _ = (self.view.frame.height-self.view.frame.width)/2
-        let newRect = CGRect(x: 0, y: 164, width: self.view.frame.width, height: self.view.frame.width)
+        //self.collectionView.frame.maxY
+        let newRect = CGRect(x: 0, y: self.collectionView.frame.maxY, width: self.view.frame.width, height: self.view.frame.width)
         playerLayer?.frame = newRect
         playerLayer?.videoGravity = AVLayerVideoGravityResizeAspect
         
@@ -263,7 +271,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let a : CGSize = CGSize.init(width: screenSize.width / 6, height: 44)
+        let a : CGSize = CGSize.init(width: screenSize.width * 2 / 9, height: 44)
+
         
         return a
     }
@@ -273,7 +282,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
+        return categories.count
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let myCell : captureCollectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! captureCollectionCell
@@ -284,7 +293,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         myCell.layer.borderWidth = 0
         myCell.backgroundColor = swiftColor3
         myCell.label?.text = categories[indexPath.row]
-        myCell.frame.size.width = screenSize.width / 6
+        myCell.frame.size.width = screenSize.width / 5
         myCell.label.textAlignment = .Center
         
         
