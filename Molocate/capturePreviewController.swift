@@ -15,6 +15,9 @@ import AVKit
 class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var categ:String!
     @IBOutlet var toolBar: UIToolbar!
+    
+     var caption: UITextField!
+    
     struct placeVar {
         var name: String!
         var province: String
@@ -22,6 +25,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         var latitude: Float!
         var longitude: Float!
         var rating: Float!
+       
         
     }
     let screenSize: CGRect = UIScreen.mainScreen().bounds
@@ -197,7 +201,13 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
-        var categ = "fail"
+        
+        
+      
+        
+        
+        
+        
         videoLocation = locations()
 //        comment = UITextField(frame: CGRectMake(0, 159, screenSize.width, screenSize.height - screenSize.width - 208))
 //        comment.attributedPlaceholder = .None
@@ -260,6 +270,23 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         player?.play()
         view.layer.addSublayer(placeTable.layer)
         view.layer.addSublayer(textField.layer)
+        
+        caption = UITextField()
+        caption.frame.size.width = screenSize.width - 50
+        caption.frame.origin.x = 0
+        caption.frame.origin.y = playerLayer!.frame.origin.y + screenSize.width
+        caption.frame.size.height = screenSize.height - 192 - screenSize.width
+        caption.textColor = UIColor.blackColor()
+        caption.keyboardType = .Default
+        caption.font = UIFont(name: "Lato-Light.tff", size: 13)
+        caption.backgroundColor = UIColor.whiteColor()
+       
+        let placeholder = NSAttributedString(string: "Buraya yorumunuzu ekleyebilirsiniz", attributes: [NSForegroundColorAttributeName : UIColor.grayColor()])
+        //caption.attributedText = "denemee"
+       
+        caption.attributedPlaceholder = placeholder;
+        
+        view.addSubview(caption)
         // Do any additional setup after loading the view.
     }
     

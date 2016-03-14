@@ -33,6 +33,7 @@ class changePasswordd: UIViewController {
             
         }
         else{
+            //displayAlert("Hata", message: "Yazdığınız şifreler uyuşmuyor, lütfen aynı şifreyi girin.")
             let alertController = UIAlertController(title: "Hata!", message:
                 "Yazdığınız şifreler uyuşmuyor, lütfen aynı şifreyi girin.", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.Default,handler: nil))
@@ -46,7 +47,7 @@ class changePasswordd: UIViewController {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction((UIAlertAction(title: "Tamam", style: .Default, handler: { (action) -> Void in
-            //self.dismissViewControllerAnimated(true, completion: nil)
+        //self.dismissViewControllerAnimated(true, completion: nil)
         })))
         self.presentViewController(alert, animated: true, completion: nil)
     }
