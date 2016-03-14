@@ -136,24 +136,17 @@ class videoCell: UITableViewCell {
     
     func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String){
         self.Username.tag = row
-        self.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
         self.Username.setTitle(username, forState: .Normal)
         self.placeName.tag = row
-        self.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
         self.placeName.setTitle(location, forState: .Normal)
         //placeDictionary.setValue(videoArray[indexPath.row].locationID, forKey: placename)
         self.profilePhoto.tag = row
-        self.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
         self.followButton.tag = row
-        self.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
         self.likeButton.tag = row
-        self.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
         self.likeCount.text = "\(likeCount)"
         self.commentButton.tag = row
-        self.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
         self.commentCount.text = "\(commentCount)"
         self.reportButton.tag = row
-        self.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
         self.videoComment.text = caption
     }
     

@@ -278,6 +278,16 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
         cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
             , caption: videoArray[index].caption)
+        cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+
+        
         dispatch_async(dispatch_get_main_queue()){
         if indexPath.row % 2 == 1 {
             //self.player1.stop()
