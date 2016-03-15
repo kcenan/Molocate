@@ -26,7 +26,7 @@ class TableViewCellFollowerFollowing: UITableViewCell {
         let labelHeight: CGFloat = 30
         let labelWidth: CGFloat = 140
         
-        let mole = UIImage(named: "IMG_0610.JPG")! as UIImage
+        let mole = UIImage(named: "sound.png")! as UIImage
         fotoButton = UIButton()
         fotoButton.frame = CGRectMake(gap, gap, 40 , 40)
         fotoButton.setBackgroundImage(mole, forState: .Normal)

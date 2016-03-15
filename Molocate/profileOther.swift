@@ -33,11 +33,11 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     @IBAction func FollowButton(sender: AnyObject) {
         if(choosedIndex < 3){
             if user.isFollowing{
-                user.unfollow(user.username, completionHandler: { (data, response, error) -> () in
+                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
                 print("unfollow"+data)
                             })
                     } else {
-                user.follow(user.username, completionHandler: { (data, response, error) -> () in
+                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
                 print("follow"+data)
                     })
         }
@@ -130,7 +130,16 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                 }
             })
         }
-
+        
+    
+//       Molocate.follow("kcenan4") { (data, response, error) -> () in
+//            
+//            print(data)
+//            Molocate.getFollowings(currentUser.username) { (data, response, error, count, next, previous) -> () in
+//                data[0].printUser()
+//            }
+//        }
+//      
 
         addedButton.backgroundColor = swiftColor
         addedButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)

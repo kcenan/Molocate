@@ -346,6 +346,10 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
         print("followa basıldı at index path: \(buttonRow) ")
+        
+        Molocate.follow (videoArray[buttonRow].username){ (data, response, error) -> () in
+            print(data)
+        }
     }
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag

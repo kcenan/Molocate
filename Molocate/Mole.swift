@@ -5,6 +5,7 @@ let baseUrl = "http://molocate.elasticbeanstalk.com/"
 
 
 struct videoInf{
+    var id: String = ""
     var username:String = ""
     var category:String = ""
     var location:String = ""
@@ -47,7 +48,14 @@ struct User{
         print("following_count:  \(following_count)");
     }
     
-    func follow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+  
+}
+
+var currentUser:User = User()
+
+public class Molocate {
+    
+    class func follow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
         
         let url = NSURL(string: baseUrl + "/relation/api/follow/?username=" + (username as String))!
         let request = NSMutableURLRequest(URL: url)
@@ -75,7 +83,7 @@ struct User{
     }
     
     
-    func unfollow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func unfollow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
         let url = NSURL(string: baseUrl + "relation/api/unfollow/?username=" + (username as String))!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
@@ -97,15 +105,8 @@ struct User{
         
         task.resume()
     }
-}
-
-var currentUser:User = User()
-
-public class Molocate {
     
-    
-    
-    class func getFollowers(username: String, completionHandler: (data: Array<String>, response: NSURLResponse!, error: NSError!, count: Int, next: String?, previous: String? ) -> ()) {
+    class func getFollowers(username: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int, next: String?, previous: String? ) -> ()) {
         
         let url = NSURL(string: baseUrl + "relation/api/followers/" + (username as String) + "/")!
         let request = NSMutableURLRequest(URL: url)
@@ -125,14 +126,20 @@ public class Molocate {
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
                 
-                var users: Array<String> = Array<String>();
+                var users: Array<User> = Array<User>()
                 
                 if(count != 0){
-                    users = result["results"] as! Array<String>
+                    for thing in result["results"] as! NSArray{
+                        var user = User()
+                        user.username = thing["username"] as! String
+                        user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                        users.append(user)
+                    }
                 }
+                
                 completionHandler(data: users , response: response , error: nsError, count: count, next: next, previous: previous  )
             } catch{
-                completionHandler(data:  Array<String>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                completionHandler(data:  Array<User>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
                 print("Error:: in mole.getFollowers()")
             }
             
@@ -141,7 +148,7 @@ public class Molocate {
     }
     
     
-    class func getFollowings(username: String, completionHandler: (data: Array<String>!, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
+    class func getFollowings(username: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
         
         let url = NSURL(string: baseUrl + "relation/api/followings/" + (username as String) + "/");
         let request = NSMutableURLRequest(URL: url!)
@@ -154,21 +161,28 @@ public class Molocate {
             
             
             do {
-                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print("======================================")
                 print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
                 
-                var users: Array<String> = Array<String>();
+                var users: Array<User> = Array<User>()
                 
-                if(count != 0) {users = result["results"] as! Array<String>}
+                if(count != 0){
+                    for thing in result["results"] as! NSArray{
+                        var user = User()
+                        user.username = thing["username"] as! String
+                        user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                        users.append(user)
+                    }
+                }
+
                 
                 completionHandler(data: users , response: response , error: nsError, count: count, next: next, previous: previous  )
             } catch{
-                completionHandler(data:  Array<String>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                completionHandler(data:  Array<User>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
                 print("Error:: in mole.getFollowings()")
             }
             
@@ -214,8 +228,10 @@ public class Molocate {
         task.resume()
     }
     
+
     
-    class func getExploreVideos(var nextURL: NSURL?, completionHandler: (data: [videoInf]?, response: NSURLResponse!, error: NSError!) -> ()){
+    
+    class func getExploreVideos(nextURL: NSURL?, completionHandler: (data: [videoInf]?, response: NSURLResponse!, error: NSError!) -> ()){
         
         let request = NSMutableURLRequest(URL: nextURL!)
         request.HTTPMethod = "GET"
@@ -264,7 +280,151 @@ public class Molocate {
     }
     
     
+    class func likeAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        
+        let url = NSURL(string: baseUrl + "video/like/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
+            let nsError = error
+            
+            do {
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+            } catch{
+                completionHandler(data: "" , response: nil , error: nsError  )
+                print("Error:: in mole.unfollow()")
+            }
+            
+        }
+        
+        task.resume()
+    }
+    class func unLikeAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        
+        let url = NSURL(string: baseUrl + "video/unlike/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
+            let nsError = error
+            
+            do {
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+            } catch{
+                completionHandler(data: "" , response: nil , error: nsError  )
+                print("Error:: in mole.unfollow()")
+            }
+            
+        }
+        
+        task.resume()
+    }
+    
+    class func deleteAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        
+        let url = NSURL(string: baseUrl + "video/delete/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
+            let nsError = error
+            
+            do {
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+            } catch{
+                completionHandler(data: "" , response: nil , error: nsError  )
+                print("Error:: in mole.unfollow()")
+            }
+            
+        }
+        
+        task.resume()
+    }
+    
+    class func commentAVideo(videoId: String,comment: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+      
+        do{
+           
+            let Body = ["video_id": videoId,"comment": comment]
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(Body, options: NSJSONWritingOptions())
+            let url = NSURL(string: baseUrl + "video/comment/")!
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+            request.HTTPBody = jsonData
+            
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
+            let nsError = error
+            
+            do {
+                
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+            } catch{
+                completionHandler(data: "" , response: nil , error: nsError  )
+                print("Error:: in mole.unfollow()")
+            }
+            
+        }
+        
+        task.resume()
+        }catch{
+            completionHandler(data: "" , response: nil , error: nil )
+            print("Error:: in mole.unfollow()")
+        }
+    }
 
+    
+   
+    class func deleteAComment(id: String,comment: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        
+        do{
+            
+            let Body = ["comment_id": id,"comment": comment]
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(Body, options: NSJSONWritingOptions())
+            let url = NSURL(string: baseUrl + "video/api/delete_comment/?comment_id=" + (id as String))!
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+            request.HTTPBody = jsonData
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                
+                let nsError = error
+                
+                do {
+                    
+                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                    completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+                } catch{
+                    completionHandler(data: "" , response: nil , error: nsError  )
+                    print("Error:: in mole.unfollow()")
+                }
+                
+            }
+            
+            task.resume()
+        }catch{
+            completionHandler(data: "" , response: nil , error: nil )
+            print("Error:: in mole.unfollow()")
+        }
+    }
     
     
     class func getCurrentUser(completionHandler: (data: User, response: NSURLResponse!, error: NSError!) -> ()) {
