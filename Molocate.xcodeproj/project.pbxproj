@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2DFE36B66AA0CEA7089BFC5F /* Pods_Molocate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98CE71F35380A6A5DF16FFF /* Pods_Molocate.framework */; };
-		3871AAA01C93695900DDD83E /* denemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3871AA9F1C93695900DDD83E /* denemeViewController.swift */; };
 		3871AAA31C9488BA00DDD83E /* sideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3871AAA21C9488BA00DDD83E /* sideCell.swift */; };
+		388173F51C97AACB0064EBB5 /* commentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388173F41C97AACB0064EBB5 /* commentController.swift */; };
+		388173F71C97ABE20064EBB5 /* commentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388173F61C97ABE20064EBB5 /* commentCell.swift */; };
 		38E621061C90D9AB00FB1AD5 /* editProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E621051C90D9AB00FB1AD5 /* editProfile.swift */; };
 		38E6210C1C90E49D00FB1AD5 /* changePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E6210B1C90E49D00FB1AD5 /* changePassword.swift */; };
 		38F770FF1C95028E0079FACD /* explore.png in Resources */ = {isa = PBXBuildFile; fileRef = 38F770FB1C95028E0079FACD /* explore.png */; };
@@ -106,8 +107,9 @@
 
 /* Begin PBXFileReference section */
 		30E8D7C448993011BA2B8851 /* Pods-Molocate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Molocate.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Molocate/Pods-Molocate.debug.xcconfig"; sourceTree = "<group>"; };
-		3871AA9F1C93695900DDD83E /* denemeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = denemeViewController.swift; sourceTree = "<group>"; };
 		3871AAA21C9488BA00DDD83E /* sideCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sideCell.swift; sourceTree = "<group>"; };
+		388173F41C97AACB0064EBB5 /* commentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = commentController.swift; sourceTree = "<group>"; };
+		388173F61C97ABE20064EBB5 /* commentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = commentCell.swift; sourceTree = "<group>"; };
 		38E621051C90D9AB00FB1AD5 /* editProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = editProfile.swift; sourceTree = "<group>"; };
 		38E6210B1C90E49D00FB1AD5 /* changePassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = changePassword.swift; sourceTree = "<group>"; };
 		38F770FB1C95028E0079FACD /* explore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explore.png; sourceTree = "<group>"; };
@@ -321,13 +323,15 @@
 			isa = PBXGroup;
 			children = (
 				C61023091C19FDCA00E9CA73 /* Main.storyboard */,
+				388173F61C97ABE20064EBB5 /* commentCell.swift */,
+				388173F41C97AACB0064EBB5 /* commentController.swift */,
 				C63FBD121BF3E5B900DBB34C /* Info.plist */,
-				3871AA9F1C93695900DDD83E /* denemeViewController.swift */,
 				C64B601D1C81D6A500E510DC /* Mole.swift */,
 				38F771031C9505670079FACD /* Player.swift */,
 				C63FBD061BF3E5B900DBB34C /* AppDelegate.swift */,
 				385FC3531C926A8300F85B29 /* Giriş- Üyelik */,
 				C60905381C48140A00614C7F /* Navigation */,
+				C6F7B26E1C1351CF0062E408 /* Profile */,
 				C6FA82331BFBEB850099D2C8 /* NavigationItems */,
 				C6D0D2B51C8BA87E00462BB7 /* fonts-lato */,
 				C609053D1C486A7300614C7F /* NotInUse */,
@@ -445,7 +449,6 @@
 		C6FA82331BFBEB850099D2C8 /* NavigationItems */ = {
 			isa = PBXGroup;
 			children = (
-				C6F7B26E1C1351CF0062E408 /* Profile */,
 				C642196B1BF92A14000CAD93 /* ExploreViewController.swift */,
 				C61FDAB21BFBD332007B940E /* ExploreViewController.xib */,
 				C6917F911BFA60B700CA501A /* CameraViewController.swift */,
@@ -667,14 +670,15 @@
 				C68872861C8CED2800BDBE00 /* optionCell.swift in Sources */,
 				C63FBD091BF3E5B900DBB34C /* ViewController.swift in Sources */,
 				C61023161C1B407600E9CA73 /* Followers.swift in Sources */,
+				388173F51C97AACB0064EBB5 /* commentController.swift in Sources */,
 				C6B7C9EB1C7BE7EF005607EC /* profileLocation.swift in Sources */,
 				C68956301C50441C00D391F2 /* notificationCell.swift in Sources */,
+				388173F71C97ABE20064EBB5 /* commentCell.swift in Sources */,
 				C609053C1C48145700614C7F /* SideBarController.swift in Sources */,
 				C67C444F1C75D69700FCB157 /* myCollectionViewCell.swift in Sources */,
 				C63D1F1C1C1FA20D003B2CC1 /* SignUpAdvance.swift in Sources */,
 				38E6210C1C90E49D00FB1AD5 /* changePassword.swift in Sources */,
 				C6DA6BE21C4332D100E24392 /* videoCell.swift in Sources */,
-				3871AAA01C93695900DDD83E /* denemeViewController.swift in Sources */,
 				C6CBA4FF1C876EC300AE65AD /* profileOther.swift in Sources */,
 				C65C4F751C8E20B300DB5068 /* captureCollectionCell.swift in Sources */,
 				C6917F921BFA60B700CA501A /* CameraViewController.swift in Sources */,
