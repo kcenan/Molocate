@@ -16,7 +16,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     var categ:String!
     @IBOutlet var toolBar: UIToolbar!
     
-     var caption: UITextField!
+     var caption: UIButton!
     
     struct placeVar {
         var name: String!
@@ -271,25 +271,31 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         view.layer.addSublayer(placeTable.layer)
         view.layer.addSublayer(textField.layer)
         
-        caption = UITextField()
+        caption = UIButton()
         caption.frame.size.width = screenSize.width - 50
         caption.frame.origin.x = 0
         caption.frame.origin.y = playerLayer!.frame.origin.y + screenSize.width
         caption.frame.size.height = screenSize.height - 192 - screenSize.width
-        caption.textColor = UIColor.blackColor()
-        caption.keyboardType = .Default
-        caption.font = UIFont(name: "Lato-Light.tff", size: 13)
+        caption.titleLabel!.textColor = UIColor.blackColor()
         caption.backgroundColor = UIColor.whiteColor()
-       
-        let placeholder = NSAttributedString(string: "Buraya yorumunuzu ekleyebilirsiniz", attributes: [NSForegroundColorAttributeName : UIColor.grayColor()])
-        //caption.attributedText = "denemee"
-       
-        caption.attributedPlaceholder = placeholder;
+        caption.titleLabel?.text = "buraya yorum falan ekle"
+        caption.titleLabel?.textColor = UIColor.blackColor()
+        caption.titleLabel?.textAlignment = .Left
+        caption.addTarget(self, action: "pressedCaption:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(caption)
         
-        view.addSubview(caption)
-        // Do any additional setup after loading the view.
+        
     }
     
+    func pressedCaption(sender: UIButton) {
+        let controller:tagComment = self.storyboard!.instantiateViewControllerWithIdentifier("tagComment") as! tagComment
+        //controller.ANYPROPERTY=THEVALUE // If you want to pass value
+        controller.view.frame = self.view.bounds;
+        controller.willMoveToParentViewController(self)
+        self.view.addSubview(controller.view)
+        self.addChildViewController(controller)
+        controller.didMoveToParentViewController(self)
+    }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let a : CGSize = CGSize.init(width: screenSize.width * 2 / 9, height: 44)

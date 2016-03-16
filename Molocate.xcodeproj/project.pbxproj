@@ -54,6 +54,7 @@
 		C689562A1C4EC3E200D391F2 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C68956291C4EC3E200D391F2 /* Accounts.framework */; };
 		C68956301C50441C00D391F2 /* notificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689562F1C50441C00D391F2 /* notificationCell.swift */; };
 		C6917F921BFA60B700CA501A /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6917F911BFA60B700CA501A /* CameraViewController.swift */; };
+		C69DB1BF1C99079D0042DA03 /* tagComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69DB1BE1C99079D0042DA03 /* tagComment.swift */; };
 		C6B7C9EB1C7BE7EF005607EC /* profileLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B7C9EA1C7BE7EF005607EC /* profileLocation.swift */; };
 		C6BA0A051BFA417B0091E088 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BA0A041BFA417B0091E088 /* AudioToolbox.framework */; };
 		C6BA0A071BFA41F20091E088 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BA0A061BFA41F20091E088 /* CFNetwork.framework */; };
@@ -160,6 +161,7 @@
 		C68956291C4EC3E200D391F2 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		C689562F1C50441C00D391F2 /* notificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = notificationCell.swift; sourceTree = "<group>"; };
 		C6917F911BFA60B700CA501A /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		C69DB1BE1C99079D0042DA03 /* tagComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tagComment.swift; sourceTree = "<group>"; };
 		C6B7C9EA1C7BE7EF005607EC /* profileLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = profileLocation.swift; sourceTree = "<group>"; };
 		C6BA0A041BFA417B0091E088 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C6BA0A061BFA41F20091E088 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -323,8 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				C61023091C19FDCA00E9CA73 /* Main.storyboard */,
-				388173F61C97ABE20064EBB5 /* commentCell.swift */,
-				388173F41C97AACB0064EBB5 /* commentController.swift */,
+				C69DB1BE1C99079D0042DA03 /* tagComment.swift */,
 				C63FBD121BF3E5B900DBB34C /* Info.plist */,
 				C64B601D1C81D6A500E510DC /* Mole.swift */,
 				38F771031C9505670079FACD /* Player.swift */,
@@ -431,6 +432,8 @@
 		C6F7B26E1C1351CF0062E408 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				388173F61C97ABE20064EBB5 /* commentCell.swift */,
+				388173F41C97AACB0064EBB5 /* commentController.swift */,
 				C6CBA4FE1C876EC300AE65AD /* profileOther.swift */,
 				C6B7C9EA1C7BE7EF005607EC /* profileLocation.swift */,
 				38E621051C90D9AB00FB1AD5 /* editProfile.swift */,
@@ -693,6 +696,7 @@
 				C60905361C4812A100614C7F /* ContainerController.swift in Sources */,
 				C6F9B5C81C80DD9300C7E9FC /* HomePageViewController.swift in Sources */,
 				C63FBD071BF3E5B900DBB34C /* AppDelegate.swift in Sources */,
+				C69DB1BF1C99079D0042DA03 /* tagComment.swift in Sources */,
 				C6D0CDF31C44200F006AAFF0 /* TableViewCellFollowerFollowing.swift in Sources */,
 				3871AAA31C9488BA00DDD83E /* sideCell.swift in Sources */,
 				C61FDAB11BFBD16D007B940E /* FollowingViewController.swift in Sources */,
