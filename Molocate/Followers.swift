@@ -95,8 +95,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     @IBAction func back(sender: AnyObject) {
          dispatch_async(dispatch_get_main_queue()) {
-        //self.performSegueWithIdentifier("backFromFollowers", sender: self)
-        //choosedIndex = 3
+       
             self.willMoveToParentViewController(nil)
             self.view.removeFromSuperview()
             self.removeFromParentViewController()

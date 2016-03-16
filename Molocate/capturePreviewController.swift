@@ -295,6 +295,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
+        
+
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {

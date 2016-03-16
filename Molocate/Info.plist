@@ -75,9 +75,9 @@
 	<string>Show your location on the map</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Lato-Bold.tff</string>
-		<string>Lato-Hairline.tff</string>
-		<string>Lato-Regular</string>
+		<string>Lato-Bold.ttf</string>
+		<string>Lato-Hairline.ttf</string>
+		<string>Lato-Regular.ttf</string>
 		<string>Lato-Light.ttf</string>
 	</array>
 </dict>
