@@ -16,7 +16,8 @@ struct videoInf{
     var likeCount = 0
     var commentCount = 0
     var comments = [String]()
-    
+    var isLiked: Int = 0
+    var isFollowing: Int = 0
 }
 
 var nextU:NSURL!
@@ -258,8 +259,9 @@ public class Molocate {
                 var videoArray = [videoInf]()
                 
                 for item in videos {
-                    print(item)
+                    //print(item)
                     var videoStr = videoInf()
+                    videoStr.id = item["video_id"] as! String
                     videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
                     videoStr.username = item["owner_user"]!!["username"] as! String
                     videoStr.location = item["place_taken"]!!["name"] as! String
@@ -268,12 +270,15 @@ public class Molocate {
                     videoStr.likeCount = item["like_count"] as! Int
                     videoStr.commentCount = item["comment_count"] as! Int
                     videoStr.category = item["category"] as! String
+                    videoStr.isLiked = item["is_liked"] as! Int
+                    let jsonObject = item["owner_user"]
+                    videoStr.isFollowing = jsonObject!!["is_following"] as! Int
                     videoArray.append(videoStr)
                 }
                 completionHandler(data: videoArray, response: response, error: nsError)
             }catch{
                 completionHandler(data: nil, response: NSURLResponse(), error: nsError)
-                
+                print("Error: in Video Inf")
             }
         }
         task.resume()

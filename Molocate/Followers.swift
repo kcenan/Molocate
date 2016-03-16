@@ -14,8 +14,9 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     
     
-    var players = ["Hamza Hamzaoğlu","Jem Paul Karacan", "Umut Bulut", "Sabri Sarıoğlu", "Ceyhun Gülselam"]
+    var users = [User]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
+    var myTable: UITableView!
     
     override func viewDidLoad() {
         
@@ -23,22 +24,26 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
      
 
         //self.navigationController?.navigationBarHidden = false
-        let tableView: UITableView  =   UITableView()
+        myTable =   UITableView()
         self.navigationController?.navigationBar.hidden = false
-        tableView.frame         =   CGRectMake(0, 60, screenSize.width, screenSize.height-60);
-        tableView.delegate      =   self
-        tableView.dataSource    =   self
-        view.addSubview(tableView)
-//        dispatch_async(dispatch_get_main_queue()) {
-//            Molocate.getFollowers(currentUser.username, completionHandler: { (data, response, error, count, next, previous) -> () in
-//                let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-//                for thing in data{
-//                    
-//                }
-//            })
-//            
-//  
-//        }
+        self.myTable.delegate      =   self
+        self.myTable.dataSource    =   self
+        self.view.addSubview(myTable)
+        self.myTable.frame         =   CGRectMake(0, 60, self.screenSize.width, self.screenSize.height-60);
+        Molocate.getFollowers(currentUser.username) { (data, response, error, count, next, previous) -> () in
+            
+            for thing in data{
+                self.users.append(thing)
+            }
+             dispatch_async(dispatch_get_main_queue()){
+                self.myTable.reloadData()
+            }
+            
+        }
+       
+            
+  
+        
        
     }
     
@@ -53,14 +58,14 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         return rowHeight
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return players.count
+        return users.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
        
         let cell = TableViewCellFollowerFollowing(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier2")
-        cell.myButton1.setTitle("\(players[indexPath.row])", forState: .Normal)
-        print(players[indexPath.row])
+        cell.myButton1.setTitle("\(users[indexPath.row].username)", forState: .Normal)
+        print(users[indexPath.row].username)
         cell.myButton1.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.fotoButton.addTarget(self, action: "pressedProfile2:", forControlEvents: UIControlEvents.TouchUpInside)
         

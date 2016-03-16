@@ -9,6 +9,23 @@
 
 import UIKit
 
+extension UIImageView {
+    func downloadedFrom(url url:NSURL, contentMode mode: UIViewContentMode) {
+        contentMode = mode
+        NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: { (data, response, error) -> Void in
+            guard
+                let httpURLResponse = response as? NSHTTPURLResponse where httpURLResponse.statusCode == 200,
+                let mimeType = response?.MIMEType where mimeType.hasPrefix("image"),
+                let data = data where error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.image = image
+            }
+        }).resume()
+    }
+}
+
 class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigationControllerDelegate {
     
     
@@ -83,8 +100,10 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         addlines()
         photo = UIImageView()
         //ppyi ata
-        let image: UIImage = UIImage(named: "elmander.jpg")!
-        photo = UIImageView(image: image)
+       // let image: UIImage = UIImage(named: "elmander.jpg")!
+        photo = UIImageView()
+        photo.downloadedFrom(url: currentUser.profilePic, contentMode: UIViewContentMode.ScaleToFill)
+
         photo!.frame = CGRectMake(10 , 60 + (scr * 2) / 120 , (scr * 26) / 120 , (scr * 26) / 120)
         self.view.addSubview(photo!)
         
@@ -93,7 +112,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         mailText.borderStyle = .RoundedRect
         mailText.textColor = UIColor.blackColor()
         mailText.keyboardType = .EmailAddress
-        
+        mailText.text = currentUser.email
         view.addSubview(mailText)
         
         name = UILabel()
@@ -108,6 +127,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         nameText.borderStyle = .RoundedRect
         nameText.textColor = UIColor.blackColor()
         nameText.keyboardType = .Default
+        nameText.text = currentUser.first_name
         view.addSubview(nameText)
         
         surnameText = UITextField()
@@ -115,6 +135,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         surnameText.borderStyle = .RoundedRect
         surnameText.textColor = UIColor.blackColor()
         surnameText.keyboardType = .EmailAddress
+        surnameText.text = currentUser.last_name
         view.addSubview(surnameText)
         
         mail = UILabel()

@@ -281,8 +281,20 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+        if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
+            cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+        }else{
+            cell.followButton.hidden = true
+        }
         cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
+
+        if(videoArray[indexPath.row].isLiked == 0) {
+            //different symbols
+        }else{
+            cell.likeButton.backgroundColor = UIColor.whiteColor()
+        }
+        cell.likeCount.text = "\(videoArray[indexPath.row].likeCount)"
+        cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
         cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -354,6 +366,35 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
         print("like a basıldı at index path: \(buttonRow) ")
+        if(videoArray[buttonRow].isLiked == 0){
+            sender.highlighted = true
+            Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                print(data)
+                self.videoArray[buttonRow].likeCount+=1
+                self.videoArray[buttonRow].isLiked=1
+                let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+                var indexes = [NSIndexPath]()
+                indexes.append(indexpath)
+                self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            }
+        }
+        }else{
+            sender.highlighted = false
+            Molocate.unLikeAVideo(videoArray[buttonRow].id, completionHandler: { (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    print(data)
+                    
+                    self.videoArray[buttonRow].likeCount-=1
+                    self.videoArray[buttonRow].isLiked=0
+                    let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+                    var indexes = [NSIndexPath]()
+                    indexes.append(indexpath)
+                    self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+
+                }
+            })
+        }
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag
