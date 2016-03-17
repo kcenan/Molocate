@@ -14,6 +14,10 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     
     
+    @IBOutlet var toolBar: UINavigationBar!
+    
+    @IBOutlet var titleToolbar: UILabel!
+    
     var users = [User]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var myTable: UITableView!
@@ -22,7 +26,10 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         
         super.viewDidLoad()
      
-
+        toolBar.barTintColor = swiftColor
+        toolBar.translucent = false
+        toolBar.clipsToBounds = true
+        //toolBar.
         //self.navigationController?.navigationBarHidden = false
         myTable =   UITableView()
         self.navigationController?.navigationBar.hidden = false

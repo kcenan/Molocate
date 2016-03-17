@@ -15,6 +15,7 @@
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
+            <string>Lato-Bold</string>
         </mutableArray>
         <mutableArray key="Lato-Light.ttf">
             <string>Lato-Light</string>
@@ -99,7 +100,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SIz-Rx-7bR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2032.5" y="-2706.5"/>
+            <point key="canvasLocation" x="2304.5" y="-1674.5"/>
         </scene>
         <!--Tag Comment-->
         <scene sceneID="cb3-Sa-Snr">
@@ -1293,13 +1294,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n3E-wH-zy4">
-                                <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n3E-wH-zy4">
+                                <rect key="frame" x="20" y="36" width="374" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="CY0-6S-yr0"/>
                                 </constraints>
                                 <items>
-                                    <navigationItem title="Followers" id="YI2-ao-ogD">
+                                    <navigationItem id="YI2-ao-ogD">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="Yma-8m-rDo">
                                             <connections>
                                                 <action selector="back:" destination="WLi-Jz-qDR" id="aBJ-is-kdo"/>
@@ -1308,16 +1309,31 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Takipçiler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ww9-J7-dqe">
+                                <rect key="frame" x="170" y="47" width="74" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="SJk-F4-A14"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="n3E-wH-zy4" firstAttribute="leading" secondItem="nYi-k5-Iw6" secondAttribute="leadingMargin" id="94k-VV-a4b"/>
+                            <constraint firstItem="ww9-J7-dqe" firstAttribute="centerX" secondItem="nYi-k5-Iw6" secondAttribute="centerX" id="GxY-70-aua"/>
                             <constraint firstItem="n3E-wH-zy4" firstAttribute="top" secondItem="cta-Hd-l35" secondAttribute="bottom" constant="16" id="SnQ-Rn-Etz"/>
+                            <constraint firstItem="ww9-J7-dqe" firstAttribute="top" secondItem="cta-Hd-l35" secondAttribute="bottom" constant="27" id="jYD-Ag-h04"/>
                             <constraint firstAttribute="trailingMargin" secondItem="n3E-wH-zy4" secondAttribute="trailing" id="umN-V7-WJ2"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Followers" id="kMp-n5-qQ1"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="titleToolbar" destination="ww9-J7-dqe" id="y0q-Km-AN6"/>
+                        <outlet property="toolBar" destination="n3E-wH-zy4" id="Cv9-Re-FNL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jEV-S1-ZG3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1595,7 +1611,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Qm-0t-BEd">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Qm-0t-BEd">
                                 <rect key="frame" x="0.0" y="648" width="414" height="44"/>
                                 <color key="backgroundColor" red="0.78823529410000004" green="0.14117647059999999" blue="0.31764705879999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1739,18 +1755,18 @@
             <objects>
                 <tableViewController id="hGb-1k-zG5" customClass="SideBarController" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" id="3JI-O2-u1D">
-                        <rect key="frame" x="0.0" y="0.0" width="120" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="anM-Ny-BXk" customClass="sideCell" customModule="Molocate" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="120" height="91"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="91"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="anM-Ny-BXk" id="E3e-QF-pdg">
-                                    <rect key="frame" x="0.0" y="0.0" width="120" height="90"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
                                             <rect key="frame" x="8" y="52" width="104" height="30"/>
                                             <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
