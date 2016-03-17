@@ -85,7 +85,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             do {
                 
                 let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
+               // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                 
                 // create post request
                 let url = NSURL(string: "http://molocate.elasticbeanstalk.com/api-token-auth/")!
@@ -119,6 +119,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         if(dictionary.objectForKey("token") != nil){
                             userToken = result["token"] as? String
                             Molocate.getCurrentUser({ (data, response, error) -> () in
+                                
                             })
                             self.performSegueWithIdentifier("login", sender: self)
                             

@@ -91,6 +91,7 @@
 		C6F9B5CA1C80DDF400C7E9FC /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9B5C91C80DDF400C7E9FC /* NotificationsViewController.swift */; };
 		C6F9F5511C12574500E62856 /* capturePreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9F5501C12574500E62856 /* capturePreviewController.swift */; };
 		C6FA823C1C02397D0099D2C8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6FA823B1C02397D0099D2C8 /* AVFoundation.framework */; };
+		E37D486D1C9B11DB00587406 /* profilepic.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D486C1C9B11DB00587406 /* profilepic.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -202,6 +203,7 @@
 		C6F9B5C91C80DDF400C7E9FC /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		C6F9F5501C12574500E62856 /* capturePreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = capturePreviewController.swift; sourceTree = "<group>"; };
 		C6FA823B1C02397D0099D2C8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E37D486C1C9B11DB00587406 /* profilepic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profilepic.png; sourceTree = "<group>"; };
 		E98CE71F35380A6A5DF16FFF /* Pods_Molocate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Molocate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -383,6 +385,7 @@
 				38F770FE1C95028E0079FACD /* sound.png */,
 				C6C5DA511C9528E600DC16EF /* technology3.png */,
 				C650C9C61C87EAB80067275B /* comment2.png */,
+				E37D486C1C9B11DB00587406 /* profilepic.png */,
 				C6C5DA571C952C1B00DC16EF /* shapes.png */,
 				C6E074301C8D356F00C79299 /* balloon.png */,
 				C6C5DA531C95297300DC16EF /* three.png */,
@@ -598,6 +601,7 @@
 				C6C5DA541C95297300DC16EF /* three.png in Resources */,
 				C6C5DA4C1C951B6F00DC16EF /* leftarrow.png in Resources */,
 				C6E074361C8D356F00C79299 /* balloon.png in Resources */,
+				E37D486D1C9B11DB00587406 /* profilepic.png in Resources */,
 				38F770FF1C95028E0079FACD /* explore.png in Resources */,
 				C6F7B26D1C1351BB0062E408 /* Tagged.xib in Resources */,
 				C650C9C71C87EAB80067275B /* comment2.png in Resources */,

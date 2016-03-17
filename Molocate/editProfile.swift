@@ -33,7 +33,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     @IBOutlet var toolBar: UIToolbar!
     
     let screenSize: CGRect = UIScreen.mainScreen().bounds
-   
+    
     var name : UILabel!
     var mail : UILabel!
     var gender : UILabel!
@@ -49,20 +49,22 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     var saveButton : UIButton!
     var password : UIButton!
     var changePhoto : UIButton!
-    
+    var datepicker: UIDatePicker!
+    var user: User!
     
     let imagePicker = UIImagePickerController()
     
     
     @IBAction func back(sender: AnyObject) {
-         self.performSegueWithIdentifier("goBackProfile", sender: self)
+        self.performSegueWithIdentifier("goBackProfile", sender: self)
     }
     
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        user = currentUser
+      
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
         
@@ -75,35 +77,34 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         
         let scr = screenHeight - 60
         
-        let datepicker = UIDatePicker(frame:CGRectMake(screenWidth / 3 + 5  , 60 + (scr * (60 / 120)), screenWidth - (screenWidth / 3 - 10)     , (scr * 20) / 120 ))
+        datepicker = UIDatePicker(frame:CGRectMake(screenWidth / 3 + 5  , 60 + (scr * (60 / 120)), screenWidth - (screenWidth / 3 - 10)     , (scr * 20) / 120 ))
         
         datepicker.locale = NSLocale(localeIdentifier: "tr_TR")
         datepicker.datePickerMode = UIDatePickerMode.Date
         datepicker.tintColor = UIColor.whiteColor()
         
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd MMM yyyy"
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         datepicker.setValue(UIColor.blackColor(), forKeyPath: "textColor")
         
+        datepicker.setDate( dateFormatter.dateFromString(user.birthday)!, animated: true)
         //date pickerdan string al, max min value ata
         let selectedDate = dateFormatter.stringFromDate(datepicker.date)
         print(selectedDate)
         datepicker.transform = CGAffineTransformMakeScale(0.8 , 0.9 )
         //datepicker.transform = CGAffineTransformMakeScale(0. , 1)
         self.view.addSubview(datepicker)
-        
-        
-        //datepicker.frame = CGRectMake(screenWidth / 3   , 60 + (scr * (62 / 120)), screenWidth / 2 , (scr * 6) / 120)
-        // datepicker.transform = CGAffineTransformMakeScale(0.7, 0.7)
-        
-        
         addlines()
+        
         photo = UIImageView()
-        //ppyi ata
-       // let image: UIImage = UIImage(named: "elmander.jpg")!
-        photo = UIImageView()
-        photo.downloadedFrom(url: currentUser.profilePic, contentMode: UIViewContentMode.ScaleToFill)
-
+        print(currentUser.profilePic.absoluteString)
+        if(user.profilePic.absoluteString != ""){
+            let data = NSData(contentsOfURL: currentUser.profilePic)
+            photo.image = UIImage(data: data!)!
+        }else{
+            photo.image = UIImage(named: "profilepic.png")!
+        }
+        
         photo!.frame = CGRectMake(10 , 60 + (scr * 2) / 120 , (scr * 26) / 120 , (scr * 26) / 120)
         self.view.addSubview(photo!)
         
@@ -112,7 +113,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         mailText.borderStyle = .RoundedRect
         mailText.textColor = UIColor.blackColor()
         mailText.keyboardType = .EmailAddress
-        mailText.text = currentUser.email
+        mailText.text = user.email
         view.addSubview(mailText)
         
         name = UILabel()
@@ -127,7 +128,8 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         nameText.borderStyle = .RoundedRect
         nameText.textColor = UIColor.blackColor()
         nameText.keyboardType = .Default
-        nameText.text = currentUser.first_name
+        user.printUser()
+        nameText.text = user.first_name
         view.addSubview(nameText)
         
         surnameText = UITextField()
@@ -135,7 +137,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         surnameText.borderStyle = .RoundedRect
         surnameText.textColor = UIColor.blackColor()
         surnameText.keyboardType = .EmailAddress
-        surnameText.text = currentUser.last_name
+        surnameText.text = user.last_name
         view.addSubview(surnameText)
         
         mail = UILabel()
@@ -165,8 +167,13 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         var b : CGFloat = 60 + (scr * (55 / 120))
         switchDemo.center.y = b
         switchDemo.transform = CGAffineTransformMakeScale( screenHeight / 667 , screenHeight / 667 )
-        switchDemo.on = true
-        switchDemo.setOn(true, animated: false)
+        if(user.gender == "male"){
+            switchDemo.on = true
+            switchDemo.setOn(true, animated: false)}
+        else{
+            switchDemo.on = false
+            switchDemo.setOn(false, animated: false)
+        }
         switchDemo.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
         self.view.addSubview(switchDemo)
         
@@ -228,6 +235,29 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     
     func buttonAction(sender:UIButton!)
     {
+        user.first_name = nameText.text!
+        user.last_name = surnameText.text!
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        user.birthday = dateFormatter.stringFromDate( datepicker.date)
+        user.printUser()
+       
+        currentUser = user
+        currentUser.printUser()
+        
+     
+        let image =  UIImagePNGRepresentation(photo.image!)
+        
+        Molocate.uploadProfilePhoto(image!) { (data, response, error) -> () in
+            print(data)
+            currentUser.profilePic = NSURL(string: data!)!
+        }
+        
+        Molocate.EditUser { (data, response, error) -> () in
+            
+        }
         print("Button tapped")
     }
     func changePassword(sender:UIButton!)
@@ -240,7 +270,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
         
-
+        
         
         print("şifre değiştirecek")
         
@@ -261,6 +291,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!) {
         let selectedImage : UIImage = image
         photo.image=selectedImage
+        print("new image")
         self.dismissViewControllerAnimated(true, completion: nil)
         
     }
@@ -280,11 +311,13 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
             print("on")
             self.erkek.alpha = 1
             self.kadın.alpha = 0.5
+            user.gender = "male"
         }
         else{
             print("off")
             self.erkek.alpha = 0.5
             self.kadın.alpha = 1
+            user.gender = "female"
         }
     }
     
