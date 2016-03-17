@@ -12,6 +12,8 @@ import AVKit
 
 
 
+//backende : fun, food, travel , makeup, fashion, sport, event, beauty, university olarak gönderilecek
+
 class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var categ:String!
     @IBOutlet var toolBar: UIToolbar!

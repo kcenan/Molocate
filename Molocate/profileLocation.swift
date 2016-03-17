@@ -12,6 +12,7 @@ class profileLocation: UIViewController {
 
     @IBOutlet var tableView: UITableView!
     
+    @IBOutlet var videoCount: UILabel!
 
     @IBAction func backButton(sender: AnyObject) {
         self.willMoveToParentViewController(nil)
@@ -39,6 +40,8 @@ class profileLocation: UIViewController {
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
         
+        //videocounta mekanda çekilen video toplamı yazacak
+        
        
     }
 
@@ -47,8 +50,8 @@ class profileLocation: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let rowHeight : CGFloat = 108 + screenSize.width
-        return rowHeight
+        
+        return screenSize.width + 138
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return players.count

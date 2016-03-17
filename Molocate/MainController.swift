@@ -46,6 +46,9 @@ import CoreLocation
 //    }
 //}
 
+
+
+//video caption ve süre eklenecek, report send edilecek
 var sideClicked = false
 var profileOn = 0
 var category = "All"

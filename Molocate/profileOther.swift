@@ -9,7 +9,7 @@
 import UIKit
 
 
-
+   //post sayısı ve taglenen toplam video sayısı eklenecek(çağatay koymadıysa eklet)
 
 
 
@@ -278,6 +278,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             cell.nameOption.textAlignment = .Center
             cell.nameOption.textColor = UIColor.blackColor()
             cell.arrow.hidden = true
+            
             cell.cancelLabel.hidden = false
             
             
@@ -295,7 +296,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         }
         
         cell.nameOption.text = names[indexPath.row]
-        cell.backgroundColor = swiftColor3
+        cell.backgroundColor = UIColor.whiteColor()
         return cell
         
     }

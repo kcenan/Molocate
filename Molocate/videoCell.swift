@@ -24,6 +24,7 @@ class videoCell: UITableViewCell {
     var likeCount : UILabel!
     var commentCount : UILabel!
     var videoComment : UILabel!
+    var videoTime : UILabel!
     
     var myLabel3: UILabel!
     
@@ -58,8 +59,9 @@ class videoCell: UITableViewCell {
         Username.frame = CGRectMake(59 , 5, screenSize.width - 100, 22)
         Username.titleLabel?.sizeToFit()
         Username.setTitleColor(swiftColor, forState: .Normal)
-        Username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        Username.contentHorizontalAlignment = .Left
         Username.setTitle("kcenan", forState: .Normal)
+        Username.titleLabel?.font = UIFont(name: "Lato-Light", size: 16)
         //Username.addTarget(self, action: "pressedUsername:", forControlEvents:UIControlEvents.TouchUpInside)
         contentView.addSubview(Username)
         
@@ -67,18 +69,30 @@ class videoCell: UITableViewCell {
         placeName.frame = CGRectMake(59 , 27, screenSize.width - 100, 22)
         placeName.setTitleColor(swiftColor2, forState: .Normal)
         placeName.titleLabel?.sizeToFit()
-        placeName.titleLabel?.textAlignment = .Left
+        placeName.contentHorizontalAlignment = .Left
         placeName.setTitle("koç university", forState: .Normal)
+        placeName.titleLabel?.font = UIFont(name: "Lato-Regular", size: 16)
         contentView.addSubview(placeName)
         
         videoComment = UILabel()
-        videoComment.frame = CGRectMake( 5 , 59 + screenSize.width , 30 , screenSize.width - 10)
+        videoComment.frame = CGRectMake( 10 , 59 + screenSize.width , screenSize.width - 50 , 50)
         //yazı ortalama ekle
-        videoComment.text = "Molocate süper gelsenize @aturker "
+        videoComment.font = UIFont(name: "Lato-Light", size: 14)
         videoComment.textAlignment = .Left
+        
         videoComment.textColor = UIColor.blackColor()
-        videoComment.sizeToFit()
+        //videoComment.sizeToFit()
         contentView.addSubview(videoComment)
+        
+        videoTime = UILabel()
+        videoTime.frame = CGRectMake( screenSize.width - 30  , 59 + screenSize.width , 20 , 20)
+        //yazı ortalama ekle
+        videoTime.text = "2s"
+        videoTime.font = UIFont(name: "Lato-Light", size: 14)
+        videoTime.textAlignment = .Right
+        videoTime.textColor = UIColor.blackColor()
+        videoTime.sizeToFit()
+        contentView.addSubview(videoTime)
         
         followButton = UIButton()
         followButton.frame = CGRectMake(screenSize.width - 41 , 9 , 36 , 36)
