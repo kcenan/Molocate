@@ -12,6 +12,7 @@ class commentCell: UITableViewCell {
 
     var screenSize = UIScreen.mainScreen().bounds
     
+    @IBOutlet weak var deneme: UILabel!
       var commentUser: UIButton!
       var profileImage:  UIButton!
     

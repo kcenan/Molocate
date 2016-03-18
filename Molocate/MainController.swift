@@ -410,6 +410,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag
+        let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+        controller.view.frame = self.view.bounds;
+        controller.willMoveToParentViewController(self)
+        self.view.addSubview(controller.view)
+        self.addChildViewController(controller)
+        controller.didMoveToParentViewController(self)
+        
         print("comment e basıldı at index path: \(buttonRow)")
         
     }

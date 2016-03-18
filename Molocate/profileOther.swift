@@ -71,15 +71,14 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     }
     
     @IBAction func followersButton(sender: AnyObject) {
+        follewersclicked = true
         let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
-        Molocate.getFollowers(user.username) { (data, response, error, count, next, previous) -> () in
-            
-        }
+       
         
         
     }
@@ -97,15 +96,14 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         scrollView.setContentOffset(b.origin, animated: true)
     }
     @IBAction func followingsButton(sender: AnyObject) {
+        follewersclicked = false
         let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
-        Molocate.getFollowings(user.username) { (data, response, error, count, next, previous) -> () in
-            
-        }
+      
         
     }
     

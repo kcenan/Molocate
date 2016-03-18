@@ -8,15 +8,18 @@
 
 import UIKit
 
+var follewersclicked: Bool = true
+
 class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     
     
+    @IBOutlet weak var TitleLabel: UILabel!
     
     
     @IBOutlet var toolBar: UINavigationBar!
     
-    @IBOutlet var titleToolbar: UILabel!
+
     
     var users = [User]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
@@ -37,13 +40,28 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         self.myTable.dataSource    =   self
         self.view.addSubview(myTable)
         self.myTable.frame         =   CGRectMake(0, 60, self.screenSize.width, self.screenSize.height-60);
-        Molocate.getFollowers(currentUser.username) { (data, response, error, count, next, previous) -> () in
+        if(follewersclicked){
+            self.TitleLabel.text = "Followers"
+            Molocate.getFollowers(currentUser.username) { (data, response, error, count, next, previous) -> () in
             
-            for thing in data{
+                for thing in data{
                 self.users.append(thing)
-            }
-             dispatch_async(dispatch_get_main_queue()){
-                self.myTable.reloadData()
+                }
+                dispatch_async(dispatch_get_main_queue()){
+                    self.myTable.reloadData()
+                }
+            
+        }}else{
+                self.TitleLabel.text = "Followings"
+            Molocate.getFollowings(currentUser.username) { (data, response, error, count, next, previous) -> () in
+                
+                for thing in data{
+                    self.users.append(thing)
+                }
+                dispatch_async(dispatch_get_main_queue()){
+                    self.myTable.reloadData()
+                }
+                
             }
             
         }

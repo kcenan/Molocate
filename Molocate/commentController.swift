@@ -10,15 +10,21 @@ import UIKit
 
 class commentController: UIViewController,UITableViewDelegate , UITableViewDataSource {
 
+    
+    @IBAction func backButton(sender: AnyObject) {
+        self.willMoveToParentViewController(nil)
+        self.view.removeFromSuperview()
+        
+        self.removeFromParentViewController()
+    }
     @IBOutlet var toolBar: UIToolbar!
     
     @IBOutlet var tableView: UITableView!
     
   var players = ["Hamza Hamzaoğlu","Jem Paul Karacan", "Umut Bulut", "Sabri Sarıoğlu", "Ceyhun Gülselam"]
     
-    @IBAction func back(sender: AnyObject) {
-        
-    }
+
+   
     override func viewDidLoad() {
         super.viewDidLoad()
 
