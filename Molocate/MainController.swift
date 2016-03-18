@@ -279,8 +279,10 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         let index = indexPath.row
         let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
+
         cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
-            , caption: videoArray[index].caption)
+            , caption: videoArray[index].caption, profilePic:  videoArray[index].userpic
+        )
         cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)

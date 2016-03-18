@@ -18,6 +18,7 @@ struct videoInf{
     var comments = [String]()
     var isLiked: Int = 0
     var isFollowing: Int = 0
+    var userpic: NSURL = NSURL()
 }
 
 var nextU:NSURL!
@@ -85,6 +86,11 @@ public class Molocate {
         
     }
     
+    class func getDataFromUrl(url:NSURL, completion: ((data: NSData?, response: NSURLResponse?, error: NSError? ) -> Void)) {
+        NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+            completion(data: data, response: response, error: error)
+            }.resume()
+    }
     
     class func unfollow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
         let url = NSURL(string: baseUrl + "relation/api/unfollow/?username=" + (username as String))!
@@ -263,6 +269,7 @@ public class Molocate {
                 for item in videos {
                     //print(item)
                     var videoStr = videoInf()
+                    
                     videoStr.id = item["video_id"] as! String
                     videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
                     videoStr.username = item["owner_user"]!!["username"] as! String
@@ -275,6 +282,7 @@ public class Molocate {
                     videoStr.isLiked = item["is_liked"] as! Int
                     let jsonObject = item["owner_user"]
                     videoStr.isFollowing = jsonObject!!["is_following"] as! Int
+                    videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
                     videoArray.append(videoStr)
                 }
                 completionHandler(data: videoArray, response: response, error: nsError)
@@ -439,8 +447,7 @@ public class Molocate {
         
         do{
             
-            let Body = ["username": currentUser.username,
-                        "profile_pic": currentUser.profilePic.absoluteString,
+            let Body = ["profile_pic": currentUser.profilePic.absoluteString,
                         "first_name": currentUser.first_name,
                         "last_name": currentUser.last_name,
                         "gender": currentUser.gender,

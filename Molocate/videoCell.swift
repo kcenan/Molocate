@@ -51,7 +51,8 @@ class videoCell: UITableViewCell {
         profilePhoto = UIButton()
         profilePhoto.frame = CGRectMake(10, 5, 44, 44)
         //photo ata
-        let image = UIImage(named: "elmander.jpg")! as UIImage
+        
+        let image = UIImage(named: "profilepic.png")! as UIImage
         profilePhoto.setBackgroundImage(image, forState: UIControlState.Normal)
         contentView.addSubview(profilePhoto)
         
@@ -148,7 +149,7 @@ class videoCell: UITableViewCell {
         
     }
     
-    func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String){
+    func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String, profilePic:NSURL){
         self.Username.tag = row
         self.Username.setTitle(username, forState: .Normal)
         self.placeName.tag = row
@@ -162,6 +163,18 @@ class videoCell: UITableViewCell {
         self.commentCount.text = "\(commentCount)"
         self.reportButton.tag = row
         self.videoComment.text = caption
+        print(profilePic.absoluteString)
+        if(profilePic.absoluteString != ""){
+            Molocate.getDataFromUrl(profilePic, completion: { (data, response, error) -> Void in
+                dispatch_async(dispatch_get_main_queue()){
+                    let image = UIImage(data: data!)!
+                    self.profilePhoto.setBackgroundImage(image, forState: UIControlState.Normal)
+                    
+                }
+            })
+            //photo.image = UIImage(data: data!)!
+        }
+       
     }
     
     

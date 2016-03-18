@@ -63,6 +63,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         user = currentUser
       
         let screenWidth = screenSize.width
@@ -97,10 +98,17 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         addlines()
         
         photo = UIImageView()
-        print(currentUser.profilePic.absoluteString)
+        //print(currentUser.profilePic.absoluteString)
         if(user.profilePic.absoluteString != ""){
-            let data = NSData(contentsOfURL: currentUser.profilePic)
-            photo.image = UIImage(data: data!)!
+            photo.image = UIImage(named: "profilepic.png")!
+            
+            Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
+                dispatch_async(dispatch_get_main_queue()){
+                    self.photo.image = UIImage(data: data!)!
+                    
+                }
+            })
+            //photo.image = UIImage(data: data!)!
         }else{
             photo.image = UIImage(named: "profilepic.png")!
         }
