@@ -272,11 +272,11 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         }else{
             cell.likeButton.backgroundColor = UIColor.whiteColor()
         }
-        cell.likeCount.text = "\(videoArray[indexPath.row].likeCount)"
+        cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
         cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
         cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+        cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
 
         
         dispatch_async(dispatch_get_main_queue()){
@@ -359,6 +359,15 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             print(data)
         }
     }
+    
+    func pressedLikeCount(sender: UIButton) {
+        let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
+        controller.view.frame = self.view.bounds;
+        controller.willMoveToParentViewController(self)
+        self.view.addSubview(controller.view)
+        self.addChildViewController(controller)
+        controller.didMoveToParentViewController(self)
+    }
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
         print("like a basıldı at index path: \(buttonRow) ")
@@ -402,6 +411,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag
         print("comment e basıldı at index path: \(buttonRow)")
+        
     }
     
     

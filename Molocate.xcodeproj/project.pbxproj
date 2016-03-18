@@ -32,6 +32,8 @@
 		C61FDAB31BFBD332007B940E /* ExploreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C61FDAB21BFBD332007B940E /* ExploreViewController.xib */; };
 		C61FDAB51BFBD393007B940E /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C61FDAB41BFBD393007B940E /* CameraViewController.xib */; };
 		C61FDAB71BFBD3A9007B940E /* FollowingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C61FDAB61BFBD3A9007B940E /* FollowingViewController.xib */; };
+		C638AFF31C9C7E74003085E8 /* likeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C638AFF21C9C7E74003085E8 /* likeVideo.swift */; };
+		C638AFF71C9C80B3003085E8 /* likeVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C638AFF61C9C80B3003085E8 /* likeVideoCell.swift */; };
 		C63D1F1C1C1FA20D003B2CC1 /* SignUpAdvance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63D1F1B1C1FA20D003B2CC1 /* SignUpAdvance.swift */; };
 		C63FBD071BF3E5B900DBB34C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63FBD061BF3E5B900DBB34C /* AppDelegate.swift */; };
 		C63FBD091BF3E5B900DBB34C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63FBD081BF3E5B900DBB34C /* ViewController.swift */; };
@@ -138,6 +140,8 @@
 		C61FDAB21BFBD332007B940E /* ExploreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreViewController.xib; sourceTree = "<group>"; };
 		C61FDAB41BFBD393007B940E /* CameraViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
 		C61FDAB61BFBD3A9007B940E /* FollowingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowingViewController.xib; sourceTree = "<group>"; };
+		C638AFF21C9C7E74003085E8 /* likeVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = likeVideo.swift; sourceTree = "<group>"; };
+		C638AFF61C9C80B3003085E8 /* likeVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = likeVideoCell.swift; sourceTree = "<group>"; };
 		C63D1F1B1C1FA20D003B2CC1 /* SignUpAdvance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpAdvance.swift; sourceTree = "<group>"; };
 		C63FBD031BF3E5B800DBB34C /* Molocate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Molocate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C63FBD061BF3E5B900DBB34C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -271,6 +275,7 @@
 		3871AAA11C947F9E00DDD83E /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				C638AFF61C9C80B3003085E8 /* likeVideoCell.swift */,
 				3871AAA21C9488BA00DDD83E /* sideCell.swift */,
 				C689562F1C50441C00D391F2 /* notificationCell.swift */,
 				C68872851C8CED2800BDBE00 /* optionCell.swift */,
@@ -331,6 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				C61023091C19FDCA00E9CA73 /* Main.storyboard */,
+				C638AFF21C9C7E74003085E8 /* likeVideo.swift */,
 				C69DB1BE1C99079D0042DA03 /* tagComment.swift */,
 				C63FBD121BF3E5B900DBB34C /* Info.plist */,
 				C64B601D1C81D6A500E510DC /* Mole.swift */,
@@ -685,6 +691,7 @@
 				C68872861C8CED2800BDBE00 /* optionCell.swift in Sources */,
 				C63FBD091BF3E5B900DBB34C /* ViewController.swift in Sources */,
 				C61023161C1B407600E9CA73 /* Followers.swift in Sources */,
+				C638AFF31C9C7E74003085E8 /* likeVideo.swift in Sources */,
 				388173F51C97AACB0064EBB5 /* commentController.swift in Sources */,
 				C6B7C9EB1C7BE7EF005607EC /* profileLocation.swift in Sources */,
 				C68956301C50441C00D391F2 /* notificationCell.swift in Sources */,
@@ -709,6 +716,7 @@
 				C6F9B5C81C80DD9300C7E9FC /* HomePageViewController.swift in Sources */,
 				C63FBD071BF3E5B900DBB34C /* AppDelegate.swift in Sources */,
 				C69DB1BF1C99079D0042DA03 /* tagComment.swift in Sources */,
+				C638AFF71C9C80B3003085E8 /* likeVideoCell.swift in Sources */,
 				C6D0CDF31C44200F006AAFF0 /* TableViewCellFollowerFollowing.swift in Sources */,
 				3871AAA31C9488BA00DDD83E /* sideCell.swift in Sources */,
 				C61FDAB11BFBD16D007B940E /* FollowingViewController.swift in Sources */,

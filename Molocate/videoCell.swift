@@ -21,7 +21,7 @@ class videoCell: UITableViewCell {
     var commentButton : UIButton!
     var likeButton : UIButton!
     var profilePhoto : UIButton!
-    var likeCount : UILabel!
+    var likeCount : UIButton!
     var commentCount : UILabel!
     var videoComment : UILabel!
     var videoTime : UILabel!
@@ -111,13 +111,17 @@ class videoCell: UITableViewCell {
         //likeButton.setTitle("like", forState: .Normal)
         contentView.addSubview(likeButton)
         
-        likeCount = UILabel()
+        
+        likeCount = UIButton()
         likeCount.frame = CGRectMake( 43 , 89 + screenSize.width , 44 , 44)
-        //yazı ortalama ekle
-        likeCount.text = "0"
-        likeCount.textAlignment = .Center
-        likeCount.textColor = swiftColor2
+        likeCount.setTitle("0", forState: .Normal)
+        likeCount.setTitleColor(swiftColor, forState: .Normal)
+        likeButton.setBackgroundImage(likeImage, forState: UIControlState.Normal)
+        // likeButton.setTitleColor(swiftColor, forState: .Normal)
+        //likeButton.setTitle("like", forState: .Normal)
         contentView.addSubview(likeCount)
+        
+       
         
         commentButton = UIButton()
         commentButton.frame = CGRectMake( 93 , 93 + screenSize.width , 36 , 36)
@@ -158,7 +162,7 @@ class videoCell: UITableViewCell {
         self.profilePhoto.tag = row
         self.followButton.tag = row
         self.likeButton.tag = row
-        self.likeCount.text = "\(likeCount)"
+        self.likeCount.setTitle("\(likeCount)", forState: .Normal)
         self.commentButton.tag = row
         self.commentCount.text = "\(commentCount)"
         self.reportButton.tag = row
