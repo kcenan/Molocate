@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -2095,8 +2095,15 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Piz-ZH-HgR"/>
-                                    <barButtonItem systemItem="search" id="fzf-6d-tEB">
-                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <barButtonItem style="plain" id="bsC-2W-JFR">
+                                        <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Ara" textAlignment="natural" minimumFontSize="17" id="eLl-tY-Kjx">
+                                            <rect key="frame" x="102" y="7" width="171" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="0.92156862750000001" green="0.1764705882" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="sko-sI-etz"/>
                                     <barButtonItem image="technology3.png" id="efA-1g-Rwq">
@@ -2116,19 +2123,41 @@
                                     <outlet property="delegate" destination="pEW-a6-bHt" id="hie-Gu-0wl"/>
                                 </connections>
                             </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S2W-SU-W1a" userLabel="venueTable">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="nRD-f7-FQk">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nRD-f7-FQk" id="apf-PQ-g2y">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="pEW-a6-bHt" id="ZSY-yq-DAf"/>
+                                    <outlet property="delegate" destination="pEW-a6-bHt" id="XBq-5W-1t8"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Mg2-PE-dEV" secondAttribute="trailing" id="0f4-8h-wdu"/>
+                            <constraint firstItem="S2W-SU-W1a" firstAttribute="leading" secondItem="5sS-Sg-M13" secondAttribute="leading" id="8Q0-vS-uS4"/>
                             <constraint firstItem="Mg2-PE-dEV" firstAttribute="leading" secondItem="5sS-Sg-M13" secondAttribute="leading" id="IZu-8c-rOg"/>
                             <constraint firstItem="2MN-og-N7r" firstAttribute="leading" secondItem="5sS-Sg-M13" secondAttribute="leading" id="LDV-rN-bGd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gsm-my-ylM" secondAttribute="trailing" id="Q7T-A4-ROe"/>
                             <constraint firstItem="Mg2-PE-dEV" firstAttribute="top" secondItem="2MN-og-N7r" secondAttribute="bottom" id="Qiy-h9-Ws2"/>
+                            <constraint firstItem="S2W-SU-W1a" firstAttribute="top" secondItem="gsm-my-ylM" secondAttribute="bottom" id="Tb3-ar-chM"/>
+                            <constraint firstAttribute="trailing" secondItem="S2W-SU-W1a" secondAttribute="trailing" id="lk7-DK-NhO"/>
                             <constraint firstAttribute="trailing" secondItem="2MN-og-N7r" secondAttribute="trailing" id="mE7-5f-c51"/>
                             <constraint firstAttribute="bottom" secondItem="Mg2-PE-dEV" secondAttribute="bottom" id="paf-gd-Lle"/>
                             <constraint firstItem="2MN-og-N7r" firstAttribute="top" secondItem="gsm-my-ylM" secondAttribute="bottom" id="prl-Wy-3tS"/>
                             <constraint firstItem="gsm-my-ylM" firstAttribute="leading" secondItem="5sS-Sg-M13" secondAttribute="leadingMargin" id="s9b-cC-R3u"/>
                             <constraint firstItem="gsm-my-ylM" firstAttribute="top" secondItem="u20-0v-vV5" secondAttribute="bottom" constant="16" id="u0v-mb-ofp"/>
+                            <constraint firstAttribute="bottom" secondItem="S2W-SU-W1a" secondAttribute="bottom" id="wLK-j1-BDw"/>
                             <constraint firstAttribute="trailing" secondItem="gsm-my-ylM" secondAttribute="trailing" id="x7p-bW-3ls"/>
                         </constraints>
                     </view>
@@ -2136,9 +2165,12 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="cameraButton" destination="efA-1g-Rwq" id="C85-Pb-UDH"/>
                         <outlet property="collectionView" destination="2MN-og-N7r" id="c1x-31-Y3o"/>
+                        <outlet property="searchText" destination="eLl-tY-Kjx" id="9pc-ci-tAn"/>
                         <outlet property="tableView" destination="Mg2-PE-dEV" id="RhT-Bz-t2Q"/>
                         <outlet property="toolBar" destination="gsm-my-ylM" id="key-3w-i4A"/>
+                        <outlet property="venueTable" destination="S2W-SU-W1a" id="tim-aL-PLM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yCd-cF-lBN" userLabel="First Responder" sceneMemberID="firstResponder"/>

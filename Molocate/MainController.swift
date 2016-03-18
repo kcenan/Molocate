@@ -1,50 +1,8 @@
 import UIKit
 import Foundation
 import CoreLocation
-//import AVFoundation
-//import AVKit
-//import MobileCoreServices
-//import ObjectiveC
-
-//struct Videos{
-//    var Asset : AVURLAsset
-//    var playerItem: AVPlayerItem
-//    var player: AVPlayer
-//    var layer: AVPlayerLayer
-//
-//    init(){
-//        self.Asset = AVURLAsset(URL: NSURL(string: "")!)
-//        self.playerItem = AVPlayerItem(asset: self.Asset);
-//        self.player = AVPlayer(playerItem: self.playerItem);
-//        self.layer = AVPlayerLayer(player: self.player)
-//    }
-//
-//    init(url: String){
-//        self.Asset = AVURLAsset(URL: NSURL(string: url)!)
-//        self.playerItem = AVPlayerItem(asset: self.Asset);
-//        self.player = AVPlayer(playerItem: self.playerItem);
-//        self.layer = AVPlayerLayer(player: self.player)
-//
-//    }
-//
-//    func Play(){
-//        self.player.play()
-//    }
-//    func Pause(){
-//        self.player.pause()
-//    }
-//    func getLayer() -> AVPlayerLayer{
-//        return AVPlayerLayer(player: self.player)
-//    }
-//
-//    func isSet() -> Bool{
-//        if self.Asset.URL.absoluteString == "" {
-//            //print("false")
-//            return false
-//        }
-//        return true
-//    }
-//}
+import QuadratTouch
+import MapKit
 
 
 
@@ -56,20 +14,27 @@ let swiftColor = UIColor(netHex: 0xEB2B5D)
 let swiftColor2 = UIColor(netHex: 0xC92451)
 let swiftColor3 = UIColor(red: 249/255, green: 223/255, blue: 230/255, alpha: 1)
 
-class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate {
-    
+class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
+    var isSearching = false
     var locationManager: CLLocationManager!
     
+    @IBOutlet var venueTable: UITableView!
     var videoData:NSMutableData!
     var connection:NSURLConnection!
     var response:NSHTTPURLResponse!
     var pendingRequests:NSMutableArray!
     var player1:Player!
     var player2: Player!
+    var session: Session!
+    var location: CLLocation!
+    var venues: [JSONParameters]!
+    let distanceFormatter = MKDistanceFormatter()
+    var currentTask: Task?
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     
+    @IBOutlet var searchText: UITextField!
     
     @IBOutlet var collectionView: UICollectionView!
     
@@ -81,8 +46,12 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        session = Session.sharedSession()
+        session.logger = ConsoleLogger()
         
-        //self.tableView = UITableView()
+        venueTable.hidden = true
+        searchText.delegate = self
+       
         self.player1 = Player()
         self.player1.delegate = self
         self.player1.playbackLoops = true
@@ -105,7 +74,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        
+        locationManager.startUpdatingLocation()
+        location = locationManager.location
         self.view.backgroundColor = swiftColor
         
         if(choosedIndex != 3 && profileOn == 1){
@@ -216,8 +186,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
+    func tableView(atableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if atableView == tableView {
         var rowHeight:CGFloat = 0
         
         switch(choosedIndex)
@@ -239,21 +209,14 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             rowHeight = 44
             return rowHeight
         }
+        } else {
+            return 44
+        }
     }
     
     
-    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        //let videocell = cell as! videoCell
-        
-        //NSNotificationCenter.defaultCenter().removeObserver(videocell)
-        //        if(videocell.player.isSet()){
-        //            videocell.player.Pause()
-        //            videocell.player.layer.removeFromSuperlayer()
-        //
-        //            //videocell.player = Videos()
-        //            videocell.player.layer.removeFromSuperlayer()
-        //        }
+    func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if atableView == tableView{
         
         if( (indexPath.row%8 == 0)&&(nextU != nil)){
             
@@ -266,17 +229,28 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 }
                 
             })
+            }
+        }
+        else {
+            
         }
         
         
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(atableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if atableView == tableView {
         return videoArray.count
+        } else {
+            if let venues = self.venues {
+                return venues.count
+            }
+            return 0
+        }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
+    func tableView(atableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if atableView == tableView {
         let index = indexPath.row
         let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
 
@@ -328,6 +302,23 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         //            cell.player.Play()
         //        }
         return cell
+            
+        } else {
+            let cell = venueTable.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+            let venue = venues[indexPath.row]
+            if let venueLocation = venue["location"] as? JSONParameters {
+                var detailText = ""
+                if let distance = venueLocation["distance"] as? CLLocationDistance {
+                    detailText = distanceFormatter.stringFromDistance(distance)
+                }
+                if let address = venueLocation["address"] as? String {
+                    detailText = detailText +  " - " + address
+                }
+                cell.detailTextLabel?.text = detailText
+            }
+            cell.textLabel?.text = venue["name"] as? String
+            return cell
+        }
     }
     
     func pressedUsername(sender: UIButton) {
@@ -456,9 +447,18 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         }
     }
     
+    @IBOutlet var cameraButton: UIBarButtonItem!
     
     @IBAction func openCamera(sender: AnyObject) {
+        if isSearching != true {
         self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
+        } else {
+            self.cameraButton.image = UIImage(named: "technology3.png")
+            self.cameraButton.title = nil
+            self.isSearching = false
+            self.venueTable.layer.removeFromSuperlayer()
+            //self.searchText.resignFirstResponder()
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -512,5 +512,49 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     override func viewDidDisappear(animated: Bool) {
         //self.tableView.removeFromSuperview()
+//        if isSearching == true {
+//            self.cameraButton.image = UIImage(named: "technology3.png")
+//            self.cameraButton.title = nil
+//            self.isSearching = false
+//            self.venueTable.layer.removeFromSuperlayer()
+//            self.searchText.resignFirstResponder()
+//        }
     }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        isSearching = true
+        cameraButton.image = nil
+        cameraButton.title = "Cancel"
+        venueTable.hidden = false
+        self.view.layer.addSublayer(venueTable.layer)
+        
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
+    {
+        venueTable.hidden = false
+        let whitespaceCharacterSet = NSCharacterSet.whitespaceCharacterSet()
+        let strippedString = searchText.text!.stringByTrimmingCharactersInSet(whitespaceCharacterSet)
+        
+        if self.location == nil {
+            return true
+        }
+        
+        currentTask?.cancel()
+        var parameters = [Parameter.query:strippedString]
+        parameters += self.location.parameters()
+        currentTask = session.venues.search(parameters) {
+            (result) -> Void in
+            if let response = result.response {
+                self.venues = response["venues"] as? [JSONParameters]
+                //print(self.venues)
+                self.venueTable.reloadData()
+            }
+        }
+        currentTask?.start()
+        
+        
+        return true
+    }
+
 }
