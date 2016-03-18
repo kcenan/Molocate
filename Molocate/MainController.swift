@@ -371,34 +371,41 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
         print("like a basıldı at index path: \(buttonRow) ")
+        
+        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [NSIndexPath]()
+        indexes.append(indexpath)
+        
         if(videoArray[buttonRow].isLiked == 0){
             sender.highlighted = true
+            
+            self.videoArray[buttonRow].isLiked=1
+            self.videoArray[buttonRow].likeCount+=1
+            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+
             Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 print(data)
-                self.videoArray[buttonRow].likeCount+=1
-                self.videoArray[buttonRow].isLiked=1
-                let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-                var indexes = [NSIndexPath]()
-                indexes.append(indexpath)
-                self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+          
+              
             }
         }
         }else{
             sender.highlighted = false
-            Molocate.unLikeAVideo(videoArray[buttonRow].id, completionHandler: { (data, response, error) -> () in
+            
+            self.videoArray[buttonRow].isLiked=0
+            self.videoArray[buttonRow].likeCount-=1
+            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+          
+
+            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
-                    
-                    self.videoArray[buttonRow].likeCount-=1
-                    self.videoArray[buttonRow].isLiked=0
-                    let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-                    var indexes = [NSIndexPath]()
-                    indexes.append(indexpath)
-                    self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+                   
+                   
 
                 }
-            })
+            }
         }
     }
     func pressedComment(sender: UIButton) {

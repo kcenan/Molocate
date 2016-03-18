@@ -23,14 +23,5 @@ class sideCell: UITableViewCell {
     }
 
         
-//        label = UILabel()
-//        label.frame = CGRectMake( 0 ,0 , 20, 25)
-//        //yazı ortalama ekle
-//        label.textAlignment = .Left
-//        label.textColor = UIColor.blackColor()
-//        label.backgroundColor = UIColor.greenColor()
-//        label.text = "ddee"
-//        contentView.addSubview(label)
-
 
 }

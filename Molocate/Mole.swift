@@ -312,7 +312,7 @@ public class Molocate {
                 completionHandler(data: result["result"] as! String , response: response , error: nsError  )
             } catch{
                 completionHandler(data: "" , response: nil , error: nsError  )
-                print("Error:: in mole.unfollow()")
+                print("Error:: in mole.like()")
             }
             
         }
@@ -336,7 +336,7 @@ public class Molocate {
                 completionHandler(data: result["result"] as! String , response: response , error: nsError  )
             } catch{
                 completionHandler(data: "" , response: nil , error: nsError  )
-                print("Error:: in mole.unfollow()")
+                print("Error:: in mole.unlike()")
             }
             
         }

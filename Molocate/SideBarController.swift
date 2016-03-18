@@ -12,7 +12,7 @@ var choosedIndex = 100
 
 class SideBarController: UITableViewController {
 
-    var menuArray = ["Haber Kaynağı","Keşfet","Bildirimler","Profil"]
+    var menuArray = ["HABER KAYNAĞI","KEŞFET","BİLDİRİMLER","PROFİL"]
    var tableData: [String] = ["home.png", "explore.png", "sound.png","people.png"]
     let cellIdentifier = "cell"
     var attractionImages = [String]()
@@ -25,7 +25,7 @@ class SideBarController: UITableViewController {
         self.tableView.backgroundColor = swiftColor2
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        tableView.contentInset = UIEdgeInsetsMake(30, 0, 0, 0);
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
@@ -51,11 +51,11 @@ class SideBarController: UITableViewController {
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         var rowHeight:CGFloat = 0
         if indexPath.row == 0{
-        rowHeight = screenSize.height / 8 + 26
+        rowHeight = screenSize.height / 8 + 15
             return rowHeight
         }
         else{
-        rowHeight = screenSize.height/8 + 4
+        rowHeight = screenSize.height/8 + 15
             return rowHeight
         }
         
@@ -66,13 +66,13 @@ class SideBarController: UITableViewController {
        //let cell = sideCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cellIdentifier")
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! sideCell
         cell.label?.text = self.menuArray[indexPath.row]
-     
+        //cell.label.font = UIFont(name: "Lato-Light", size: 14)
        // var imageView = UIImageView(image: image!)
         cell.imageFrame.image = UIImage(named: tableData[indexPath.row])
         cell.label.textColor = UIColor.whiteColor()
         // Configure the cell...
         cell.backgroundColor = swiftColor2
-        cell.label.sizeToFit()
+        //cell.label.sizeToFit()
         return cell
     }
     

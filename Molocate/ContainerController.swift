@@ -18,7 +18,7 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
         
         
         dispatch_async(dispatch_get_main_queue()) {
-            self.scrollView.setContentOffset(CGPoint(x: self.view.frame.width*0.2, y: 0), animated: false)
+            self.scrollView.setContentOffset(CGPoint(x: self.view.frame.width*0.23, y: 0), animated: false)
             self.childViewControllers[1].viewDidLoad()
 
         }
@@ -46,7 +46,7 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
     }
     
     func closeSideBar(){
-        scrollView.setContentOffset(CGPoint(x: self.view.frame.width*0.2, y: 0), animated: true)
+        scrollView.setContentOffset(CGPoint(x: self.view.frame.width*0.23, y: 0), animated: true)
     }
     
     func openSideBar(){
@@ -55,7 +55,7 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
     }
     
     func closeSideBarFast(){
-        scrollView.setContentOffset(CGPoint(x: self.view.frame.width*0.2, y: 0), animated: false)
+        scrollView.setContentOffset(CGPoint(x: self.view.frame.width*0.23, y: 0), animated: false)
     }
     
     func goProfile(){
