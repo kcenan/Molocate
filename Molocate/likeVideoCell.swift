@@ -14,6 +14,7 @@ class likeVideoCell: UITableViewCell {
     @IBOutlet var username: UIButton!
    
     @IBOutlet var profileImage: UIButton!
+    @IBOutlet var followLike: UIButton!
    
     
     

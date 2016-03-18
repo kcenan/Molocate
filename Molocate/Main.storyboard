@@ -139,7 +139,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSu-xo-ceV">
-                                                    <rect key="frame" x="62" y="5" width="258" height="34"/>
+                                                    <rect key="frame" x="62" y="5" width="229" height="34"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="34" id="tTc-Nb-AHQ"/>
                                                     </constraints>
@@ -153,16 +153,33 @@
                                                     </constraints>
                                                     <state key="normal" backgroundImage="elmander.jpg"/>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7QM-Vp-Ha1">
+                                                    <rect key="frame" x="296" y="5" width="34" height="34"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="34" id="4mD-YA-PJR"/>
+                                                        <constraint firstAttribute="width" constant="34" id="6Gu-PC-ZMw"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button" backgroundImage="follow1.png"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="gHO-fW-rN8" firstAttribute="centerY" secondItem="13T-sa-khp" secondAttribute="centerY" id="0NQ-Oy-3fw"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="7QM-Vp-Ha1" secondAttribute="trailing" constant="5" id="8NQ-5J-FxJ"/>
                                                 <constraint firstItem="eSu-xo-ceV" firstAttribute="top" secondItem="gHO-fW-rN8" secondAttribute="top" id="NK4-Ek-QAZ"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="eSu-xo-ceV" secondAttribute="trailing" constant="15" id="UQL-9V-C2p"/>
+                                                <constraint firstItem="7QM-Vp-Ha1" firstAttribute="centerY" secondItem="13T-sa-khp" secondAttribute="centerY" id="X0c-oU-Fs2"/>
                                                 <constraint firstItem="gHO-fW-rN8" firstAttribute="leading" secondItem="13T-sa-khp" secondAttribute="leadingMargin" constant="5" id="bJ2-nH-rov"/>
                                                 <constraint firstItem="eSu-xo-ceV" firstAttribute="leading" secondItem="gHO-fW-rN8" secondAttribute="trailing" constant="15" id="bna-3K-myA"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="eSu-xo-ceV" secondAttribute="trailing" constant="44" id="vNx-Cb-0Cy"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="UQL-9V-C2p"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="followLike" destination="7QM-Vp-Ha1" id="U23-Tw-49e"/>
                                             <outlet property="profileImage" destination="gHO-fW-rN8" id="9lS-cu-7Tx"/>
                                             <outlet property="username" destination="eSu-xo-ceV" id="r5w-Q4-086"/>
                                         </connections>

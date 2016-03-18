@@ -51,6 +51,9 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         cell.username.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.profileImage.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
         
+        //burda follow ediyosa buttonu hidden etmesi lazım
+        cell.followLike.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+        
         return cell
         
         
@@ -65,6 +68,11 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
+    }
+    
+    func pressedFollow(sender: UIButton) {
+        print("pressedfollow")
+        
     }
     //
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
