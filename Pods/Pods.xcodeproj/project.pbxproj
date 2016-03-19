@@ -7,151 +7,186 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05B3FF18E8C9AB012017C019D66B2EE0 /* OauthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DEE07A27081C9B6A58BB671EF1AFEA /* OauthErrors.swift */; };
-		0A8E766FB709E12D561855B3FAC58D31 /* Lists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445DB7FFD1EB32B3CE5B15C22A34059B /* Lists.swift */; };
-		0C5EBD55FAFC6608068A4F113F9A3C04 /* VenueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBC4AB93F8A841B9749165052FE3357 /* VenueGroups.swift */; };
-		0F2E2711ED04A5EEA6A96F97BBE10164 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096B5B8B787FF8F0A6FC48A67B070AFF /* Photos.swift */; };
-		0F8CFA78C215D6B355BF9F9CEC9B7C43 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7AF2373EB56606D418EBD049781B32 /* Authorization.swift */; };
-		1120C97309AC7895B29553AE2080BFE8 /* Specials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3CEA80D2B5AA7D963FA60BCF6C8F25 /* Specials.swift */; };
-		12451C43716A301F0181E7A1058B0DC4 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = D594569BE2B35BC5864BFA922AC736A1 /* Events.swift */; };
-		12A3968754845250AF201E1B120103AA /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339C556D34569EE2230B4420D5ABA99E /* Session.swift */; };
-		14E7C1B9473068463B886584B2622CE7 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326D6C8E1AC625DA70B058DBE1B4EA2E /* Pages.swift */; };
-		21BD8D9C327F9D007F099DCAF07499A8 /* QuadratTouch-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F46CFE9C33A2DA57FAF1176122418 /* QuadratTouch-dummy.m */; };
-		2365EA6F68147B3341D0E80DB66604D1 /* Pods-Molocate-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9348FE820B2737FC8777065D06216BAD /* Pods-Molocate-dummy.m */; };
-		2502B40E074725FF5D26B63A57A70734 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B6FB22C29F210E080240A7699475F2 /* Result.swift */; };
-		2AC487E6A2393EC68F8833217A92D671 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D820BA2602BCBFDAEFA60A2883FB8F30 /* Foundation.framework */; };
-		3060EDB01DC65EF6DDB17DE9BE49C605 /* Authorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15853A8D5FB459483A32876C9243C327 /* Authorizer.swift */; };
-		32992EC88E56C6C3E16FAF651AB49109 /* PageUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990FAE58A54763F558A22CBAD3046DBA /* PageUpdates.swift */; };
-		3C45A80F1751D66CAF96EAF11DB3FC14 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886F0972445588DA2984B3910F673633 /* Users.swift */; };
-		4504448EE7940BAE461EBE1021FF7A71 /* Multi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD26F2988BC9A262183438F376A76F2 /* Multi.swift */; };
-		5111875555316DFFD6FD82BB21744268 /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682E8C57D9E21C4F4267BEB387B8D44 /* AuthorizationViewController.swift */; };
-		5D7D3F76022B034DE01951AF9DB25F89 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8A01BE44A2AFF507131971AED78EBC /* Configuration.swift */; };
-		6018BD494DBD4CDA225F46C098D04D59 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E85A054078B0822C09E4EAE713A382B /* Keychain.swift */; };
-		6B952EC13227E6C023E02B947E2F48F7 /* TouchAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DE5ED942CDEF0C4C5765427C3DCB /* TouchAuthorizer.swift */; };
-		7C042EA6CB9DE122B4C9AE048A3B9A0C /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5737AA9A468E11280B1C656FEDC1C0 /* Endpoint.swift */; };
-		83E8C535C8B729AE3038F652B4DD7BE4 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBDE3D5A7EB6FF8441ECD47F16C842D /* Settings.swift */; };
-		8482705872434CD5D87E852FB8D83A60 /* QuadratTouch.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E329A8A7626045D06DBDF08B7FC8EB /* QuadratTouch.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8613CDE22FD1B8944AD0BB5998A0D06F /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B04792CC81EADE624B41588C2B5CBF2 /* Tips.swift */; };
-		86EF99857B3D9049FBFC1714C2C304F6 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223F6804DF4AF5748078453D3B36AE7A /* Parameters.swift */; };
-		87971DEF289DFACC98F2FC30D98B5A15 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3041D6CC92EBE424669CC3C69B52F424 /* Request.swift */; };
-		8E378AFA686511E419E7E20FAB1C64F5 /* QuadratTouch-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 65F8D7B6FCA5B09EA662B11BFEE79197 /* QuadratTouch-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		91DA945FBD56F7E56E12299F5ECE4FCD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB0853BD8CE1AE8CF5FE525E44C538C /* SystemConfiguration.framework */; };
-		9BE29D40CB2B676DF18AABBDB2453A7A /* Pods-Molocate-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DFEDC9AD4C38AFE58F2F6DCD1DB5E0 /* Pods-Molocate-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9F137E99A1944BB35CB296066D471310 /* Venues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93380BBB17F6B12B3790A01B17D410D7 /* Venues.swift */; };
-		A35ADD84E8A00D65636665F2EA18621E /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE434C4C5C42E6210DAEA72B530058E6 /* Task.swift */; };
-		A5DB7186B73760586E9358386B94BAB6 /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99293C4C09B861A7F978C54C20CE8DB3 /* DataCache.swift */; };
-		AD90C80BB338762EF4A10D21BFC6F628 /* Updates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FC180037D3EB725FED6B796FCF24B5 /* Updates.swift */; };
-		B0A9371E496BC513D8A332374FAB5FEB /* NativeTouchAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD6A665622ADE389EA5512A5BEB16A2 /* NativeTouchAuthorizer.swift */; };
-		B6B13EEB45F6F217166D62F25FFA8EBB /* AuthorizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B1CE723D821C7094EB918FA4918437E /* AuthorizationViewController.xib */; };
-		D208970F640703AD7E44CD9EB246B0A8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258E4438DB1DF1ABAF970E61320B06DB /* Logger.swift */; };
-		D2F6FB53B6F9AB455CCA469E7B832F59 /* Checkins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978FDE1451BBC4C4D3FA9AFE822EB12F /* Checkins.swift */; };
-		D7A5F014090D791198A3F5FECC6E7A34 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B40C0CBA71380933C05661DBC08F8 /* NetworkActivityIndicatorController.swift */; };
-		FB3A4252DBF51E881401D22181B1F740 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D820BA2602BCBFDAEFA60A2883FB8F30 /* Foundation.framework */; };
+		0B7B50B0377C6E2FAAD3035978F8FAE9 /* RecordButton-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C0372D800EEE2345BD8FC5524D7F6E3 /* RecordButton-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D0488D27E758AD73F2333E5275B6048 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAE1B33188740B25D40CEDC08A929AF6 /* SystemConfiguration.framework */; };
+		0E23BD1051E15BD62A98FE81AEC812FB /* Pods-Molocate-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9348FE820B2737FC8777065D06216BAD /* Pods-Molocate-dummy.m */; };
+		126082457A35EDBB735508BACF878DA5 /* Checkins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3BF7F4C47A2ACA9D764B192E93D76 /* Checkins.swift */; };
+		12688969B39A0E4D0DE4BCA257F5F830 /* Pods-Molocate-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DFEDC9AD4C38AFE58F2F6DCD1DB5E0 /* Pods-Molocate-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18C1A89DB13C89E84DB7C0AAEB1E400E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FACA9CC9B826DA85CD1E3AD17763766 /* Foundation.framework */; };
+		1B35B071D237398CCA002335C58F95A4 /* Multi.swift in Sources */ = {isa = PBXBuildFile; fileRef = B94F178AA325E0C97B4292596A360CD3 /* Multi.swift */; };
+		1FF1F32D7190D82F6DC24BA51C633711 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB34C00129B87070FE80DB37D099D2D7 /* Authorization.swift */; };
+		2E92B9BF785641915B838BAFAC5D5F24 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41807C0F87E2D9F468A1B2F69C64587C /* Users.swift */; };
+		33E486CA65923168FC781A2B82C2F11E /* QuadratTouch-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E6D89AC4AD189B82DEE0E8E8DDA7A67D /* QuadratTouch-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D882E4953675B22263DF85F111EC134 /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C7E0EF2FCB308F8269C86684E7F3B8 /* Tips.swift */; };
+		45F75997E9B12FA3DB4D1AB348368B97 /* Lists.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83522D12574D66E6C19D080AA744386 /* Lists.swift */; };
+		5402F8AA0700B05504C284C6CC38CEC2 /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCFB11DCCBFF90641292C4BA68575C6 /* DataCache.swift */; };
+		57F6A704A2E75F8AA879429FFD95F9D0 /* QuadratTouch.h in Headers */ = {isa = PBXBuildFile; fileRef = C5A98532F453056D1773F8F4671BC509 /* QuadratTouch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5C1A796834559D823818833D1190CA79 /* AuthorizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D6FD4C7A54E24EDE34B96AB9EBACBD5 /* AuthorizationViewController.xib */; };
+		5E90BCD87C32D5E78DCAF4B6FF1D4766 /* Updates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8324EEE23D2F38199342078A893E0F1C /* Updates.swift */; };
+		61DA60DC13F4CE6E28C9707783599579 /* NativeTouchAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B38639D393D7E9A4373FD2D9EFC3CEA /* NativeTouchAuthorizer.swift */; };
+		686DBB54B88F1F379F6109BDF0458C7A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = B257A87623423DBAE19FD64281DF5A36 /* Result.swift */; };
+		6BCA15F787D183E38C2BA0B596924D4C /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67528FE9760998166F8BEF347C47E127 /* Task.swift */; };
+		73C9C9DAE9108B93D0A3EAC19ACD9FA2 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE77E593B885209ECA802B12948A70FD /* Pages.swift */; };
+		7603E15E095BCC503918BE9226036A8C /* PageUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B43A2961273A2CF3082E7862C294753 /* PageUpdates.swift */; };
+		806B8952A257E9C8AFFF05F473ED05B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FACA9CC9B826DA85CD1E3AD17763766 /* Foundation.framework */; };
+		853F02A1A38B4E6F58D032E979975DAC /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB8039B4E2D8270941B0481C408C78 /* Events.swift */; };
+		8731AD30B535E0CF64E719F25D83DA1E /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013FDBCF4745A2F5DB218ECDBDE8F6D6 /* AuthorizationViewController.swift */; };
+		8781CC55CF92A8AFBFD97587D4E54DB9 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B81918383DE0CEFD649FA6256D189D4 /* Keychain.swift */; };
+		890874A367FD274F4620F75EE9D0D3CC /* VenueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F294E5312B74D511A69F83C660DD51CB /* VenueGroups.swift */; };
+		8BD0465390D1EABFBE470AC6AF6F4C1A /* Specials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979E8BC6F31663FF47954A358EDAC0F4 /* Specials.swift */; };
+		8F721292DD3C6CEB3836C09FDEECCD70 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E369BEFD2CE3E686B79F929B56FE84 /* Parameters.swift */; };
+		92539FC8FBA76D57384D2D1F110A1714 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887FA5AD120102033C37FEC383EECB88 /* Endpoint.swift */; };
+		9487B909E66E9B781121DF3299D95E6B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F38B0005CE9202BCDC1038625D7F86 /* Settings.swift */; };
+		9EA436AAF3401D7499699B1F47ED6E73 /* QuadratTouch-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EB9ABEC4A12FA503718B7831BD0D0ADB /* QuadratTouch-dummy.m */; };
+		AEAD89E9C044633D3569586D56335829 /* Venues.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655163B07114CA6A46B294E46BB153A /* Venues.swift */; };
+		AF8E2E0FE5D7DD238AFEA0C351E9DCF0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C51563A8537190C45BF7B84469E6 /* UIKit.framework */; };
+		B0A84EE5224BC44EC1907F7AB62F5E11 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F076720B52F41634481A42DE3A4AE401 /* NetworkActivityIndicatorController.swift */; };
+		B9F86B0278686A286CDDD8F867FD31BC /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A63135AABEF316AF3C5AFFD7A561F35 /* Logger.swift */; };
+		BF58E21A43963B9431B11F3185E0A06B /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80840B0C3F27DA6C5A1AF77A237AD5B /* Session.swift */; };
+		CE5D535CD814CF98116A8742B974E265 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95E0AAE4E8E00CDC1760E26FC447197 /* Request.swift */; };
+		CE5EF39E6AE70B7F82547BD8BCCB448E /* TouchAuthorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CDD487F87D62DE1CB94DD5F41C380D /* TouchAuthorizer.swift */; };
+		D03B93BA2874D178FFC4B2D838D59604 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81061BEE210CD32CF789BF81BD50D5E3 /* Configuration.swift */; };
+		DF09370F2ECDBFE05FFA66A1BBDE035E /* Authorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CE2069344A2CC8B833F7F2418AFE23 /* Authorizer.swift */; };
+		E65DFCA2F52B2950331DFA7B05597590 /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003220F5C94EA9C256245FC55B8924B3 /* RecordButton.swift */; };
+		E9164336E422CB05EB7621FAEB1B3AA3 /* OauthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78193EBF430A466420B2302C1093FFDD /* OauthErrors.swift */; };
+		ED154873D71FB85F87154972BFE9C922 /* RecordButton-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C149C0B6127FFE174E87CA9AA0C6709E /* RecordButton-dummy.m */; };
+		ED53A0A4770F362973A66A5AE6A63F01 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FACA9CC9B826DA85CD1E3AD17763766 /* Foundation.framework */; };
+		F3F176470E941F68C827D43BEAD20652 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EAF118F0D0EB52FBDD29767CE86A07 /* Photos.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6311510051576E6A9E1C583E55CF4E24 /* PBXContainerItemProxy */ = {
+		3C044A32802B05F792493577AA7E1EF7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 93BBA891B5A4D5B79C1DBD68959F5E07;
+			remoteGlobalIDString = E0ECA9E982F6AF4D7E4F291C4E284253;
+			remoteInfo = RecordButton;
+		};
+		81A5452C16FC9F041923AA8FADD55EBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 00F65629FB5EAC082F1783DF4F09E1E4;
 			remoteInfo = QuadratTouch;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		02FC180037D3EB725FED6B796FCF24B5 /* Updates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Updates.swift; path = Source/Shared/Endpoints/Updates.swift; sourceTree = "<group>"; };
-		08E4B8AC23E793772D35D690ACE4CF9B /* QuadratTouch.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = QuadratTouch.modulemap; sourceTree = "<group>"; };
-		096B5B8B787FF8F0A6FC48A67B070AFF /* Photos.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Photos.swift; path = Source/Shared/Endpoints/Photos.swift; sourceTree = "<group>"; };
-		09E329A8A7626045D06DBDF08B7FC8EB /* QuadratTouch.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QuadratTouch.h; path = Source/QuadratTouch/QuadratTouch.h; sourceTree = "<group>"; };
-		0C506FC846034627F5F9565FFD280279 /* QuadratTouch-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "QuadratTouch-prefix.pch"; sourceTree = "<group>"; };
-		15853A8D5FB459483A32876C9243C327 /* Authorizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Authorizer.swift; path = Source/Shared/Authorizer.swift; sourceTree = "<group>"; };
-		17DEE07A27081C9B6A58BB671EF1AFEA /* OauthErrors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OauthErrors.swift; path = Source/Shared/OauthErrors.swift; sourceTree = "<group>"; };
-		1DD6A665622ADE389EA5512A5BEB16A2 /* NativeTouchAuthorizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NativeTouchAuthorizer.swift; path = Source/iOS/NativeTouchAuthorizer.swift; sourceTree = "<group>"; };
-		20619FF4CC8C6C0761475166CDFD9DCC /* QuadratTouch.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = QuadratTouch.xcconfig; sourceTree = "<group>"; };
-		223F6804DF4AF5748078453D3B36AE7A /* Parameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Parameters.swift; path = Source/Shared/Parameters.swift; sourceTree = "<group>"; };
-		258E4438DB1DF1ABAF970E61320B06DB /* Logger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Source/Shared/Logger.swift; sourceTree = "<group>"; };
-		2B7AF2373EB56606D418EBD049781B32 /* Authorization.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Authorization.swift; path = Source/iOS/Authorization.swift; sourceTree = "<group>"; };
-		3041D6CC92EBE424669CC3C69B52F424 /* Request.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Request.swift; path = Source/Shared/Request.swift; sourceTree = "<group>"; };
-		326D6C8E1AC625DA70B058DBE1B4EA2E /* Pages.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Pages.swift; path = Source/Shared/Endpoints/Pages.swift; sourceTree = "<group>"; };
-		339C556D34569EE2230B4420D5ABA99E /* Session.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Session.swift; path = Source/Shared/Session.swift; sourceTree = "<group>"; };
+		003220F5C94EA9C256245FC55B8924B3 /* RecordButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RecordButton.swift; path = Pod/Classes/RecordButton.swift; sourceTree = "<group>"; };
+		013FDBCF4745A2F5DB218ECDBDE8F6D6 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthorizationViewController.swift; path = Source/iOS/AuthorizationViewController.swift; sourceTree = "<group>"; };
+		0A63135AABEF316AF3C5AFFD7A561F35 /* Logger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Source/Shared/Logger.swift; sourceTree = "<group>"; };
+		2FACA9CC9B826DA85CD1E3AD17763766 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		36BA23B7C064B9F4BE5479D246A2A31E /* Pods-Molocate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Molocate.release.xcconfig"; sourceTree = "<group>"; };
-		445DB7FFD1EB32B3CE5B15C22A34059B /* Lists.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Lists.swift; path = Source/Shared/Endpoints/Lists.swift; sourceTree = "<group>"; };
-		5C3CEA80D2B5AA7D963FA60BCF6C8F25 /* Specials.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Specials.swift; path = Source/Shared/Endpoints/Specials.swift; sourceTree = "<group>"; };
-		5CD26F2988BC9A262183438F376A76F2 /* Multi.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Multi.swift; path = Source/Shared/Endpoints/Multi.swift; sourceTree = "<group>"; };
-		65F8D7B6FCA5B09EA662B11BFEE79197 /* QuadratTouch-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "QuadratTouch-umbrella.h"; sourceTree = "<group>"; };
+		37E369BEFD2CE3E686B79F929B56FE84 /* Parameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Parameters.swift; path = Source/Shared/Parameters.swift; sourceTree = "<group>"; };
+		3C0372D800EEE2345BD8FC5524D7F6E3 /* RecordButton-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RecordButton-umbrella.h"; sourceTree = "<group>"; };
+		41807C0F87E2D9F468A1B2F69C64587C /* Users.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Users.swift; path = Source/Shared/Endpoints/Users.swift; sourceTree = "<group>"; };
+		49CE2069344A2CC8B833F7F2418AFE23 /* Authorizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Authorizer.swift; path = Source/Shared/Authorizer.swift; sourceTree = "<group>"; };
+		49F38B0005CE9202BCDC1038625D7F86 /* Settings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Source/Shared/Endpoints/Settings.swift; sourceTree = "<group>"; };
+		591F54E7ECA6B078EED43873D3B4F220 /* RecordButton.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RecordButton.xcconfig; sourceTree = "<group>"; };
+		5B43A2961273A2CF3082E7862C294753 /* PageUpdates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PageUpdates.swift; path = Source/Shared/Endpoints/PageUpdates.swift; sourceTree = "<group>"; };
+		5B81918383DE0CEFD649FA6256D189D4 /* Keychain.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Keychain.swift; path = Source/Shared/Keychain.swift; sourceTree = "<group>"; };
+		5D6FD4C7A54E24EDE34B96AB9EBACBD5 /* AuthorizationViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = AuthorizationViewController.xib; path = Source/iOS/AuthorizationViewController.xib; sourceTree = "<group>"; };
+		67528FE9760998166F8BEF347C47E127 /* Task.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Task.swift; path = Source/Shared/Task.swift; sourceTree = "<group>"; };
 		6758BEAD73271BE01D3C3AF23116931F /* Pods-Molocate-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Molocate-acknowledgements.plist"; sourceTree = "<group>"; };
-		6B04792CC81EADE624B41588C2B5CBF2 /* Tips.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Tips.swift; path = Source/Shared/Endpoints/Tips.swift; sourceTree = "<group>"; };
 		6C1BF6EEEF86FCF3195153AF0E2A1DA5 /* Pods-Molocate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Molocate.debug.xcconfig"; sourceTree = "<group>"; };
-		6DBC4AB93F8A841B9749165052FE3357 /* VenueGroups.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VenueGroups.swift; path = Source/Shared/Endpoints/VenueGroups.swift; sourceTree = "<group>"; };
-		7E85A054078B0822C09E4EAE713A382B /* Keychain.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Keychain.swift; path = Source/Shared/Keychain.swift; sourceTree = "<group>"; };
-		7ECDFFCEFF10C07B6A478559197AF64A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		73EAF118F0D0EB52FBDD29767CE86A07 /* Photos.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Photos.swift; path = Source/Shared/Endpoints/Photos.swift; sourceTree = "<group>"; };
+		78193EBF430A466420B2302C1093FFDD /* OauthErrors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OauthErrors.swift; path = Source/Shared/OauthErrors.swift; sourceTree = "<group>"; };
+		81061BEE210CD32CF789BF81BD50D5E3 /* Configuration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Configuration.swift; path = Source/Shared/Configuration.swift; sourceTree = "<group>"; };
 		82988BEACD8657A44E769BA088FCDE74 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		886F0972445588DA2984B3910F673633 /* Users.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Users.swift; path = Source/Shared/Endpoints/Users.swift; sourceTree = "<group>"; };
-		8B1CE723D821C7094EB918FA4918437E /* AuthorizationViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = AuthorizationViewController.xib; path = Source/iOS/AuthorizationViewController.xib; sourceTree = "<group>"; };
-		93380BBB17F6B12B3790A01B17D410D7 /* Venues.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Venues.swift; path = Source/Shared/Endpoints/Venues.swift; sourceTree = "<group>"; };
+		8324EEE23D2F38199342078A893E0F1C /* Updates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Updates.swift; path = Source/Shared/Endpoints/Updates.swift; sourceTree = "<group>"; };
+		84B3BF7F4C47A2ACA9D764B192E93D76 /* Checkins.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Checkins.swift; path = Source/Shared/Endpoints/Checkins.swift; sourceTree = "<group>"; };
+		85B5B5088B1155C02A7B98BBDC7B1513 /* QuadratTouch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuadratTouch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		887FA5AD120102033C37FEC383EECB88 /* Endpoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Endpoint.swift; path = Source/Shared/Endpoints/Endpoint.swift; sourceTree = "<group>"; };
 		9348FE820B2737FC8777065D06216BAD /* Pods-Molocate-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Molocate-dummy.m"; sourceTree = "<group>"; };
-		973B40C0CBA71380933C05661DBC08F8 /* NetworkActivityIndicatorController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkActivityIndicatorController.swift; path = Source/Shared/NetworkActivityIndicatorController.swift; sourceTree = "<group>"; };
-		978FDE1451BBC4C4D3FA9AFE822EB12F /* Checkins.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Checkins.swift; path = Source/Shared/Endpoints/Checkins.swift; sourceTree = "<group>"; };
+		94C7E0EF2FCB308F8269C86684E7F3B8 /* Tips.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Tips.swift; path = Source/Shared/Endpoints/Tips.swift; sourceTree = "<group>"; };
+		979E8BC6F31663FF47954A358EDAC0F4 /* Specials.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Specials.swift; path = Source/Shared/Endpoints/Specials.swift; sourceTree = "<group>"; };
 		97DFEDC9AD4C38AFE58F2F6DCD1DB5E0 /* Pods-Molocate-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Molocate-umbrella.h"; sourceTree = "<group>"; };
-		990FAE58A54763F558A22CBAD3046DBA /* PageUpdates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PageUpdates.swift; path = Source/Shared/Endpoints/PageUpdates.swift; sourceTree = "<group>"; };
-		99293C4C09B861A7F978C54C20CE8DB3 /* DataCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataCache.swift; path = Source/Shared/DataCache.swift; sourceTree = "<group>"; };
-		9A8A01BE44A2AFF507131971AED78EBC /* Configuration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Configuration.swift; path = Source/Shared/Configuration.swift; sourceTree = "<group>"; };
-		A00F46CFE9C33A2DA57FAF1176122418 /* QuadratTouch-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "QuadratTouch-dummy.m"; sourceTree = "<group>"; };
-		A0D1DE5ED942CDEF0C4C5765427C3DCB /* TouchAuthorizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TouchAuthorizer.swift; path = Source/iOS/TouchAuthorizer.swift; sourceTree = "<group>"; };
-		AB95FFCC10B57E9915354561A223EAC6 /* Pods_Molocate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Molocate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACBDE3D5A7EB6FF8441ECD47F16C842D /* Settings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Source/Shared/Endpoints/Settings.swift; sourceTree = "<group>"; };
+		9B38639D393D7E9A4373FD2D9EFC3CEA /* NativeTouchAuthorizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NativeTouchAuthorizer.swift; path = Source/iOS/NativeTouchAuthorizer.swift; sourceTree = "<group>"; };
+		A27D02DED6B556802B18B8C1025C60E8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A655163B07114CA6A46B294E46BB153A /* Venues.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Venues.swift; path = Source/Shared/Endpoints/Venues.swift; sourceTree = "<group>"; };
+		B257A87623423DBAE19FD64281DF5A36 /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Source/Shared/Result.swift; sourceTree = "<group>"; };
+		B80840B0C3F27DA6C5A1AF77A237AD5B /* Session.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Session.swift; path = Source/Shared/Session.swift; sourceTree = "<group>"; };
+		B8AA29054A5F8F9C491230C73AF08B18 /* QuadratTouch-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "QuadratTouch-prefix.pch"; sourceTree = "<group>"; };
+		B94F178AA325E0C97B4292596A360CD3 /* Multi.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Multi.swift; path = Source/Shared/Endpoints/Multi.swift; sourceTree = "<group>"; };
+		B95E0AAE4E8E00CDC1760E26FC447197 /* Request.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Request.swift; path = Source/Shared/Request.swift; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BAE1B33188740B25D40CEDC08A929AF6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		BD82FE7AA24679C172E48673AE111F49 /* Pods-Molocate-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Molocate-frameworks.sh"; sourceTree = "<group>"; };
-		BE434C4C5C42E6210DAEA72B530058E6 /* Task.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Task.swift; path = Source/Shared/Task.swift; sourceTree = "<group>"; };
+		BE77E593B885209ECA802B12948A70FD /* Pages.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Pages.swift; path = Source/Shared/Endpoints/Pages.swift; sourceTree = "<group>"; };
+		BFCFB11DCCBFF90641292C4BA68575C6 /* DataCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataCache.swift; path = Source/Shared/DataCache.swift; sourceTree = "<group>"; };
+		C149C0B6127FFE174E87CA9AA0C6709E /* RecordButton-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RecordButton-dummy.m"; sourceTree = "<group>"; };
 		C1F7298F45244C3A69E39C588735F894 /* Pods-Molocate-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Molocate-acknowledgements.markdown"; sourceTree = "<group>"; };
 		C36838EFDA8818C464F4043FE406E2DF /* Pods-Molocate.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Molocate.modulemap"; sourceTree = "<group>"; };
-		C6B6FB22C29F210E080240A7699475F2 /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Source/Shared/Result.swift; sourceTree = "<group>"; };
+		C3CDD487F87D62DE1CB94DD5F41C380D /* TouchAuthorizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TouchAuthorizer.swift; path = Source/iOS/TouchAuthorizer.swift; sourceTree = "<group>"; };
+		C5A98532F453056D1773F8F4671BC509 /* QuadratTouch.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QuadratTouch.h; path = Source/QuadratTouch/QuadratTouch.h; sourceTree = "<group>"; };
 		C93541856DF52E1ED94C06E423656050 /* Pods-Molocate-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Molocate-resources.sh"; sourceTree = "<group>"; };
-		CBB0853BD8CE1AE8CF5FE525E44C538C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
-		D594569BE2B35BC5864BFA922AC736A1 /* Events.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Events.swift; path = Source/Shared/Endpoints/Events.swift; sourceTree = "<group>"; };
-		D682E8C57D9E21C4F4267BEB387B8D44 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthorizationViewController.swift; path = Source/iOS/AuthorizationViewController.swift; sourceTree = "<group>"; };
-		D820BA2602BCBFDAEFA60A2883FB8F30 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		E856D5F45A3CA3EA1160E97F3F57F906 /* QuadratTouch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuadratTouch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA5737AA9A468E11280B1C656FEDC1C0 /* Endpoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Endpoint.swift; path = Source/Shared/Endpoints/Endpoint.swift; sourceTree = "<group>"; };
+		CB34C00129B87070FE80DB37D099D2D7 /* Authorization.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Authorization.swift; path = Source/iOS/Authorization.swift; sourceTree = "<group>"; };
+		CE07C51563A8537190C45BF7B84469E6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		D6AB8039B4E2D8270941B0481C408C78 /* Events.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Events.swift; path = Source/Shared/Endpoints/Events.swift; sourceTree = "<group>"; };
+		D8099F6BFF65563ED9B56A20BD9DA280 /* RecordButton.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = RecordButton.modulemap; sourceTree = "<group>"; };
+		D83522D12574D66E6C19D080AA744386 /* Lists.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Lists.swift; path = Source/Shared/Endpoints/Lists.swift; sourceTree = "<group>"; };
+		E39EC9FBF745A6A2BFDFC6F6C7B974AF /* RecordButton-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RecordButton-prefix.pch"; sourceTree = "<group>"; };
+		E42E6180B3E2F9DC494747AA4B93D583 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E6D89AC4AD189B82DEE0E8E8DDA7A67D /* QuadratTouch-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "QuadratTouch-umbrella.h"; sourceTree = "<group>"; };
+		EB9ABEC4A12FA503718B7831BD0D0ADB /* QuadratTouch-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "QuadratTouch-dummy.m"; sourceTree = "<group>"; };
+		ED47D8D8CD5A2FB96BEB01CA6DF05F65 /* QuadratTouch.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = QuadratTouch.modulemap; sourceTree = "<group>"; };
+		ED6D44702313F399CF11003EB24F23E3 /* Pods_Molocate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Molocate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F076720B52F41634481A42DE3A4AE401 /* NetworkActivityIndicatorController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkActivityIndicatorController.swift; path = Source/Shared/NetworkActivityIndicatorController.swift; sourceTree = "<group>"; };
+		F294E5312B74D511A69F83C660DD51CB /* VenueGroups.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VenueGroups.swift; path = Source/Shared/Endpoints/VenueGroups.swift; sourceTree = "<group>"; };
+		F477FFB93DAA2807772A0BE5E71AC743 /* QuadratTouch.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = QuadratTouch.xcconfig; sourceTree = "<group>"; };
+		FF769D53D1CCF45B801237E0215FCE99 /* RecordButton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RecordButton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0EAE76674BE0B982C1CDA79349246895 /* Frameworks */ = {
+		BBFEDB79FC3400AE1F95C01F2EFBFAFC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2AC487E6A2393EC68F8833217A92D671 /* Foundation.framework in Frameworks */,
+				806B8952A257E9C8AFFF05F473ED05B3 /* Foundation.framework in Frameworks */,
+				0D0488D27E758AD73F2333E5275B6048 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		93B504326C2896433C9D8E39930B7E6C /* Frameworks */ = {
+		BF4EC701E523F82E5B19B0F67E4E7BBA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB3A4252DBF51E881401D22181B1F740 /* Foundation.framework in Frameworks */,
-				91DA945FBD56F7E56E12299F5ECE4FCD /* SystemConfiguration.framework in Frameworks */,
+				18C1A89DB13C89E84DB7C0AAEB1E400E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5E8C10E1A57175EE39F59FDC8572981 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED53A0A4770F362973A66A5AE6A63F01 /* Foundation.framework in Frameworks */,
+				AF8E2E0FE5D7DD238AFEA0C351E9DCF0 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0D1A9B04773EF0CA51E38942760CD6D4 /* iOS */ = {
+		122DA2E5084A4393C29BE363C764795C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D820BA2602BCBFDAEFA60A2883FB8F30 /* Foundation.framework */,
-				CBB0853BD8CE1AE8CF5FE525E44C538C /* SystemConfiguration.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		433CD3331B6C3787F473C941B61FC68F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0D1A9B04773EF0CA51E38942760CD6D4 /* iOS */,
+				FF2AEA74965EED5FE2760906784C788C /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3AF46285F619BB20A6FF68E00714F2B9 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E42E6180B3E2F9DC494747AA4B93D583 /* Info.plist */,
+				D8099F6BFF65563ED9B56A20BD9DA280 /* RecordButton.modulemap */,
+				591F54E7ECA6B078EED43873D3B4F220 /* RecordButton.xcconfig */,
+				C149C0B6127FFE174E87CA9AA0C6709E /* RecordButton-dummy.m */,
+				E39EC9FBF745A6A2BFDFC6F6C7B974AF /* RecordButton-prefix.pch */,
+				3C0372D800EEE2345BD8FC5524D7F6E3 /* RecordButton-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/RecordButton";
 			sourceTree = "<group>";
 		};
 		530043FDDBE3AECFB96EE661572F1561 /* Targets Support Files */ = {
@@ -166,89 +201,100 @@
 			isa = PBXGroup;
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
-				433CD3331B6C3787F473C941B61FC68F /* Frameworks */,
-				87627D0E8E177F456966184A14B698D5 /* Pods */,
-				CA13CDB45D17FC8D0AD394341C543E2C /* Products */,
+				122DA2E5084A4393C29BE363C764795C /* Frameworks */,
+				CFA17D8202F2F196EF63EB68D0B98788 /* Pods */,
+				87F901F1EAA31FB8EE6A94B2EECB53A9 /* Products */,
 				530043FDDBE3AECFB96EE661572F1561 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		87627D0E8E177F456966184A14B698D5 /* Pods */ = {
+		87F901F1EAA31FB8EE6A94B2EECB53A9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E936A51A278020A758214292A9F48C1F /* QuadratTouch */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		A5BBBAFE6EFC5F33050B91704D828B07 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				8B1CE723D821C7094EB918FA4918437E /* AuthorizationViewController.xib */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		CA13CDB45D17FC8D0AD394341C543E2C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AB95FFCC10B57E9915354561A223EAC6 /* Pods_Molocate.framework */,
-				E856D5F45A3CA3EA1160E97F3F57F906 /* QuadratTouch.framework */,
+				ED6D44702313F399CF11003EB24F23E3 /* Pods_Molocate.framework */,
+				85B5B5088B1155C02A7B98BBDC7B1513 /* QuadratTouch.framework */,
+				FF769D53D1CCF45B801237E0215FCE99 /* RecordButton.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E200028E54AFC990132760C67769F4A2 /* Support Files */ = {
+		CFA17D8202F2F196EF63EB68D0B98788 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7ECDFFCEFF10C07B6A478559197AF64A /* Info.plist */,
-				08E4B8AC23E793772D35D690ACE4CF9B /* QuadratTouch.modulemap */,
-				20619FF4CC8C6C0761475166CDFD9DCC /* QuadratTouch.xcconfig */,
-				A00F46CFE9C33A2DA57FAF1176122418 /* QuadratTouch-dummy.m */,
-				0C506FC846034627F5F9565FFD280279 /* QuadratTouch-prefix.pch */,
-				65F8D7B6FCA5B09EA662B11BFEE79197 /* QuadratTouch-umbrella.h */,
+				F8A4A46E0845B6FF7CB05DF68DEACC24 /* QuadratTouch */,
+				EE744FD77907F5A4B9008299ACBC9873 /* RecordButton */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DB19820DDBD5B1AE08C155663456A6DF /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A27D02DED6B556802B18B8C1025C60E8 /* Info.plist */,
+				ED47D8D8CD5A2FB96BEB01CA6DF05F65 /* QuadratTouch.modulemap */,
+				F477FFB93DAA2807772A0BE5E71AC743 /* QuadratTouch.xcconfig */,
+				EB9ABEC4A12FA503718B7831BD0D0ADB /* QuadratTouch-dummy.m */,
+				B8AA29054A5F8F9C491230C73AF08B18 /* QuadratTouch-prefix.pch */,
+				E6D89AC4AD189B82DEE0E8E8DDA7A67D /* QuadratTouch-umbrella.h */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/QuadratTouch";
 			sourceTree = "<group>";
 		};
-		E936A51A278020A758214292A9F48C1F /* QuadratTouch */ = {
+		EE744FD77907F5A4B9008299ACBC9873 /* RecordButton */ = {
 			isa = PBXGroup;
 			children = (
-				2B7AF2373EB56606D418EBD049781B32 /* Authorization.swift */,
-				D682E8C57D9E21C4F4267BEB387B8D44 /* AuthorizationViewController.swift */,
-				15853A8D5FB459483A32876C9243C327 /* Authorizer.swift */,
-				978FDE1451BBC4C4D3FA9AFE822EB12F /* Checkins.swift */,
-				9A8A01BE44A2AFF507131971AED78EBC /* Configuration.swift */,
-				99293C4C09B861A7F978C54C20CE8DB3 /* DataCache.swift */,
-				EA5737AA9A468E11280B1C656FEDC1C0 /* Endpoint.swift */,
-				D594569BE2B35BC5864BFA922AC736A1 /* Events.swift */,
-				7E85A054078B0822C09E4EAE713A382B /* Keychain.swift */,
-				445DB7FFD1EB32B3CE5B15C22A34059B /* Lists.swift */,
-				258E4438DB1DF1ABAF970E61320B06DB /* Logger.swift */,
-				5CD26F2988BC9A262183438F376A76F2 /* Multi.swift */,
-				1DD6A665622ADE389EA5512A5BEB16A2 /* NativeTouchAuthorizer.swift */,
-				973B40C0CBA71380933C05661DBC08F8 /* NetworkActivityIndicatorController.swift */,
-				17DEE07A27081C9B6A58BB671EF1AFEA /* OauthErrors.swift */,
-				326D6C8E1AC625DA70B058DBE1B4EA2E /* Pages.swift */,
-				990FAE58A54763F558A22CBAD3046DBA /* PageUpdates.swift */,
-				223F6804DF4AF5748078453D3B36AE7A /* Parameters.swift */,
-				096B5B8B787FF8F0A6FC48A67B070AFF /* Photos.swift */,
-				09E329A8A7626045D06DBDF08B7FC8EB /* QuadratTouch.h */,
-				3041D6CC92EBE424669CC3C69B52F424 /* Request.swift */,
-				C6B6FB22C29F210E080240A7699475F2 /* Result.swift */,
-				339C556D34569EE2230B4420D5ABA99E /* Session.swift */,
-				ACBDE3D5A7EB6FF8441ECD47F16C842D /* Settings.swift */,
-				5C3CEA80D2B5AA7D963FA60BCF6C8F25 /* Specials.swift */,
-				BE434C4C5C42E6210DAEA72B530058E6 /* Task.swift */,
-				6B04792CC81EADE624B41588C2B5CBF2 /* Tips.swift */,
-				A0D1DE5ED942CDEF0C4C5765427C3DCB /* TouchAuthorizer.swift */,
-				02FC180037D3EB725FED6B796FCF24B5 /* Updates.swift */,
-				886F0972445588DA2984B3910F673633 /* Users.swift */,
-				6DBC4AB93F8A841B9749165052FE3357 /* VenueGroups.swift */,
-				93380BBB17F6B12B3790A01B17D410D7 /* Venues.swift */,
-				A5BBBAFE6EFC5F33050B91704D828B07 /* Resources */,
-				E200028E54AFC990132760C67769F4A2 /* Support Files */,
+				003220F5C94EA9C256245FC55B8924B3 /* RecordButton.swift */,
+				3AF46285F619BB20A6FF68E00714F2B9 /* Support Files */,
+			);
+			path = RecordButton;
+			sourceTree = "<group>";
+		};
+		F11DB938DD16356BEB09C32BCE41FDE5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5D6FD4C7A54E24EDE34B96AB9EBACBD5 /* AuthorizationViewController.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		F8A4A46E0845B6FF7CB05DF68DEACC24 /* QuadratTouch */ = {
+			isa = PBXGroup;
+			children = (
+				CB34C00129B87070FE80DB37D099D2D7 /* Authorization.swift */,
+				013FDBCF4745A2F5DB218ECDBDE8F6D6 /* AuthorizationViewController.swift */,
+				49CE2069344A2CC8B833F7F2418AFE23 /* Authorizer.swift */,
+				84B3BF7F4C47A2ACA9D764B192E93D76 /* Checkins.swift */,
+				81061BEE210CD32CF789BF81BD50D5E3 /* Configuration.swift */,
+				BFCFB11DCCBFF90641292C4BA68575C6 /* DataCache.swift */,
+				887FA5AD120102033C37FEC383EECB88 /* Endpoint.swift */,
+				D6AB8039B4E2D8270941B0481C408C78 /* Events.swift */,
+				5B81918383DE0CEFD649FA6256D189D4 /* Keychain.swift */,
+				D83522D12574D66E6C19D080AA744386 /* Lists.swift */,
+				0A63135AABEF316AF3C5AFFD7A561F35 /* Logger.swift */,
+				B94F178AA325E0C97B4292596A360CD3 /* Multi.swift */,
+				9B38639D393D7E9A4373FD2D9EFC3CEA /* NativeTouchAuthorizer.swift */,
+				F076720B52F41634481A42DE3A4AE401 /* NetworkActivityIndicatorController.swift */,
+				78193EBF430A466420B2302C1093FFDD /* OauthErrors.swift */,
+				BE77E593B885209ECA802B12948A70FD /* Pages.swift */,
+				5B43A2961273A2CF3082E7862C294753 /* PageUpdates.swift */,
+				37E369BEFD2CE3E686B79F929B56FE84 /* Parameters.swift */,
+				73EAF118F0D0EB52FBDD29767CE86A07 /* Photos.swift */,
+				C5A98532F453056D1773F8F4671BC509 /* QuadratTouch.h */,
+				B95E0AAE4E8E00CDC1760E26FC447197 /* Request.swift */,
+				B257A87623423DBAE19FD64281DF5A36 /* Result.swift */,
+				B80840B0C3F27DA6C5A1AF77A237AD5B /* Session.swift */,
+				49F38B0005CE9202BCDC1038625D7F86 /* Settings.swift */,
+				979E8BC6F31663FF47954A358EDAC0F4 /* Specials.swift */,
+				67528FE9760998166F8BEF347C47E127 /* Task.swift */,
+				94C7E0EF2FCB308F8269C86684E7F3B8 /* Tips.swift */,
+				C3CDD487F87D62DE1CB94DD5F41C380D /* TouchAuthorizer.swift */,
+				8324EEE23D2F38199342078A893E0F1C /* Updates.swift */,
+				41807C0F87E2D9F468A1B2F69C64587C /* Users.swift */,
+				F294E5312B74D511A69F83C660DD51CB /* VenueGroups.swift */,
+				A655163B07114CA6A46B294E46BB153A /* Venues.swift */,
+				F11DB938DD16356BEB09C32BCE41FDE5 /* Resources */,
+				DB19820DDBD5B1AE08C155663456A6DF /* Support Files */,
 			);
 			path = QuadratTouch;
 			sourceTree = "<group>";
@@ -271,37 +317,55 @@
 			path = "Target Support Files/Pods-Molocate";
 			sourceTree = "<group>";
 		};
+		FF2AEA74965EED5FE2760906784C788C /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				2FACA9CC9B826DA85CD1E3AD17763766 /* Foundation.framework */,
+				BAE1B33188740B25D40CEDC08A929AF6 /* SystemConfiguration.framework */,
+				CE07C51563A8537190C45BF7B84469E6 /* UIKit.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		4418A0DB9B447F0DFC9F2FAE0A766386 /* Headers */ = {
+		9C371BBBAB29CADD6C4660A09DCBFAD8 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E378AFA686511E419E7E20FAB1C64F5 /* QuadratTouch-umbrella.h in Headers */,
-				8482705872434CD5D87E852FB8D83A60 /* QuadratTouch.h in Headers */,
+				12688969B39A0E4D0DE4BCA257F5F830 /* Pods-Molocate-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F96FF2C714278999987D7CBC37E25BE5 /* Headers */ = {
+		C07ACABD7B4D61B7AB767B5E3AB897E2 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9BE29D40CB2B676DF18AABBDB2453A7A /* Pods-Molocate-umbrella.h in Headers */,
+				33E486CA65923168FC781A2B82C2F11E /* QuadratTouch-umbrella.h in Headers */,
+				57F6A704A2E75F8AA879429FFD95F9D0 /* QuadratTouch.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C48F5D8A75C50A42BB8DA56ED714E4A9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B7B50B0377C6E2FAAD3035978F8FAE9 /* RecordButton-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		93BBA891B5A4D5B79C1DBD68959F5E07 /* QuadratTouch */ = {
+		00F65629FB5EAC082F1783DF4F09E1E4 /* QuadratTouch */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F5E4F57B23994EF3ACD8EBB40ACEA1C6 /* Build configuration list for PBXNativeTarget "QuadratTouch" */;
+			buildConfigurationList = 8F06ABFA378019B57EB9626D7D8D30A7 /* Build configuration list for PBXNativeTarget "QuadratTouch" */;
 			buildPhases = (
-				385B4D3E4ECB8ED38EC986A265A9A0F7 /* Sources */,
-				93B504326C2896433C9D8E39930B7E6C /* Frameworks */,
-				4418A0DB9B447F0DFC9F2FAE0A766386 /* Headers */,
-				5B5C2712B96CE2E6D6F8EE7E66DB4038 /* Resources */,
+				F47B1ED9E01BEF3D88393301B28C8171 /* Sources */,
+				BBFEDB79FC3400AE1F95C01F2EFBFAFC /* Frameworks */,
+				C07ACABD7B4D61B7AB767B5E3AB897E2 /* Headers */,
+				6FBF5E5C20F3415D5ADF6C66D7D1C3FA /* Resources */,
 			);
 			buildRules = (
 			);
@@ -309,25 +373,43 @@
 			);
 			name = QuadratTouch;
 			productName = QuadratTouch;
-			productReference = E856D5F45A3CA3EA1160E97F3F57F906 /* QuadratTouch.framework */;
+			productReference = 85B5B5088B1155C02A7B98BBDC7B1513 /* QuadratTouch.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		AE7AD771A9C82546CDFF981F809411E5 /* Pods-Molocate */ = {
+		88293CF1B382A24C383C3CC99D5E8DAA /* Pods-Molocate */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F2A7C3647CB44F4D39362AD6D8053665 /* Build configuration list for PBXNativeTarget "Pods-Molocate" */;
+			buildConfigurationList = 36510249D7AE582F806CB5172D4B13BB /* Build configuration list for PBXNativeTarget "Pods-Molocate" */;
 			buildPhases = (
-				8AD5ABCB5FA83560CC11ED1315E6EBF5 /* Sources */,
-				0EAE76674BE0B982C1CDA79349246895 /* Frameworks */,
-				F96FF2C714278999987D7CBC37E25BE5 /* Headers */,
+				8A62D7CA69DD7943F9276F137A16CFC5 /* Sources */,
+				BF4EC701E523F82E5B19B0F67E4E7BBA /* Frameworks */,
+				9C371BBBAB29CADD6C4660A09DCBFAD8 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				07807A236D2801422B9683A685333E7D /* PBXTargetDependency */,
+				D952FF30346A1384C44C57361706DFD6 /* PBXTargetDependency */,
+				AB88D8B9FA20ECE783F25C2DD69763A2 /* PBXTargetDependency */,
 			);
 			name = "Pods-Molocate";
 			productName = "Pods-Molocate";
-			productReference = AB95FFCC10B57E9915354561A223EAC6 /* Pods_Molocate.framework */;
+			productReference = ED6D44702313F399CF11003EB24F23E3 /* Pods_Molocate.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E0ECA9E982F6AF4D7E4F291C4E284253 /* RecordButton */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 980EBAB7E284DD502F6E21883FDCF1C4 /* Build configuration list for PBXNativeTarget "RecordButton" */;
+			buildPhases = (
+				346662C8950E62C6322596DB98E82D62 /* Sources */,
+				F5E8C10E1A57175EE39F59FDC8572981 /* Frameworks */,
+				C48F5D8A75C50A42BB8DA56ED714E4A9 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RecordButton;
+			productName = RecordButton;
+			productReference = FF769D53D1CCF45B801237E0215FCE99 /* RecordButton.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -338,11 +420,6 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
-				TargetAttributes = {
-					93BBA891B5A4D5B79C1DBD68959F5E07 = {
-						DevelopmentTeam = 573682DC5D;
-					};
-				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -352,92 +429,166 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = CA13CDB45D17FC8D0AD394341C543E2C /* Products */;
+			productRefGroup = 87F901F1EAA31FB8EE6A94B2EECB53A9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AE7AD771A9C82546CDFF981F809411E5 /* Pods-Molocate */,
-				93BBA891B5A4D5B79C1DBD68959F5E07 /* QuadratTouch */,
+				88293CF1B382A24C383C3CC99D5E8DAA /* Pods-Molocate */,
+				00F65629FB5EAC082F1783DF4F09E1E4 /* QuadratTouch */,
+				E0ECA9E982F6AF4D7E4F291C4E284253 /* RecordButton */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		5B5C2712B96CE2E6D6F8EE7E66DB4038 /* Resources */ = {
+		6FBF5E5C20F3415D5ADF6C66D7D1C3FA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6B13EEB45F6F217166D62F25FFA8EBB /* AuthorizationViewController.xib in Resources */,
+				5C1A796834559D823818833D1190CA79 /* AuthorizationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		385B4D3E4ECB8ED38EC986A265A9A0F7 /* Sources */ = {
+		346662C8950E62C6322596DB98E82D62 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F8CFA78C215D6B355BF9F9CEC9B7C43 /* Authorization.swift in Sources */,
-				5111875555316DFFD6FD82BB21744268 /* AuthorizationViewController.swift in Sources */,
-				3060EDB01DC65EF6DDB17DE9BE49C605 /* Authorizer.swift in Sources */,
-				D2F6FB53B6F9AB455CCA469E7B832F59 /* Checkins.swift in Sources */,
-				5D7D3F76022B034DE01951AF9DB25F89 /* Configuration.swift in Sources */,
-				A5DB7186B73760586E9358386B94BAB6 /* DataCache.swift in Sources */,
-				7C042EA6CB9DE122B4C9AE048A3B9A0C /* Endpoint.swift in Sources */,
-				12451C43716A301F0181E7A1058B0DC4 /* Events.swift in Sources */,
-				6018BD494DBD4CDA225F46C098D04D59 /* Keychain.swift in Sources */,
-				0A8E766FB709E12D561855B3FAC58D31 /* Lists.swift in Sources */,
-				D208970F640703AD7E44CD9EB246B0A8 /* Logger.swift in Sources */,
-				4504448EE7940BAE461EBE1021FF7A71 /* Multi.swift in Sources */,
-				B0A9371E496BC513D8A332374FAB5FEB /* NativeTouchAuthorizer.swift in Sources */,
-				D7A5F014090D791198A3F5FECC6E7A34 /* NetworkActivityIndicatorController.swift in Sources */,
-				05B3FF18E8C9AB012017C019D66B2EE0 /* OauthErrors.swift in Sources */,
-				14E7C1B9473068463B886584B2622CE7 /* Pages.swift in Sources */,
-				32992EC88E56C6C3E16FAF651AB49109 /* PageUpdates.swift in Sources */,
-				86EF99857B3D9049FBFC1714C2C304F6 /* Parameters.swift in Sources */,
-				0F2E2711ED04A5EEA6A96F97BBE10164 /* Photos.swift in Sources */,
-				21BD8D9C327F9D007F099DCAF07499A8 /* QuadratTouch-dummy.m in Sources */,
-				87971DEF289DFACC98F2FC30D98B5A15 /* Request.swift in Sources */,
-				2502B40E074725FF5D26B63A57A70734 /* Result.swift in Sources */,
-				12A3968754845250AF201E1B120103AA /* Session.swift in Sources */,
-				83E8C535C8B729AE3038F652B4DD7BE4 /* Settings.swift in Sources */,
-				1120C97309AC7895B29553AE2080BFE8 /* Specials.swift in Sources */,
-				A35ADD84E8A00D65636665F2EA18621E /* Task.swift in Sources */,
-				8613CDE22FD1B8944AD0BB5998A0D06F /* Tips.swift in Sources */,
-				6B952EC13227E6C023E02B947E2F48F7 /* TouchAuthorizer.swift in Sources */,
-				AD90C80BB338762EF4A10D21BFC6F628 /* Updates.swift in Sources */,
-				3C45A80F1751D66CAF96EAF11DB3FC14 /* Users.swift in Sources */,
-				0C5EBD55FAFC6608068A4F113F9A3C04 /* VenueGroups.swift in Sources */,
-				9F137E99A1944BB35CB296066D471310 /* Venues.swift in Sources */,
+				ED154873D71FB85F87154972BFE9C922 /* RecordButton-dummy.m in Sources */,
+				E65DFCA2F52B2950331DFA7B05597590 /* RecordButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8AD5ABCB5FA83560CC11ED1315E6EBF5 /* Sources */ = {
+		8A62D7CA69DD7943F9276F137A16CFC5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2365EA6F68147B3341D0E80DB66604D1 /* Pods-Molocate-dummy.m in Sources */,
+				0E23BD1051E15BD62A98FE81AEC812FB /* Pods-Molocate-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F47B1ED9E01BEF3D88393301B28C8171 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FF1F32D7190D82F6DC24BA51C633711 /* Authorization.swift in Sources */,
+				8731AD30B535E0CF64E719F25D83DA1E /* AuthorizationViewController.swift in Sources */,
+				DF09370F2ECDBFE05FFA66A1BBDE035E /* Authorizer.swift in Sources */,
+				126082457A35EDBB735508BACF878DA5 /* Checkins.swift in Sources */,
+				D03B93BA2874D178FFC4B2D838D59604 /* Configuration.swift in Sources */,
+				5402F8AA0700B05504C284C6CC38CEC2 /* DataCache.swift in Sources */,
+				92539FC8FBA76D57384D2D1F110A1714 /* Endpoint.swift in Sources */,
+				853F02A1A38B4E6F58D032E979975DAC /* Events.swift in Sources */,
+				8781CC55CF92A8AFBFD97587D4E54DB9 /* Keychain.swift in Sources */,
+				45F75997E9B12FA3DB4D1AB348368B97 /* Lists.swift in Sources */,
+				B9F86B0278686A286CDDD8F867FD31BC /* Logger.swift in Sources */,
+				1B35B071D237398CCA002335C58F95A4 /* Multi.swift in Sources */,
+				61DA60DC13F4CE6E28C9707783599579 /* NativeTouchAuthorizer.swift in Sources */,
+				B0A84EE5224BC44EC1907F7AB62F5E11 /* NetworkActivityIndicatorController.swift in Sources */,
+				E9164336E422CB05EB7621FAEB1B3AA3 /* OauthErrors.swift in Sources */,
+				73C9C9DAE9108B93D0A3EAC19ACD9FA2 /* Pages.swift in Sources */,
+				7603E15E095BCC503918BE9226036A8C /* PageUpdates.swift in Sources */,
+				8F721292DD3C6CEB3836C09FDEECCD70 /* Parameters.swift in Sources */,
+				F3F176470E941F68C827D43BEAD20652 /* Photos.swift in Sources */,
+				9EA436AAF3401D7499699B1F47ED6E73 /* QuadratTouch-dummy.m in Sources */,
+				CE5D535CD814CF98116A8742B974E265 /* Request.swift in Sources */,
+				686DBB54B88F1F379F6109BDF0458C7A /* Result.swift in Sources */,
+				BF58E21A43963B9431B11F3185E0A06B /* Session.swift in Sources */,
+				9487B909E66E9B781121DF3299D95E6B /* Settings.swift in Sources */,
+				8BD0465390D1EABFBE470AC6AF6F4C1A /* Specials.swift in Sources */,
+				6BCA15F787D183E38C2BA0B596924D4C /* Task.swift in Sources */,
+				3D882E4953675B22263DF85F111EC134 /* Tips.swift in Sources */,
+				CE5EF39E6AE70B7F82547BD8BCCB448E /* TouchAuthorizer.swift in Sources */,
+				5E90BCD87C32D5E78DCAF4B6FF1D4766 /* Updates.swift in Sources */,
+				2E92B9BF785641915B838BAFAC5D5F24 /* Users.swift in Sources */,
+				890874A367FD274F4620F75EE9D0D3CC /* VenueGroups.swift in Sources */,
+				AEAD89E9C044633D3569586D56335829 /* Venues.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		07807A236D2801422B9683A685333E7D /* PBXTargetDependency */ = {
+		AB88D8B9FA20ECE783F25C2DD69763A2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RecordButton;
+			target = E0ECA9E982F6AF4D7E4F291C4E284253 /* RecordButton */;
+			targetProxy = 3C044A32802B05F792493577AA7E1EF7 /* PBXContainerItemProxy */;
+		};
+		D952FF30346A1384C44C57361706DFD6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = QuadratTouch;
-			target = 93BBA891B5A4D5B79C1DBD68959F5E07 /* QuadratTouch */;
-			targetProxy = 6311510051576E6A9E1C583E55CF4E24 /* PBXContainerItemProxy */;
+			target = 00F65629FB5EAC082F1783DF4F09E1E4 /* QuadratTouch */;
+			targetProxy = 81A5452C16FC9F041923AA8FADD55EBF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		5280A7E40833CCC604A4EA42742D4757 /* Release */ = {
+		2B62F3FE5A4934EBAEF4919A82545AEE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 20619FF4CC8C6C0761475166CDFD9DCC /* QuadratTouch.xcconfig */;
+			baseConfigurationReference = 6C1BF6EEEF86FCF3195153AF0E2A1DA5 /* Pods-Molocate.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Molocate/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Molocate/Pods-Molocate.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_Molocate;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		47F025B461A6D15CB0A053DCA3B13A2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 591F54E7ECA6B078EED43873D3B4F220 /* RecordButton.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/RecordButton/RecordButton-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RecordButton/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/RecordButton/RecordButton.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = RecordButton;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		8503D2D183C5F1E72272122B7B1E1251 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F477FFB93DAA2807772A0BE5E71AC743 /* QuadratTouch.xcconfig */;
+			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -453,7 +604,6 @@
 				MODULEMAP_FILE = "Target Support Files/QuadratTouch/QuadratTouch.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = QuadratTouch;
-				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -462,11 +612,10 @@
 			};
 			name = Release;
 		};
-		6C1548538F4499DE4AA914824399873F /* Debug */ = {
+		A5FCA1730CC90D7299BF2B20E8512B7C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 20619FF4CC8C6C0761475166CDFD9DCC /* QuadratTouch.xcconfig */;
+			baseConfigurationReference = 591F54E7ECA6B078EED43873D3B4F220 /* RecordButton.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -474,23 +623,21 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/QuadratTouch/QuadratTouch-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/QuadratTouch/Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/RecordButton/RecordButton-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RecordButton/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/QuadratTouch/QuadratTouch.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = QuadratTouch;
-				PROVISIONING_PROFILE = "";
+				MODULEMAP_FILE = "Target Support Files/RecordButton/RecordButton.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = RecordButton;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		A70CDAD61F90AC503C7D04CC22DA2923 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -531,38 +678,7 @@
 			};
 			name = Debug;
 		};
-		A790025E6402B9D3740F9C429663F74F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C1BF6EEEF86FCF3195153AF0E2A1DA5 /* Pods-Molocate.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Molocate/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Molocate/Pods-Molocate.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = Pods_Molocate;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		C24B4C4F4E76C895103E6245126D445F /* Release */ = {
+		C0F32B8C62E908F066EC6D306962702E /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 36BA23B7C064B9F4BE5479D246A2A31E /* Pods-Molocate.release.xcconfig */;
 			buildSettings = {
@@ -591,6 +707,34 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		CD32B8EF1C980867348D15B5ACB89EAE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F477FFB93DAA2807772A0BE5E71AC743 /* QuadratTouch.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/QuadratTouch/QuadratTouch-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/QuadratTouch/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/QuadratTouch/QuadratTouch.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = QuadratTouch;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		FB45FFD90572718D82AB9092B750F0CA /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -638,20 +782,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F2A7C3647CB44F4D39362AD6D8053665 /* Build configuration list for PBXNativeTarget "Pods-Molocate" */ = {
+		36510249D7AE582F806CB5172D4B13BB /* Build configuration list for PBXNativeTarget "Pods-Molocate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A790025E6402B9D3740F9C429663F74F /* Debug */,
-				C24B4C4F4E76C895103E6245126D445F /* Release */,
+				2B62F3FE5A4934EBAEF4919A82545AEE /* Debug */,
+				C0F32B8C62E908F066EC6D306962702E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F5E4F57B23994EF3ACD8EBB40ACEA1C6 /* Build configuration list for PBXNativeTarget "QuadratTouch" */ = {
+		8F06ABFA378019B57EB9626D7D8D30A7 /* Build configuration list for PBXNativeTarget "QuadratTouch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6C1548538F4499DE4AA914824399873F /* Debug */,
-				5280A7E40833CCC604A4EA42742D4757 /* Release */,
+				CD32B8EF1C980867348D15B5ACB89EAE /* Debug */,
+				8503D2D183C5F1E72272122B7B1E1251 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		980EBAB7E284DD502F6E21883FDCF1C4 /* Build configuration list for PBXNativeTarget "RecordButton" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47F025B461A6D15CB0A053DCA3B13A2C /* Debug */,
+				A5FCA1730CC90D7299BF2B20E8512B7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

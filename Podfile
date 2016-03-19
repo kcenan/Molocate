@@ -10,6 +10,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 pod 'QuadratTouch', '>= 1.0'
+pod "RecordButton"
 
 end
 
