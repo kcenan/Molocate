@@ -17,7 +17,7 @@ import CoreLocation
 var origin:CGFloat = 0.0
 var frame:CGRect = CGRect()
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
 
     var loginActive = true
     @IBOutlet var username: UITextField!
@@ -53,6 +53,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     
+    func textField(textField: UITextField!, shouldChangeCharactersInRange range: NSRange, replacementString string: String!) -> Bool {
+        
+        let maxLength = 20
+        let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq").invertedSet
+        let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
+        let numberFiltered = compSepByCharInSet.joinWithSeparator("")
+        let currentString: NSString = textField.text!
+        let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
+        
+        if(string == numberFiltered && newString.length <= maxLength){
+            return true
+        }else{
+            return false
+        }
+    }
     
     
    
