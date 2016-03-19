@@ -67,13 +67,13 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return videoArray.count
+        return 6
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         
-        let cell = videoCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
+        let cell = notificationCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
         
         
         return cell
@@ -146,7 +146,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         return 9
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let myCell : myCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as! myCollectionViewCell
+        let myCell : myCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! myCollectionViewCell
         let backgroundView = UIView()
         backgroundView.backgroundColor = swiftColor2
         myCell.selectedBackgroundView = backgroundView

@@ -28,6 +28,11 @@ class notificationCell: UITableViewCell {
         
        
         myButton = UIButton()
+        //size Dynamic : CGSize = CGSize(
+        //CGSize sizeDynamic  = [str sizeWithFont:[UIFont fontWithName:@"Arial-BoldMT" size:14] constrainedToSize:CGSizeMake(CGFLOAT_MAX,CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping]
+        
+        
+        
         myButton.frame = CGRectMake(50, gap, 100 , 40)
         myButton.titleLabel?.adjustsFontSizeToFitWidth = true
         myButton.titleLabel?.numberOfLines = 1
@@ -36,9 +41,13 @@ class notificationCell: UITableViewCell {
         contentView.addSubview(myButton)
         
         myLabel = UILabel()
-        myLabel.frame = CGRectMake(160, gap , screenSize.size.width - 165, 40)
-        myLabel.text = "Sizi takip etti."
+        
+        //myLabel.text = "Sizi takip etti."
         myLabel.adjustsFontSizeToFitWidth = true
+        myLabel.text = "Test label text" // sample label text
+        let labelTextWidth = myLabel?.intrinsicContentSize().width
+        let labelTextHeight = myLabel?.intrinsicContentSize().height
+        myLabel.frame = CGRectMake(160, gap , labelTextWidth!, 40)
         myLabel.numberOfLines = 1
         contentView.addSubview(myLabel)
     }
