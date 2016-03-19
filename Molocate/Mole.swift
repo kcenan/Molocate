@@ -1,7 +1,7 @@
 import UIKit
 import SystemConfiguration
 
-let baseUrl = "http://molocate.elasticbeanstalk.com/"
+let baseUrl = "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/"
 
 
 struct videoInf{

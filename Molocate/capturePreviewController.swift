@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 import AVKit
-import RecordButton
+
 
 
 
@@ -62,7 +62,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             "content-disposition": "attachment;filename=deneme.mp4",
             "cache-control": "no-cache"
         ]
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://molocate.elasticbeanstalk.com/video/upload/")!,
+        let request = NSMutableURLRequest(URL: NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/upload/")!,
             cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData,
             timeoutInterval: 10.0)
         request.HTTPMethod = "POST"
@@ -113,8 +113,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                            // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                             
                             // create post request
-                            _ = NSURL(string: "http://molocate.elasticbeanstalk.com/video/update/")!
-                            let request = NSMutableURLRequest(URL: NSURL(string: "http://molocate.elasticbeanstalk.com/video/update/")!,
+                           
+                            let request = NSMutableURLRequest(URL: NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/update/")!,
                                 cachePolicy: .UseProtocolCachePolicy,
                                 timeoutInterval: 10.0)
                             request.HTTPMethod = "POST"

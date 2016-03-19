@@ -55,7 +55,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             
             // create post request
-            let url = NSURL(string: "http://molocate.elasticbeanstalk.com/video/api/explore/all/")!
+            let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/api/explore/all/")!
             let request = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "GET"
             

@@ -11,6 +11,7 @@ import AssetsLibrary
 import AVFoundation
 import Photos
 import QuadratTouch
+import RecordButton
 
 
 
@@ -41,6 +42,10 @@ var audioAsset:AVAsset!
 typealias JSONParameters = [String: AnyObject]
 
 class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptureFileOutputRecordingDelegate{
+    var recordButton : RecordButton!
+    var progressTimer : NSTimer!
+    var progress : CGFloat! = 0
+    
     var rootLayer = CALayer()
     var camera = true
     var videoURL = NSURL()
@@ -95,9 +100,21 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         location = locationManager.location
         deviceLat = locationManager.location?.coordinate.latitude
         deviceLon = locationManager.location?.coordinate.longitude
-    
+        let width = self.view.frame.width
+        let height = (self.view.frame.height-self.view.frame.width-2*self.toolbar.frame.height-self.toolbarYancı.frame.height)
+        let topRect = CGRect(x: 0, y: self.view.frame.width+self.toolbar.frame.height+self.toolbarYancı.frame.height, width: width, height: height)
+        let nview = UIView(frame: topRect)
+        
+        recordButton = RecordButton(frame: CGRectMake(0,0,topRect.height/2,topRect.height/2))
+        recordButton.center = nview.center
+        recordButton.progressColor = .redColor()
+        recordButton.closeWhenFinished = false
+        recordButton.buttonColor = swiftColor
         recordButton.addTarget(self, action: "holdDown", forControlEvents: .TouchDown)
         recordButton.addTarget(self, action: "holdRelease", forControlEvents: .TouchUpInside)
+        recordButton.center.x = self.view.center.x
+        view.addSubview(recordButton)
+        
         self.captureSession = AVCaptureSession()
         
         self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL)
@@ -456,7 +473,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     
     
-    @IBOutlet var recordButton: UIButton!
+    
     /*
     @IBAction func startRecord(sender: AnyObject) {
         self.camChange.enabled = false
@@ -826,7 +843,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         }
 
     func holdDown(){
-        print("tuttu")
+        
+        self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
         self.cameraChange.enabled = false
         self.recordButton.enabled = false
        
@@ -858,6 +876,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
             }
             
+            if self.progress < 1 {
             if !self.videoOutput!.recording {
                 if UIDevice.currentDevice().multitaskingSupported {
                     // Setup background task. This is needed because the -[captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:]
@@ -890,7 +909,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 
             }
             
-            
+            }
             
             
             
@@ -908,9 +927,24 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
 
     }
+    
+    func updateProgress() {
+        
+        let maxDuration = CGFloat(15) // Max duration of the recordButton
+        
+        progress = progress + (CGFloat(0.05) / maxDuration)
+        recordButton.setProgress(progress)
+        
+        if progress >= 1 {
+            progressTimer.invalidate()
+        }
+        
+    }
+
 
     func holdRelease(){
-        
+        self.progressTimer.invalidate()
+
         if self.isFlashMode {
         let device = self.videoDeviceInput.device
         do {
@@ -932,7 +966,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         } catch _ {}
             
         }
+        
+        if self.videoOutput!.recording {
         self.videoOutput?.stopRecording()
+        }
         
     }
     

@@ -92,7 +92,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             collectionView.hidden = false
             tableView.frame = CGRectMake(0, 88, screenSize.width, screenSize.height - 88)
             videoArray.removeAll()
-            let url = NSURL(string: "http://molocate.elasticbeanstalk.com/video/api/explore/all/")!
+            let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/api/explore/all/")!
             self.videoArray.removeAll()
             Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
