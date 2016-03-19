@@ -74,7 +74,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             if (error != nil) {
                 print(error)
             } else {
-                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 do {
                     let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
                     

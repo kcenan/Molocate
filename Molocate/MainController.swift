@@ -30,7 +30,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     var venues: [JSONParameters]!
     let distanceFormatter = MKDistanceFormatter()
     var currentTask: Task?
-    
+    var pressedLike: Bool = false
+    var pressedFollow: Bool = false
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     
@@ -51,7 +52,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         venueTable.hidden = true
         searchText.delegate = self
-       
+        
         self.player1 = Player()
         self.player1.delegate = self
         self.player1.playbackLoops = true
@@ -166,49 +167,49 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         let front = ceil(y/rowHeight)
         //print(front * rowHeight/2 - y)
         dispatch_async(dispatch_get_main_queue()){
-        if front * rowHeight-rowHeight/2 - y < 0 {
-            if (front) % 2 == 1{
-                
-                if self.player1.playbackState.description != "Playing" {
-                    self.player2.stop()
-                    self.player1.playFromBeginning()
-                    //print("player1")
-                }
-            }else{
-                if self.player2.playbackState.description != "Playing"{
-                    self.player1.stop()
-                    self.player2.playFromBeginning()
-                    //print("player2")
+            if front * rowHeight-rowHeight/2 - y < 0 {
+                if (front) % 2 == 1{
+                    
+                    if self.player1.playbackState.description != "Playing" {
+                        self.player2.stop()
+                        self.player1.playFromBeginning()
+                        //print("player1")
+                    }
+                }else{
+                    if self.player2.playbackState.description != "Playing"{
+                        self.player1.stop()
+                        self.player2.playFromBeginning()
+                        //print("player2")
+                    }
                 }
             }
-        }
         }
         
     }
     
     func tableView(atableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if atableView == tableView {
-        var rowHeight:CGFloat = 0
-        
-        switch(choosedIndex)
-        {
-        case 0:
-            rowHeight = screenSize.width + 138
-            return rowHeight
+            var rowHeight:CGFloat = 0
             
-        case 1:
-            
-            rowHeight = screenSize.width + 138 //screenSize.width + 90
-            return rowHeight
-            
-        case 2:
-            rowHeight = 44
-            return rowHeight
-            
-        default:
-            rowHeight = 44
-            return rowHeight
-        }
+            switch(choosedIndex)
+            {
+            case 0:
+                rowHeight = screenSize.width + 138
+                return rowHeight
+                
+            case 1:
+                
+                rowHeight = screenSize.width + 138 //screenSize.width + 90
+                return rowHeight
+                
+            case 2:
+                rowHeight = 44
+                return rowHeight
+                
+            default:
+                rowHeight = 44
+                return rowHeight
+            }
         } else {
             return 44
         }
@@ -217,18 +218,18 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
-        
-        if( (indexPath.row%8 == 0)&&(nextU != nil)){
             
-            Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
-                    for item in data!{
-                        self.videoArray.append(item)
-                    }
-                    self.tableView.reloadData()
-                }
+            if( (indexPath.row%8 == 0)&&(nextU != nil)){
                 
-            })
+                Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
+                    dispatch_async(dispatch_get_main_queue()){
+                        for item in data!{
+                            self.videoArray.append(item)
+                        }
+                        self.tableView.reloadData()
+                    }
+                    
+                })
             }
         }
         else {
@@ -240,7 +241,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     func tableView(atableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if atableView == tableView {
-        return videoArray.count
+            return videoArray.count
         } else {
             if let venues = self.venues {
                 return venues.count
@@ -250,60 +251,80 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     
     func tableView(atableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+       
         if atableView == tableView {
-        let index = indexPath.row
-        let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
-
-        cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
-            , caption: videoArray[index].caption, profilePic:  videoArray[index].userpic
-        )
-        cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-        if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
-            cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
-        }else{
-            cell.followButton.hidden = true
-        }
-        cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
-
-        if(videoArray[indexPath.row].isLiked == 0) {
-            //different symbols
-        }else{
-            cell.likeButton.backgroundColor = UIColor.whiteColor()
-        }
-        cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
-        cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
-        cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
-
-        
-        dispatch_async(dispatch_get_main_queue()){
-        if indexPath.row % 2 == 1 {
-            //self.player1.stop()
-            self.player1.setUrl(self.videoArray[indexPath.row].urlSta)
-            self.player1.view.frame = cell.newRect
-            cell.contentView.addSubview(self.player1.view)
-            //self.player1.playFromBeginning()
-        }else{
-            //self.player2.stop()
-            self.player2.setUrl(self.videoArray[indexPath.row].urlSta)
-            self.player2.view.frame = cell.newRect
-            cell.contentView.addSubview(self.player2.view)
-            //self.player2.playFromBeginning()
-        }
-        }
-        
-        //        if(!cell.player.isSet()){
-        //            cell.player = Videos(url: videoArray[indexPath.row].urlSta.absoluteString)
-        //            cell.player.layer.frame = cell.newRect
-        //            cell.layer.addSublayer(cell.player.layer)
-        //            cell.player.Play()
-        //        }
-        return cell
+            
+            if !pressedLike && !pressedFollow {
+                let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
+                let index = indexPath.row
+                
+                cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
+                    , caption: videoArray[index].caption, profilePic:  videoArray[index].userpic
+                )
+                
+                cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+                
+                if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
+                    cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+                }else{
+                    cell.followButton.hidden = true
+                }
+                
+                cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+                cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+                cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
+                cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
+                
+                
+                dispatch_async(dispatch_get_main_queue()){
+                    if indexPath.row % 2 == 1 {
+                        //self.player1.stop()
+                        self.player1.setUrl(self.videoArray[indexPath.row].urlSta)
+                        self.player1.view.frame = cell.newRect
+                        cell.contentView.addSubview(self.player1.view)
+                        //self.player1.playFromBeginning()
+                    }else{
+                        //self.player2.stop()
+                        self.player2.setUrl(self.videoArray[indexPath.row].urlSta)
+                        self.player2.view.frame = cell.newRect
+                        cell.contentView.addSubview(self.player2.view)
+                        //self.player2.playFromBeginning()
+                    }
+                }
+                return cell
+            }else{
+                let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
+                if pressedLike {
+                    pressedLike = false
+                    cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+                    if(videoArray[indexPath.row].isLiked == 0) {
+                        cell.likeButton.tintColor = UIColor.blackColor()
+                    }else{
+                        cell.likeButton.tintColor = UIColor.whiteColor()
+                    }
+                }else if pressedFollow{
+                    pressedFollow = true
+                    
+                    cell.followButton.hidden = videoArray[indexPath.row].isFollowing == 1 ? true:false
+                    
+                }
+                return cell
+            }
+            //        if(!cell.player.isSet()){
+            //            cell.player = Videos(url: videoArray[indexPath.row].urlSta.absoluteString)
+            //            cell.player.layer.frame = cell.newRect
+            //            cell.layer.addSublayer(cell.player.layer)
+            //            cell.player.Play()
+            //        }
+       
             
         } else {
+            
             let cell = venueTable.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
             let venue = venues[indexPath.row]
             if let venueLocation = venue["location"] as? JSONParameters {
@@ -324,23 +345,26 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
         print("username e basıldı at index path: \(buttonRow)")
-        let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
-        //controller.ANYPROPERTY=THEVALUE // If you want to pass value
-        controller.view.frame = self.view.bounds;
-        controller.willMoveToParentViewController(self)
-        self.view.addSubview(controller.view)
-        self.addChildViewController(controller)
-        controller.didMoveToParentViewController(self)
+        
         Molocate.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
+                user = data
+                let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
+                //controller.ANYPROPERTY=THEVALUE // If you want to pass value
+                controller.view.frame = self.view.bounds;
+                controller.willMoveToParentViewController(self)
+                self.view.addSubview(controller.view)
+                self.addChildViewController(controller)
+                controller.didMoveToParentViewController(self)
                 controller.username.text = data.username
                 controller.followingsCount.setTitle("\(data.following_count)", forState: .Normal)
                 controller.followersCount.setTitle("\(data.follower_count)", forState: .Normal)
-                controller.user = data
             }
         }
         
     }
+    
+    
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
         print("place e basıldı at index path: \(buttonRow) ")
@@ -353,6 +377,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
+        pressedFollow = true
         print("followa basıldı at index path: \(buttonRow) ")
         
         Molocate.follow (videoArray[buttonRow].username){ (data, response, error) -> () in
@@ -371,7 +396,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
         print("like a basıldı at index path: \(buttonRow) ")
-        
+        pressedLike = true
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
         var indexes = [NSIndexPath]()
         indexes.append(indexpath)
@@ -382,28 +407,26 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             self.videoArray[buttonRow].isLiked=1
             self.videoArray[buttonRow].likeCount+=1
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
-
+            
             Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
-                print(data)
-          
-              
+                dispatch_async(dispatch_get_main_queue()){
+                    print(data)
+                }
             }
-        }
         }else{
             sender.highlighted = false
             
             self.videoArray[buttonRow].isLiked=0
             self.videoArray[buttonRow].likeCount-=1
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
-          
-
+            
+            
             Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
-                   
-                   
-
+                    
+                    
+                    
                 }
             }
         }
@@ -468,13 +491,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     @IBAction func openCamera(sender: AnyObject) {
         if isSearching != true {
-        self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
+            self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
         } else {
             self.cameraButton.image = UIImage(named: "technology3.png")
             self.cameraButton.title = nil
             self.isSearching = false
-            self.venueTable.layer.removeFromSuperlayer()
-            //self.searchText.resignFirstResponder()
+            self.venueTable.hidden = true
+            self.searchText.resignFirstResponder()
         }
     }
     
@@ -529,13 +552,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     override func viewDidDisappear(animated: Bool) {
         //self.tableView.removeFromSuperview()
-//        if isSearching == true {
-//            self.cameraButton.image = UIImage(named: "technology3.png")
-//            self.cameraButton.title = nil
-//            self.isSearching = false
-//            self.venueTable.layer.removeFromSuperlayer()
-//            self.searchText.resignFirstResponder()
-//        }
+        if isSearching == true {
+            self.cameraButton.image = UIImage(named: "technology3.png")
+            self.cameraButton.title = nil
+            self.isSearching = false
+            self.venueTable.hidden = true
+            self.searchText.resignFirstResponder()
+        }
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -573,5 +596,5 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         return true
     }
-
+    
 }

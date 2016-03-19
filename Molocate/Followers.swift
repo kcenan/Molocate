@@ -42,7 +42,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         self.myTable.frame         =   CGRectMake(0, 60, self.screenSize.width, self.screenSize.height-60);
         if(follewersclicked){
             self.TitleLabel.text = "Followers"
-            Molocate.getFollowers(currentUser.username) { (data, response, error, count, next, previous) -> () in
+            Molocate.getFollowers(user.username) { (data, response, error, count, next, previous) -> () in
             
                 for thing in data{
                 self.users.append(thing)
@@ -53,7 +53,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             
         }}else{
                 self.TitleLabel.text = "Followings"
-            Molocate.getFollowings(currentUser.username) { (data, response, error, count, next, previous) -> () in
+            Molocate.getFollowings(user.username) { (data, response, error, count, next, previous) -> () in
                 
                 for thing in data{
                     self.users.append(thing)

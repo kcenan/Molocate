@@ -10,13 +10,12 @@ import UIKit
 
 
    //post sayısı ve taglenen toplam video sayısı eklenecek(çağatay koymadıysa eklet)
-
+var user:User!
 
 
 class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     //true ise kendi false başkası
     var who = false
-    var user:User!
     @IBOutlet var settings: UITableView!
     @IBOutlet var scrollView: UIScrollView!
    
@@ -30,22 +29,25 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var followersCount: UIButton!
     @IBOutlet var FollowButton: UIBarButtonItem!
+    
     @IBAction func FollowButton(sender: AnyObject) {
-        if(choosedIndex < 3){
-            if user.isFollowing{
-                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
-                print("unfollow"+data)
-                            })
-                    } else {
-                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
-                print("follow"+data)
-                    })
-        }
+ 
+        if(user.username == currentUser.username){
+            
         }else {
+            if !user.isFollowing{
+                FollowButton.image = UIImage(named: "follow1.png")
+                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
+                    print("unfollow"+data)
+                })
+            } else {
+                FollowButton.image = UIImage(named: "balloon.png")
+                Molocate.unfollow(user.username, completionHandler: { (data, response, error) -> () in
+                    print("follow"+data)
+                })
+            }
             showTable()
             scrollView.userInteractionEnabled = false
-            
-            
             UIView.animateWithDuration(0.75) { () -> Void in
             }
         }
@@ -118,15 +120,24 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
         
         if(choosedIndex==3){
-            Molocate.getCurrentUser({ (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
-                    self.username.text = data.username
-                    self.followingsCount.setTitle("\(data.following_count)", forState: .Normal)
-                    self.followersCount.setTitle("\(data.follower_count)", forState: .Normal)
-                    self.user = data
+                    user = currentUser
+                    username.text = user.username
+                    self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
+                    self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
+                    self.FollowButton.image = nil
                     choosedIndex = 4
+        }else{
+            
+                self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
+                self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
+                if(user.isFollowing){
+                    self.FollowButton.image = UIImage(named: "balloon.png")
+                }else{
+                    self.FollowButton.image = UIImage(named: "follow1.png")
                 }
-            })
+                choosedIndex = 4
+            
+            
         }
         
     

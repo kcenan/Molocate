@@ -83,7 +83,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                     do {
                         let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
                         
-                        print("Result -> \(result)")
+                        //print("Result -> \(result)")
                         if(result["count"] as! Int != 0){
                         let videos = result["results"] as! NSArray
                         

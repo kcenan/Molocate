@@ -105,7 +105,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         let topRect = CGRect(x: 0, y: self.view.frame.width+self.toolbar.frame.height+self.toolbarYancı.frame.height, width: width, height: height)
         let nview = UIView(frame: topRect)
         
-        recordButton = RecordButton(frame: CGRectMake(0,0,topRect.height/2,topRect.height/2))
+        recordButton = RecordButton(frame: CGRectMake(0,0,2*topRect.height/3,2*topRect.height/3))
         recordButton.center = nview.center
         recordButton.progressColor = .redColor()
         recordButton.closeWhenFinished = false
