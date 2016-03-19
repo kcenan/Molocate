@@ -11,36 +11,19 @@ import UIKit
 class commentCell: UITableViewCell {
 
     var screenSize = UIScreen.mainScreen().bounds
-    
-    @IBOutlet weak var deneme: UILabel!
-      var commentUser: UIButton!
-      var profileImage:  UIButton!
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:)")}
-    
-    
-        override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-            super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        commentUser = UIButton()
-        commentUser.frame = CGRectMake(50 ,4, screenSize.width - 50 , 16)
-        //commentUser.setBackgroundImage(mole, forState: .Normal)
-        commentUser.setTitleColor(swiftColor , forState: UIControlState.Normal)
-        commentUser.setTitle("ddasasdd", forState: .Normal)
-        commentUser.titleLabel!.font =  UIFont(name: "Late-Light.tff", size: 10)
-        commentUser.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        contentView.addSubview(commentUser)
-        
-        let image = UIImage(named: "change.png") as UIImage?
-        profileImage = UIButton()
-        profileImage.frame = CGRectMake(4 ,4, 36 , 36)
-        profileImage.setBackgroundImage(image, forState: .Normal)
-        profileImage.titleLabel?.textColor = swiftColor
-        //profileImage.titleLabel?.text = "dsalkaasl"
-        contentView.addSubview(profileImage)
+   
+    @IBOutlet var label4: UILabel!
+    @IBOutlet var label3: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
     }
     
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
+    }
     
     
     
