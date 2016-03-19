@@ -47,10 +47,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     var sessionQueue: dispatch_queue_t?
     var vurl: NSURL?
     var topLayer = CALayer()
+    var flashLayer = CALayer()
     var bottomLayer = CALayer()
     var firstAsset:AVAsset!
     var secondAsset:AVAsset!
-  //  var videoFile: PFFile?
+    var isFlashMode = false
     var deviceLat: CLLocationDegrees?
     var deviceLon: CLLocationDegrees?
     //var placesClient: GMSPlacesClient?
@@ -157,10 +158,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
             self.captureSession!.beginConfiguration()
             
+            
             if self.captureSession!.canAddInput(videoDeviceInput) {
                 self.captureSession!.addInput(videoDeviceInput)
                 self.videoDeviceInput = videoDeviceInput
-                
                 dispatch_async(dispatch_get_main_queue()) {
                     
                     // This part is for the square shaped capture. Actually our capture is on all screen like normal camera but we are reducing that into square shaped with the two cover layer.
@@ -184,6 +185,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     self.view.layer.addSublayer(self.toolbar.layer)
                     self.view.layer.addSublayer(self.toolbarYancı.layer)
                     self.view.layer.addSublayer(self.recordButton.layer)
+                    self.view.layer.addSublayer(self.flashButton.layer)
 
                     //self.view.layer.addSublayer(self.videoDoneOutlet.layer)
                     
@@ -422,7 +424,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             if self.captureSession!.canAddInput(videoDeviceInput) {
                 NSNotificationCenter.defaultCenter().removeObserver(self, name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: currentVideoDevice)
                 
-                CameraViewController.setFlashMode(AVCaptureFlashMode.Auto, forDevice: videoDevice!)
+                CameraViewController.setFlashMode(AVCaptureFlashMode.On, forDevice: videoDevice!)
+                
                 
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "subjectAreaDidChange:",  name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: videoDevice)
                 
@@ -684,6 +687,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 defer {device.unlockForConfiguration()}
                 // Setting (focus/exposure)PointOfInterest alone does not initiate a (focus/exposure) operation.
                 // Call -set(Focus/Exposure)Mode: to apply the new point of interest.
+                
                 if device.focusPointOfInterestSupported && device.isFocusModeSupported(focusMode) {
                     device.focusPointOfInterest = point
                     device.focusMode = focusMode
@@ -828,6 +832,31 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
        
         
         dispatch_async(self.sessionQueue!) {
+            if self.isFlashMode {
+            let device = self.videoDeviceInput.device
+            do {
+                try device.lockForConfiguration()
+                defer {device.unlockForConfiguration()}
+                if device.isFlashModeSupported(AVCaptureFlashMode.On){
+                    device.torchMode = .On
+                }else {
+                    print("burda")
+                    dispatch_async(dispatch_get_main_queue()) {
+                    let newFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+                    self.flashLayer.frame = newFrame
+                    self.flashLayer.backgroundColor = UIColor.whiteColor().CGColor
+                    self.flashLayer.opacity = 0.7
+                    self.view.layer.addSublayer(self.flashLayer)
+                    }
+                    
+                }
+                
+
+            } catch let error as NSError {
+                NSLog("Could not lock device for configuration: %@", error)
+            } catch _ {}
+        
+            }
             
             if !self.videoOutput!.recording {
                 if UIDevice.currentDevice().multitaskingSupported {
@@ -881,7 +910,28 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
 
     func holdRelease(){
-        print("Hop bıraktı")
+        
+        if self.isFlashMode {
+        let device = self.videoDeviceInput.device
+        do {
+            try device.lockForConfiguration()
+            defer {device.unlockForConfiguration()}
+            if device.isFlashModeSupported(AVCaptureFlashMode.On){
+                device.torchMode = .Off
+            }else {
+                print("burda")
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.flashLayer.removeFromSuperlayer()
+                }
+                
+            }
+            
+            
+        } catch let error as NSError {
+            NSLog("Could not lock device for configuration: %@", error)
+        } catch _ {}
+            
+        }
         self.videoOutput?.stopRecording()
         
     }
@@ -970,9 +1020,21 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         return instruction
     }
+    
+    
   
     
+    @IBOutlet var flashButton: UIButton!
 
+    @IBAction func flashButton(sender: AnyObject) {
+        if isFlashMode == false {
+            isFlashMode = true
+            flashButton.setTitle("Kapa", forState: .Normal)
+        } else {
+            isFlashMode = false
+            flashButton.setTitle("Ac", forState: .Normal)
+        }
+    }
 
 }
 
