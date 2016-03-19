@@ -128,7 +128,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         name.frame = CGRectMake(0, 60 + (scr * (32 / 120)), screenWidth / 3, (scr * 6) / 120)
         name.text = "İsim Soyisim:"
         name.textAlignment = .Right
-        name.font = UIFont (name: "Lato-Regular", size: 16)
+        name.font = UIFont (name: "LatoTR-Regular", size: 16)
         view.addSubview(name)
         
         nameText = UITextField()
@@ -152,18 +152,18 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         mail.frame = CGRectMake(0, 60 + (scr * (42 / 120)), screenWidth / 3, (scr * 6) / 120)
         mail.text = "E-posta:"
         mail.textAlignment = .Right
-        mail.font = UIFont (name: "Lato-Regular", size: 16)
+        mail.font = UIFont (name: "LatoTR-Regular", size: 16)
         view.addSubview(mail)
         
         gender = UILabel()
         gender.frame = CGRectMake(0, 60 + (scr * (52 / 120)), screenWidth / 3, (scr * 6) / 120)
         gender.text = "Cinsiyet:"
         gender.textAlignment = .Right
-        gender.font = UIFont (name: "Lato-Regular", size: 16)
+        gender.font = UIFont (name: "LatoTR-Regular", size: 16)
         view.addSubview(gender)
         
         birthday = UILabel()
-        birthday.font = UIFont (name: "Lato-Regular", size: 16)
+        birthday.font = UIFont (name: "LatoTR-Regular", size: 16)
         birthday.frame = CGRectMake(0, 60 + (scr * (62 / 120)), screenWidth / 3, (scr * 16) / 120)
         birthday.text = "Doğum Tarihi:"
         birthday.textAlignment = .Right
@@ -188,6 +188,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         kadın = UILabel()
         kadın.frame = CGRectMake((screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3 - 80, 60 + (scr * (52 / 120)), 50, (scr * 6) / 120)
         kadın.text = "Kadın"
+        kadın.font = UIFont (name: "LatoTR-Regular", size: 16)
         kadın.textAlignment = .Right
         view.addSubview(kadın)
         
@@ -199,7 +200,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         saveButton.layer.cornerRadius = 10
         saveButton.layer.borderWidth = 0
         saveButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        saveButton.titleLabel!.font =  UIFont(name: "Lato-Bold.tff", size: 18)
+        saveButton.titleLabel!.font =  UIFont(name: "LatoTR-Bold.tff", size: 18)
         self.view.addSubview(saveButton)
         
         let changePhoto   = UIButton(type: UIButtonType.System) as UIButton
@@ -207,7 +208,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         changePhoto.backgroundColor = .None
         changePhoto.titleLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping;
         changePhoto.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        changePhoto.titleLabel!.font =  UIFont(name: "Lato-Regular.tff", size: 20)
+        changePhoto.titleLabel!.font =  UIFont(name: "LatoTR-Regular.tff", size: 20)
         changePhoto.setTitle("Fotoğrafı\nDeğiştir", forState: UIControlState.Normal)
         changePhoto.addTarget(self, action: "changePhoto:", forControlEvents: UIControlEvents.TouchUpInside)
         changePhoto.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
@@ -216,7 +217,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         let password   = UIButton(type: UIButtonType.System) as UIButton
         password.frame = CGRectMake(30 , 60 + (scr * 82) / 120 , screenWidth - 60 , (scr * 6) / 120 )
         password.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        password.titleLabel!.font =  UIFont(name: "Lato-Bold.tff", size: 16)
+        password.titleLabel!.font =  UIFont(name: "LatoTR-Bold.tff", size: 16)
         password.backgroundColor = swiftColor
         password.setTitle("Şifre Değiştir", forState: UIControlState.Normal)
         password.addTarget(self, action: "changePassword:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -229,6 +230,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         erkek = UILabel()
         erkek.frame = CGRectMake((screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3 + 30, 60 + (scr * (52 / 120)) , 50, (scr * 6) / 120)
         erkek.text = "Erkek"
+        erkek.font = UIFont (name: "LatoTR-Regular", size: 16)
         erkek.textAlignment = .Left
         view.addSubview(erkek)
         

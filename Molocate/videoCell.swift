@@ -62,7 +62,7 @@ class videoCell: UITableViewCell {
         Username.setTitleColor(swiftColor, forState: .Normal)
         Username.contentHorizontalAlignment = .Left
         Username.setTitle("kcenan", forState: .Normal)
-        Username.titleLabel?.font = UIFont(name: "Lato-Light", size: 16)
+        Username.titleLabel?.font = UIFont(name: "LatoTR-Bold", size:14)
         //Username.addTarget(self, action: "pressedUsername:", forControlEvents:UIControlEvents.TouchUpInside)
         contentView.addSubview(Username)
         
@@ -72,13 +72,13 @@ class videoCell: UITableViewCell {
         placeName.titleLabel?.sizeToFit()
         placeName.contentHorizontalAlignment = .Left
         placeName.setTitle("koç university", forState: .Normal)
-        placeName.titleLabel?.font = UIFont(name: "Lato-Regular", size: 16)
+        placeName.titleLabel?.font = UIFont(name: "LatoTR-Regular", size: 16)
         contentView.addSubview(placeName)
         
         videoComment = UILabel()
         videoComment.frame = CGRectMake( 10 , 59 + screenSize.width , screenSize.width - 50 , 50)
         //yazı ortalama ekle
-        videoComment.font = UIFont(name: "Lato-Light", size: 14)
+        videoComment.font = UIFont(name: "LatoTR-Light", size: 14)
         videoComment.textAlignment = .Left
         
         videoComment.textColor = UIColor.blackColor()
@@ -89,7 +89,7 @@ class videoCell: UITableViewCell {
         videoTime.frame = CGRectMake( screenSize.width - 30  , 59 + screenSize.width , 20 , 20)
         //yazı ortalama ekle
         videoTime.text = "2s"
-        videoTime.font = UIFont(name: "Lato-Light", size: 14)
+        videoTime.font = UIFont(name: "LatoTR-Light", size: 14)
         videoTime.textAlignment = .Right
         videoTime.textColor = UIColor.blackColor()
         videoTime.sizeToFit()

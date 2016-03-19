@@ -12,7 +12,7 @@ var choosedIndex = 100
 
 class SideBarController: UITableViewController {
 
-    var menuArray = ["HABER KAYNAĞI","KEŞFET","BİLDİRİMLER","PROFİL"]
+    var menuArray = ["HABER KAYNAĞI","KEŞFET","BİLDİRİM MERKEZİ","PROFİL"]
    var tableData: [String] = ["home.png", "explore.png", "sound.png","people.png"]
     let cellIdentifier = "cell"
     var attractionImages = [String]()
@@ -50,15 +50,11 @@ class SideBarController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         var rowHeight:CGFloat = 0
-        if indexPath.row == 0{
-        rowHeight = screenSize.height / 8 + 15
-            return rowHeight
-        }
-        else{
-        rowHeight = screenSize.height/8 + 15
-            return rowHeight
-        }
         
+        rowHeight = screenSize.height / 8 + 20
+            return rowHeight
+    
+    
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

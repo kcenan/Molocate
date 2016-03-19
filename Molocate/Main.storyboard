@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -15,22 +15,6 @@
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-        </mutableArray>
-        <mutableArray key="Lato-Light.ttf">
-            <string>Lato-Light</string>
-            <string>Lato-Light</string>
-            <string>Lato-Light</string>
-            <string>Lato-Light</string>
-            <string>Lato-Light</string>
-            <string>Lato-Light</string>
-            <string>Lato-Light</string>
-            <string>Lato-Light</string>
         </mutableArray>
         <mutableArray key="Lato-Regular.ttf">
             <string>Lato-Regular</string>
@@ -44,9 +28,30 @@
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
+        </mutableArray>
+        <mutableArray key="LatoTR-Bold.ttf">
+            <string>LatoTR-Bold</string>
+            <string>LatoTR-Bold</string>
+            <string>LatoTR-Bold</string>
+            <string>LatoTR-Bold</string>
+            <string>LatoTR-Bold</string>
+            <string>LatoTR-Bold</string>
+        </mutableArray>
+        <mutableArray key="LatoTR-Light.ttf">
+            <string>LatoTR-Light</string>
+            <string>LatoTR-Light</string>
+            <string>LatoTR-Light</string>
+            <string>LatoTR-Light</string>
+            <string>LatoTR-Light</string>
+            <string>LatoTR-Light</string>
+            <string>LatoTR-Light</string>
+            <string>LatoTR-Light</string>
+            <string>LatoTR-Light</string>
+        </mutableArray>
+        <mutableArray key="LatoTR-Regular.ttf">
+            <string>LatoTR-Regular</string>
+            <string>LatoTR-Regular</string>
+            <string>LatoTR-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -83,7 +88,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z9w-cd-OPG" id="obK-Au-r1F">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -135,7 +140,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dSw-kf-gEf" id="13T-sa-khp">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSu-xo-ceV">
@@ -245,7 +250,7 @@
                                         <rect key="frame" x="0.0" y="28" width="328" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XQV-r9-eot" id="8lz-wL-sas">
-                                            <rect key="frame" x="0.0" y="0.0" width="328" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="328" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -970,21 +975,21 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mekanın adı" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8r-Pu-U4I">
-                                <rect key="frame" x="111" y="62" width="248" height="18"/>
+                                <rect key="frame" x="111" y="62" width="248" height="17"/>
                                 <color key="tintColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="26" id="h6G-Ml-hxs"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="15"/>
                                 <color key="textColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mekan adresi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WKk-GX-c8W">
-                                <rect key="frame" x="111" y="83" width="158" height="55"/>
+                                <rect key="frame" x="111" y="82" width="157" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="KzK-Da-t4g"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1027,15 +1032,23 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NgR-iF-VhF">
-                                <rect key="frame" x="280" y="80" width="76" height="30"/>
+                                <rect key="frame" x="279" y="79" width="77" height="30"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="79" id="EaH-ZH-lyv"/>
+                                    <constraint firstAttribute="width" constant="77" id="m4g-EG-Wkl"/>
                                     <constraint firstAttribute="width" constant="76" id="vW5-tD-SAp"/>
                                     <constraint firstAttribute="height" constant="30" id="znM-se-Eyu"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="14"/>
                                 <state key="normal" title="TAKİPÇİLER">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="EaH-ZH-lyv"/>
+                                        <exclude reference="vW5-tD-SAp"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="followersButton:" destination="gJM-YO-RNX" eventType="touchUpInside" id="0q7-4z-Jrc"/>
                                 </connections>
@@ -1046,12 +1059,12 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="Ihb-97-UwB"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="16"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="16"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="av1-qZ-kKJ">
-                                <rect key="frame" x="274" y="84" width="1" height="50"/>
+                                <rect key="frame" x="273" y="83" width="1" height="50"/>
                                 <color key="backgroundColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="I18-j9-1P4"/>
@@ -1060,7 +1073,7 @@
                                     <constraint firstAttribute="width" constant="1" id="uhE-Ww-FhW"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -1078,12 +1091,12 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4TG-FI-9yr">
-                                <rect key="frame" x="296" y="105" width="45" height="32"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4TG-FI-9yr">
+                                <rect key="frame" x="295" y="104" width="45" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="45" id="hBD-en-6Og"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="16"/>
                                 <state key="normal" title="0">
                                     <color key="titleColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1252,7 +1265,7 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="XBM-v8-jao"/>
                                     <constraint firstAttribute="width" constant="69" id="uUd-xm-hbT"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Regular" family="Lato TR" pointSize="17"/>
                                 <color key="textColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
@@ -1267,7 +1280,7 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="82" id="MLy-SY-0mp"/>
                                     <constraint firstAttribute="width" constant="72" id="RZZ-EU-3Wt"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Regular" family="Lato TR" pointSize="17"/>
                                 <color key="textColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
@@ -1281,7 +1294,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="3ez-sp-tjP"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Regular" family="Lato TR" pointSize="17"/>
                                 <color key="textColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1308,7 +1321,7 @@
                                     <constraint firstAttribute="height" constant="30" id="31q-kC-kH7"/>
                                     <constraint firstAttribute="width" constant="140" id="ME1-3y-Smc"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="17"/>
                                 <state key="normal" title="ONAYLA">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1520,7 +1533,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Gh3-Ac-WPv"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -1614,8 +1627,8 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Nry-qa-kiN"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="16"/>
-                                <state key="normal" title="▶︎ EKLEDİĞİN(0)">
+                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="16"/>
+                                <state key="normal" title="▶︎ GÖNDERİ(0)">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -1623,11 +1636,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J5j-tp-uOa">
-                                <rect key="frame" x="132" y="87" width="70" height="30"/>
+                                <rect key="frame" x="132" y="87" width="70" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="ddK-Yn-S9Q"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="15"/>
                                 <state key="normal" title="TAKİPÇİ">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1635,9 +1648,9 @@
                                     <action selector="followersButton:" destination="aR2-G9-Y6Y" eventType="touchUpInside" id="Te1-Ea-Yax"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axY-Qw-82Y">
-                                <rect key="frame" x="152" y="107" width="30" height="32"/>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axY-Qw-82Y">
+                                <rect key="frame" x="152" y="106" width="30" height="29"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="15"/>
                                 <state key="normal" title="0">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1646,11 +1659,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x9H-8C-bL8">
-                                <rect key="frame" x="253" y="87" width="70" height="30"/>
+                                <rect key="frame" x="253" y="87" width="70" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="plK-eW-9JO"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="15"/>
                                 <state key="normal" title="TAKİP">
                                     <color key="titleColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1659,11 +1672,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhK-qb-6wB">
-                                <rect key="frame" x="273" y="111" width="30" height="25"/>
+                                <rect key="frame" x="273" y="108" width="30" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="bIx-OI-DqA"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="15"/>
                                 <state key="normal" title="0">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1708,7 +1721,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="JpV-4Q-hpV"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="16"/>
                                 <color key="textColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1723,7 +1736,7 @@
                                     <constraint firstAttribute="width" constant="1" id="uVC-KP-hHp"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Dr-88-aas">
@@ -1732,8 +1745,8 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="0if-Kr-KnZ"/>
                                     <constraint firstAttribute="height" constant="50" id="v5o-79-b9D"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="16"/>
-                                <state key="normal" title="@ ETİKETLENDİĞİN(0)">
+                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="16"/>
+                                <state key="normal" title="@ ETİKET(0)">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -1746,8 +1759,8 @@
                                     <constraint firstAttribute="width" id="a7K-td-W8t"/>
                                     <constraint firstAttribute="height" constant="50" id="bEk-mZ-Zwg"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XUQ-wb-KMe">
@@ -1965,7 +1978,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uor-ij-HBG" id="lBi-5d-hZO">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2019,41 +2032,43 @@
                                 <rect key="frame" x="0.0" y="28" width="138" height="91"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="anM-Ny-BXk" id="E3e-QF-pdg">
-                                    <rect key="frame" x="0.0" y="0.0" width="138" height="90.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="138" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
-                                            <rect key="frame" x="8" y="52" width="104" height="30"/>
-                                            <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="14"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
+                                            <rect key="frame" x="8" y="48" width="122" height="34"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="34" id="6fw-b0-nm3"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XQN-J4-aRX">
-                                            <rect key="frame" x="41" y="6" width="38" height="38"/>
+                                            <rect key="frame" x="50" y="8" width="40" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="38" id="Pcl-PT-Rqa"/>
-                                                <constraint firstAttribute="width" constant="38" id="Rgm-I3-GZM"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="ORw-e1-j5o"/>
+                                                <constraint firstAttribute="height" constant="45" id="erd-xB-Nts"/>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="nKH-Kc-bdB"/>
+                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="40" id="sfY-Dh-Fcd"/>
+                                                <constraint firstAttribute="width" constant="45" id="vZn-HE-XT3"/>
+                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="40" id="zoF-OG-vgH"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="erd-xB-Nts"/>
+                                                    <exclude reference="vZn-HE-XT3"/>
+                                                </mask>
+                                            </variation>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="top" secondItem="E3e-QF-pdg" secondAttribute="topMargin" constant="44" id="2Kv-Kn-Jmt"/>
-                                        <constraint firstItem="XQN-J4-aRX" firstAttribute="centerX" secondItem="E3e-QF-pdg" secondAttribute="centerX" id="C1h-Pz-my1"/>
-                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="leading" secondItem="E3e-QF-pdg" secondAttribute="leadingMargin" id="CvC-lI-1sa"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="ILq-mB-5vY" secondAttribute="trailing" id="J6F-3z-EIv"/>
-                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="leading" secondItem="E3e-QF-pdg" secondAttribute="leadingMargin" id="JUd-is-wov"/>
-                                        <constraint firstItem="XQN-J4-aRX" firstAttribute="centerY" secondItem="E3e-QF-pdg" secondAttribute="centerY" constant="-20" id="Kzf-ed-wIk"/>
-                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="trailing" secondItem="E3e-QF-pdg" secondAttribute="trailingMargin" id="Ni5-y9-4zY"/>
-                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="top" secondItem="E3e-QF-pdg" secondAttribute="topMargin" id="ZiJ-5e-AQG"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="ILq-mB-5vY" secondAttribute="bottom" id="moJ-Dc-tHs"/>
-                                        <constraint firstItem="XQN-J4-aRX" firstAttribute="centerY" secondItem="E3e-QF-pdg" secondAttribute="centerY" constant="20" id="ngd-g5-asH"/>
+                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="top" secondItem="XQN-J4-aRX" secondAttribute="bottom" id="00B-SK-gCu"/>
+                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="trailing" secondItem="E3e-QF-pdg" secondAttribute="trailingMargin" id="PgV-Ph-v5o"/>
+                                        <constraint firstItem="XQN-J4-aRX" firstAttribute="centerX" secondItem="E3e-QF-pdg" secondAttribute="centerX" id="Y8N-tQ-vb3"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="ILq-mB-5vY" secondAttribute="bottom" id="haG-OV-201"/>
+                                        <constraint firstItem="ILq-mB-5vY" firstAttribute="leading" secondItem="E3e-QF-pdg" secondAttribute="leadingMargin" id="rUh-nL-p6W"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="ngd-g5-asH"/>
-                                            <exclude reference="ZiJ-5e-AQG"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="imageFrame" destination="XQN-J4-aRX" id="X4O-oh-1ZO"/>
@@ -2242,7 +2257,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nRD-f7-FQk" id="apf-PQ-g2y">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
