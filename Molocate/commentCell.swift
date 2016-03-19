@@ -10,12 +10,16 @@ import UIKit
 
 class commentCell: UITableViewCell {
 
+    @IBOutlet var comment: UILabel!
+    @IBOutlet var username: UIButton!
+    @IBOutlet var profilePhoto: UIButton!
     var screenSize = UIScreen.mainScreen().bounds
    
-    @IBOutlet var label4: UILabel!
-    @IBOutlet var label3: UILabel!
+   
     override func awakeFromNib() {
+      
         super.awakeFromNib()
+        
         // Initialization code
     }
     

@@ -41,10 +41,10 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         tableView.estimatedRowHeight = 68
         tableView.rowHeight = UITableViewAutomaticDimension
         hotelNames = [String](hotels.keys)
+        
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
-        
     }
     
     
@@ -63,8 +63,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! commentCell
         
         let hotelName = hotelNames[indexPath.row]
-        cell.label3.text = hotelName
-        cell.label4.text = hotels[hotelName]
+        cell.username.setTitle(hotelName, forState: .Normal)
+        cell.comment.text = hotels[hotelName]
         
         return cell
     }
