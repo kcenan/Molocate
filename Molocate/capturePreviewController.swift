@@ -275,16 +275,16 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         view.layer.addSublayer(textField.layer)
         
         caption = UIButton()
-        caption.frame.size.width = screenSize.width - 50
+        caption.frame.size.width = screenSize.width
         caption.frame.origin.x = 0
         caption.frame.origin.y = playerLayer!.frame.origin.y + screenSize.width
         caption.frame.size.height = screenSize.height - 192 - screenSize.width
         caption.titleLabel!.textColor = UIColor.blackColor()
         caption.backgroundColor = UIColor.whiteColor()
-        caption.titleLabel?.text = "buraya yorum falan ekle"
-        caption.titleLabel?.textColor = UIColor.blackColor()
-        caption.titleLabel?.textAlignment = .Left
+        caption.setTitle("Buraya basarak yorumunu ve arkadaşlarını ekleyebilirsin", forState: .Normal)
+        caption.setTitleColor(UIColor.blackColor(), forState: .Normal)
         caption.addTarget(self, action: "pressedCaption:", forControlEvents: UIControlEvents.TouchUpInside)
+        caption.contentHorizontalAlignment = .Left
         self.view.addSubview(caption)
         
         

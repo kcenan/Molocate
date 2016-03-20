@@ -21,34 +21,40 @@ class notificationCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         
-        let gap : CGFloat = 5
+        
         fotoButton = UIButton()
-        fotoButton.frame = CGRectMake(gap, gap, 40 , 40)
+        fotoButton.frame = CGRectMake(5 , 10 , 34 , 34)
+        let reportImage = UIImage(named: "elmander.jpg")! as UIImage
+        fotoButton.setBackgroundImage(reportImage, forState: UIControlState.Normal)
         contentView.addSubview(fotoButton)
         
-       
         myButton = UIButton()
-        //size Dynamic : CGSize = CGSize(
-        //CGSize sizeDynamic  = [str sizeWithFont:[UIFont fontWithName:@"Arial-BoldMT" size:14] constrainedToSize:CGSizeMake(CGFLOAT_MAX,CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping]
-        
-        
-        
-        myButton.frame = CGRectMake(50, gap, 100 , 40)
-        myButton.titleLabel?.adjustsFontSizeToFitWidth = true
         myButton.titleLabel?.numberOfLines = 1
-        myButton.setTitle("@alimertturker", forState: .Normal)
+        myButton.setTitle("amertturker123456789", forState: .Normal)
+        myButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size:14)
+        let buttonWidth = myButton.intrinsicContentSize().width
+        myButton.frame = CGRectMake(44 , 10 , buttonWidth + 5  , 34)
         myButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        myButton.contentHorizontalAlignment = .Left
+        myButton.setTitleColor(swiftColor, forState: UIControlState.Normal)
+        
+        print("ismin \(buttonWidth)")
         contentView.addSubview(myButton)
         
         myLabel = UILabel()
-        
-        //myLabel.text = "Sizi takip etti."
-        myLabel.adjustsFontSizeToFitWidth = true
-        myLabel.text = "Test label text" // sample label text
-        let labelTextWidth = myLabel?.intrinsicContentSize().width
-        let labelTextHeight = myLabel?.intrinsicContentSize().height
-        myLabel.frame = CGRectMake(160, gap , labelTextWidth!, 40)
+        myLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
+        myLabel.text = "sizi takip etmeye başladı" // sample label text
+        let labelWidth = myLabel?.intrinsicContentSize().width
+        myLabel.textAlignment = .Left
+        print(labelWidth)
+        myLabel.frame = CGRectMake(buttonWidth + 49 , 10 , screenSize.width - buttonWidth - 52 , 34)
         myLabel.numberOfLines = 1
         contentView.addSubview(myLabel)
+        
+        
+        
+        
+        
+        
     }
 }

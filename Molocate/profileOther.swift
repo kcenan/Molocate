@@ -9,16 +9,17 @@
 import UIKit
 
 
-   //post sayısı ve taglenen toplam video sayısı eklenecek(çağatay koymadıysa eklet)
-var user:User!
+//post sayısı ve taglenen toplam video sayısı eklenecek(çağatay koymadıysa eklet)
+
 
 
 class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     //true ise kendi false başkası
     var who = false
+    var user:User!
     @IBOutlet var settings: UITableView!
     @IBOutlet var scrollView: UIScrollView!
-   
+    
     @IBOutlet var username: UILabel!
     @IBOutlet var addedButton: UIButton!
     let AVc :Added =  Added(nibName: "Added", bundle: nil);
@@ -29,29 +30,24 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var followersCount: UIButton!
     @IBOutlet var FollowButton: UIBarButtonItem!
-    
     @IBAction func FollowButton(sender: AnyObject) {
- 
-        if(user.username == currentUser.username){
-            showTable()
-            scrollView.userInteractionEnabled = false
-            UIView.animateWithDuration(0.75) { () -> Void in
-            }
-        }else {
-            if !user.isFollowing{
-                FollowButton.image = UIImage(named: "balloon.png")
-                user.isFollowing = true
+        if(choosedIndex < 3){
+            if user.isFollowing{
+                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
+                    print("unfollow"+data)
+                })
+            } else {
                 Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
                     print("follow"+data)
                 })
-            } else {
-                FollowButton.image = UIImage(named: "follow1.png")
-                user.isFollowing = false
-                Molocate.unfollow(user.username, completionHandler: { (data, response, error) -> () in
-                    print("unfollow"+data)
-                })
             }
-        
+        }else {
+            showTable()
+            scrollView.userInteractionEnabled = false
+            
+            
+            UIView.animateWithDuration(0.75) { () -> Void in
+            }
         }
     }
     
@@ -59,9 +55,9 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     
     @IBAction func backButton(sender: AnyObject) {
         if(choosedIndex < 3){
-        self.willMoveToParentViewController(nil)
-        self.view.removeFromSuperview()
-        self.removeFromParentViewController()
+            self.willMoveToParentViewController(nil)
+            self.view.removeFromSuperview()
+            self.removeFromParentViewController()
         } else {
             if(sideClicked == false){
                 sideClicked = true
@@ -82,12 +78,12 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
-       
+        
         
         
     }
     
-   
+    
     
     @IBAction func addedButton(sender: AnyObject) {
         var a :CGRect = AVc.view.frame;
@@ -107,7 +103,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
-      
+        
         
     }
     
@@ -119,18 +115,30 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         settings.hidden = true
         settings.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.width, self.view.frame.width)
         settings.layer.cornerRadius = 20
-  
         
-    
-//       Molocate.follow("kcenan4") { (data, response, error) -> () in
-//            
-//            print(data)
-//            Molocate.getFollowings(currentUser.username) { (data, response, error, count, next, previous) -> () in
-//                data[0].printUser()
-//            }
-//        }
-//      
-
+        
+        if(choosedIndex==3){
+            Molocate.getCurrentUser({ (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    self.username.text = data.username
+                    self.followingsCount.setTitle("\(data.following_count)", forState: .Normal)
+                    self.followersCount.setTitle("\(data.follower_count)", forState: .Normal)
+                    self.user = data
+                    choosedIndex = 4
+                }
+            })
+        }
+        
+        
+        //       Molocate.follow("kcenan4") { (data, response, error) -> () in
+        //
+        //            print(data)
+        //            Molocate.getFollowings(currentUser.username) { (data, response, error, count, next, previous) -> () in
+        //                data[0].printUser()
+        //            }
+        //        }
+        //
+        
         addedButton.backgroundColor = swiftColor
         addedButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         taggedButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
@@ -141,17 +149,17 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         self.toolBar.barTintColor = swiftColor
         
         if who == true{
-        FollowButton.enabled = false
+            FollowButton.enabled = false
         }
         else{
-        //eklenebilir
+            //eklenebilir
         }
         
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
         scrollView.frame.origin.y = 190
         scrollView.frame.size.height = screenHeight - 190
-       
+        
         self.addChildViewController(BVc);
         scrollView.addSubview(BVc.view);
         BVc.didMoveToParentViewController(self)
@@ -178,29 +186,6 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         configureScrollView()
         
         
-        
-        if(choosedIndex==3){
-            user = currentUser
-            username.text = user.username
-            self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
-            self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
-            self.FollowButton.image = nil
-            choosedIndex = 4
-        }else{
-            
-            self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
-            self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
-            if(user.isFollowing){
-                self.FollowButton.image = UIImage(named: "balloon.png")
-            }else{
-                self.FollowButton.image = UIImage(named: "follow1.png")
-            }
-            choosedIndex = 4
-            
-            
-        }
-        
-        
     }
     func configureScrollView(){
         scrollView.delegate = self
@@ -214,7 +199,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             taggedButton.backgroundColor = swiftColor3
             addedButton.titleLabel?.textColor = UIColor.whiteColor()
             taggedButton.titleLabel?.textColor = UIColor.blackColor()
-            }
+        }
         else{
             addedButton.backgroundColor = swiftColor3
             taggedButton.backgroundColor = swiftColor
@@ -239,50 +224,50 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if(indexPath.row == 0){
             UIView.animateWithDuration(0.75) { () -> Void in
-                 self.scrollView.userInteractionEnabled = true
+                self.scrollView.userInteractionEnabled = true
                 self.scrollView.alpha = 1
                 self.settings.hidden = true
             }
         }
         if indexPath.row == 1 {
-             dispatch_async(dispatch_get_main_queue()) {
+            dispatch_async(dispatch_get_main_queue()) {
                 self.scrollView.userInteractionEnabled = true
                 self.scrollView.alpha = 1
-
+                
                 self.performSegueWithIdentifier("goEditProfile", sender: self)
-//            let controller:editProfile = self.storyboard!.instantiateViewControllerWithIdentifier("editProfile") as! editProfile
-//            controller.view.frame = self.view.bounds
-//            controller.willMoveToParentViewController(self)
-//            self.view.addSubview(controller.view)
-//            self.addChildViewController(controller)
-//            controller.didMoveToParentViewController(self)
-            
-            self.settings.hidden = true
+                //            let controller:editProfile = self.storyboard!.instantiateViewControllerWithIdentifier("editProfile") as! editProfile
+                //            controller.view.frame = self.view.bounds
+                //            controller.willMoveToParentViewController(self)
+                //            self.view.addSubview(controller.view)
+                //            self.addChildViewController(controller)
+                //            controller.didMoveToParentViewController(self)
+                
+                self.settings.hidden = true
             }
         }
         else {
-            print("laga luga")
+            print("log out yapılacak")
         }
         
-
+        
     }
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0{
-           return 90
+            return 90
         }
         else{
             return 60
         }
-       
+        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 4
+        return 3
     }
-    var names = ["AYARLAR","PROFİLİ DÜZENLE", "BİLDİRİMLER", "ÇIKIŞ YAP"]
+    var names = ["AYARLAR","PROFİLİ DÜZENLE", "ÇIKIŞ YAP"]
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = optionCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
@@ -296,18 +281,12 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             
             
         }
-        
+            
         else {
-          cell.cancelLabel.hidden = true
+            cell.cancelLabel.hidden = true
         }
-        cell.switchDemo.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
-        if indexPath.row != 2{
-        cell.switchDemo.hidden = true
-        }
-        else{
-        cell.arrow.hidden = true
-        }
-        
+        //cell.switchDemo.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
+        //
         cell.nameOption.text = names[indexPath.row]
         cell.backgroundColor = UIColor.whiteColor()
         return cell
@@ -329,15 +308,15 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     
     
     func showTable(){
-      
+        
         UIView.animateWithDuration(0.25) { () -> Void in
-
+            
             self.settings.hidden = false
             self.settings.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.width,self.view.frame.size.width)
             self.scrollView.alpha = 0.4
         }
         
-           }
+    }
     
     
 }

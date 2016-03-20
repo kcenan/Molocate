@@ -15,7 +15,7 @@ let swiftColor2 = UIColor(netHex: 0xC92451)
 let swiftColor3 = UIColor(red: 249/255, green: 223/255, blue: 230/255, alpha: 1)
 var comments = [comment]()
 var video_id: String = ""
-
+var user: User = User()
 class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var isSearching = false
     var locationManager: CLLocationManager!
@@ -440,7 +440,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag
-   
+        Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
+            print(data)
+        }
         
         let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
         controller.view.frame = self.view.bounds;

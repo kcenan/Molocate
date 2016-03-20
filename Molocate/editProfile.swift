@@ -1,4 +1,3 @@
-//
 //  editProfile.swift
 //  Molocate
 //
@@ -51,7 +50,8 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     var changePhoto : UIButton!
     var datepicker: UIDatePicker!
     var user: User!
-    
+    var maleButton : UIButton!
+    var femaleButton : UIButton!
     let imagePicker = UIImagePickerController()
     
     
@@ -65,7 +65,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         super.viewDidLoad()
         
         user = currentUser
-      
+        
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
         
@@ -169,21 +169,38 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         birthday.textAlignment = .Right
         view.addSubview(birthday)
         
-        switchDemo = UISwitch()
+        
+        
+        
+        
+        //        switchDemo = UISwitch()
+        //
+        //        switchDemo.center.x = a
+        //
+        //        switchDemo.center.y = b
+        //        switchDemo.transform = CGAffineTransformMakeScale( screenHeight / 667 , screenHeight / 667 )
+        //        if(user.gender == "male"){
+        //            switchDemo.on = true
+        //            switchDemo.setOn(true, animated: false)}
+        //        else{
+        //            switchDemo.on = false
+        //            switchDemo.setOn(false, animated: false)
+        //        }
+        //        switchDemo.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
+        //        self.view.addSubview(switchDemo)
         var a : CGFloat = (screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3
-        switchDemo.center.x = a
         var b : CGFloat = 60 + (scr * (55 / 120))
-        switchDemo.center.y = b
-        switchDemo.transform = CGAffineTransformMakeScale( screenHeight / 667 , screenHeight / 667 )
-        if(user.gender == "male"){
-            switchDemo.on = true
-            switchDemo.setOn(true, animated: false)}
-        else{
-            switchDemo.on = false
-            switchDemo.setOn(false, animated: false)
-        }
-        switchDemo.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
-        self.view.addSubview(switchDemo)
+        let femaleButton   = UIButton(type: UIButtonType.System) as UIButton
+        femaleButton.frame = CGRectMake((screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3 - 30 , b - 10 , 20 , 20)
+        femaleButton.setTitle("⚪️", forState: UIControlState.Normal)
+        femaleButton.addTarget(self, action: "maleSelected:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(femaleButton)
+        print("deneme")
+        let maleButton   = UIButton(type: UIButtonType.System) as UIButton
+        maleButton.frame = CGRectMake(a + 50 , b - 10, 20 , 20)
+        maleButton.setTitle("⚪️", forState: UIControlState.Normal)
+        maleButton.addTarget(self, action: "femaleSelected:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(maleButton)
         
         kadın = UILabel()
         kadın.frame = CGRectMake((screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3 - 80, 60 + (scr * (52 / 120)), 50, (scr * 6) / 120)
@@ -253,11 +270,11 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         
         user.birthday = dateFormatter.stringFromDate( datepicker.date)
         user.printUser()
-       
+        
         currentUser = user
         currentUser.printUser()
         
-     
+        
         let image =  UIImagePNGRepresentation(photo.image!)
         
         Molocate.uploadProfilePhoto(image!) { (data, response, error) -> () in

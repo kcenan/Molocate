@@ -14,8 +14,8 @@ class optionCell: UITableViewCell {
     var nameOption : UILabel!
     var arrow : UIImageView!
     var cancelLabel: UILabel!
-    var switchDemo : UISwitch!
-
+    
+    
     var screenSize = UIScreen.mainScreen().bounds
     
     required init(coder aDecoder: NSCoder) {
@@ -33,16 +33,7 @@ class optionCell: UITableViewCell {
         nameOption.text = "deneme"
         contentView.addSubview(nameOption)
         
-        switchDemo = UISwitch()
-        var a : CGFloat = screenSize.width - 30
-        switchDemo.center.x = a
-        var b : CGFloat = 30
-        switchDemo.center.y = b
-        //switchDemo.transform = CGAffineTransformMakeScale( screenHeight / 667 , screenHeight / 667 )
-        switchDemo.on = true
-        switchDemo.setOn(true, animated: false)
         
-        contentView.addSubview(switchDemo)
         
         arrow = UIImageView()
         let image: UIImage = UIImage(named: "right-chevron.png")!
@@ -50,7 +41,7 @@ class optionCell: UITableViewCell {
         arrow.frame = CGRectMake (screenSize.width - 40, 20 , 20 , 20)
         
         contentView.addSubview(arrow)
-       
+        
         
         cancelLabel = UILabel()
         cancelLabel.frame = CGRectMake( screenSize.width - 70, 40 , 60 , 30 )
@@ -62,16 +53,16 @@ class optionCell: UITableViewCell {
         
         
     }
-
-//    func switchValueDidChange(sender:UISwitch!)
-//    {
-//        if (sender.on == true){
-//            print("on")
-//            
-//        }
-//        else{
-//            print("off")
-//        }
-//    }
+    
+    //    func switchValueDidChange(sender:UISwitch!)
+    //    {
+    //        if (sender.on == true){
+    //            print("on")
+    //
+    //        }
+    //        else{
+    //            print("off")
+    //        }
+    //    }
     
 }
