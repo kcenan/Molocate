@@ -16,8 +16,7 @@ class tagComment: UIViewController, UITextViewDelegate {
     
     //done da verileri yolla backde vazgeçsin yollama
     @IBAction func done(sender: AnyObject) {
-        var currentString: NSString = textField.text!
-        print(currentString)
+        CaptionText = textField.text!
         self.willMoveToParentViewController(nil)
         self.view.removeFromSuperview()
         self.removeFromParentViewController()

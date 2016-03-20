@@ -11,7 +11,7 @@ import AVFoundation
 import AVKit
 
 
-
+var CaptionText = ""
 
 //backende : fun, food, travel , makeup, fashion, sport, event, beauty, university olarak gönderilecek
 
@@ -87,7 +87,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                         let json = [
                             "video_id": videoId,
                             "video_url": videoUrl,
-                            "caption": "This city is awesome:)",
+                            "caption": CaptionText,
                             "category": self.categ,
                             "tagged_users": [],
                             "location": [
