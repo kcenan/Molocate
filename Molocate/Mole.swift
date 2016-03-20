@@ -51,8 +51,12 @@ struct User{
         print("follower_count:  \(follower_count)");
         print("following_count:  \(following_count)");
     }
-    
-    
+}
+
+struct comment{
+    var text: String = ""
+    var username: String = ""
+    var photo: NSURL = NSURL()
 }
 
 var currentUser:User = User()
@@ -278,7 +282,93 @@ public class Molocate {
         task.resume()
     }
     
+    class func getLikes(videoId: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
+        
+        let url = NSURL(string: baseUrl + "video/api/video_likes/" + (videoId as String) + "/");
+        let request = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = "GET"
+        request.addValue("Token " + userToken! , forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            
+            let nsError = error;
+            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
+            do {
+                
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                print(result)
+                let count: Int = result["count"] as! Int
+                let next =  result["next"] is NSNull ? nil:result["next"] as? String
+                let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
+                
+                var users: Array<User> = Array<User>()
+                
+                if(count != 0){
+                    for thing in result["results"] as! NSArray{
+                        var user = User()
+                        user.username = thing["username"] as! String
+                        user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                        users.append(user)
+                    }
+                }
+                
+                
+                completionHandler(data: users , response: response , error: nsError, count: count, next: next, previous: previous  )
+            } catch{
+                completionHandler(data:  Array<User>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                print("Error:: in mole.getFollowings()")
+            }
+            
+        }
+        
+        task.resume()
+        
+    }
     
+    
+    class func getComments(videoId: String, completionHandler: (data: Array<comment>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()) {
+        
+        let url = NSURL(string: baseUrl + "video/api/get_comments/" + (videoId as String) + "/")!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "GET"
+        request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            
+            let nsError = error;
+            
+            
+            do {
+                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                print(result)
+                let count: Int = result["count"] as! Int
+                let next =  result["next"] is NSNull ? nil:result["next"] as? String
+                let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
+                
+                var comments: Array<comment> = Array<comment>()
+                
+                if(count != 0){
+                    for thing in result["results"] as! NSArray{
+                        var thecomment = comment()
+                        thecomment.username = thing["username"] as! String
+                        thecomment.photo = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                        thecomment.text = thing["comment"] as! String
+                        comments.append(thecomment)
+                    }
+                }
+                
+                completionHandler(data: comments , response: response , error: nsError, count: count, next: next, previous: previous  )
+            } catch{
+                completionHandler(data:  Array<comment>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                print("Error:: in mole.getComments()")
+            }
+            
+        }
+        
+        task.resume()
+    }
     
     
     class func getExploreVideos(nextURL: NSURL?, completionHandler: (data: [videoInf]?, response: NSURLResponse!, error: NSError!) -> ()){
@@ -411,7 +501,7 @@ public class Molocate {
         task.resume()
     }
 
-    
+
     
     class func commentAVideo(videoId: String,comment: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
         
@@ -483,6 +573,8 @@ public class Molocate {
             print("Error:: in mole.unfollow()")
         }
     }
+    
+    
 
     
     class func EditUser(completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
@@ -528,6 +620,7 @@ public class Molocate {
     }
     
     class func uploadProfilePhoto(image: NSData, completionHandler: (data: String!, response: NSURLResponse!, error: NSError!) -> ()){
+       
         let headers = ["content-type": "/*/", "content-disposition":"attachment;filename=molocate.png" ]
         
         var request = NSMutableURLRequest(URL: NSURL(string: baseUrl + "/account/api/upload_picture/")!, cachePolicy:.UseProtocolCachePolicy, timeoutInterval: 10.0)

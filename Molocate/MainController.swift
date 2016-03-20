@@ -13,7 +13,8 @@ var category = "All"
 let swiftColor = UIColor(netHex: 0xEB2B5D)
 let swiftColor2 = UIColor(netHex: 0xC92451)
 let swiftColor3 = UIColor(red: 249/255, green: 223/255, blue: 230/255, alpha: 1)
-
+var comments = [comment]()
+var video_id: String = ""
 
 class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var isSearching = false
@@ -390,6 +391,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     
     func pressedLikeCount(sender: UIButton) {
+        
+     
         let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
@@ -437,6 +440,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag
+   
+        
         let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)

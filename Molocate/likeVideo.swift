@@ -12,10 +12,11 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
 
     @IBOutlet var toolBar: UIToolbar!
     let cellIdentifier = "cell5"
-    var players = ["Hamza Hamzaoğlu","Jem Paul Karacan", "Umut Bulut", "Sabri Sarıoğlu", "Ceyhun Gülselam"]
+    var users = [User]()
+    var myTable = UITableView()
     @IBOutlet var tableView: UITableView!
     @IBAction func backButton(sender: AnyObject) {
-        
+      
         dispatch_async(dispatch_get_main_queue()) {
             
             self.willMoveToParentViewController(nil)
@@ -33,6 +34,21 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
+        myTable =   UITableView()
+        self.navigationController?.navigationBar.hidden = false
+        self.myTable.delegate      =   self
+        self.myTable.dataSource    =   self
+        
+        Molocate.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
+            for thing in data{
+                self.users.append(thing)
+            }
+            dispatch_async(dispatch_get_main_queue()){
+                self.myTable.reloadData()
+            }
+            
+        }
+        
         // Do any additional setup after loading the view.
     }
     
@@ -45,7 +61,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! likeVideoCell
         
-       cell.username.setTitle("\(self.players[indexPath.row])", forState: .Normal)
+       cell.username.setTitle("\(self.users[indexPath.row].username)", forState: .Normal)
         cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         
         cell.username.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -76,7 +92,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     }
     //
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return players.count
+        return users.count
         
     }
 
