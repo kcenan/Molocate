@@ -13,8 +13,11 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     @IBOutlet var toolBar: UIToolbar!
     let cellIdentifier = "cell5"
     var users = [User]()
-    var myTable = UITableView()
+   
+  
     @IBOutlet var tableView: UITableView!
+    
+    
     @IBAction func backButton(sender: AnyObject) {
       
         dispatch_async(dispatch_get_main_queue()) {
@@ -34,17 +37,20 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
-        myTable =   UITableView()
+   
         self.navigationController?.navigationBar.hidden = false
-        self.myTable.delegate      =   self
-        self.myTable.dataSource    =   self
-        
+        tableView.delegate      =   self
+        tableView.dataSource    =   self
+        print(video_id)
         Molocate.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
-            for thing in data{
-                self.users.append(thing)
-            }
+            print(data)
+            self.users.removeAll()
             dispatch_async(dispatch_get_main_queue()){
-                self.myTable.reloadData()
+                for thing in data{
+                    self.users.append(thing)
+                    thing.printUser()
+                }
+                self.tableView.reloadData()
             }
             
         }
@@ -59,11 +65,36 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! likeVideoCell
         
        cell.username.setTitle("\(self.users[indexPath.row].username)", forState: .Normal)
-        cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+       cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         
+        if(!users[indexPath.row].isFollowing && users[indexPath.row].username != currentUser.username){
+        
+        }else{
+            cell.followLike.hidden = true
+        }
+        
+        
+        if(users[indexPath.row].profilePic.absoluteString != ""){
+            cell.profileImage.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
+                UIControlState.Normal)
+            print(users[indexPath.row].profilePic.absoluteString)
+            Molocate.getDataFromUrl(users[indexPath.row].profilePic, completion: { (data, response, error) -> Void in
+                dispatch_async(dispatch_get_main_queue()){
+                
+                    cell.profileImage.setBackgroundImage(UIImage(data: data!)!, forState:
+                        UIControlState.Normal)
+                    
+                }
+            })
+            //photo.image = UIImage(data: data!)!
+        }else{
+            cell.profileImage.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
+                UIControlState.Normal)
+        }
         cell.username.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.profileImage.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -92,7 +123,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     }
     //
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return self.users.count
         
     }
 

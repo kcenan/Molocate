@@ -100,20 +100,60 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return hotels.count
+        return comments.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "Cell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! commentCell
-        
-        let hotelName = hotelNames[indexPath.row]
-        cell.username.setTitle(hotelName, forState: .Normal)
-        cell.comment.text = hotels[hotelName]
-        
+    
+        cell.username.setTitle(comments[indexPath.row].username, forState: .Normal)
+        cell.comment.text = comments[indexPath.row].text
+        cell.username.contentHorizontalAlignment = .Left
+        cell.username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside )
+        cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside )
+        if(comments[indexPath.row].photo.absoluteString != ""){
+            cell.profilePhoto.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
+                UIControlState.Normal)
+            
+            Molocate.getDataFromUrl(comments[indexPath.row].photo, completion: { (data, response, error) -> Void in
+                dispatch_async(dispatch_get_main_queue()){
+                    
+                    cell.profilePhoto.setBackgroundImage(UIImage(data: data!)!, forState:
+                        UIControlState.Normal)
+                    
+                }
+            })
+            //photo.image = UIImage(data: data!)!
+        }else{
+            cell.profilePhoto.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
+                UIControlState.Normal)
+        }
         return cell
     }
-
+    
+    func pressedUsername(sender: UIButton) {
+        let buttonRow = sender.tag
+        print("username e basıldı at index path: \(buttonRow)")
+        
+        Molocate.getUser(comments[buttonRow].username) { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                user = data
+                let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
+                //controller.ANYPROPERTY=THEVALUE // If you want to pass value
+                controller.view.frame = self.view.bounds;
+                controller.willMoveToParentViewController(self)
+                self.view.addSubview(controller.view)
+                self.addChildViewController(controller)
+                controller.didMoveToParentViewController(self)
+                controller.username.text = data.username
+                controller.followingsCount.setTitle("\(data.following_count)", forState: .Normal)
+                controller.followersCount.setTitle("\(data.follower_count)", forState: .Normal)
+            }
+        }
+        
+    }
+    
     
 
     /*

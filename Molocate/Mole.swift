@@ -285,9 +285,12 @@ public class Molocate {
     class func getLikes(videoId: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
         
         let url = NSURL(string: baseUrl + "video/api/video_likes/" + (videoId as String) + "/");
+        
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.addValue("Token " + userToken! , forHTTPHeaderField: "Authorization")
+        
+        print(url?.absoluteString)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
             
@@ -309,6 +312,7 @@ public class Molocate {
                         var user = User()
                         user.username = thing["username"] as! String
                         user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                        user.isFollowing = thing["is_following"] as! Int == 1 ? true:false
                         users.append(user)
                     }
                 }

@@ -391,8 +391,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     
     func pressedLikeCount(sender: UIButton) {
-        
-     
+        print("____________________________--------------")
+        print(sender.tag)
+        video_id = videoArray[sender.tag].id
         let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
@@ -441,17 +442,20 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag
         Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
-            print(data)
+            dispatch_async(dispatch_get_main_queue()){
+                comments = data
+            let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+            controller.view.frame = self.view.bounds;
+            controller.willMoveToParentViewController(self)
+            self.view.addSubview(controller.view)
+            self.addChildViewController(controller)
+            controller.didMoveToParentViewController(self)
+            
+            print("comment e basıldı at index path: \(buttonRow)")
+            }
         }
         
-        let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
-        controller.view.frame = self.view.bounds;
-        controller.willMoveToParentViewController(self)
-        self.view.addSubview(controller.view)
-        self.addChildViewController(controller)
-        controller.didMoveToParentViewController(self)
-        
-        print("comment e basıldı at index path: \(buttonRow)")
+    
         
     }
     

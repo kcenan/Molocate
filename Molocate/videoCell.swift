@@ -163,6 +163,7 @@ class videoCell: UITableViewCell {
         self.followButton.tag = row
         self.likeButton.tag = row
         self.likeCount.setTitle("\(likeCount)", forState: .Normal)
+        self.likeCount.tag = row
         self.commentButton.tag = row
         self.commentCount.text = "\(commentCount)"
         self.reportButton.tag = row
