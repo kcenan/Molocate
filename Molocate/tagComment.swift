@@ -17,10 +17,11 @@ class tagComment: UIViewController, UITextViewDelegate {
     //done da verileri yolla backde vazgeçsin yollama
     @IBAction func done(sender: AnyObject) {
         CaptionText = textField.text!
+        (self.parentViewController as! capturePreviewController).caption.setTitle(CaptionText, forState: .Normal)
+        
         self.willMoveToParentViewController(nil)
         self.view.removeFromSuperview()
         self.removeFromParentViewController()
-        
     }
     
     @IBAction func backButton(sender: AnyObject) {
@@ -69,6 +70,7 @@ class tagComment: UIViewController, UITextViewDelegate {
             textView.text = "Yorumunu buraya ekleyebilirsin..."
             textView.textColor = UIColor.lightGrayColor()
         }
+        CaptionText = textField.text
     }
     func dismissKeyboard() {
         view.endEditing(true)

@@ -505,6 +505,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     @IBOutlet var cameraButton: UIBarButtonItem!
     
     @IBAction func openCamera(sender: AnyObject) {
+        CaptionText = ""
         if isSearching != true {
             self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
         } else {

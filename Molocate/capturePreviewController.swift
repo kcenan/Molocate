@@ -47,6 +47,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     var categories = ["Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
     var videoLocation:locations!
     @IBOutlet var placeTable: UITableView!
+  
     @IBAction func post(sender: AnyObject) {
         player?.pause()
         var videodata = NSData()
@@ -137,7 +138,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                                         
                                         let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
                                         
-                                        
+                                                CaptionText = ""
                                         print("Result -> \(result)")
                                         
                                         
@@ -196,57 +197,32 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         
         
         
-        
+   
     }
+    
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
         
         
-      
-        
-        
-        
-        
         videoLocation = locations()
-//        comment = UITextField(frame: CGRectMake(0, 159, screenSize.width, screenSize.height - screenSize.width - 208))
-//        comment.attributedPlaceholder = .None
-//        comment.textColor = UIColor.blackColor()
-//        comment.delegate = self
-//        comment.borderStyle = UITextBorderStyle.RoundedRect
-//        comment.clearsOnBeginEditing = true
-//        view.addSubview(comment)
-//        
-        
-      
-//        comment = UITextField()
-//        //4sde sıkıntı olacak gibi
-//        comment.frame = CGRectMake(0, 159, screenSize.width, screenSize.height - screenSize.width - 208)
-//        comment.textColor = UIColor.blackColor()
-//       
-//        comment.textAlignment = .Left
-//        comment.sizeToFit()
-//        self.view.addSubview(comment)
-        
-        
+   
         let index = NSIndexPath(forRow: 0, inSection: 0)
         self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
         collectionView.contentSize.width = screenSize.size.width * 2
         collectionView.backgroundColor = swiftColor3
         
         dispatch_async(dispatch_get_main_queue()) {
-            
-            //self.textField.backgroundColor = UIColor.whiteColor()
             self.textField.backgroundColor = swiftColor2
             self.textField.autocapitalizationType = .Words
         }
-//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismisKeyboard")
-//        view.addGestureRecognizer(tap)
-//        
-        
+
 
         
         
@@ -255,16 +231,15 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.dataSource = self
         placeTable.scrollEnabled = true
         placeTable.hidden = true
-        
-       // print(deviceLat)
+
         videoURL = NSURL(fileURLWithPath: videoPath!, isDirectory: false)
-        //videoURL = NSURL(fileURLWithPath: videoPath!)
+        
         let asset = AVAsset(URL: videoURL!)
         let playerItem = AVPlayerItem(asset: asset)
         player = AVPlayer(playerItem: playerItem)
         playerLayer = AVPlayerLayer(player: player)
         _ = (self.view.frame.height-self.view.frame.width)/2
-        //self.collectionView.frame.maxY
+      
         let newRect = CGRect(x: 0, y: self.collectionView.frame.maxY, width: self.view.frame.width, height: self.view.frame.width)
         playerLayer?.frame = newRect
         playerLayer?.videoGravity = AVLayerVideoGravityResizeAspect
@@ -281,11 +256,17 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         caption.frame.size.height = screenSize.height - 192 - screenSize.width
         caption.titleLabel!.textColor = UIColor.blackColor()
         caption.backgroundColor = UIColor.whiteColor()
-        caption.setTitle("Buraya basarak yorumunu ve arkadaşlarını ekleyebilirsin", forState: .Normal)
+        if CaptionText == "" {
+            caption.setTitle("Buraya basarak yorumunu ve arkadaşlarını ekleyebilirsin", forState: .Normal)
+        }else{
+            caption.setTitle(CaptionText, forState: .Normal)
+        }
         caption.setTitleColor(UIColor.blackColor(), forState: .Normal)
         caption.addTarget(self, action: "pressedCaption:", forControlEvents: UIControlEvents.TouchUpInside)
         caption.contentHorizontalAlignment = .Left
         self.view.addSubview(caption)
+
+ 
         
         
     }
@@ -454,13 +435,5 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         
         
     }
-//
-//    func dismisKeyboard(){
-//        view.endEditing(true)
-//        self.placeTable.hidden = true
-//    }
-
-    
-
 
 }
