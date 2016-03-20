@@ -33,23 +33,25 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     @IBAction func FollowButton(sender: AnyObject) {
  
         if(user.username == currentUser.username){
-            
-        }else {
-            if !user.isFollowing{
-                FollowButton.image = UIImage(named: "follow1.png")
-                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
-                    print("unfollow"+data)
-                })
-            } else {
-                FollowButton.image = UIImage(named: "balloon.png")
-                Molocate.unfollow(user.username, completionHandler: { (data, response, error) -> () in
-                    print("follow"+data)
-                })
-            }
             showTable()
             scrollView.userInteractionEnabled = false
             UIView.animateWithDuration(0.75) { () -> Void in
             }
+        }else {
+            if !user.isFollowing{
+                FollowButton.image = UIImage(named: "balloon.png")
+                user.isFollowing = true
+                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
+                    print("follow"+data)
+                })
+            } else {
+                FollowButton.image = UIImage(named: "follow1.png")
+                user.isFollowing = false
+                Molocate.unfollow(user.username, completionHandler: { (data, response, error) -> () in
+                    print("unfollow"+data)
+                })
+            }
+        
         }
     }
     
@@ -117,28 +119,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         settings.hidden = true
         settings.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.width, self.view.frame.width)
         settings.layer.cornerRadius = 20
-        
-        
-        if(choosedIndex==3){
-                    user = currentUser
-                    username.text = user.username
-                    self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
-                    self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
-                    self.FollowButton.image = nil
-                    choosedIndex = 4
-        }else{
-            
-                self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
-                self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
-                if(user.isFollowing){
-                    self.FollowButton.image = UIImage(named: "balloon.png")
-                }else{
-                    self.FollowButton.image = UIImage(named: "follow1.png")
-                }
-                choosedIndex = 4
-            
-            
-        }
+  
         
     
 //       Molocate.follow("kcenan4") { (data, response, error) -> () in
@@ -195,6 +176,29 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         scrollView.setContentOffset(deneme.origin, animated: true)
         
         configureScrollView()
+        
+        
+        
+        if(choosedIndex==3){
+            user = currentUser
+            username.text = user.username
+            self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
+            self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
+            self.FollowButton.image = nil
+            choosedIndex = 4
+        }else{
+            
+            self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
+            self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
+            if(user.isFollowing){
+                self.FollowButton.image = UIImage(named: "balloon.png")
+            }else{
+                self.FollowButton.image = UIImage(named: "follow1.png")
+            }
+            choosedIndex = 4
+            
+            
+        }
         
         
     }

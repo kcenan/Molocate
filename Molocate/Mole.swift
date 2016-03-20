@@ -201,6 +201,44 @@ public class Molocate {
         
     }
     
+    class func getPlace(placeid: String, completionHandler: (data: User, response: NSURLResponse!, error: NSError!) -> ()) {
+        
+        let url = NSURL(string: baseUrl + "place/api/get_place/?place_id=" + (placeid as String))!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "GET"
+        request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            
+            let nsError = error;
+            
+            do {
+                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                print(result)
+                var user = User()
+//                user.email = result["email"] as! String
+//                user.username = result["username"] as! String
+//                user.first_name = result["first_name"] as! String
+//                user.last_name = result["last_name"] as! String
+//                user.profilePic = result["picture_url"] is NSNull ? NSURL():NSURL(string: result["picture_url"] as! String)!
+//                user.follower_count = result["follower_count"] as! Int
+//                user.following_count = result["following_count"]as! Int
+//                user.isFollowing = result["is_following"] as! Int == 1 ? true:false
+//                print(result["is_following"] as! Int)
+                //print(user.isFollowing)
+                completionHandler(data: user, response: response , error: nsError  )
+            } catch{
+                completionHandler(data: User() , response: nil , error: nsError  )
+                print("Error:: in mole.getUser()")
+            }
+            
+            
+        }
+        
+        task.resume()
+    }
+    
     
     class func getUser(username: String, completionHandler: (data: User, response: NSURLResponse!, error: NSError!) -> ()) {
         
@@ -216,6 +254,7 @@ public class Molocate {
             do {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                print(result)
                 var user = User()
                 user.email = result["email"] as! String
                 user.username = result["username"] as! String
@@ -224,7 +263,9 @@ public class Molocate {
                 user.profilePic = result["picture_url"] is NSNull ? NSURL():NSURL(string: result["picture_url"] as! String)!
                 user.follower_count = result["follower_count"] as! Int
                 user.following_count = result["following_count"]as! Int
-                
+                user.isFollowing = result["is_following"] as! Int == 1 ? true:false
+                print(result["is_following"] as! Int)
+                //print(user.isFollowing)
                 completionHandler(data: user, response: response , error: nsError  )
             } catch{
                 completionHandler(data: User() , response: nil , error: nsError  )
@@ -284,6 +325,7 @@ public class Molocate {
                     videoStr.isFollowing = jsonObject!!["is_following"] as! Int
                     videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
                     videoArray.append(videoStr)
+                    
                 }
                 completionHandler(data: videoArray, response: response, error: nsError)
             }catch{

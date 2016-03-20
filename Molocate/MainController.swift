@@ -14,6 +14,7 @@ let swiftColor = UIColor(netHex: 0xEB2B5D)
 let swiftColor2 = UIColor(netHex: 0xC92451)
 let swiftColor3 = UIColor(red: 249/255, green: 223/255, blue: 230/255, alpha: 1)
 
+
 class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var isSearching = false
     var locationManager: CLLocationManager!
@@ -368,6 +369,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
         print("place e basıldı at index path: \(buttonRow) ")
+        Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
+            
+        }
         let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
