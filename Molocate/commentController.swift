@@ -8,7 +8,7 @@
 
 import UIKit
 
-class commentController: UIViewController,UITableViewDelegate , UITableViewDataSource {
+class commentController: UIViewController,UITableViewDelegate , UITableViewDataSource, UITextViewDelegate {
 
     var hotels:[String: String] = ["The Grand Del Mar": "5300 Grand Del Mar Court, San Diego, CA 92130",
         "French Quarter Inn": "166 Church St, Charleston, SC 29401",
@@ -32,12 +32,21 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     @IBOutlet var tableView: UITableView!
     
     
+    @IBAction func sendButton(sender: AnyObject) {
+    }
     
+    @IBOutlet var newComment: UITextView!
     var hotelNames:[String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        newComment.text = "Placeholder"
+        newComment.textColor = UIColor.lightGrayColor()
+        
+        newComment.becomeFirstResponder()
+        
+//        newComment.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
         tableView.estimatedRowHeight = 68
         tableView.rowHeight = UITableViewAutomaticDimension
         hotelNames = [String](hotels.keys)
@@ -46,7 +55,43 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
     }
-    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        
+        // Combine the textView text and the replacement text to
+        // create the updated text string
+        let currentText:NSString = textView.text
+        let updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
+        
+        // If updated text view will be empty, add the placeholder
+        // and set the cursor to the beginning of the text view
+        if updatedText.isEmpty {
+            
+            newComment.text = "Placeholder"
+            newComment.textColor = UIColor.lightGrayColor()
+            
+            newComment.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+            
+            return false
+        }
+            
+            // Else if the text view's placeholder is showing and the
+            // length of the replacement string is greater than 0, clear
+            // the text view and set its color to black to prepare for
+            // the user's entry
+        else if textView.textColor == UIColor.lightGrayColor() && !text.isEmpty {
+            textView.text = nil
+            textView.textColor = UIColor.blackColor()
+        }
+        
+        return true
+    }
+    func textViewDidChangeSelection(textView: UITextView) {
+        if self.view.window != nil {
+            if textView.textColor == UIColor.lightGrayColor() {
+                textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+            }
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
