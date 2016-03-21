@@ -86,7 +86,7 @@ class videoCell: UITableViewCell {
         contentView.addSubview(videoComment)
         
         videoTime = UILabel()
-        videoTime.frame = CGRectMake( screenSize.width - 30  , 59 + screenSize.width , 20 , 20)
+        videoTime.frame = CGRectMake( screenSize.width - 30  , 59 + screenSize.width , 25 , 25)
         //yazı ortalama ekle
         videoTime.text = "2s"
         videoTime.font = UIFont(name: "LatoTR-Light", size: 14)
@@ -153,7 +153,7 @@ class videoCell: UITableViewCell {
         
     }
     
-    func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String, profilePic:NSURL){
+    func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String, profilePic:NSURL, dateStr: String){
         self.Username.tag = row
         self.Username.setTitle(username, forState: .Normal)
         self.placeName.tag = row
@@ -168,6 +168,7 @@ class videoCell: UITableViewCell {
         self.commentCount.text = "\(commentCount)"
         self.reportButton.tag = row
         self.videoComment.text = caption
+        self.videoTime.text = dateStr
         print(profilePic.absoluteString)
         if(profilePic.absoluteString != ""){
             Molocate.getDataFromUrl(profilePic, completion: { (data, response, error) -> Void in

@@ -19,6 +19,7 @@ struct videoInf{
     var isLiked: Int = 0
     var isFollowing: Int = 0
     var userpic: NSURL = NSURL()
+    var dateStr: String = ""
 }
 
 var nextU:NSURL!
@@ -418,6 +419,8 @@ public class Molocate {
                     let jsonObject = item["owner_user"]
                     videoStr.isFollowing = jsonObject!!["is_following"] as! Int
                     videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
+                    videoStr.dateStr = item["date_str"] as! String
+        
                     videoArray.append(videoStr)
                     
                 }
