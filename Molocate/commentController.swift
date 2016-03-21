@@ -33,6 +33,21 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     
     
     @IBAction func sendButton(sender: AnyObject) {
+        var mycomment = comment()
+        mycomment.text = newComment.text
+        mycomment.photo = currentUser.profilePic
+        mycomment.username = currentUser.username
+        comments.append(mycomment)
+        tableView.reloadData()
+        Molocate.commentAVideo(video_id, comment: newComment.text) { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                self.newComment.text = ""
+            
+                (self.parentViewController as! MainController).videoArray[videoIndex].commentCount += 1
+                (self.parentViewController as! MainController).tableView.reloadRowsAtIndexPaths(
+                    [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            }
+        }
     }
     
     @IBOutlet var newComment: UITextView!
