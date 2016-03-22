@@ -263,7 +263,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 let index = indexPath.row
                 
                 cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
-                    , caption: videoArray[index].caption, profilePic:  videoArray[index].userpic, dateStr: videoArray[index].dateStr
+                    , caption: videoArray[index].caption, profilePic:  videoArray[index].userpic, dateStr: videoArray[index].dateStr, taggedUsers:  videoArray[index].taggedUsers
                 )
                 
                 cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)

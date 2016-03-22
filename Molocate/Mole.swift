@@ -20,6 +20,7 @@ struct videoInf{
     var isFollowing: Int = 0
     var userpic: NSURL = NSURL()
     var dateStr: String = ""
+    var taggedUsers = [String]()
 }
 
 var nextU:NSURL!
@@ -405,7 +406,7 @@ public class Molocate {
                 for item in videos {
                     //print(item)
                     var videoStr = videoInf()
-                    
+                    print(item)
                     videoStr.id = item["video_id"] as! String
                     videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
                     videoStr.username = item["owner_user"]!!["username"] as! String
@@ -420,6 +421,7 @@ public class Molocate {
                     videoStr.isFollowing = jsonObject!!["is_following"] as! Int
                     videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
                     videoStr.dateStr = item["date_str"] as! String
+                    //videoStr.taggedUsers = item["tagged_users"] as! [String]
         
                     videoArray.append(videoStr)
                     

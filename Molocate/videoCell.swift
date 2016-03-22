@@ -153,7 +153,7 @@ class videoCell: UITableViewCell {
         
     }
     
-    func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String, profilePic:NSURL, dateStr: String){
+    func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String, profilePic:NSURL, dateStr: String, taggedUsers: [String]){
         self.Username.tag = row
         self.Username.setTitle(username, forState: .Normal)
         self.placeName.tag = row
@@ -169,6 +169,9 @@ class videoCell: UITableViewCell {
         self.reportButton.tag = row
         self.videoComment.text = caption
         self.videoTime.text = dateStr
+        for(var i = 0; i < taggedUsers.count; i++ ){
+            videoComment.text =    videoComment.text!  + " @" + taggedUsers[i]
+            }
        // print(profilePic.absoluteString)
         if(profilePic.absoluteString != ""){
             Molocate.getDataFromUrl(profilePic, completion: { (data, response, error) -> Void in

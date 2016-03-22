@@ -90,7 +90,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                             "video_url": videoUrl,
                             "caption": CaptionText,
                             "category": self.categ,
-                            "tagged_users": [],
+                            "tagged_users": self.taggedUsers,
                             "location": [
                                 [
                                     "id": self.videoLocation.id,
@@ -110,9 +110,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                         
                         do {
                             
-                            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+                            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options:  NSJSONWritingOptions.PrettyPrinted)
                            // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
-                            
+                            print(jsonData)
                             // create post request
                            
                             let request = NSMutableURLRequest(URL: NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/update/")!,
