@@ -47,7 +47,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     var categories = ["Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
     var videoLocation:locations!
     @IBOutlet var placeTable: UITableView!
-  
+    var taggedUsers = [String]()
     @IBAction func post(sender: AnyObject) {
         player?.pause()
         var videodata = NSData()
@@ -272,6 +272,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     
     func pressedCaption(sender: UIButton) {
+        CaptionText == caption.titleLabel?.text
         let controller:tagComment = self.storyboard!.instantiateViewControllerWithIdentifier("tagComment") as! tagComment
         //controller.ANYPROPERTY=THEVALUE // If you want to pass value
         controller.view.frame = self.view.bounds;

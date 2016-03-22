@@ -104,7 +104,7 @@ public class Molocate {
         request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+           // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             let nsError = error
             do {
@@ -128,14 +128,14 @@ public class Molocate {
         request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+           // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             let nsError = error;
             
             do {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(result)
+               // print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
@@ -177,7 +177,7 @@ public class Molocate {
             do {
                 
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(result)
+                //print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
@@ -220,7 +220,7 @@ public class Molocate {
             do {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(result)
+                //print(result)
                 var user = User()
 //                user.email = result["email"] as! String
 //                user.username = result["username"] as! String
@@ -259,7 +259,7 @@ public class Molocate {
             do {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(result)
+                //print(result)
                 var user = User()
                 user.email = result["email"] as! String
                 user.username = result["username"] as! String
@@ -269,7 +269,7 @@ public class Molocate {
                 user.follower_count = result["follower_count"] as! Int
                 user.following_count = result["following_count"]as! Int
                 user.isFollowing = result["is_following"] as! Int == 1 ? true:false
-                print(result["is_following"] as! Int)
+               // print(result["is_following"] as! Int)
                 //print(user.isFollowing)
                 completionHandler(data: user, response: response , error: nsError  )
             } catch{
@@ -291,17 +291,17 @@ public class Molocate {
         request.HTTPMethod = "GET"
         request.addValue("Token " + userToken! , forHTTPHeaderField: "Authorization")
         
-        print(url?.absoluteString)
+       // print(url?.absoluteString)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
             
             let nsError = error;
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+           // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             do {
                 
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(result)
+                //print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
@@ -395,7 +395,7 @@ public class Molocate {
                         nextU = nil
                     }else {
                         let nextStr = result["next"] as! String
-                        print(nextStr)
+                        //print(nextStr)
                         nextU = NSURL(string: nextStr)!
                     }
                 }
@@ -458,6 +458,31 @@ public class Molocate {
         
         task.resume()
     }
+    class func reportAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        
+        let url = NSURL(string: baseUrl + "video/report/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
+            let nsError = error
+            
+            do {
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+            } catch{
+                completionHandler(data: "" , response: nil , error: nsError  )
+                print("Error:: in mole.unlike()")
+            }
+            
+        }
+        
+        task.resume()
+    }
+    
     class func unLikeAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
         
         let url = NSURL(string: baseUrl + "video/unlike/?video_id=" + (videoId as String))!

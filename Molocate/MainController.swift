@@ -443,6 +443,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         let buttonRow = sender.tag
         videoIndex = buttonRow
         video_id = videoArray[videoIndex].id
+       
         Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 comments = data
@@ -464,6 +465,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     func pressedReport(sender: UIButton) {
         let buttonRow = sender.tag
+        Molocate.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            print(data)
+        }
         print("pressedReport at index path: \(buttonRow)")
         let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
@@ -489,7 +493,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     
     override func viewDidAppear(animated: Bool) {
-        print("bom")
+        //print("bom")
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
         
     }
@@ -547,7 +551,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         
-        print(indexPath.row)
+        //print(indexPath.row)
         
     }
     func changeFrame() {
@@ -591,7 +595,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
     {
         venueTable.hidden = false
-        let whitespaceCharacterSet = NSCharacterSet.whitespaceCharacterSet()
+        let whitespaceCharacterSet = NSCharacterSet.symbolCharacterSet()
         let strippedString = searchText.text!.stringByTrimmingCharactersInSet(whitespaceCharacterSet)
         
         if self.location == nil {

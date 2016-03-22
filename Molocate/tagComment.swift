@@ -13,11 +13,19 @@ class tagComment: UIViewController, UITextViewDelegate {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var textField: UITextView!
     @IBOutlet var toolBar: UIToolbar!
-    
+    var users = [User]()
     //done da verileri yolla backde vazgeçsin yollama
     @IBAction func done(sender: AnyObject) {
         CaptionText = textField.text!
-        (self.parentViewController as! capturePreviewController).caption.setTitle(CaptionText, forState: .Normal)
+        let parent =  (self.parentViewController as! capturePreviewController)
+       
+        for(var i = 0; i < numbers.count; i++ ){
+            CaptionText = CaptionText + " @" + users[numbers[i]].username
+            print(CaptionText)
+            parent.taggedUsers.append(users[numbers[i]].username)
+        }
+        
+       parent.caption.setTitle(CaptionText, forState: .Normal)
         
         self.willMoveToParentViewController(nil)
         self.view.removeFromSuperview()
@@ -35,12 +43,12 @@ class tagComment: UIViewController, UITextViewDelegate {
         }
         
     }
-    var dengueSymptoms = ["ali","veli","hüseyin","mehmet"]
-    var arraynumber = []
+
+    var arraynumber = [Int]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         textField.layer.borderColor = UIColor.blackColor().CGColor
         textField.layer.borderWidth = 1.0;
         textField.layer.cornerRadius = 5.0;
@@ -50,10 +58,20 @@ class tagComment: UIViewController, UITextViewDelegate {
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
-        
-        textField.text = "Yorumunu buraya ekleyebilirsin..."
+        if(CaptionText == "Buraya basarak yorumunu ve arkadaşlarını ekleyebilirsin") {
+            textField.text = "Yorumunu buraya ekleyebilirsin..."
+        }else{
+            textField.text = CaptionText
+        }
         textField.textColor = UIColor.lightGrayColor()
         textField.returnKeyType = .Done
+        
+        Molocate.getFollowers(currentUser.username) { (data, response, error, count, next, previous) -> () in
+             dispatch_async(dispatch_get_main_queue()){
+                self.users = data
+                self.tableView.reloadData()
+             }
+        }
        // let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         //view.addGestureRecognizer(tap)
         // Do any additional setup after loading the view.
@@ -88,7 +106,7 @@ class tagComment: UIViewController, UITextViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return dengueSymptoms.count
+        return users.count
     }
     
     
@@ -100,7 +118,7 @@ class tagComment: UIViewController, UITextViewDelegate {
        // cell.textLabel?.frame.origin.x = 200
         
         // Configure the cell...insert the special characters using edit > emoji on the menu
-        cell.textLabel?.text = "◻️         " + dengueSymptoms[indexPath.row]
+        cell.textLabel?.text = "◻️         " + users[indexPath.row].username
         return cell
     
     
@@ -152,7 +170,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         }
         
         // change the cell and text of the tapped row with the new "checkbox"
-        cell!.textLabel!.text = newChar + " " + dengueSymptoms[indexPath.row]
+        cell!.textLabel!.text = newChar + " " + users[indexPath.row].username
     }
 
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
