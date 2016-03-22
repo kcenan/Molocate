@@ -45,6 +45,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     var videoArray = [videoInf]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
+    
     var players = ["Didier Drogba", "Elmander", "Harry Kewell", "Milan Baros", "Wesley Sneijder"]
     var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
     var numbers = ["11", "9","19", "15", "10"]
@@ -198,12 +199,12 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             switch(choosedIndex)
             {
             case 0:
-                rowHeight = screenSize.width + 138
+                rowHeight = screenSize.width + 150
                 return rowHeight
                 
             case 1:
                 
-                rowHeight = screenSize.width + 138 //screenSize.width + 90
+                rowHeight = screenSize.width + 150 //screenSize.width + 90
                 return rowHeight
                 
             case 2:
@@ -354,7 +355,6 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             dispatch_async(dispatch_get_main_queue()){
                 user = data
                 let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
-                //controller.ANYPROPERTY=THEVALUE // If you want to pass value
                 controller.view.frame = self.view.bounds;
                 controller.willMoveToParentViewController(self)
                 self.view.addSubview(controller.view)

@@ -11,7 +11,7 @@ import Foundation
 import CoreLocation
 import AVFoundation
 
-class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate ,CLLocationManagerDelegate {
     var locationManager: CLLocationManager!
     var nextURL:NSURL!
     var cache:NSMutableDictionary!
@@ -23,9 +23,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     var videoArray = [videoInf]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
-    var players = ["Didier Drogba", "Elmander", "Harry Kewell", "Milan Baros", "Wesley Sneijder"]
-    var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
-    var numbers = ["11", "9","19", "15", "10"]
+    
     
     //    let ExploreController:ExploreViewController = ExploreViewController(nibName:"ExploreViewController",bundle: nil)
     //    let FollowingController:FollowingViewController = FollowingViewController(nibName:"ExploreViewController",bundle:nil)
@@ -146,24 +144,20 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         
-        var rowHeight:CGFloat = 0
-            rowHeight = screenSize.width + 138
-               // screenSize.height - toolBar.layer.frame.height
-        
-            return rowHeight
+            return  screenSize.width + 138
         
         
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 0 //videoArray.count
+        return 4 //videoArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         
-        let cell = videoCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
+        let cell = videoCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
 
         if((cache.objectForKey(NSString(format: "key%lu", indexPath.row))) != nil){
             let player = cache.objectForKey(NSString(format: "key%lu", indexPath.row)) as! AVPlayer
@@ -190,11 +184,11 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             //            player.play()
             cell.reportButton.tag = indexPath.row
             cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
-            let tableVideoURL = videoArray[indexPath.row].urlSta
-            let player = AVPlayer(URL: tableVideoURL)
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = cell.newRect
-            cell.layer.addSublayer(playerLayer)
+           // let tableVideoURL = videoArray[indexPath.row].urlSta
+          //  let player = AVPlayer(URL: tableVideoURL)
+            //let playerLayer = AVPlayerLayer(player: player)
+           // playerLayer.frame = cell.newRect
+          //  cell.layer.addSublayer(playerLayer)
             //cell.exploreAddView()
             //cell.play()
             //cache.setValue(player, forKey: NSString(format: "key%lu", indexPath.row) as String)
@@ -262,56 +256,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         self.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
     }
     
+   
+   
     
-    // 3
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let a : CGSize = CGSize.init(width: screenSize.width * 2 / 9, height: 44)
-        
-        return a
-    }
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
-    }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let myCell : myCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as! myCollectionViewCell
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = swiftColor2
-        myCell.selectedBackgroundView = backgroundView
-        
-        myCell.layer.borderWidth = 0
-        myCell.backgroundColor = swiftColor3
-        myCell.myLabel?.text = categories[indexPath.row]
-        myCell.frame.size.width = screenSize.width / 5
-        myCell.myLabel.textAlignment = .Center
-        
-        
-        
-        return myCell
-    }
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
-        
-        //        let myCell : myCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as! myCollectionViewCell
-        //
-        //            myCell.myLabel.textColor = UIColor.purpleColor()
-        
-       // print(indexPath.row)
-        
-        
-        
-        
-        //  cell.backgroundColor = UIColor.purpleColor()
-        
-    }
-
-    
-    override func viewWillAppear(animated: Bool) {
-        
-    }
         
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -11,19 +11,8 @@
         <mutableArray key="Lato-Bold.ttf">
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
-            <string>Lato-Bold</string>
         </mutableArray>
         <mutableArray key="Lato-Regular.ttf">
-            <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
@@ -31,25 +20,12 @@
         </mutableArray>
         <mutableArray key="LatoTR-Bold.ttf">
             <string>LatoTR-Bold</string>
-            <string>LatoTR-Bold</string>
-            <string>LatoTR-Bold</string>
-            <string>LatoTR-Bold</string>
-            <string>LatoTR-Bold</string>
-            <string>LatoTR-Bold</string>
         </mutableArray>
         <mutableArray key="LatoTR-Light.ttf">
             <string>LatoTR-Light</string>
             <string>LatoTR-Light</string>
-            <string>LatoTR-Light</string>
-            <string>LatoTR-Light</string>
-            <string>LatoTR-Light</string>
-            <string>LatoTR-Light</string>
-            <string>LatoTR-Light</string>
-            <string>LatoTR-Light</string>
-            <string>LatoTR-Light</string>
         </mutableArray>
         <mutableArray key="LatoTR-Regular.ttf">
-            <string>LatoTR-Regular</string>
             <string>LatoTR-Regular</string>
             <string>LatoTR-Regular</string>
         </mutableArray>
@@ -89,7 +65,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="68"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z9w-cd-OPG" id="obK-Au-r1F">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="67.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="67"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWb-Ej-YVV">
@@ -229,7 +205,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dSw-kf-gEf" id="13T-sa-khp">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSu-xo-ceV">
@@ -319,6 +295,69 @@
             </objects>
             <point key="canvasLocation" x="2983.5" y="-1867.5"/>
         </scene>
+        <!--One Video-->
+        <scene sceneID="iSm-dK-OVS">
+            <objects>
+                <viewController storyboardIdentifier="oneVideo" id="kkX-Pp-p0O" customClass="oneVideo" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rDJ-jQ-Arc"/>
+                        <viewControllerLayoutGuide type="bottom" id="WwO-tr-2zk"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="is4-rj-odw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5SL-Nl-Qco">
+                                <rect key="frame" x="16" y="16" width="343" height="44"/>
+                                <items>
+                                    <barButtonItem title="Back" id="xrU-zo-tgU">
+                                        <connections>
+                                            <action selector="backButton:" destination="kkX-Pp-p0O" id="TWX-sq-hYy"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Ylo-jF-TXN"/>
+                                </items>
+                            </toolbar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5dL-hu-vOx">
+                                <rect key="frame" x="16" y="60" width="343" height="607"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="gdb-DX-sTd">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gdb-DX-sTd" id="LP0-bj-tOF">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="kkX-Pp-p0O" id="auA-DB-Bw3"/>
+                                    <outlet property="delegate" destination="kkX-Pp-p0O" id="6FS-sY-9ix"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="5SL-Nl-Qco" firstAttribute="top" secondItem="is4-rj-odw" secondAttribute="topMargin" constant="16" id="3tV-ee-ZbO"/>
+                            <constraint firstItem="5dL-hu-vOx" firstAttribute="leading" secondItem="is4-rj-odw" secondAttribute="leadingMargin" id="9Nh-zA-irx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5SL-Nl-Qco" secondAttribute="trailing" id="ZmL-3a-Fg5"/>
+                            <constraint firstItem="5SL-Nl-Qco" firstAttribute="leading" secondItem="is4-rj-odw" secondAttribute="leadingMargin" id="dlV-h9-NqG"/>
+                            <constraint firstItem="WwO-tr-2zk" firstAttribute="top" secondItem="5dL-hu-vOx" secondAttribute="bottom" id="dvx-yV-Gvt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5dL-hu-vOx" secondAttribute="trailing" id="fLv-KV-HIc"/>
+                            <constraint firstItem="5dL-hu-vOx" firstAttribute="top" secondItem="5SL-Nl-Qco" secondAttribute="bottom" id="poz-Tm-0rG"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="tableView" destination="5dL-hu-vOx" id="aXI-og-DpW"/>
+                        <outlet property="toolBar" destination="5SL-Nl-Qco" id="dBV-uQ-KPz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7BG-eV-yxE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3184" y="-1160"/>
+        </scene>
         <!--Tag Comment-->
         <scene sceneID="cb3-Sa-Snr">
             <objects>
@@ -339,7 +378,7 @@
                                         <rect key="frame" x="0.0" y="28" width="328" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XQV-r9-eot" id="8lz-wL-sas">
-                                            <rect key="frame" x="0.0" y="0.0" width="328" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="328" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -376,7 +415,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="jh8-OM-DEH"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <connections>
                                     <outlet property="delegate" destination="xw2-8m-NHJ" id="qoX-1h-yfI"/>
@@ -388,7 +427,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ojV-uo-bfH"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -473,7 +512,7 @@
                                     <constraint firstAttribute="height" constant="30" id="i0r-PX-wbh"/>
                                 </constraints>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="gbN-iR-JGN"/>
@@ -486,15 +525,15 @@
                                     <constraint firstAttribute="height" constant="30" id="YkX-BL-SPM"/>
                                 </constraints>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Hala bir hesabınız yok mu?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8e-EG-O9q">
-                                <rect key="frame" x="38" y="617" width="184" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hala bir hesabınız yok mu?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8e-EG-O9q">
+                                <rect key="frame" x="38" y="617" width="195" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="E44-zY-337"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -504,7 +543,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="0yF-0J-Jf3"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="17"/>
                                 <state key="normal" title="LOGIN">
                                     <color key="titleColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -512,8 +551,8 @@
                                     <action selector="loginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6WV-rr-s9Q"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VfR-yh-4Tx">
-                                <rect key="frame" x="86" y="454" width="202" height="46"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VfR-yh-4Tx">
+                                <rect key="frame" x="86" y="457" width="202" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="202" id="YOj-xW-NJc"/>
                                     <constraint firstAttribute="height" constant="46" id="fH5-Xl-NEB"/>
@@ -530,9 +569,9 @@
                                 <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VdV-7Z-aqC">
-                                <rect key="frame" x="237" y="615" width="45" height="30"/>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VdV-7Z-aqC">
+                                <rect key="frame" x="248" y="615" width="50" height="30"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="16"/>
                                 <state key="normal" title="Üye ol">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -540,18 +579,18 @@
                                     <action selector="signupButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8H2-xF-mVL"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="YA DA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fqE-sS-jgd">
-                                <rect key="frame" x="152" y="418" width="70" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YA DA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fqE-sS-jgd">
+                                <rect key="frame" x="152" y="418" width="70" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="tj5-Kt-mlK"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PvB-qF-aiE">
-                                <rect key="frame" x="38" y="580" width="299" height="32"/>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PvB-qF-aiE">
+                                <rect key="frame" x="38" y="578" width="299" height="34"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                 <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
                                 <state key="normal" title="Şifreni mi unuttun?">
                                     <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -566,8 +605,8 @@
                                     <constraint firstAttribute="width" secondItem="DvY-gz-soe" secondAttribute="height" multiplier="1:1" id="kSR-wc-HWg"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bI6-XK-zXU">
-                                <rect key="frame" x="237" y="642" width="45" height="1"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bI6-XK-zXU">
+                                <rect key="frame" x="248" y="642" width="50" height="1"/>
                                 <color key="backgroundColor" red="0.92967063634677682" green="0.94287086485138571" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="NnN-8A-wjJ"/>
@@ -767,7 +806,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TTU-CU-FCk">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TTU-CU-FCk">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dk9-2W-VYE" userLabel="side">
@@ -831,14 +870,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2hq-W4-EUt">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="Zc3-6u-ehc" id="hH4-hk-P1y"/>
-                                    <outlet property="delegate" destination="Zc3-6u-ehc" id="Vgw-hh-8pg"/>
-                                </connections>
-                            </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uDr-8E-zwr">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <constraints>
@@ -860,6 +891,24 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2hq-W4-EUt">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="Xqd-yF-YgB">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xqd-yF-YgB" id="Oa2-k9-OuX">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Zc3-6u-ehc" id="hH4-hk-P1y"/>
+                                    <outlet property="delegate" destination="Zc3-6u-ehc" id="Vgw-hh-8pg"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1067,22 +1116,22 @@
                                     <constraint firstAttribute="height" constant="90" id="oDE-tt-udx"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mekanın adı" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8r-Pu-U4I">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="mekanın adı" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8r-Pu-U4I">
                                 <rect key="frame" x="111" y="62" width="248" height="17"/>
                                 <color key="tintColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="26" id="h6G-Ml-hxs"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                 <color key="textColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mekan adresi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WKk-GX-c8W">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="mekan adresi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WKk-GX-c8W">
                                 <rect key="frame" x="111" y="82" width="157" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="KzK-Da-t4g"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1124,7 +1173,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NgR-iF-VhF">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NgR-iF-VhF">
                                 <rect key="frame" x="279" y="79" width="77" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="79" id="EaH-ZH-lyv"/>
@@ -1132,7 +1181,7 @@
                                     <constraint firstAttribute="width" constant="76" id="vW5-tD-SAp"/>
                                     <constraint firstAttribute="height" constant="30" id="znM-se-Eyu"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                 <state key="normal" title="TAKİPÇİLER">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1152,11 +1201,11 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="Ihb-97-UwB"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-UltraLight" family="Avenir Next" pointSize="16"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="av1-qZ-kKJ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="av1-qZ-kKJ">
                                 <rect key="frame" x="273" y="83" width="1" height="50"/>
                                 <color key="backgroundColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1184,12 +1233,12 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4TG-FI-9yr">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4TG-FI-9yr">
                                 <rect key="frame" x="295" y="104" width="45" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="45" id="hBD-en-6Og"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                 <state key="normal" title="0">
                                     <color key="titleColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1358,7 +1407,7 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="XBM-v8-jao"/>
                                     <constraint firstAttribute="width" constant="69" id="uUd-xm-hbT"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Regular" family="Lato TR" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                 <color key="textColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
@@ -1512,86 +1561,6 @@
             </objects>
             <point key="canvasLocation" x="2509.5" y="-273.5"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="eCS-oG-5If">
-            <objects>
-                <viewController id="MdB-7X-LmK" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="qBu-Tt-19s"/>
-                        <viewControllerLayoutGuide type="bottom" id="lzI-kj-PBZ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="MgE-kl-VeG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sKb-8I-5Uf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4385" y="-2251"/>
-        </scene>
-        <!--Options View Controller-->
-        <scene sceneID="CoC-va-b0t">
-            <objects>
-                <viewController id="hRd-Hq-pRB" customClass="optionsViewController" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="R0x-db-z8w"/>
-                        <viewControllerLayoutGuide type="bottom" id="Whf-9D-lUa"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="UGH-53-Fb4">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UZA-J4-Xfh">
-                                <rect key="frame" x="0.0" y="20" width="414" height="44"/>
-                                <items>
-                                    <barButtonItem title="Item" id="VpR-B8-Zna"/>
-                                </items>
-                            </toolbar>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gEj-Vs-azq">
-                                <rect key="frame" x="20" y="76" width="117" height="83"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="efe-hK-7Th">
-                                <rect key="frame" x="0.0" y="303" width="414" height="369"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="369" id="7DP-yB-kvH"/>
-                                </constraints>
-                            </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fU9-7g-vNn">
-                                <rect key="frame" x="184" y="698" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="efe-hK-7Th" firstAttribute="leading" secondItem="UGH-53-Fb4" secondAttribute="leadingMargin" id="6lU-Pq-wBb"/>
-                            <constraint firstItem="Whf-9D-lUa" firstAttribute="top" secondItem="fU9-7g-vNn" secondAttribute="bottom" constant="164" id="8b4-EY-Lcf"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="efe-hK-7Th" secondAttribute="trailing" id="L8Q-FH-Jv6"/>
-                            <constraint firstItem="fU9-7g-vNn" firstAttribute="centerX" secondItem="UGH-53-Fb4" secondAttribute="centerX" id="dme-SL-RMe"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="efe-hK-7Th" secondAttribute="bottom" constant="80" id="foZ-0k-k27"/>
-                        </constraints>
-                    </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-                    <connections>
-                        <outlet property="searchDisplayController" destination="mrH-cZ-Zb3" id="i4w-ag-r6H"/>
-                        <outlet property="tableView" destination="efe-hK-7Th" id="XEW-Z5-61I"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="p4c-gj-LWI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="mrH-cZ-Zb3">
-                    <connections>
-                        <outlet property="delegate" destination="hRd-Hq-pRB" id="xKh-Vf-cFK"/>
-                        <outlet property="searchContentsController" destination="hRd-Hq-pRB" id="Dlm-8B-yi0"/>
-                        <outlet property="searchResultsDataSource" destination="hRd-Hq-pRB" id="chL-Zg-oqv"/>
-                        <outlet property="searchResultsDelegate" destination="hRd-Hq-pRB" id="hx7-UO-HjJ"/>
-                    </connections>
-                </searchDisplayController>
-            </objects>
-            <point key="canvasLocation" x="4356" y="-1979"/>
-        </scene>
         <!--Followers-->
         <scene sceneID="oLs-un-1pS">
             <objects>
@@ -1620,12 +1589,12 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Takipçiler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ww9-J7-dqe">
-                                <rect key="frame" x="170" y="48" width="74" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Takipçiler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ww9-J7-dqe">
+                                <rect key="frame" x="150" y="48" width="75" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Gh3-Ac-WPv"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1720,7 +1689,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Nry-qa-kiN"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-UltraLight" family="Avenir Next" pointSize="16"/>
                                 <state key="normal" title="▶︎ GÖNDERİ(0)">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1733,7 +1702,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="ddK-Yn-S9Q"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="TAKİPÇİ">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1743,7 +1712,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axY-Qw-82Y">
                                 <rect key="frame" x="152" y="106" width="30" height="29"/>
-                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="0">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1756,7 +1725,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="plK-eW-9JO"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="TAKİP">
                                     <color key="titleColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1769,7 +1738,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="bIx-OI-DqA"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="0">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1814,7 +1783,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="JpV-4Q-hpV"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Bold" family="Lato TR" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                 <color key="textColor" red="0.92156862750000001" green="0.16862745100000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1838,7 +1807,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="0if-Kr-KnZ"/>
                                     <constraint firstAttribute="height" constant="50" id="v5o-79-b9D"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="LatoTR-Light" family="Lato TR" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-UltraLight" family="Avenir Next" pointSize="16"/>
                                 <state key="normal" title="@ ETİKET(0)">
                                     <color key="titleColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -1974,7 +1943,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Qm-0t-BEd">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Qm-0t-BEd">
                                 <rect key="frame" x="0.0" y="648" width="414" height="44"/>
                                 <color key="backgroundColor" red="0.78823529410000004" green="0.14117647059999999" blue="0.31764705879999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1984,12 +1953,13 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="dy2-AX-0y9"/>
                                     <barButtonItem style="plain" id="RpB-Cl-Qh6">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="k4Z-6M-DOq">
-                                            <rect key="frame" x="179" y="7" width="55" height="30"/>
+                                            <rect key="frame" x="23" y="6" width="369" height="33"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="0oq-8n-RAJ"/>
                                                 <constraint firstAttribute="width" constant="46" id="EXB-Sd-nDH"/>
                                             </constraints>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
                                             <state key="normal" title="PAYLAŞ">
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
@@ -2014,7 +1984,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="nET-ze-ryy"/>
                                 </constraints>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                             </textField>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="y2r-Lc-d5x">
@@ -2072,7 +2042,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uor-ij-HBG" id="lBi-5d-hZO">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2118,18 +2088,18 @@
             <objects>
                 <tableViewController id="hGb-1k-zG5" customClass="SideBarController" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" id="3JI-O2-u1D">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="138" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="anM-Ny-BXk" customClass="sideCell" customModule="Molocate" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="600" height="91"/>
+                                <rect key="frame" x="0.0" y="28" width="138" height="91"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="anM-Ny-BXk" id="E3e-QF-pdg">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="90.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="138" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
                                             <rect key="frame" x="8" y="48" width="122" height="34"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="34" id="6fw-b0-nm3"/>
@@ -2138,7 +2108,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XQN-J4-aRX">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XQN-J4-aRX">
                                             <rect key="frame" x="49" y="8" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="ORw-e1-j5o"/>
@@ -2221,7 +2191,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8g7-hu-PdX" id="FgD-9L-RNP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2360,7 +2330,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nRD-f7-FQk" id="apf-PQ-g2y">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2446,7 +2416,7 @@
         <image name="three.png" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9Fc-m2-Rjq"/>
+        <segue reference="RSN-Ei-cwL"/>
         <segue reference="iX5-7U-zGl"/>
     </inferredMetricsTieBreakers>
 </document>

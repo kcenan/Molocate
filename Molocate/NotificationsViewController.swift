@@ -56,13 +56,26 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-       // print(indexPath.row)
+        print(indexPath.row)
+        let controller:oneVideo = self.storyboard!.instantiateViewControllerWithIdentifier("oneVideo") as! oneVideo
+        controller.view.frame = self.view.bounds
+        controller.willMoveToParentViewController(self)
+        self.view.addSubview(controller.view)
+        self.addChildViewController(controller)
+        controller.didMoveToParentViewController(self)
     }
     
     
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
         print("username e basıldı at index path: \(buttonRow)")
+        let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
+        controller.view.frame = self.view.bounds
+        controller.willMoveToParentViewController(self)
+        self.view.addSubview(controller.view)
+        self.addChildViewController(controller)
+        controller.didMoveToParentViewController(self)
+        
     }
     
     override func didReceiveMemoryWarning() {

@@ -53,16 +53,6 @@ class optionCell: UITableViewCell {
         
         
     }
-    
-    //    func switchValueDidChange(sender:UISwitch!)
-    //    {
-    //        if (sender.on == true){
-    //            print("on")
-    //
-    //        }
-    //        else{
-    //            print("off")
-    //        }
-    //    }
+  
     
 }

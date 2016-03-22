@@ -46,7 +46,6 @@ class notificationCell: UITableViewCell {
         myLabel.text = "sizi takip etmeye başladı" // sample label text
         let labelWidth = myLabel?.intrinsicContentSize().width
         myLabel.textAlignment = .Left
-        print(labelWidth)
         myLabel.frame = CGRectMake(buttonWidth + 49 , 10 , screenSize.width - buttonWidth - 52 , 34)
         myLabel.numberOfLines = 1
         contentView.addSubview(myLabel)

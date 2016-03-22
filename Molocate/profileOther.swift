@@ -266,12 +266,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                 self.scrollView.alpha = 1
                 
                 self.performSegueWithIdentifier("goEditProfile", sender: self)
-                //            let controller:editProfile = self.storyboard!.instantiateViewControllerWithIdentifier("editProfile") as! editProfile
-                //            controller.view.frame = self.view.bounds
-                //            controller.willMoveToParentViewController(self)
-                //            self.view.addSubview(controller.view)
-                //            self.addChildViewController(controller)
-                //            controller.didMoveToParentViewController(self)
+               
                 
                 self.settings.hidden = true
             }

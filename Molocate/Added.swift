@@ -11,6 +11,7 @@ import UIKit
 class Added: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var newarray = ["asasad" , "sdasdasdsa" , "dsasaddas", "dsakjjsadjdsakljklj", "asdjkdsajksdsadjk", "asdjkdsajksdsadjk", "asdjkdsajksdsadjk", "asdjkdsajksdsadjk"]
+    var players = ["Didier Drogba", "Elmander", "Harry Kewell", "Milan Baros", "Wesley Sneijder"]
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,22 +32,32 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource {
        
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
         let rowHeight = screenSize.width + 138
         return rowHeight
     }
-    internal func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-    return self.newarray.count
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return players.count
     }
-    
-
-    internal func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        //let cell2 = TableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
+        // cell.myButton1.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
+        let cell = videoCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
+        //        if (indexPath.row < 1){
+        // cell2.myButton1.titleLabel?.text = players[indexPath.row]
+        //cell.myButton1.addTarget(self, action: "pressedProfile2:", forControlEvents: UIControlEvents.TouchUpInside)
         
-        cell.textLabel?.text = self.newarray[indexPath.row]
+        //        }
+        //        else {
+        cell.Username.titleLabel?.text = players[indexPath.row]
         
+        // cell.Place.text = numbers[indexPath.row]
+        //        }
         return cell
     }
+    func pressedProfile2(sender: UIButton) {
+        print("pressedProfile")
+    }
+
 //
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

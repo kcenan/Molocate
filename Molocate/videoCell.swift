@@ -25,7 +25,9 @@ class videoCell: UITableViewCell {
     var commentCount : UILabel!
     var videoComment : UILabel!
     var videoTime : UILabel!
-    
+    var label1 : UILabel!
+    var label2 : UILabel!
+    var label3 : UILabel!
     var myLabel3: UILabel!
     
     var tableVideoURL: NSURL!
@@ -62,7 +64,7 @@ class videoCell: UITableViewCell {
         Username.setTitleColor(swiftColor, forState: .Normal)
         Username.contentHorizontalAlignment = .Left
         Username.setTitle("kcenan", forState: .Normal)
-        Username.titleLabel?.font = UIFont(name: "LatoTR-Bold", size:14)
+        Username.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size:17)
         //Username.addTarget(self, action: "pressedUsername:", forControlEvents:UIControlEvents.TouchUpInside)
         contentView.addSubview(Username)
         
@@ -72,85 +74,122 @@ class videoCell: UITableViewCell {
         placeName.titleLabel?.sizeToFit()
         placeName.contentHorizontalAlignment = .Left
         placeName.setTitle("koç university", forState: .Normal)
-        placeName.titleLabel?.font = UIFont(name: "LatoTR-Regular", size: 16)
+        placeName.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 17)
         contentView.addSubview(placeName)
         
         videoComment = UILabel()
         videoComment.frame = CGRectMake( 10 , 59 + screenSize.width , screenSize.width - 50 , 50)
-        //yazı ortalama ekle
-        videoComment.font = UIFont(name: "LatoTR-Light", size: 14)
+        videoComment.font = UIFont(name: "AvenirNext-Medium", size: 11)
         videoComment.textAlignment = .Left
-        
         videoComment.textColor = UIColor.blackColor()
-        //videoComment.sizeToFit()
+        videoComment.numberOfLines = 2
+        videoComment.lineBreakMode = .ByWordWrapping
         contentView.addSubview(videoComment)
+        
+        label3 = UILabel()
+        label3.frame = CGRectMake( 12 , 104 + screenSize.width , screenSize.width - 45 , 1)
+        label3.backgroundColor = UIColor.lightGrayColor()
+        label3.text = "  "
+        label3.font = UIFont(name: "AvenirNext-Regular", size: 10)
+        label3.textAlignment = .Center
+        
+        contentView.addSubview(label3)
         
         videoTime = UILabel()
         videoTime.frame = CGRectMake( screenSize.width - 30  , 59 + screenSize.width , 25 , 25)
         //yazı ortalama ekle
         videoTime.text = "2s"
-        videoTime.font = UIFont(name: "LatoTR-Light", size: 14)
+        videoTime.font = UIFont(name: "AvenirNext-UltraLight", size: 14)
         videoTime.textAlignment = .Right
         videoTime.textColor = UIColor.blackColor()
         videoTime.sizeToFit()
         contentView.addSubview(videoTime)
         
+    
         followButton = UIButton()
         followButton.frame = CGRectMake(screenSize.width - 41 , 9 , 36 , 36)
         let followImage = UIImage(named: "follow1.png")! as UIImage
         followButton.setBackgroundImage(followImage, forState: UIControlState.Normal)
-        //followButton.setTitleColor(swiftColor2, forState: .Normal)
-        //followButton.setTitle("follow", forState: .Normal)
         contentView.addSubview(followButton)
         
         likeButton = UIButton()
-        likeButton.frame = CGRectMake( 5 , 93 + screenSize.width , 36 , 36)
-        let likeImage = UIImage(named: "like1.png")! as UIImage
+        likeButton.frame = CGRectMake( 5 , 106 + screenSize.width , 36, 36)
+        let likeImage = UIImage(named: "Like.png")! as UIImage
         likeButton.setBackgroundImage(likeImage, forState: UIControlState.Normal)
-        // likeButton.setTitleColor(swiftColor, forState: .Normal)
-        //likeButton.setTitle("like", forState: .Normal)
         contentView.addSubview(likeButton)
         
         
+        label1 = UILabel()
+        label1.frame = CGRectMake( 42 , 110 + screenSize.width , 44 , 18)
+        //yazı ortalama
+        label1.text = "BEĞENİ"
+        label1.font = UIFont(name: "AvenirNext-Regular", size: 10)
+        label1.textAlignment = .Center
+        label1.textColor = UIColor.blackColor()
+        contentView.addSubview(label1)
+        
         likeCount = UIButton()
-        likeCount.frame = CGRectMake( 43 , 89 + screenSize.width , 44 , 44)
+        likeCount.frame = CGRectMake( 42 , 106 + screenSize.width , 44 , 36)
+        likeCount.contentHorizontalAlignment = .Center
+        likeCount.contentVerticalAlignment = .Bottom
         likeCount.setTitle("0", forState: .Normal)
         likeCount.setTitleColor(swiftColor, forState: .Normal)
-        likeButton.setBackgroundImage(likeImage, forState: UIControlState.Normal)
-        // likeButton.setTitleColor(swiftColor, forState: .Normal)
-        //likeButton.setTitle("like", forState: .Normal)
+        likeCount.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 14)
         contentView.addSubview(likeCount)
         
        
         
         commentButton = UIButton()
-        commentButton.frame = CGRectMake( 93 , 93 + screenSize.width , 36 , 36)
-        let commentImage = UIImage(named: "comment2.png")! as UIImage
+        commentButton.frame = CGRectMake( 93 , 110 + screenSize.width , 36 , 36)
+        let commentImage = UIImage(named: "Comments.png")! as UIImage
         commentButton.setBackgroundImage(commentImage, forState: UIControlState.Normal)
-        //commentButton.setTitleColor(swiftColor, forState: .Normal)
-        //commentButton.setTitle("comment", forState: .Normal)
         contentView.addSubview(commentButton)
         
+        label2 = UILabel()
+        label2.frame = CGRectMake( 130 , 110 + screenSize.width , 44 , 18)
+        label2.text = "YORUM"
+        label2.font = UIFont(name: "AvenirNext-Regular", size: 10)
+        label2.textAlignment = .Center
+        label2.textColor = UIColor.blackColor()
+        contentView.addSubview(label2)
         
         commentCount = UILabel()
-        commentCount.frame = CGRectMake( 137 , 89 + screenSize.width , 44 , 44)
-        //yazı ortalama
+        commentCount.frame = CGRectMake( 130 , 123 + screenSize.width , 44 , 18)
         commentCount.text = "0"
+        commentCount.font = UIFont(name: "AvenirNext-Medium", size: 14)
         commentCount.textAlignment = .Center
-        commentCount.textColor = swiftColor2
+        commentCount.textColor = swiftColor
         contentView.addSubview(commentCount)
         
         reportButton = UIButton()
-        reportButton.frame = CGRectMake(screenSize.width - 49, 89 + screenSize.width  , 44, 44)
-        let reportImage = UIImage(named: "report1.png")! as UIImage
+        reportButton.frame = CGRectMake(screenSize.width - 49, 109 + screenSize.width  , 34, 34)
+        let reportImage = UIImage(named: "sign-2.png")! as UIImage
         reportButton.setBackgroundImage(reportImage, forState: UIControlState.Normal)
-        //reportButton.setTitle("Report", forState: .Normal)
-        //image ata
-        //reportButton.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
         contentView.addSubview(reportButton)
+        
+        
+        if videoComment.text == "" {
+        
+        }
+        else {
+        
+        }
         
         newRect = CGRectMake(0, 54, screenSize.width, screenSize.width)
         
+    }
+    func getStringHeight(mytext: String, fontSize: CGFloat, width: CGFloat)->CGFloat {
+        
+        let font = UIFont.systemFontOfSize(fontSize)
+        let size = CGSizeMake(width,CGFloat.max)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .ByWordWrapping;
+        let attributes = [NSFontAttributeName:font,
+            NSParagraphStyleAttributeName:paragraphStyle.copy()]
+        
+        let text = mytext as NSString
+        let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        return rect.size.height  
     }
     
     func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String, profilePic:NSURL, dateStr: String, taggedUsers: [String]){
