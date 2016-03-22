@@ -56,7 +56,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print(indexPath.row)
+       // print(indexPath.row)
     }
     
     

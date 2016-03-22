@@ -115,7 +115,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 
                 
                 let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                    print(response)
+                   // print(response)
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                     dispatch_async(dispatch_get_main_queue(), {
                     if error != nil{
@@ -177,7 +177,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             do {
                 
                 let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
+               // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                 
                 // create post request
                 let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/account/register/")!
@@ -192,7 +192,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 
                 
                 let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                    print(response)
+                    //print(response)
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                     
                     dispatch_async(dispatch_get_main_queue(), {
@@ -205,12 +205,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     do {
                         let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
                        
-                        print("Result -> \(result)")
+                        //print("Result -> \(result)")
                         if(result.count > 1){
                             userToken = result["access_token"] as? String
                             self.performSegueWithIdentifier("login", sender: self)
                             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            print("dsfasfdsadsfa")
+                            //print("dsfasfdsadsfa")
                         
                         } else{
                             self.displayAlert("Hata", message: result["result"] as! String)
@@ -296,7 +296,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 self.removeFbData()
             } else if result.isCancelled {
                 // User Cancellation
-                print("error oldu aga")
+                print("Error in fbLoginInitiate")
                 self.removeFbData()
             } else {
                 //Success
@@ -308,7 +308,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 do {
                     
                     let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                    print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
+                   // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                     
                     // create post request
                     let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/account/facebook_login/")!
@@ -323,7 +323,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     
                     
                     let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                        print(response)
+                      //  print(response)
                         //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                         dispatch_async(dispatch_get_main_queue(), {
                             if error != nil{
@@ -336,8 +336,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                 
                                 let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
                                 
-                                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                                print("Result -> \(result)")
+                                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                                //print("Result -> \(result)")
 //                                var dictionary : NSDictionary = result as! NSDictionary
 //                                if(dictionary.objectForKey("token") != nil){
 //                                    userToken = result["token"] as! String
@@ -571,7 +571,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         scrollWidth = 3 * self.view.frame.size.width
         scrollHeight  = self.view.frame.size.height
         // Do any additional setup after loading the view, typically from a nib.
-        print(scrollWidth)
+        //print(scrollWidth)
 
         
     }

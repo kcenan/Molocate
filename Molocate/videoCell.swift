@@ -169,7 +169,7 @@ class videoCell: UITableViewCell {
         self.reportButton.tag = row
         self.videoComment.text = caption
         self.videoTime.text = dateStr
-        print(profilePic.absoluteString)
+       // print(profilePic.absoluteString)
         if(profilePic.absoluteString != ""){
             Molocate.getDataFromUrl(profilePic, completion: { (data, response, error) -> Void in
                 dispatch_async(dispatch_get_main_queue()){

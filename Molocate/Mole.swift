@@ -427,7 +427,7 @@ public class Molocate {
                 completionHandler(data: videoArray, response: response, error: nsError)
             }catch{
                 completionHandler(data: nil, response: NSURLResponse(), error: nsError)
-                print("Error: in Video Inf")
+                print("Error: in mole.getExploreVideos")
             }
         }
         task.resume()
@@ -442,7 +442,7 @@ public class Molocate {
         request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             let nsError = error
             
@@ -466,7 +466,7 @@ public class Molocate {
         request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             let nsError = error
             
@@ -491,7 +491,7 @@ public class Molocate {
         request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             let nsError = error
             
@@ -500,7 +500,7 @@ public class Molocate {
                 completionHandler(data: result["result"] as! String , response: response , error: nsError  )
             } catch{
                 completionHandler(data: "" , response: nil , error: nsError  )
-                print("Error:: in mole.unfollow()")
+                print("Error:: in mole.deleteAVideo()")
             }
             
         }
@@ -523,7 +523,7 @@ public class Molocate {
             request.HTTPBody = jsonData
             
             let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+               // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 
                 let nsError = error
                 
@@ -533,7 +533,7 @@ public class Molocate {
                     completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                 } catch{
                     completionHandler(data: "" , response: nil , error: nsError  )
-                    print("Error:: in mole.unfollow()")
+                    print("Error:: in mole.commentAVideo()")
                 }
                 
             }
@@ -541,7 +541,7 @@ public class Molocate {
             task.resume()
         }catch{
             completionHandler(data: "" , response: nil , error: nil )
-            print("Error:: in mole.unfollow()")
+            print("Error:: in mole.commentAVideo()")
         }
     }
 
@@ -559,7 +559,7 @@ public class Molocate {
             request.HTTPBody = jsonData
             
             let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 
                 let nsError = error
                 
@@ -569,7 +569,7 @@ public class Molocate {
                     completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                 } catch{
                     completionHandler(data: "" , response: nil , error: nsError  )
-                    print("Error:: in mole.unfollow()")
+                    print("Error:: in mole.deleteComment()")
                 }
                 
             }
@@ -577,7 +577,7 @@ public class Molocate {
             task.resume()
         }catch{
             completionHandler(data: "" , response: nil , error: nil )
-            print("Error:: in mole.unfollow()")
+            print("Error:: in mole.deleteComment()")
         }
     }
     
@@ -599,12 +599,12 @@ public class Molocate {
             let url = NSURL(string: baseUrl + "account/api/edit_user/")!
             let request = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "POST"
-            request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+            request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
             request.HTTPBody = jsonData
             
             let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
                 
-                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 
                 let nsError = error
                 
@@ -614,7 +614,7 @@ public class Molocate {
                     completionHandler(data: "success" as! String , response: response , error: nsError  )
                 } catch{
                     completionHandler(data: "fail" , response: nil , error: nsError  )
-                    print("Error:: in mole.unfollow()")
+                    print("Error:: in mole.EditUser()")
                 }
                 
             }
@@ -622,7 +622,7 @@ public class Molocate {
             task.resume()
         }catch{
                     completionHandler(data: "fail" , response: nil , error: nil )
-            print("Error:: in mole.unfollow()")
+            print("Error:: in mole.EditUser()")
         }
     }
     
@@ -638,7 +638,7 @@ public class Molocate {
         request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
         request.HTTPBody = image
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){data, response, error  in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
 
             let nsError = error;
             
@@ -655,7 +655,7 @@ public class Molocate {
             } catch{
                 completionHandler(data: "" , response: nil , error: nsError  )
                 
-                print("Error:: in mole.getCurrentUser()")
+                print("Error:: in mole.uploadProfilePhoto()")
             }
             
         }
@@ -681,7 +681,7 @@ public class Molocate {
             
             do {
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(result)
+                //print(result)
                 currentUser.email = result["email"] as! String
                 currentUser.username = result["username"] as! String
                 currentUser.first_name = result["first_name"] as! String

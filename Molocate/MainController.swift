@@ -388,13 +388,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         print("followa basıldı at index path: \(buttonRow) ")
         
         Molocate.follow (videoArray[buttonRow].username){ (data, response, error) -> () in
-            print(data)
+            //print(data)
         }
     }
     
     func pressedLikeCount(sender: UIButton) {
-        print("____________________________--------------")
-        print(sender.tag)
+        //print("____________________________--------------")
+        //print(sender.tag)
         video_id = videoArray[sender.tag].id
         videoIndex = sender.tag
         let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
@@ -435,9 +435,6 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
-                    
-                    
-                    
                 }
             }
         }

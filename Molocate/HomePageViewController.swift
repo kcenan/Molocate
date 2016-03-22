@@ -93,7 +93,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                             self.nextURL = nil
                         }else {
                             let nextStr = result["next"] as! String
-                            print(nextStr)
+                            //print(nextStr)
                             self.nextURL = NSURL(string: nextStr)
                         }
                         for item in videos {
@@ -299,7 +299,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         //
         //            myCell.myLabel.textColor = UIColor.purpleColor()
         
-        print(indexPath.row)
+       // print(indexPath.row)
         
         
         
