@@ -86,8 +86,10 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Molocate/QuadratTouch.framework"
   install_framework "Pods-Molocate/RecordButton.framework"
+  install_framework "Pods-Molocate/SDWebImage.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Molocate/QuadratTouch.framework"
   install_framework "Pods-Molocate/RecordButton.framework"
+  install_framework "Pods-Molocate/SDWebImage.framework"
 fi

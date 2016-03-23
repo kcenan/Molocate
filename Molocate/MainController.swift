@@ -3,7 +3,7 @@ import Foundation
 import CoreLocation
 import QuadratTouch
 import MapKit
-
+import SDWebImage
 
 
 //video caption ve süre eklenecek, report send edilecek

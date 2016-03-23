@@ -213,13 +213,15 @@ class videoCell: UITableViewCell {
             }
        // print(profilePic.absoluteString)
         if(profilePic.absoluteString != ""){
-            Molocate.getDataFromUrl(profilePic, completion: { (data, response, error) -> Void in
-                dispatch_async(dispatch_get_main_queue()){
-                    let image = UIImage(data: data!)!
-                    self.profilePhoto.setBackgroundImage(image, forState: UIControlState.Normal)
-                    
-                }
-            })
+            
+            self.profilePhoto.sd_setImageWithURL(profilePic, forState: UIControlState.Normal)
+//            Molocate.getDataFromUrl(profilePic, completion: { (data, response, error) -> Void in
+//                dispatch_async(dispatch_get_main_queue()){
+//                    let image = UIImage(data: data!)!
+//                    self.profilePhoto.setBackgroundImage(image, forState: UIControlState.Normal)
+//                    
+//                }
+//            })
             //photo.image = UIImage(data: data!)!
         }
        

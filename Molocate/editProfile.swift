@@ -102,13 +102,13 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         //print(currentUser.profilePic.absoluteString)
         if(user.profilePic.absoluteString != ""){
             photo.image = UIImage(named: "profilepic.png")!
-            
-            Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
-                dispatch_async(dispatch_get_main_queue()){
-                    self.photo.image = UIImage(data: data!)!
-                    
-                }
-            })
+            photo.sd_setImageWithURL(user.profilePic)
+//            Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
+//                dispatch_async(dispatch_get_main_queue()){
+//                    self.photo.image = UIImage(data: data!)!
+//                    
+//                }
+//            })
             //photo.image = UIImage(data: data!)!
         }else{
             photo.image = UIImage(named: "profilepic.png")!

@@ -203,13 +203,13 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
         if(user.profilePic.absoluteString != ""){
             profilePhoto.image = UIImage(named: "profilepic.png")!
-            
-            Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
-                dispatch_async(dispatch_get_main_queue()){
-                  self.profilePhoto.image = UIImage(data: data!)!
-                    
-                }
-            })
+            profilePhoto.sd_setImageWithURL(user.profilePic)
+//            Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
+//                dispatch_async(dispatch_get_main_queue()){
+//                  self.profilePhoto.image = UIImage(data: data!)!
+//                    
+//                }
+//            })
             //photo.image = UIImage(data: data!)!
         }else{
             profilePhoto.image = UIImage(named: "profilepic.png")!
