@@ -318,9 +318,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
        
         
         
-        categ = categories[indexPath.row]
+        categ = categoryDict[categories[indexPath.row]]
         
-        
+        print(categ)
         
         
         //  cell.backgroundColor = UIColor.purpleColor()

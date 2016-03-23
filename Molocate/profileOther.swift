@@ -206,7 +206,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             
             Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
                 dispatch_async(dispatch_get_main_queue()){
-                    self.profilePhoto.image = UIImage(data: data!)!
+                  self.profilePhoto.image = UIImage(data: data!)!
                     
                 }
             })

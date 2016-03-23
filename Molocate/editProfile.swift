@@ -34,11 +34,10 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
     var name : UILabel!
-    var mail : UILabel!
+    var notification : UILabel!
     var gender : UILabel!
     var birthday : UILabel!
     var konum : UILabel!
-    var mailText : UITextField!
     var nameText : UITextField!
     var surnameText : UITextField!
     var switchDemo : UISwitch!
@@ -53,6 +52,8 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     var maleButton : UIButton!
     var femaleButton : UIButton!
     let imagePicker = UIImagePickerController()
+    var erkekimage : UILabel!
+    var kadınimage :UILabel!
     
     
     @IBAction func back(sender: AnyObject) {
@@ -115,20 +116,12 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         
         photo!.frame = CGRectMake(10 , 60 + (scr * 2) / 120 , (scr * 26) / 120 , (scr * 26) / 120)
         self.view.addSubview(photo!)
-        
-        mailText = UITextField()
-        mailText.frame = CGRectMake(screenWidth / 3 + 10 , 60 + (scr * (42 / 120)), screenWidth - (screenWidth / 3) - 20, (scr * 6) / 120)
-        mailText.borderStyle = .RoundedRect
-        mailText.textColor = UIColor.blackColor()
-        mailText.keyboardType = .EmailAddress
-        mailText.text = user.email
-        view.addSubview(mailText)
-        
+
         name = UILabel()
         name.frame = CGRectMake(0, 60 + (scr * (32 / 120)), screenWidth / 3, (scr * 6) / 120)
         name.text = "İsim Soyisim:"
         name.textAlignment = .Right
-        name.font = UIFont (name: "LatoTR-Regular", size: 16)
+        name.font = UIFont (name: "AvenirNext-Regular", size: 16)
         view.addSubview(name)
         
         nameText = UITextField()
@@ -137,33 +130,35 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         nameText.textColor = UIColor.blackColor()
         nameText.keyboardType = .Default
         user.printUser()
+        nameText.font = UIFont(name: "AvenirNext-Regular", size: 14)
         nameText.text = user.first_name
         view.addSubview(nameText)
         
         surnameText = UITextField()
         surnameText.frame = CGRectMake(2 * screenWidth / 3 + 10  , 60 + (scr * (32 / 120)), (screenWidth - (screenWidth / 3) - 20) / 2 - 5 , (scr * 6) / 120)
+        surnameText.font = UIFont(name: "AvenirNext-Regular", size: 14)
         surnameText.borderStyle = .RoundedRect
         surnameText.textColor = UIColor.blackColor()
         surnameText.keyboardType = .EmailAddress
         surnameText.text = user.last_name
         view.addSubview(surnameText)
         
-        mail = UILabel()
-        mail.frame = CGRectMake(0, 60 + (scr * (42 / 120)), screenWidth / 3, (scr * 6) / 120)
-        mail.text = "E-posta:"
-        mail.textAlignment = .Right
-        mail.font = UIFont (name: "LatoTR-Regular", size: 16)
-        view.addSubview(mail)
+        notification = UILabel()
+        notification.frame = CGRectMake(0, 60 + (scr * (42 / 120)), screenWidth / 3, (scr * 6) / 120)
+        notification.text = "Bildirimler:"
+        notification.textAlignment = .Right
+        notification.font = UIFont (name: "AvenirNext-Regular", size: 16)
+        view.addSubview(notification)
         
         gender = UILabel()
         gender.frame = CGRectMake(0, 60 + (scr * (52 / 120)), screenWidth / 3, (scr * 6) / 120)
         gender.text = "Cinsiyet:"
         gender.textAlignment = .Right
-        gender.font = UIFont (name: "LatoTR-Regular", size: 16)
+        gender.font = UIFont (name: "AvenirNext-Regular", size: 16)
         view.addSubview(gender)
         
         birthday = UILabel()
-        birthday.font = UIFont (name: "LatoTR-Regular", size: 16)
+        birthday.font = UIFont (name: "AvenirNext-Regular", size: 16)
         birthday.frame = CGRectMake(0, 60 + (scr * (62 / 120)), screenWidth / 3, (scr * 16) / 120)
         birthday.text = "Doğum Tarihi:"
         birthday.textAlignment = .Right
@@ -172,42 +167,46 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         
         
         
+        let xvalue : CGFloat = (screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3
+        let yvalue : CGFloat = 60 + (scr * (45 / 120))
         
-        //        switchDemo = UISwitch()
-        //
-        //        switchDemo.center.x = a
-        //
-        //        switchDemo.center.y = b
-        //        switchDemo.transform = CGAffineTransformMakeScale( screenHeight / 667 , screenHeight / 667 )
-        //        if(user.gender == "male"){
-        //            switchDemo.on = true
-        //            switchDemo.setOn(true, animated: false)}
-        //        else{
-        //            switchDemo.on = false
-        //            switchDemo.setOn(false, animated: false)
-        //        }
-        //        switchDemo.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
-        //        self.view.addSubview(switchDemo)
-        var a : CGFloat = (screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3
-        var b : CGFloat = 60 + (scr * (55 / 120))
-        let femaleButton   = UIButton(type: UIButtonType.System) as UIButton
-        femaleButton.frame = CGRectMake((screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3 - 30 , b - 10 , 20 , 20)
-        femaleButton.setTitle("⚪️", forState: UIControlState.Normal)
-        femaleButton.addTarget(self, action: "maleSelected:", forControlEvents: UIControlEvents.TouchUpInside)
+        switchDemo = UISwitch()
+        switchDemo.center.x = xvalue
+        switchDemo.center.y = yvalue
+        switchDemo.transform = CGAffineTransformMakeScale( screenHeight / 667 , screenHeight / 667 )
+        switchDemo.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
+        self.view.addSubview(switchDemo)
+        
+        
+        let femaleButton   = UIButton(type: UIButtonType.System) 
+        femaleButton.frame = CGRectMake(screenWidth / 3 + 51 , 60 + (scr * (55 / 120)) - 6 , 38 , 38)
+        //femaleButton.setTitle("◽️", forState: UIControlState.Normal)
+        femaleButton.addTarget(self, action: "femaleSelected:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(femaleButton)
-        print("deneme")
+    
+        
         let maleButton   = UIButton(type: UIButtonType.System) as UIButton
-        maleButton.frame = CGRectMake(a + 50 , b - 10, 20 , 20)
-        maleButton.setTitle("⚪️", forState: UIControlState.Normal)
-        maleButton.addTarget(self, action: "femaleSelected:", forControlEvents: UIControlEvents.TouchUpInside)
+        maleButton.frame = CGRectMake(screenWidth / 3 + 141 , 60 + (scr * (55 / 120)) - 6 , 38 , 38)
+        //maleButton.setTitle("◽️", forState: UIControlState.Normal)
+        maleButton.addTarget(self, action: "maleSelected:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(maleButton)
         
         kadın = UILabel()
-        kadın.frame = CGRectMake((screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3 - 80, 60 + (scr * (52 / 120)), 50, (scr * 6) / 120)
+        kadın.frame = CGRectMake(screenWidth / 3 + 10, 60 + (scr * (52 / 120)), 50, (scr * 6) / 120)
         kadın.text = "Kadın"
-        kadın.font = UIFont (name: "LatoTR-Regular", size: 16)
+        kadın.font = UIFont (name: "AvenirNext-Regular", size: 16)
         kadın.textAlignment = .Right
         view.addSubview(kadın)
+        
+        erkekimage = UILabel()
+        erkekimage.frame = CGRectMake(screenWidth / 3 + 150 , 60 + (scr * (55 / 120)) - 10 , 25 , 20)
+        erkekimage.text = "◽️"
+        view.addSubview(erkekimage)
+        
+        kadınimage = UILabel()
+        kadınimage.frame = CGRectMake(screenWidth / 3 + 65 , 60 + (scr * (55 / 120)) - 10 , 25 , 20)
+        kadınimage.text = "◽️"
+        view.addSubview(kadınimage)
         
         let saveButton   = UIButton(type: UIButtonType.System) as UIButton
         saveButton.frame = CGRectMake(30 , 60 + (scr * 100) / 120 , screenWidth - 60 , (scr * 12) / 120 )
@@ -217,7 +216,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         saveButton.layer.cornerRadius = 10
         saveButton.layer.borderWidth = 0
         saveButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        saveButton.titleLabel!.font =  UIFont(name: "LatoTR-Bold.tff", size: 18)
+        saveButton.titleLabel!.font =  UIFont(name: "AvenirNext-DemiBold.tff", size: 18)
         self.view.addSubview(saveButton)
         
         let changePhoto   = UIButton(type: UIButtonType.System) as UIButton
@@ -225,7 +224,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         changePhoto.backgroundColor = .None
         changePhoto.titleLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping;
         changePhoto.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        changePhoto.titleLabel!.font =  UIFont(name: "LatoTR-Regular.tff", size: 20)
+        changePhoto.titleLabel!.font =  UIFont(name: "AvenirNext-Regular.tff", size: 20)
         changePhoto.setTitle("Fotoğrafı\nDeğiştir", forState: UIControlState.Normal)
         changePhoto.addTarget(self, action: "changePhoto:", forControlEvents: UIControlEvents.TouchUpInside)
         changePhoto.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
@@ -234,7 +233,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         let password   = UIButton(type: UIButtonType.System) as UIButton
         password.frame = CGRectMake(30 , 60 + (scr * 82) / 120 , screenWidth - 60 , (scr * 6) / 120 )
         password.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        password.titleLabel!.font =  UIFont(name: "LatoTR-Bold.tff", size: 16)
+        password.titleLabel!.font =  UIFont(name: "AvenirNext-DemiBold.tff", size: 16)
         password.backgroundColor = swiftColor
         password.setTitle("Şifre Değiştir", forState: UIControlState.Normal)
         password.addTarget(self, action: "changePassword:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -242,23 +241,43 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         password.layer.cornerRadius = 10
         password.layer.borderWidth = 0
         self.view.addSubview(password)
-        
+    
         
         erkek = UILabel()
-        erkek.frame = CGRectMake((screenWidth - screenWidth / 3 ) / 2 + screenWidth / 3 + 30, 60 + (scr * (52 / 120)) , 50, (scr * 6) / 120)
+        erkek.frame = CGRectMake(screenWidth / 3 + 100 , 60 + (scr * (52 / 120)) , 50, (scr * 6) / 120)
         erkek.text = "Erkek"
-        erkek.font = UIFont (name: "LatoTR-Regular", size: 16)
+        erkek.font = UIFont (name: "AvenirNext-Regular", size: 16)
         erkek.textAlignment = .Left
         view.addSubview(erkek)
         
         
-        kadın.alpha = 0.5
+        if(user.gender == "male"){
+                erkekimage.text = "🔳"
+           
+                                }
+        if(user.gender == "female"){
+                kadınimage.text = "🔳"
+        }
+        
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
         imagePicker.delegate = self
     }
     
     
+    func femaleSelected(sender:UIButton!){
+        print("female selected")
+        kadınimage.text = "🔳"
+        erkekimage.text = "◽️"
+        user.gender = "female"
+        
+    }
+    func maleSelected(sender:UIButton!){
+        print("male selected")
+        kadınimage.text = "◽️"
+        erkekimage.text = "🔳"
+        user.gender = "male"
+    }
     
     func buttonAction(sender:UIButton!)
     {
@@ -287,6 +306,10 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         }
         print("Button tapped")
     }
+    
+    
+   
+    
     func changePassword(sender:UIButton!)
     {
         
@@ -296,9 +319,6 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
-        
-        
-        
         print("şifre değiştirecek")
         
     }
@@ -336,15 +356,10 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     {
         if (sender.on == true){
             print("on")
-            self.erkek.alpha = 1
-            self.kadın.alpha = 0.5
-            user.gender = "male"
+            
         }
         else{
             print("off")
-            self.erkek.alpha = 0.5
-            self.kadın.alpha = 1
-            user.gender = "female"
         }
     }
     

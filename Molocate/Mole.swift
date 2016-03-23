@@ -3,7 +3,7 @@ import SystemConfiguration
 
 let baseUrl = "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/"
 
-
+let categoryDict = ["Eğlence":"fun","Yemek":"food","Gezinti":"travel","Moda":"fashion" , "Güzellik":"makeup", "Spor": "Sport","Etkinlik": "Event","Kampüs":"university"]
 struct videoInf{
     var id: String = ""
     var username:String = ""
@@ -123,7 +123,7 @@ public class Molocate {
     
     class func getFollowers(username: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int, next: String?, previous: String? ) -> ()) {
         
-        let url = NSURL(string: baseUrl + "relation/api/followers/" + (username as String) + "/")!
+        let url = NSURL(string: baseUrl + "relation/api/followers/?username=" + (username as String) )!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
@@ -165,7 +165,7 @@ public class Molocate {
     
     class func getFollowings(username: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
         
-        let url = NSURL(string: baseUrl + "relation/api/followings/" + (username as String) + "/");
+        let url = NSURL(string: baseUrl + "relation/api/followings/?username=" + (username as String));
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.addValue("Token " + userToken! , forHTTPHeaderField: "Authorization")
@@ -286,7 +286,7 @@ public class Molocate {
     
     class func getLikes(videoId: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
         
-        let url = NSURL(string: baseUrl + "video/api/video_likes/" + (videoId as String) + "/");
+        let url = NSURL(string: baseUrl + "video/api/video_likes/?video_id=" + (videoId as String));
         
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
@@ -335,7 +335,7 @@ public class Molocate {
     
     class func getComments(videoId: String, completionHandler: (data: Array<comment>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()) {
         
-        let url = NSURL(string: baseUrl + "video/api/get_comments/" + (videoId as String) + "/")!
+        let url = NSURL(string: baseUrl + "video/api/get_comments/video_id" + (videoId as String))!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
