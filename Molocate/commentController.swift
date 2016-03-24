@@ -131,14 +131,16 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             cell.profilePhoto.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
                 UIControlState.Normal)
             
-            Molocate.getDataFromUrl(comments[indexPath.row].photo, completion: { (data, response, error) -> Void in
-                dispatch_async(dispatch_get_main_queue()){
-                    
-                    cell.profilePhoto.setBackgroundImage(UIImage(data: data!)!, forState:
-                        UIControlState.Normal)
-                    
-                }
-            })
+            cell.profilePhoto.sd_setImageWithURL(comments[indexPath.row].photo, forState: UIControlState.Normal)
+//            
+//            Molocate.getDataFromUrl(comments[indexPath.row].photo, completion: { (data, response, error) -> Void in
+//                dispatch_async(dispatch_get_main_queue()){
+//                    
+//                    cell.profilePhoto.setBackgroundImage(UIImage(data: data!)!, forState:
+//                        UIControlState.Normal)
+//                    
+//                }
+//            })
             //photo.image = UIImage(data: data!)!
         }else{
             cell.profilePhoto.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:

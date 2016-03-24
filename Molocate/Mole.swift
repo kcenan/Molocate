@@ -335,7 +335,7 @@ public class Molocate {
     
     class func getComments(videoId: String, completionHandler: (data: Array<comment>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()) {
         
-        let url = NSURL(string: baseUrl + "video/api/get_comments/video_id" + (videoId as String))!
+        let url = NSURL(string: baseUrl + "video/api/get_comments/?video_id=" + (videoId as String))!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
