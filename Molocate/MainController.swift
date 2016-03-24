@@ -491,6 +491,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        SDImageCache.sharedImageCache().clearMemory()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -623,4 +624,6 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         return true
     }
     
+  
+
 }

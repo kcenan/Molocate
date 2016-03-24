@@ -11,6 +11,7 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import Bolts
 import QuadratTouch
+import SDWebImage
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // [Optional] Power your app with Local Datastore. For more info, go to
       
     
-        
+        SDImageCache.sharedImageCache().maxMemoryCountLimit = 20
         
         
         // [Optional] Track statistics around application opens.
