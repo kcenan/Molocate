@@ -23,6 +23,15 @@ struct videoInf{
     var taggedUsers = [String]()
 }
 
+struct notifications{
+    var owner:String = ""
+    var date:String = ""
+    var action:String = ""
+    var actor:String = ""
+    var target:String = ""
+    var sentence:String = ""
+}
+
 var nextU:NSURL!
 var userToken: String?
 
@@ -434,6 +443,31 @@ public class Molocate {
         }
         task.resume()
     }
+    
+    
+    class func getNotifications(nextURL: NSURL?, completionHandler: (data: [notifications]?, response: NSURLResponse!, error: NSError!) -> ()){
+        let nURL = NSURL(string: baseUrl+"activity/api/show_activities/")
+        let request = NSMutableURLRequest(URL: nURL!)
+        request.HTTPMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+            let nsError = error
+            do {
+                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+                var notificationArray = [notifications]()
+                print(result)
+                completionHandler(data: notificationArray, response: response, error: nsError)
+            }catch{
+                completionHandler(data: nil, response: NSURLResponse(), error: nsError)
+                print("Error: in mole.getExploreVideos")
+            }
+        }
+        task.resume()
+    }
+
     
     
     class func likeAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){

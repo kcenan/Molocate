@@ -38,7 +38,7 @@ class notificationCell: UITableViewCell {
         myButton.contentHorizontalAlignment = .Left
         myButton.setTitleColor(swiftColor, forState: UIControlState.Normal)
         
-        print("ismin \(buttonWidth)")
+        //print("ismin \(buttonWidth)")
         contentView.addSubview(myButton)
         
         myLabel = UILabel()

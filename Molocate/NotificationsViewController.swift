@@ -20,7 +20,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        Molocate.getNotifications(NSURL()) { (data, response, error) -> () in
+            
+        }
         self.tabBarController?.tabBar.hidden = true
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false

@@ -645,6 +645,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                                 fakeoutputFileURL = exporter?.outputURL
                                 //print(fakeoutputFileURL)
                                 tempAssetURL = fakeoutputFileURL
+                                
 //                                print(self.secondAsset!.duration)
 //                                print(AVAsset(URL: tempAssetURL).duration)
 
@@ -690,7 +691,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
     @IBAction func videoDone(sender: AnyObject) {
         print(firstAsset.duration.seconds)
-        if firstAsset.duration.seconds > 3 {
+        if self.progress > 0.2 {
         tempAssetURL = nil
         firstAsset = nil
         secondAsset = nil

@@ -34,7 +34,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     let screenSize: CGRect = UIScreen.mainScreen().bounds
    // var comment : UITextField!
-   
+    var isCategorySelected = false
+    var isLocationSelected = false
     @IBOutlet var collectionView: UICollectionView!
     
     
@@ -48,6 +49,10 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     @IBOutlet var placeTable: UITableView!
     var taggedUsers = [String]()
     @IBAction func post(sender: AnyObject) {
+        if (!isLocationSelected || !isCategorySelected){
+            displayAlert("Dikkat", message: "Lütfen Kategori ve Konum seçiniz.")
+        }
+        else {
         isUploaded = false
         player?.pause()
         var videodata = NSData()
@@ -197,8 +202,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         } catch _ {
             
         }
-        
-        
+        }
         
    
     }
@@ -342,8 +346,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         
         categ = categoryDict[categories[indexPath.row]]
         
-        print(categ)
-        
+       isCategorySelected = true
         
         //  cell.backgroundColor = UIColor.purpleColor()
         
@@ -420,7 +423,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.hidden = true
         self.view.endEditing(true)
         videoLocation = locationDict[indexPath.row][placesArray[indexPath.row]]
-        print(videoLocation)
+        isLocationSelected = true
         
     }
     
@@ -467,6 +470,15 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         self.view.addSubview(self.player.view)
         self.player.playFromBeginning()
 
+    }
+    
+    func displayAlert(title: String, message: String) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            //self.dismissViewControllerAnimated(true, completion: nil)
+        })))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 
 }
