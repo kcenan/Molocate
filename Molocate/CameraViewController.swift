@@ -786,28 +786,15 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         let exportURl = NSURL(fileURLWithPath: exportPath)
         
-        
-        // I do not give a fuck!
-//        do {
-//            let error = try NSFileManager.defaultManager().removeItemAtURL(exportURl)
-//            
-//        } catch {
-//            print("\(error)")
-//            print("vvvvvvafdgdfgsaf")
-//        }
-        
         let exporter = AVAssetExportSession(asset: tempasset, presetName:AVAssetExportPresetMediumQuality )
         exporter?.videoComposition = videoComposition
         exporter?.outputURL = exportURl
         exporter?.outputFileType = AVFileTypeMPEG4
 
         exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-          // dispatch_async(dispatch_get_main_queue()) {
+        
             
-            
-           //var videoData = NSData(contentsOfURL: (exporter?.outputURL!)!)
-            print("finish")
-            //fakeoutputFileURL = exporter?.outputURL
+
             videoPath = exportPath
             
             

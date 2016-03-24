@@ -195,7 +195,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             }else{
                 self.FollowButton.image = UIImage(named: "shapes.png")
             }
-            choosedIndex = 4
+            //choosedIndex = 4
             
             
         }

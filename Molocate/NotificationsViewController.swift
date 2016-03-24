@@ -15,12 +15,20 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     
-    var videoArray = [NSURL]()
+    var notificationArray = [notifications]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
     override func viewDidLoad() {
         super.viewDidLoad()
         Molocate.getNotifications(NSURL()) { (data, response, error) -> () in
+            
+            dispatch_async(dispatch_get_main_queue()){
+                for item in data!{
+                   self.notificationArray.append(item)
+                   
+                }
+                self.tableView.reloadData()
+            }
             
         }
         self.tabBarController?.tabBar.hidden = true
@@ -38,7 +46,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 6
+        return notificationArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -46,15 +54,16 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         let cell = notificationCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
         cell.myButton.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.fotoButton.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-        if indexPath.row == 2 {
-            cell.myLabel.text = "bir videonuza yorum yazdı"
-        }
-        if indexPath.row == 3 {
-            cell.myLabel.text = "bir videonuzu beğendi"
-        }
-        if indexPath.row == 4 {
-            cell.myLabel.text = "sizi bir videoda ekledi"
-        }
+        cell.myLabel.text = notificationArray[indexPath.row].sentence
+//        if indexPath.row == 2 {
+//            cell.myLabel.text = "bir videonuza yorum yazdı"
+//        }
+//        if indexPath.row == 3 {
+//            cell.myLabel.text = "bir videonuzu beğendi"
+//        }
+//        if indexPath.row == 4 {
+//            cell.myLabel.text = "sizi bir videoda ekledi"
+//        }
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -458,7 +458,24 @@ public class Molocate {
             do {
                 let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
                 var notificationArray = [notifications]()
-                print(result)
+                let array = result as! NSArray
+                for item in array {
+                    let action = item ["action"] as! String
+                    let owner = item ["owner"] as! String
+                    let actor = item["actor"] as! String
+                    let sentence = item["sentence"] as! String
+                    let date = item["date_str"] as! String
+                    let target = item["target"] as! String
+                    var notification = notifications()
+                    notification.action = action
+                    notification.owner = owner
+                    notification.actor = actor
+                    notification.date = date
+                    notification.sentence = sentence
+                    notification.target = target
+                    notificationArray.append(notification)
+                    
+                }
                 completionHandler(data: notificationArray, response: response, error: nsError)
             }catch{
                 completionHandler(data: nil, response: NSURLResponse(), error: nsError)
