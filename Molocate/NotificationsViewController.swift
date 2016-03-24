@@ -101,7 +101,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     
     @IBAction func openCamera(sender: AnyObject) {
+         if (isUploaded) {
         self.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
+        }
     }
     override func viewWillAppear(animated: Bool) {
         

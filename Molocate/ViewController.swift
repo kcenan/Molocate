@@ -43,14 +43,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
 
     //for alert
-    func displayAlert(title: String, message: String) {
-        
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
-        })))
-        self.presentViewController(alert, animated: true, completion: nil)
-    }
+
     
     
     func textField(textField: UITextField!, shouldChangeCharactersInRange range: NSRange, replacementString string: String!) -> Bool {
@@ -591,7 +584,14 @@ func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: F
     }
 }
 
-
+    func displayAlert(title: String, message: String) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
 
 
 

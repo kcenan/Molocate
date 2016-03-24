@@ -17,6 +17,7 @@ var comments = [comment]()
 var video_id: String = ""
 var user: User = User()
 var videoIndex = 0
+var isUploaded = true
 
 class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var isSearching = false
@@ -511,6 +512,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     @IBOutlet var cameraButton: UIBarButtonItem!
     
     @IBAction func openCamera(sender: AnyObject) {
+        
+        if (isUploaded) {
         CaptionText = ""
         if isSearching != true {
             self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
@@ -520,6 +523,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             self.isSearching = false
             self.venueTable.hidden = true
             self.searchText.resignFirstResponder()
+        }
         }
     }
     

@@ -253,7 +253,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     
     @IBAction func openCamera(sender: AnyObject) {
+         if (isUploaded) {
         self.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
+        }
     }
     
    

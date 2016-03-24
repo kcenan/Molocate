@@ -806,7 +806,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TTU-CU-FCk">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TTU-CU-FCk">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dk9-2W-VYE" userLabel="side">
@@ -1915,7 +1915,7 @@
         <!--Capture Preview Controller-->
         <scene sceneID="ee1-ur-CST">
             <objects>
-                <viewController id="KaE-bU-5kG" customClass="capturePreviewController" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="capturePreviewController" id="KaE-bU-5kG" customClass="capturePreviewController" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3gR-j4-g0H"/>
                         <viewControllerLayoutGuide type="bottom" id="svE-vn-fIx"/>
@@ -1943,7 +1943,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Qm-0t-BEd">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Qm-0t-BEd">
                                 <rect key="frame" x="0.0" y="648" width="414" height="44"/>
                                 <color key="backgroundColor" red="0.78823529410000004" green="0.14117647059999999" blue="0.31764705879999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1965,6 +1965,7 @@
                                             </state>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="0oq-8n-RAJ"/>
                                                     <exclude reference="EXB-Sd-nDH"/>
                                                 </mask>
                                             </variation>
@@ -2088,18 +2089,18 @@
             <objects>
                 <tableViewController id="hGb-1k-zG5" customClass="SideBarController" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" id="3JI-O2-u1D">
-                        <rect key="frame" x="0.0" y="0.0" width="138" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="anM-Ny-BXk" customClass="sideCell" customModule="Molocate" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="138" height="91"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="91"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="anM-Ny-BXk" id="E3e-QF-pdg">
-                                    <rect key="frame" x="0.0" y="0.0" width="138" height="90"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
                                             <rect key="frame" x="8" y="48" width="122" height="34"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="34" id="6fw-b0-nm3"/>
@@ -2108,7 +2109,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XQN-J4-aRX">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XQN-J4-aRX">
                                             <rect key="frame" x="49" y="8" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="ORw-e1-j5o"/>
@@ -2416,7 +2417,7 @@
         <image name="three.png" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RSN-Ei-cwL"/>
         <segue reference="iX5-7U-zGl"/>
+        <segue reference="iVR-Yc-KKO"/>
     </inferredMetricsTieBreakers>
 </document>

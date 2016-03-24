@@ -45,7 +45,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     var recordButton : RecordButton!
     var progressTimer : NSTimer!
     var progress : CGFloat! = 0
-    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var rootLayer = CALayer()
     var camera = true
     var videoURL = NSURL()
@@ -645,8 +645,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                                 fakeoutputFileURL = exporter?.outputURL
                                 //print(fakeoutputFileURL)
                                 tempAssetURL = fakeoutputFileURL
-                                print(self.secondAsset!.duration)
-                                print(AVAsset(URL: tempAssetURL).duration)
+//                                print(self.secondAsset!.duration)
+//                                print(AVAsset(URL: tempAssetURL).duration)
 
                                 
                             }
@@ -689,10 +689,23 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
 
     @IBAction func videoDone(sender: AnyObject) {
+        print(firstAsset.duration.seconds)
+        if firstAsset.duration.seconds > 3 {
         tempAssetURL = nil
         firstAsset = nil
         secondAsset = nil
+         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         self.cropVideoSquare(fakeoutputFileURL!)
+        } else {
+            displayAlert("Dikkat!", message: "Videonuz en az 3 saniye olmalıdır.")
+        }
+        
         
     }
 
@@ -800,20 +813,19 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             
                 do {
                     try NSFileManager.defaultManager().removeItemAtURL(fakeoutputFileURL!)
-                    
+ 
                 } catch _ {
                     
                 }
-                
         
             self.performSegueWithIdentifier("capturePreview", sender: self)
-
             
-           // }
+          
             
         })
         
-        
+       // self.performSegueWithIdentifier("capturePreview", sender: self)
+
         
     }
 
@@ -1072,6 +1084,15 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             flashButton.setTitle("Ac", forState: .Normal)
         }
     }
+    
+    func displayAlert(title: String, message: String) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            //self.dismissViewControllerAnimated(true, completion: nil)
+        })))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
 
 }
 
@@ -1089,6 +1110,8 @@ extension CLLocation {
         ]
         return parameters
     }
+    
+    
 }
 
 

@@ -15,12 +15,13 @@ var CaptionText = ""
 
 //backende : fun, food, travel , makeup, fashion, sport, event, beauty, university olarak gönderilecek
 
-class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,PlayerDelegate {
     var categ:String!
     @IBOutlet var toolBar: UIToolbar!
     
      var caption: UIButton!
-    
+     var player:Player!
+     var newRect:CGRect!
     struct placeVar {
         var name: String!
         var province: String
@@ -35,13 +36,11 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
    // var comment : UITextField!
    
     @IBOutlet var collectionView: UICollectionView!
-    private var player: AVPlayer?
-    private var playerLayer: AVPlayerLayer?
+    
+    
     var autocompleteUrls = [String]()
     var videoURL: NSURL?
-//    private var asset: AVAsset?
-//    private var playerItem: AVPlayerItem?
-//    
+  
 
     @IBOutlet var textField: UITextField!
     var categories = ["Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
@@ -49,6 +48,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     @IBOutlet var placeTable: UITableView!
     var taggedUsers = [String]()
     @IBAction func post(sender: AnyObject) {
+        isUploaded = false
         player?.pause()
         var videodata = NSData()
         do {
@@ -125,8 +125,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                             
                             let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
                                 //print(response)
-                                print("=========================================")
-                                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                                //print("=========================================")
+                                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                                 dispatch_async(dispatch_get_main_queue(), {
                                     if error != nil{
                                         print("Error -> \(error)")
@@ -146,6 +146,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                                     } catch {
                                         print("Error -> \(error)")
                                     }
+                                    
                                 })
                             }
                             
@@ -188,6 +189,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             try NSFileManager.defaultManager().removeItemAtPath(videoPath!)  //.removeItemAtURL(fakeoutputFileURL!)
             dispatch_async(dispatch_get_main_queue()) {
                 print("siiiiil")
+                isUploaded = true
+
             self.performSegueWithIdentifier("finishUpdate", sender: self)
             
             }
@@ -205,12 +208,13 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
-        
-        
+        self.player = Player()
+        player.delegate = self
+        self.player.playbackLoops = true
         videoLocation = locations()
    
         let index = NSIndexPath(forRow: 0, inSection: 0)
@@ -223,7 +227,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             self.textField.autocapitalizationType = .Words
         }
 
-
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: "putVideo", name: "putVideo", object: nil)
         
         
         textField.delegate = self
@@ -231,28 +235,29 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.dataSource = self
         placeTable.scrollEnabled = true
         placeTable.hidden = true
-
-        videoURL = NSURL(fileURLWithPath: videoPath!, isDirectory: false)
         
-        let asset = AVAsset(URL: videoURL!)
-        let playerItem = AVPlayerItem(asset: asset)
-        player = AVPlayer(playerItem: playerItem)
-        playerLayer = AVPlayerLayer(player: player)
-        _ = (self.view.frame.height-self.view.frame.width)/2
-      
-        let newRect = CGRect(x: 0, y: self.collectionView.frame.maxY, width: self.view.frame.width, height: self.view.frame.width)
-        playerLayer?.frame = newRect
-        playerLayer?.videoGravity = AVLayerVideoGravityResizeAspect
-        
-        view.layer.addSublayer(playerLayer!)
-        player?.play()
+        putVideo()
+//        videoURL = NSURL(fileURLWithPath: videoPath!, isDirectory: false)
+//        
+//        let asset = AVAsset(URL: videoURL!)
+//        let playerItem = AVPlayerItem(asset: asset)
+//        player = AVPlayer(playerItem: playerItem)
+//        playerLayer = AVPlayerLayer(player: player)
+//        _ = (self.view.frame.height-self.view.frame.width)/2
+//      
+        newRect = CGRect(x: 0, y: self.collectionView.frame.maxY, width: self.view.frame.width, height: self.view.frame.width)
+//        playerLayer?.frame = newRect
+//        playerLayer?.videoGravity = AVLayerVideoGravityResizeAspect
+//        
+//        view.layer.addSublayer(playerLayer!)
+//        player?.play()
         view.layer.addSublayer(placeTable.layer)
         view.layer.addSublayer(textField.layer)
         
         caption = UIButton()
         caption.frame.size.width = screenSize.width
         caption.frame.origin.x = 0
-        caption.frame.origin.y = playerLayer!.frame.origin.y + screenSize.width
+        caption.frame.origin.y = newRect.origin.y + screenSize.width
         caption.frame.size.height = screenSize.height - 192 - screenSize.width
         caption.titleLabel!.textColor = UIColor.blackColor()
         caption.backgroundColor = UIColor.whiteColor()
@@ -270,6 +275,23 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         
         
     }
+    
+    func playerReady(player: Player) {
+    }
+    
+    func playerPlaybackStateDidChange(player: Player) {
+    }
+    
+    func playerBufferingStateDidChange(player: Player) {
+    }
+    
+    func playerPlaybackWillStartFromBeginning(player: Player) {
+    }
+    
+    func playerPlaybackDidEnd(player: Player) {
+    }
+    
+
     
     func pressedCaption(sender: UIButton) {
         CaptionText == caption.titleLabel?.text
@@ -363,7 +385,6 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             print(substringRange.location)
             if (substringRange.location == 0)
             {
-                print("oldu")
                 autocompleteUrls.append(curString)
             }
         }
@@ -435,6 +456,17 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
 
         
         
+    }
+    
+    func putVideo() {
+        videoURL = NSURL(fileURLWithPath: videoPath!, isDirectory: false)
+        print(videoURL)
+        newRect = CGRect(x: 0, y: self.collectionView.frame.maxY, width: self.view.frame.width, height: self.view.frame.width)
+        self.player.setUrl(videoURL!)
+        self.player.view.frame = newRect
+        self.view.addSubview(self.player.view)
+        self.player.playFromBeginning()
+
     }
 
 }

@@ -34,6 +34,8 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "goProfile", name: "goProfile", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeProfile", name: "closeProfile", object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deneme", name: "deneme", object: nil)
        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "openProfile", name: "openProfile", object: nil)
        
         
@@ -100,6 +102,10 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
         } else{
             sideClicked = false
         }
+    }
+    
+    func deneme() {
+        print("hadi dedeler")
     }
 
 
