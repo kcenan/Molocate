@@ -695,7 +695,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         tempAssetURL = nil
         firstAsset = nil
         secondAsset = nil
-         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray

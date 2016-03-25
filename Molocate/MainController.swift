@@ -22,7 +22,7 @@ var isUploaded = true
 class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var isSearching = false
     var locationManager: CLLocationManager!
-    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     @IBOutlet var venueTable: UITableView!
     var videoData:NSMutableData!
     var connection:NSURLConnection!
@@ -556,7 +556,31 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         
-        //print(indexPath.row)
+        let url = NSURL(string: baseUrl  + "video/api/explore/?category=" + categoryDict[categories[indexPath.row]]!)
+   
+        SDImageCache.sharedImageCache().clearMemory()
+        tableView.hidden = true
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+
+        Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                self.player1.stop()
+                self.player2.stop()
+                self.videoArray.removeAll()
+                self.videoArray = data!
+                self.tableView.reloadData()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                self.tableView.hidden = false
+                self.activityIndicator.removeFromSuperview()
+                
+            }
+        })
         
     }
     func changeFrame() {
