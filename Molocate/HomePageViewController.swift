@@ -28,11 +28,12 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     var player2: Player!
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
+    var refreshing: Bool = false
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
-    
+    var refreshControl:UIRefreshControl!
     @IBOutlet var searchText: UITextField!
-    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     @IBOutlet var collectionView: UICollectionView!
     
     var videoArray = [videoInf]()
@@ -94,8 +95,46 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                     self.tableView.reloadData()
                 }
             })
-
+        print("refresh")
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(refreshControl)
         
+    }
+    
+    func refresh(sender:AnyObject){
+        refreshing = true
+        let url = NSURL(string: baseUrl  + "video/api/news_feed/?category=all")
+        self.player1.stop()
+        self.player2.stop()
+   
+        SDImageCache.sharedImageCache().clearMemory()
+        // tableView.hidden = true
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        //tableView.hidden = true
+        Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                
+                self.tableView.hidden = true
+                self.videoArray.removeAll()
+                for item in data! {
+                    self.videoArray.append(item)
+                }
+                self.refreshControl.endRefreshing()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                self.tableView.hidden = false
+                self.activityIndicator.removeFromSuperview()
+                self.refreshing = false
+                self.tableView.reloadData()
+            }
+        })
         
     }
     
@@ -121,7 +160,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        
+        if(!refreshing) {
         let rowHeight = screenSize.width + 138
         let y = scrollView.contentOffset.y
         
@@ -145,7 +184,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 }
             }
         }
-        
+        }
     }
     
     func tableView(atableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

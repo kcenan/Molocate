@@ -559,7 +559,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         let url = NSURL(string: baseUrl  + "video/api/explore/?category=" + categoryDict[categories[indexPath.row]]!)
    
         SDImageCache.sharedImageCache().clearMemory()
-        tableView.hidden = true
+      
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
@@ -567,12 +567,12 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-
+        
         Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 self.player1.stop()
                 self.player2.stop()
-                self.videoArray.removeAll()
+                              self.videoArray.removeAll()
                 self.videoArray = data!
                 self.tableView.reloadData()
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
