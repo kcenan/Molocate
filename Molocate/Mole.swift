@@ -306,7 +306,7 @@ public class Molocate {
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
             
             let nsError = error;
-           // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+           print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             do {
                 

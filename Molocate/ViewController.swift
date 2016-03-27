@@ -48,8 +48,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     func textField(textField: UITextField!, shouldChangeCharactersInRange range: NSRange, replacementString string: String!) -> Bool {
         
+        
+        if(textField==username){
         let maxLength = 20
-        let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq").invertedSet
+        let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq_-.").invertedSet
         let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
         let numberFiltered = compSepByCharInSet.joinWithSeparator("")
         let currentString: NSString = textField.text!
@@ -59,6 +61,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             return true
         }else{
             return false
+        }
+        
+        }else{
+            return true
         }
     }
     
@@ -330,7 +336,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                 let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
                                 
                                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                                //print("Result -> \(result)")
+                                print("Result -> \(result)")
 //                                var dictionary : NSDictionary = result as! NSDictionary
 //                                if(dictionary.objectForKey("token") != nil){
 //                                    userToken = result["token"] as! String
@@ -480,7 +486,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
         override func viewDidAppear(animated: Bool) {
         
-        
+            if NSUserDefaults.standardUserDefaults().objectForKey("userToken") != nil {
+                userToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as! String
+                Molocate.getCurrentUser({ (data, response, error) in
+                    dispatch_async(dispatch_get_main_queue()){
+                    self.view.hidden = true
+                    self.performSegueWithIdentifier("login", sender: self)
+                    }
+                })
+               
+            }
        
         
     }
@@ -498,7 +513,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         
        
         view.addSubview(imageView)
-        
+        username.delegate = self
+        password.delegate = self
       
        // logoImage.frame.origin.y = (screenHeight * 80 ) / 450
         username.frame.origin.y = (screenHeight * 135) / 450
@@ -580,6 +596,7 @@ func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: F
     }
     else
     {
+        
         print(error.localizedDescription)
     }
 }
@@ -593,7 +610,19 @@ func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: F
         self.presentViewController(alert, animated: true, completion: nil)
     }
 
-
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let _ = touches.first {
+            self.view.endEditing(true)   // ...
+        }
+        super.touchesBegan(touches, withEvent:event)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool{
+        textField.resignFirstResponder()
+        
+        return true
+        
+    }
 
 
 

@@ -26,6 +26,7 @@ class SideBarController: UITableViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         tableView.contentInset = UIEdgeInsetsMake(30, 0, 0, 0);
+      
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
@@ -61,6 +62,10 @@ class SideBarController: UITableViewController {
         //let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
        //let cell = sideCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cellIdentifier")
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! sideCell
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = swiftColor
+        cell.selectedBackgroundView = bgColorView
+        
         cell.label?.text = self.menuArray[indexPath.row]
         //cell.label.font = UIFont(name: "Lato-Light", size: 14)
        // var imageView = UIImageView(image: image!)
@@ -78,9 +83,13 @@ class SideBarController: UITableViewController {
         //self.parentViewController.
 //        let currentCell = tableView.cellForRowAtIndexPath(indexPath)
 //        currentCell?.backgroundColor = swiftColor
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.backgroundColor = swiftColor
         choosedIndex = indexPath.row
         self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedIndex = indexPath.row
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil )
+        cell?.backgroundColor = swiftColor2
     }
 
     

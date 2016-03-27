@@ -171,7 +171,9 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         
     }
     
-    
+    override func viewWillDisappear(animated: Bool) {
+        comments.removeAll()
+    }
 
     /*
     // MARK: - Navigation

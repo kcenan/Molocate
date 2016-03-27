@@ -24,7 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // [Optional] Power your app with Local Datastore. For more info, go to
       
-    
+        SDImageCache.sharedImageCache().clearMemory()
+        SDImageCache.sharedImageCache().clearDisk()
         SDImageCache.sharedImageCache().maxMemoryCountLimit = 20
         
         

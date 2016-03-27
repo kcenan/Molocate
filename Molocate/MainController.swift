@@ -89,6 +89,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             NSNotificationCenter.defaultCenter().postNotificationName("closeProfile", object: nil)
         }
         
+        tableView.allowsSelection = false
         switch(choosedIndex){
         case 0:
             tableView.reloadData()
@@ -127,6 +128,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             tableView.frame = CGRectMake(0, 44, screenSize.width, screenSize.height - 44)
             break
         }
+        
+    
         
         
         
@@ -264,10 +267,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
                 let index = indexPath.row
                 
-                cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
-                    , caption: videoArray[index].caption, profilePic:  videoArray[index].userpic, dateStr: videoArray[index].dateStr, taggedUsers:  videoArray[index].taggedUsers
-                )
-                
+                cell.initialize(indexPath.row, videoInfo: videoArray[indexPath.row])
+                                
                 cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -308,9 +309,11 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 if pressedLike {
                     pressedLike = false
                     cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+                    
                     if(videoArray[indexPath.row].isLiked == 0) {
-                        cell.likeButton.tintColor = UIColor.blackColor()
+                        cell.likeButton.setBackgroundImage(UIImage(named: "Like.png"), forState: UIControlState.Normal)
                     }else{
+                        cell.likeButton.setBackgroundImage(UIImage(named: "LikeFilled.png"), forState: UIControlState.Normal)
                         cell.likeButton.tintColor = UIColor.whiteColor()
                     }
                 }else if pressedFollow{
@@ -361,15 +364,17 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.view.addSubview(controller.view)
                 self.addChildViewController(controller)
                 controller.didMoveToParentViewController(self)
-                controller.username.text = data.username
-                controller.followingsCount.setTitle("\(data.following_count)", forState: .Normal)
-                controller.followersCount.setTitle("\(data.follower_count)", forState: .Normal)
+                controller.username.text = user.username
+                controller.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
+                controller.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
             }
         }
         
     }
     
-    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
         print("place e basıldı at index path: \(buttonRow) ")
@@ -418,6 +423,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             
             self.videoArray[buttonRow].isLiked=1
             self.videoArray[buttonRow].likeCount+=1
+            
+            
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
             Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
@@ -603,6 +610,12 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     override func viewDidDisappear(animated: Bool) {
         //self.tableView.removeFromSuperview()
+        SDImageCache.sharedImageCache().cleanDisk()
+        SDImageCache.sharedImageCache().clearMemory()
+        player1.stop()
+        player1.removeFromParentViewController()
+        player2.stop()
+        player2.removeFromParentViewController()
         if isSearching == true {
             self.cameraButton.image = UIImage(named: "technology3.png")
             self.cameraButton.title = nil

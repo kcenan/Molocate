@@ -192,11 +192,11 @@ class videoCell: UITableViewCell {
         return rect.size.height  
     }
     
-    func initialize(row: Int , username: String, location: String, likeCount: Int, commentCount: Int, caption: String, profilePic:NSURL, dateStr: String, taggedUsers: [String]){
+    func initialize(row: Int , videoInfo: videoInf){
         self.Username.tag = row
-        self.Username.setTitle(username, forState: .Normal)
+        self.Username.setTitle(videoInfo.username, forState: .Normal)
         self.placeName.tag = row
-        self.placeName.setTitle(location, forState: .Normal)
+        self.placeName.setTitle(videoInfo.location, forState: .Normal)
         //placeDictionary.setValue(videoArray[indexPath.row].locationID, forKey: placename)
         self.profilePhoto.tag = row
         self.followButton.tag = row
@@ -206,15 +206,18 @@ class videoCell: UITableViewCell {
         self.commentButton.tag = row
         self.commentCount.text = "\(commentCount)"
         self.reportButton.tag = row
-        self.videoComment.text = caption
-        self.videoTime.text = dateStr
-        for(var i = 0; i < taggedUsers.count; i++ ){
-            videoComment.text =    videoComment.text!  + " @" + taggedUsers[i]
+        self.videoComment.text = videoInfo.caption
+        self.videoTime.text = videoInfo.dateStr
+        if(videoInfo.isLiked==1){
+            self.likeButton.setBackgroundImage(UIImage(named: "LikeFilled.png"), forState: UIControlState.Normal)
+        }
+        for(var i = 0; i < videoInfo.taggedUsers.count; i += 1 ){
+            videoComment.text =    videoComment.text!  + " @" + videoInfo.taggedUsers[i]
             }
        // print(profilePic.absoluteString)
-        if(profilePic.absoluteString != ""){
+        if(videoInfo.userpic.absoluteString != ""){
             
-            self.profilePhoto.sd_setImageWithURL(profilePic, forState: UIControlState.Normal)
+            self.profilePhoto.sd_setImageWithURL(videoInfo.userpic, forState: UIControlState.Normal)
 //            Molocate.getDataFromUrl(profilePic, completion: { (data, response, error) -> Void in
 //                dispatch_async(dispatch_get_main_queue()){
 //                    let image = UIImage(data: data!)!

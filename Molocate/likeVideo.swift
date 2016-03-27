@@ -43,7 +43,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         tableView.dataSource    =   self
         print(video_id)
         Molocate.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
-            print(data)
+           
             self.users.removeAll()
             dispatch_async(dispatch_get_main_queue()){
                 for thing in data{

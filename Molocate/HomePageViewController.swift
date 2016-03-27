@@ -51,7 +51,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         
        // venueTable.hidden = true
         //searchText.delegate = self
-        
+        NSUserDefaults.standardUserDefaults().setObject(userToken, forKey: "userToken")
         self.player1 = Player()
         self.player1.delegate = self
         self.player1.playbackLoops = true
@@ -65,6 +65,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         toolBar.translucent = false
         toolBar.clipsToBounds = true
         
+        tableView.allowsSelection = false
         let index = NSIndexPath(forRow: 0, inSection: 0)
 //        self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
 //        collectionView.contentSize.width = screenSize.size.width * 2
@@ -233,9 +234,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
                 let index = indexPath.row
                 
-                cell.initialize(indexPath.row, username: videoArray[index].username, location: videoArray[index].location , likeCount: videoArray[index].likeCount, commentCount: videoArray[index].commentCount
-                    , caption: videoArray[index].caption, profilePic:  videoArray[index].userpic, dateStr: videoArray[index].dateStr, taggedUsers:  videoArray[index].taggedUsers
-                )
+                cell.initialize(indexPath.row, videoInfo:  videoArray[indexPath.row])
                 
                 cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -277,9 +276,11 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 if pressedLike {
                     pressedLike = false
                     cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+                    
                     if(videoArray[indexPath.row].isLiked == 0) {
-                        cell.likeButton.tintColor = UIColor.blackColor()
+                        cell.likeButton.setBackgroundImage(UIImage(named: "Like.png"), forState: UIControlState.Normal)
                     }else{
+                        cell.likeButton.setBackgroundImage(UIImage(named: "LikeFilled.png"), forState: UIControlState.Normal)
                         cell.likeButton.tintColor = UIColor.whiteColor()
                     }
                 }else if pressedFollow{
@@ -290,32 +291,6 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 }
                 return cell
             }
-            //        if(!cell.player.isSet()){
-            //            cell.player = Videos(url: videoArray[indexPath.row].urlSta.absoluteString)
-            //            cell.player.layer.frame = cell.newRect
-            //            cell.layer.addSublayer(cell.player.layer)
-            //            cell.player.Play()
-            //        }
-            
-            
-//        }
-//        else {
-//            
-//            let cell = venueTable.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
-//            let venue = venues[indexPath.row]
-//            if let venueLocation = venue["location"] as? JSONParameters {
-//                var detailText = ""
-//                if let distance = venueLocation["distance"] as? CLLocationDistance {
-//                    detailText = distanceFormatter.stringFromDistance(distance)
-//                }
-//                if let address = venueLocation["address"] as? String {
-//                    detailText = detailText +  " - " + address
-//                }
-//                cell.detailTextLabel?.text = detailText
-//            }
-//            cell.textLabel?.text = venue["name"] as? String
-//            return cell
-//        }
     }
     
     func pressedUsername(sender: UIButton) {
@@ -331,7 +306,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.view.addSubview(controller.view)
                 self.addChildViewController(controller)
                 controller.didMoveToParentViewController(self)
-                controller.username.text = data.username
+                controller.username.text = user.username
                 controller.followingsCount.setTitle("\(data.following_count)", forState: .Normal)
                 controller.followersCount.setTitle("\(data.follower_count)", forState: .Normal)
             }
@@ -549,14 +524,12 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         
     }
     override func viewDidDisappear(animated: Bool) {
-        //self.tableView.removeFromSuperview()
-//        if isSearching == true {
-//            self.cameraButton.image = UIImage(named: "technology3.png")
-//            self.cameraButton.title = nil
-//            self.isSearching = false
-//            self.venueTable.hidden = true
-//            self.searchText.resignFirstResponder()
-//        }
+        SDImageCache.sharedImageCache().cleanDisk()
+        SDImageCache.sharedImageCache().clearMemory()
+        player1.stop()
+        player1.removeFromParentViewController()
+        player2.stop()
+        player2.removeFromParentViewController()
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {

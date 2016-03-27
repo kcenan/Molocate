@@ -243,6 +243,9 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        
+    }
     
     
     
@@ -273,6 +276,22 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         }
         else {
             print("log out yapılacak")
+            sideClicked = false
+            profileOn = 0
+            category = "All"
+            comments = [comment]()
+            video_id = ""
+            user = User()
+            videoIndex = 0
+            isUploaded = true
+            follewersclicked = true
+            choosedIndex = 100
+            origin = 0.0
+            frame = CGRect()
+            currentUser = User()
+            userToken = ""
+            NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "userToken")
+            self.parentViewController!.performSegueWithIdentifier("logout", sender: self)
         }
         
         

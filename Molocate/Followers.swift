@@ -129,6 +129,10 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         }
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        users.removeAll()
+    }
+    
     
     
     
