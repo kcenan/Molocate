@@ -37,6 +37,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     var currentTask: Task?
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
+    var myCache
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     
