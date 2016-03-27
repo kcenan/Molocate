@@ -55,15 +55,6 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         cell.myButton.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.fotoButton.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.myLabel.text = notificationArray[indexPath.row].sentence
-//        if indexPath.row == 2 {
-//            cell.myLabel.text = "bir videonuza yorum yazdı"
-//        }
-//        if indexPath.row == 3 {
-//            cell.myLabel.text = "bir videonuzu beğendi"
-//        }
-//        if indexPath.row == 4 {
-//            cell.myLabel.text = "sizi bir videoda ekledi"
-//        }
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

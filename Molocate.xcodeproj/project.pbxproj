@@ -466,9 +466,9 @@
 			children = (
 				C69B823E1CA0D6F5008658CF /* oneVideo.swift */,
 				C638AFF21C9C7E74003085E8 /* likeVideo.swift */,
+				388173F41C97AACB0064EBB5 /* commentController.swift */,
 				C69DB1BE1C99079D0042DA03 /* tagComment.swift */,
 				388173F61C97ABE20064EBB5 /* commentCell.swift */,
-				388173F41C97AACB0064EBB5 /* commentController.swift */,
 				C6CBA4FE1C876EC300AE65AD /* profileOther.swift */,
 				C6B7C9EA1C7BE7EF005607EC /* profileLocation.swift */,
 				38E621051C90D9AB00FB1AD5 /* editProfile.swift */,

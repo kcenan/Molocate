@@ -11,21 +11,20 @@ import UIKit
 class commentController: UIViewController,UITableViewDelegate , UITableViewDataSource, UITextViewDelegate{
 
     
+    //bu viewda commentin yazısı arttıkça büyümesi düzenlenicek
+    
     @IBAction func backButton(sender: AnyObject) {
         self.willMoveToParentViewController(nil)
         self.view.removeFromSuperview()
+      
         self.removeFromParentViewController()
     }
-    @IBOutlet var rightConstraint: NSLayoutConstraint!
+    @IBOutlet var bottomConstraint: NSLayoutConstraint!
     @IBOutlet var toolBar: UIToolbar!
     
     @IBOutlet var sendButton: UIButton!
     @IBOutlet var tableView: UITableView!
     
-    @IBOutlet var bottomConstraint: NSLayoutConstraint!
-    
-    @IBOutlet var leftConstraint: NSLayoutConstraint!
-    @IBOutlet var topConstraint: NSLayoutConstraint!
     @IBAction func sendButton(sender: AnyObject) {
         var mycomment = comment()
         mycomment.text = newComment.text
@@ -72,6 +71,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         self.newComment.layer.zPosition = 2
         self.tableView.layer.zPosition = 1
         self.newComment.returnKeyType = .Done
+      
+
      
     }
     func dismissKeyboard() {
@@ -95,8 +96,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             self.bottomConstraint?.constant = isShowing ? endFrameHeight : 0.0
             let screenSize: CGRect = UIScreen.mainScreen().bounds
-            self.leftConstraint?.constant = 0
-            self.rightConstraint?.constant = 0
+            
+            
             UIView.animateWithDuration(duration,
                 delay: NSTimeInterval(0),
                 options: animationCurve,
@@ -115,10 +116,9 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            self.bottomConstraint?.constant = isShowing ? endFrameHeight : 8
+            self.bottomConstraint?.constant = isShowing ? endFrameHeight : 0
             let screenSize: CGRect = UIScreen.mainScreen().bounds
-            self.leftConstraint?.constant = 0
-            self.rightConstraint?.constant = 60
+            
             UIView.animateWithDuration(duration,
                 delay: NSTimeInterval(0),
                 options: animationCurve,
@@ -136,20 +136,12 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         
-        // Combine the textView text and the replacement text to
-        // create the updated text string
         let currentText:NSString = textView.text
         let updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
-        
-        // If updated text view will be empty, add the placeholder
-        // and set the cursor to the beginning of the text view
         if updatedText.isEmpty {
-            
-            newComment.text = "Placeholder"
+            newComment.text = "Yorumunu buradan yazabilirsin"
             newComment.textColor = UIColor.lightGrayColor()
-            
             newComment.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
-            
             return false
         }
     
@@ -161,13 +153,12 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         
         return true
     }
-//    func textViewDidChangeSelection(textView: UITextView) {
-//        if self.view.window != nil {
-//            if textView.textColor == UIColor.lightGrayColor() {
-//                textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
-//            }
-//        }
-//    }
+
+    func textViewDidBeginEditing(textView: UITextView) {
+        if self.newComment.text == "Yorumunu buradan yazabilirsin"{
+        newComment.text = ""
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -178,6 +169,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count
     }
+    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier = "Cell"
