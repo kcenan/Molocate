@@ -19,10 +19,10 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     var categ:String!
     @IBOutlet var toolBar: UIToolbar!
     
-     var caption: UIButton!
-     var player:Player!
-     var newRect:CGRect!
-    struct placeVar {
+        var caption: UIButton!
+        var player:Player!
+        var newRect:CGRect!
+        struct placeVar {
         var name: String!
         var province: String
         var FormattedAdress: String!
@@ -274,6 +274,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         caption.addTarget(self, action: "pressedCaption:", forControlEvents: UIControlEvents.TouchUpInside)
         caption.contentHorizontalAlignment = .Left
         self.view.addSubview(caption)
+        
 
  
         

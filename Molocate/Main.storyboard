@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -127,20 +127,26 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wEG-4u-zoW">
-                                <rect key="frame" x="24" y="611" width="278" height="48"/>
+                                <rect key="frame" x="24" y="611" width="282" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="BQf-C9-Wcg"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="zZm-St-8ac" id="q4I-lm-cow"/>
+                                </connections>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iYG-kR-hVz">
-                                <rect key="frame" x="310" y="625" width="44" height="20"/>
+                                <rect key="frame" x="314" y="625" width="44" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="Q9e-wz-1Tn"/>
                                     <constraint firstAttribute="width" constant="44" id="p5A-bx-xLn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                 <state key="normal" title="Gönder">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.043137256059999997" green="0.58039218189999997" blue="0.078431375319999996" alpha="1" colorSpace="deviceRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="sendButton:" destination="zZm-St-8ac" eventType="touchUpInside" id="PDV-pS-Ele"/>
@@ -148,14 +154,15 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="wEG-4u-zoW" firstAttribute="top" secondItem="SAZ-nE-bMT" secondAttribute="bottom" constant="8" id="6m2-OL-8is"/>
                             <constraint firstItem="iYG-kR-hVz" firstAttribute="leading" secondItem="wEG-4u-zoW" secondAttribute="trailing" constant="8" id="7Ra-LV-bqd"/>
+                            <constraint firstItem="wEG-4u-zoW" firstAttribute="leading" secondItem="nnx-2R-t3m" secondAttribute="leadingMargin" constant="4" id="H8b-d0-isN"/>
                             <constraint firstItem="iYG-kR-hVz" firstAttribute="top" secondItem="SAZ-nE-bMT" secondAttribute="bottom" constant="22" id="HaQ-Za-4EB"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tJP-Tr-axu" secondAttribute="trailing" id="KQs-Fs-sPK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="iYG-kR-hVz" secondAttribute="trailing" constant="5" id="MBZ-ks-0pK"/>
                             <constraint firstItem="tJP-Tr-axu" firstAttribute="leading" secondItem="nnx-2R-t3m" secondAttribute="leadingMargin" id="OZV-fR-psH"/>
                             <constraint firstAttribute="trailingMargin" secondItem="SAZ-nE-bMT" secondAttribute="trailing" id="RA9-4l-Wwb"/>
                             <constraint firstItem="8Fj-LH-j3Q" firstAttribute="leading" secondItem="nnx-2R-t3m" secondAttribute="leadingMargin" id="V7E-9f-2I4"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wEG-4u-zoW" secondAttribute="trailing" constant="53" id="X9f-pP-QUj"/>
                             <constraint firstItem="l0I-zA-kZ7" firstAttribute="top" secondItem="tJP-Tr-axu" secondAttribute="bottom" id="aPB-HM-fkQ"/>
                             <constraint firstItem="SAZ-nE-bMT" firstAttribute="top" secondItem="8Fj-LH-j3Q" secondAttribute="bottom" id="d0O-9J-BiM"/>
                             <constraint firstItem="wEG-4u-zoW" firstAttribute="leading" secondItem="nnx-2R-t3m" secondAttribute="leadingMargin" constant="8" id="f0Y-Go-AWQ"/>
@@ -170,13 +177,19 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="H8b-d0-isN"/>
                                 <exclude reference="mlj-jP-gSf"/>
+                                <exclude reference="MBZ-ks-0pK"/>
                             </mask>
                         </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="bottomConstraint" destination="gW2-VW-cif" id="dd7-Ks-NKt"/>
+                        <outlet property="leftConstraint" destination="f0Y-Go-AWQ" id="fp9-jm-9ng"/>
                         <outlet property="newComment" destination="wEG-4u-zoW" id="eOB-g4-Shj"/>
+                        <outlet property="rightConstraint" destination="X9f-pP-QUj" id="65c-av-Uol"/>
+                        <outlet property="sendButton" destination="iYG-kR-hVz" id="sOy-pf-abA"/>
                         <outlet property="tableView" destination="SAZ-nE-bMT" id="L7W-se-AX8"/>
                         <outlet property="toolBar" destination="8Fj-LH-j3Q" id="0DJ-Ou-gzv"/>
                     </connections>

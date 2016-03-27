@@ -294,7 +294,8 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         currentUser.printUser()
         
         
-        let image =  UIImagePNGRepresentation(photo.image!)
+        let image = UIImageJPEGRepresentation(photo.image!, 0.1) //UIImagePNGRepresentation(photo.image!)
+        
         
         Molocate.uploadProfilePhoto(image!) { (data, response, error) -> () in
             print(data)

@@ -8,30 +8,24 @@
 
 import UIKit
 
-class commentController: UIViewController,UITableViewDelegate , UITableViewDataSource, UITextViewDelegate {
+class commentController: UIViewController,UITableViewDelegate , UITableViewDataSource, UITextViewDelegate{
 
-    var hotels:[String: String] = ["The Grand Del Mar": "5300 Grand Del Mar Court, San Diego, CA 92130",
-        "French Quarter Inn": "166 Church St, Charleston, SC 29401",
-        "Bardessono": "6526 Yount Street, Yountville, CA 94599",
-        "Hotel Yountville": "6462 Washington Street, Yountville, CA 94599",
-        "Islington Hotel": "321 Davey Street, Hobart, Tasmania 7000, Australia",
-        "The Henry Jones Art Hotel": "25 Hunter Street, Hobart, Tasmania 7000, Australia",
-        "Clarion Hotel City Park Grand": "22 Tamar Street, Launceston, Tasmania 7250, Australia",
-        "Quality Hotel Colonial Launceston": "31 Elizabeth St, Launceston, Tasmania 7250, Australia",
-        "Premier Inn Swansea Waterfront": "Waterfront Development, Langdon Rd, Swansea SA1 8PL, Wales",
-        "Hatcher's Manor": "73 Prossers Road, Richmond, Clarence, Tasmania 7025, Australia"]
     
     @IBAction func backButton(sender: AnyObject) {
         self.willMoveToParentViewController(nil)
         self.view.removeFromSuperview()
-        
         self.removeFromParentViewController()
     }
+    @IBOutlet var rightConstraint: NSLayoutConstraint!
     @IBOutlet var toolBar: UIToolbar!
     
+    @IBOutlet var sendButton: UIButton!
     @IBOutlet var tableView: UITableView!
     
+    @IBOutlet var bottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet var leftConstraint: NSLayoutConstraint!
+    @IBOutlet var topConstraint: NSLayoutConstraint!
     @IBAction func sendButton(sender: AnyObject) {
         var mycomment = comment()
         mycomment.text = newComment.text
@@ -41,8 +35,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         tableView.reloadData()
         Molocate.commentAVideo(video_id, comment: newComment.text) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
-                self.newComment.text = ""
-            
+                 self.newComment.text = ""
                 (self.parentViewController as! MainController).videoArray[videoIndex].commentCount += 1
                 (self.parentViewController as! MainController).tableView.reloadRowsAtIndexPaths(
                     [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
@@ -51,25 +44,96 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     }
     
     @IBOutlet var newComment: UITextView!
-    var hotelNames:[String] = []
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        newComment.text = "Placeholder"
+        newComment.text = "Yorumunu buradan yazabilirsin"
         newComment.textColor = UIColor.lightGrayColor()
         
-        newComment.becomeFirstResponder()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
+        
+       // newComment.becomeFirstResponder()
         
 //        newComment.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
         tableView.estimatedRowHeight = 68
         tableView.rowHeight = UITableViewAutomaticDimension
-        hotelNames = [String](hotels.keys)
         
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification2:"), name:UIKeyboardWillHideNotification, object: nil);
+        //topConstraint.priority = 999
+        self.sendButton.layer.zPosition = 3
+        self.newComment.layer.zPosition = 2
+        self.tableView.layer.zPosition = 1
+        self.newComment.returnKeyType = .Done
+     
     }
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+    func textViewShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    func keyboardNotification(notification: NSNotification) {
+        
+        let isShowing = notification.name == UIKeyboardWillShowNotification
+        
+        if let userInfo = notification.userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+            let endFrameHeight = endFrame?.size.height ?? 0.0
+            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            self.bottomConstraint?.constant = isShowing ? endFrameHeight : 0.0
+            let screenSize: CGRect = UIScreen.mainScreen().bounds
+            self.leftConstraint?.constant = 0
+            self.rightConstraint?.constant = 0
+            UIView.animateWithDuration(duration,
+                delay: NSTimeInterval(0),
+                options: animationCurve,
+                animations: { self.view.layoutIfNeeded() },
+                completion: nil)
+        }
+    }
+    func keyboardNotification2(notification: NSNotification) {
+        
+        let isShowing = notification.name == UIKeyboardWillShowNotification
+        
+        if let userInfo = notification.userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+            let endFrameHeight = endFrame?.size.height ?? 0.0
+            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            self.bottomConstraint?.constant = isShowing ? endFrameHeight : 8
+            let screenSize: CGRect = UIScreen.mainScreen().bounds
+            self.leftConstraint?.constant = 0
+            self.rightConstraint?.constant = 60
+            UIView.animateWithDuration(duration,
+                delay: NSTimeInterval(0),
+                options: animationCurve,
+                animations: { self.view.layoutIfNeeded() },
+                completion: nil)
+        }
+    }
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self);
+    }
+    
+
+    
+
+    
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         
         // Combine the textView text and the replacement text to
@@ -88,11 +152,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             
             return false
         }
-            
-            // Else if the text view's placeholder is showing and the
-            // length of the replacement string is greater than 0, clear
-            // the text view and set its color to black to prepare for
-            // the user's entry
+    
+           
         else if textView.textColor == UIColor.lightGrayColor() && !text.isEmpty {
             textView.text = nil
             textView.textColor = UIColor.blackColor()
@@ -100,13 +161,13 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         
         return true
     }
-    func textViewDidChangeSelection(textView: UITextView) {
-        if self.view.window != nil {
-            if textView.textColor == UIColor.lightGrayColor() {
-                textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
-            }
-        }
-    }
+//    func textViewDidChangeSelection(textView: UITextView) {
+//        if self.view.window != nil {
+//            if textView.textColor == UIColor.lightGrayColor() {
+//                textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+//            }
+//        }
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
