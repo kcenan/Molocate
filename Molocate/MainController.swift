@@ -20,7 +20,7 @@ var user: User = User()
 var videoIndex = 0
 var isUploaded = true
 var myViewController = "MainController"
-
+var thePlace:Place!
 class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var isSearching = false
     var locationManager: CLLocationManager!
@@ -138,7 +138,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
         
-        
+
         
     }
     
@@ -420,15 +420,19 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
         print("place e basıldı at index path: \(buttonRow) ")
+        print("================================" )
         Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
-            
+            dispatch_async(dispatch_get_main_queue()){
+                thePlace = data
+                let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
+                controller.view.frame = self.view.bounds;
+                controller.willMoveToParentViewController(self)
+                self.view.addSubview(controller.view)
+                self.addChildViewController(controller)
+                controller.didMoveToParentViewController(self)
+            }
         }
-        let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
-        controller.view.frame = self.view.bounds;
-        controller.willMoveToParentViewController(self)
-        self.view.addSubview(controller.view)
-        self.addChildViewController(controller)
-        controller.didMoveToParentViewController(self)
+        
     }
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag

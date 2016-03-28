@@ -71,6 +71,24 @@ struct comment{
     var photo: NSURL = NSURL()
 }
 
+struct Place{
+    var id: String = ""
+    var name: String = ""
+    var caption: String = ""
+    var follower_count = 0;
+    var following_count = 0;
+    var tag_count = 0;
+    var picture_url:NSURL = NSURL()
+    var placeVideos: [videoInf] = [videoInf]()
+    var city = ""
+    var address = ""
+    var is_following = 0
+    var web_site = ""
+    var video_count = 0
+    var phone = ""
+}
+
+
 var currentUser:User = User()
 
 public class Molocate {
@@ -217,7 +235,7 @@ public class Molocate {
         
     }
     
-    class func getPlace(placeid: String, completionHandler: (data: User, response: NSURLResponse!, error: NSError!) -> ()) {
+    class func getPlace(placeid: String, completionHandler: (data: Place, response: NSURLResponse!, error: NSError!) -> ()) {
         
         let url = NSURL(string: baseUrl + "place/api/get_place/?place_id=" + (placeid as String))!
         let request = NSMutableURLRequest(URL: url)
@@ -229,13 +247,25 @@ public class Molocate {
             let nsError = error;
             
             do {
-            
-                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                var user = User()
-
-                completionHandler(data: user, response: response , error: nsError  )
+                
+                let item = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                
+                var place = Place()
+                place.id = placeid
+                place.name = item["name"] as! String
+                place.city = item["city"] as! String
+                place.is_following = item["is_following"] as! Int
+                place.address = item["address"] as! String
+                place.video_count = item["video_count"] as! Int
+                place.follower_count = item["follower_count"] as! Int
+                place.caption = item["caption"] as! String
+                place.picture_url = item["picture_url"] is NSNull ? NSURL():NSURL(string: item["picture_url"] as! String)!
+                place.phone = item["phone"] as! String
+                place.web_site = item["web_site"] as! String
+                
+                completionHandler(data: place, response: response , error: nsError  )
             } catch{
-                completionHandler(data: User() , response: nil , error: nsError  )
+                completionHandler(data: Place() , response: nil , error: nsError  )
                 print("Error:: in mole.getUser()")
             }
             
@@ -244,7 +274,6 @@ public class Molocate {
         
         task.resume()
     }
-    
     
     class func getUser(username: String, completionHandler: (data: User, response: NSURLResponse!, error: NSError!) -> ()) {
         
@@ -434,6 +463,79 @@ public class Molocate {
         task.resume()
     }
     
+    
+    class func getUserVideos(name: String,type:String , completionHandler: (data: [videoInf]?, response: NSURLResponse!, error: NSError!) -> ()){
+        var nextURL = NSURL()
+        switch(type){
+            case "user":
+            nextURL = NSURL(string: baseUrl+"video/api/user_videos/?username="+name)!
+            break
+            case "tagged":
+            nextURL = NSURL(string: baseUrl+"video/api/tagged_videos/?username="+name)!
+            break
+            default:
+            break
+        }
+        
+        let request = NSMutableURLRequest(URL: nextURL)
+        request.HTTPMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+            let nsError = error
+            do {
+                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+                print(result)
+                let videos = result["results"] as! NSArray
+                if (result["next"] != nil){
+                    if result["next"] is NSNull {
+                        print("next is null")
+                        nextU = nil
+                    }else {
+                        let nextStr = result["next"] as! String
+                        //print(nextStr)
+                        nextU = NSURL(string: nextStr)!
+                    }
+                }
+                
+                var videoArray = [videoInf]()
+                
+                for item in videos {
+                    //print(item)
+                    var videoStr = videoInf()
+                    //print(item)
+                    videoStr.id = item["video_id"] as! String
+                    videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
+                    videoStr.username = item["owner_user"]!!["username"] as! String
+                    videoStr.location = item["place_taken"]!!["name"] as! String
+                    videoStr.locationID = item["place_taken"]!!["place_id"] as! String
+                    videoStr.caption = item["caption"] as! String
+                    videoStr.likeCount = item["like_count"] as! Int
+                    videoStr.commentCount = item["comment_count"] as! Int
+                    videoStr.category = item["category"] as! String
+                    videoStr.isLiked = item["is_liked"] as! Int
+                    let jsonObject = item["owner_user"]
+                    videoStr.isFollowing = jsonObject!!["is_following"] as! Int
+                    videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
+                    videoStr.dateStr = item["date_str"] as! String
+                    videoStr.taggedUsers = item["tagged_users"] as! [String]
+                    
+                    videoArray.append(videoStr)
+                    
+                }
+                completionHandler(data: videoArray, response: response, error: nsError)
+            }catch{
+                completionHandler(data: nil, response: NSURLResponse(), error: nsError)
+                print("Error: in mole.getExploreVideos")
+            }
+        }
+        task.resume()
+    }
+    
+    
+
     
     class func getNotifications(nextURL: NSURL?, completionHandler: (data: [notifications]?, response: NSURLResponse!, error: NSError!) -> ()){
         let nURL = NSURL(string: baseUrl+"activity/api/show_activities/")

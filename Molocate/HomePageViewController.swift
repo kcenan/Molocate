@@ -78,6 +78,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
+
         
     }
     
@@ -312,15 +313,19 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
         print("place e basıldı at index path: \(buttonRow) ")
+        print("================================" )
         Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
-            
+            dispatch_async(dispatch_get_main_queue()){
+                thePlace = data
+                let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
+                controller.view.frame = self.view.bounds;
+                controller.willMoveToParentViewController(self)
+                self.view.addSubview(controller.view)
+                self.addChildViewController(controller)
+                controller.didMoveToParentViewController(self)
+            }
         }
-        let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
-        controller.view.frame = self.view.bounds;
-        controller.willMoveToParentViewController(self)
-        self.view.addSubview(controller.view)
-        self.addChildViewController(controller)
-        controller.didMoveToParentViewController(self)
+        
     }
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
