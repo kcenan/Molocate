@@ -3,7 +3,7 @@ import SystemConfiguration
 
 let baseUrl = "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/"
 
-let categoryDict = ["Eğlence":"fun","Yemek":"food","Gezinti":"travel","Moda":"fashion" , "Güzellik":"makeup", "Spor": "Sport","Etkinlik": "Event","Kampüs":"university", "Hepsi":"all"]
+let categoryDict = ["EĞLENCE":"fun","YEMEK":"food","GEZİ":"travel","MODA":"fashion" , "GÜZELLİK":"makeup", "SPOR": "Sport","ETKİNLİK": "Event","KAMPÜS":"university", "HEPSİ":"all"]
 struct videoInf{
     var id: String = ""
     var username:String = ""

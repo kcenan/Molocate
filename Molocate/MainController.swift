@@ -39,17 +39,16 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     var pressedFollow: Bool = false
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
-    
     @IBOutlet var searchText: UITextField!
+    
     
     @IBOutlet var collectionView: UICollectionView!
     
     var videoArray = [videoInf]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
-    var players = ["Didier Drogba", "Elmander", "Harry Kewell", "Milan Baros", "Wesley Sneijder"]
-    var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
-    var numbers = ["11", "9","19", "15", "10"]
+    var categories = ["HEPSİ","EĞLENCE","YEMEK","GEZİ","MODA" , "GÜZELLİK", "SPOR","ETKİNLİK","KAMPÜS"]
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +73,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         let index = NSIndexPath(forRow: 0, inSection: 0)
         self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
-        collectionView.contentSize.width = screenSize.size.width * 3 / 2
+        collectionView.contentSize.width = screenSize.size.width * 9 / 5
         collectionView.backgroundColor = swiftColor3
         
         
@@ -536,7 +535,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return  CGSize.init(width: screenSize.width / 6 , height: 44)
+        return  CGSize.init(width: screenSize.width / 5 , height: 44)
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -553,22 +552,24 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         backgroundView.backgroundColor = swiftColor2
         
         myCell.selectedBackgroundView = backgroundView
-        myCell.layer.borderWidth = 0
+        //myCell.layer.borderWidth = 0
         myCell.backgroundColor = swiftColor3
         myCell.myLabel?.text = categories[indexPath.row]
-        myCell.frame.size.width = screenSize.width / 6
+        myCell.frame.size.width = screenSize.width / 5
         myCell.myLabel.textAlignment = .Center
-        myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 16)
-        myCell.myLabel.sizeToFit()
+        myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
+        
+        
+        
         
         return myCell
     }
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         
+        //seçilmiş cell in labelının rengi değişsin
+        
         let url = NSURL(string: baseUrl  + "video/api/explore/?category=" + categoryDict[categories[indexPath.row]]!)
-   
         SDImageCache.sharedImageCache().clearMemory()
-      
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
