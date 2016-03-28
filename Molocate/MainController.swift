@@ -43,7 +43,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var searchText: UITextField!
     var refreshing = false
-    
+    var refreshURL = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/api/explore/?category=all")
+    var refreshControl:UIRefreshControl!
     @IBOutlet var collectionView: UICollectionView!
     
     var videoArray = [videoInf]()
@@ -130,7 +131,10 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             break
         }
         
-    
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(refreshControl)
         
         
         
@@ -167,6 +171,44 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         //        }
         
     }
+    
+    func refresh(sender:AnyObject){
+        
+        
+        refreshing = true
+        let url = refreshURL
+        self.player1.stop()
+        self.player2.stop()
+        
+        SDImageCache.sharedImageCache().clearMemory()
+        // tableView.hidden = true
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        //tableView.hidden = true
+        Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                self.tableView.hidden = true
+                self.videoArray.removeAll()
+                self.videoArray = data!
+                self.tableView.reloadData()
+                self.refreshControl.endRefreshing()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                self.tableView.hidden = false
+                self.activityIndicator.removeFromSuperview()
+                self.refreshing = false
+            }
+            
+            
+            
+        })
+        
+    }
+
     
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -591,6 +633,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        refreshURL = url
         Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 self.player1.stop()
@@ -602,6 +645,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.activityIndicator.removeFromSuperview()
                 self.refreshing = false
                 self.tableView.reloadData()
+                self.tableView.setContentOffset(CGPoint(x: 0,y:0), animated: false)
             }
             
         })
@@ -640,6 +684,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             self.venueTable.hidden = true
             self.searchText.resignFirstResponder()
         }
+        
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {

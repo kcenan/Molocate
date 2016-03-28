@@ -554,6 +554,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         player1.removeFromParentViewController()
         player2.stop()
         player2.removeFromParentViewController()
+        
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
