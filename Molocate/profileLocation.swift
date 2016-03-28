@@ -9,7 +9,11 @@
 import UIKit
 
 class profileLocation: UIViewController {
+    @IBOutlet var LocationTitle: UILabel!
 
+    @IBOutlet var videosTitle: UILabel!
+    @IBOutlet var address: UILabel!
+    @IBOutlet var locationName: UILabel!
     @IBOutlet var tableView: UITableView!
     
     @IBOutlet var videoCount: UILabel!
@@ -39,7 +43,11 @@ class profileLocation: UIViewController {
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
-        
+        self.followerCount.setTitle("\(thePlace.following_count)", forState: UIControlState.Normal)
+        self.locationName.text = thePlace.name
+        self.LocationTitle.text = thePlace.name
+        self.address.text = thePlace.address
+        self.videoCount.text = "Videos(\(thePlace.video_count))"
         //videocounta mekanda çekilen video toplamı yazacak
         
        

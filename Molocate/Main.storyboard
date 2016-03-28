@@ -1339,11 +1339,15 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="LocationTitle" destination="R0O-QE-z6d" id="qK7-zK-WYN"/>
+                        <outlet property="address" destination="WKk-GX-c8W" id="v45-Bj-c3n"/>
                         <outlet property="followButton" destination="Qpc-Eb-LNo" id="sCS-gu-1he"/>
                         <outlet property="followerCount" destination="4TG-FI-9yr" id="gRs-UX-p9w"/>
+                        <outlet property="locationName" destination="x8r-Pu-U4I" id="TVu-Sx-BpZ"/>
                         <outlet property="tableView" destination="tkQ-go-XXc" id="dGn-8t-azS"/>
                         <outlet property="toolBar" destination="nmB-IB-5C0" id="Ut8-mb-Use"/>
                         <outlet property="videoCount" destination="Mq0-Tg-688" id="ABR-Yk-AAb"/>
+                        <outlet property="videosTitle" destination="Mq0-Tg-688" id="qWd-aK-EGL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iz8-dg-vFX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1970,7 +1974,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Qm-0t-BEd">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Qm-0t-BEd">
                                 <rect key="frame" x="0.0" y="648" width="414" height="44"/>
                                 <color key="backgroundColor" red="0.78823529410000004" green="0.14117647059999999" blue="0.31764705879999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
