@@ -42,7 +42,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var searchText: UITextField!
-    
+    var refreshing = false
     
     @IBOutlet var collectionView: UICollectionView!
     
@@ -229,14 +229,16 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
             
-            if( (indexPath.row%8 == 0)&&(nextU != nil)){
+            if( (!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)){
                 
                 Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
                     dispatch_async(dispatch_get_main_queue()){
                         for item in data!{
                             self.videoArray.append(item)
+                            let newIndexPath = NSIndexPath(forRow: self.videoArray.count-1, inSection: 0)
+                            self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
                         }
-                        self.tableView.reloadData()
+                        
                     }
                     
                 })
@@ -579,7 +581,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         
         //seçilmiş cell in labelının rengi değişsin
-        
+        refreshing = true
         let url = NSURL(string: baseUrl  + "video/api/explore/?category=" + categoryDict[categories[indexPath.row]]!)
         SDImageCache.sharedImageCache().clearMemory()
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
@@ -598,6 +600,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.tableView.hidden = false
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
+                self.refreshing = false
                 self.tableView.reloadData()
             }
             

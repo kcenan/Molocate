@@ -415,7 +415,7 @@ public class Molocate {
                 for item in videos {
                     //print(item)
                     var videoStr = videoInf()
-                    print(item)
+                    //print(item)
                     videoStr.id = item["video_id"] as! String
                     videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
                     videoStr.username = item["owner_user"]!!["username"] as! String

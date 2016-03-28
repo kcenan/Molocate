@@ -107,6 +107,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func refresh(sender:AnyObject){
+       
         
         refreshing = true
         let url = NSURL(string: baseUrl  + "video/api/news_feed/?category=all")
@@ -128,13 +129,15 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.tableView.hidden = true
                 self.videoArray.removeAll()
                 self.videoArray = data!
+                self.tableView.reloadData()
                 self.refreshControl.endRefreshing()
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 self.tableView.hidden = false
                 self.activityIndicator.removeFromSuperview()
                 self.refreshing = false
                             }
-            self.tableView.reloadData()
+                
+            
 
         })
         
@@ -186,6 +189,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 }
             }
         }
+            
+            
         }
     }
     
@@ -197,22 +202,30 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             return 44
         }
     }
-    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
     
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
         
-            if( (indexPath.row%8 == 0)&&(nextU != nil)){
+            if((!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)){
                 
                 Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
                     dispatch_async(dispatch_get_main_queue()){
+                        
                         for item in data!{
                             self.videoArray.append(item)
+                            let newIndexPath = NSIndexPath(forRow: self.videoArray.count-1, inSection: 0)
+                            self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
                         }
-                        self.tableView.reloadData()
+                        
+                        
+                       
                     }
                     
                 })
+                
             }
         }
         else {
