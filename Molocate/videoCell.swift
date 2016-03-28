@@ -51,10 +51,15 @@ class videoCell: UITableViewCell {
         screenSize = UIScreen.mainScreen().bounds
         
         profilePhoto = UIButton()
-        profilePhoto.frame = CGRectMake(10, 5, 44, 44)
+        profilePhoto.frame = CGRectMake(5, 5, 44, 44)
         //photo ata
         
         let image = UIImage(named: "profilepic.png")! as UIImage
+        profilePhoto.layer.borderWidth = 0.1
+        profilePhoto.layer.masksToBounds = false
+        profilePhoto.layer.borderColor = UIColor.whiteColor().CGColor
+        profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2
+        profilePhoto.clipsToBounds = true
         profilePhoto.setBackgroundImage(image, forState: UIControlState.Normal)
         contentView.addSubview(profilePhoto)
         
@@ -213,31 +218,19 @@ class videoCell: UITableViewCell {
         }
         for(var i = 0; i < videoInfo.taggedUsers.count; i += 1 ){
             videoComment.text =    videoComment.text!  + " @" + videoInfo.taggedUsers[i]
-            }
+        }
        // print(profilePic.absoluteString)
         if(videoInfo.userpic.absoluteString != ""){
             
             self.profilePhoto.sd_setImageWithURL(videoInfo.userpic, forState: UIControlState.Normal)
-//            Molocate.getDataFromUrl(profilePic, completion: { (data, response, error) -> Void in
-//                dispatch_async(dispatch_get_main_queue()){
-//                    let image = UIImage(data: data!)!
-//                    self.profilePhoto.setBackgroundImage(image, forState: UIControlState.Normal)
-//                    
-//                }
-//            })
-            //photo.image = UIImage(data: data!)!
+
         }
        
     }
     
     
     deinit {
-        //player.layer.removeFromSuperlayer()
-        //player.layer.player = nil
-        //player.player.pause()
-        //NSNotificationCenter.defaultCenter().removeObserver(self)
-        //self.removeFromSuperview()
-        //sself.contentView.removeFromSuperview()
+      
         
     }
     

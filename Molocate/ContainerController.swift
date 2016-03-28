@@ -1,18 +1,13 @@
-//
 //  ContainerController.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 14.01.2016.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 
 class ContainerController: UIViewController,UIScrollViewDelegate {
 
     @IBOutlet var scrollView: UIScrollView!
-    
-    //let profileController:ProfileViewController = ProfileViewController(nibName: "ProfileViewController",bundle:nil)
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -109,16 +104,6 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
     }
 
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
 
 
 }

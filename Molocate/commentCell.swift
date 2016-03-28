@@ -1,10 +1,5 @@
-//
 //  commentCell.swift
 //  Molocate
-//
-//  Created by MellonCorp on 3/15/16.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
 
 import UIKit
 

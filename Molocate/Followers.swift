@@ -39,6 +39,9 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         self.myTable.delegate      =   self
         self.myTable.dataSource    =   self
         self.view.addSubview(myTable)
+        myTable.tableFooterView = UIView()
+        
+        myTable.allowsSelection = false
         self.myTable.frame         =   CGRectMake(0, 60, self.screenSize.width, self.screenSize.height-60);
         if(follewersclicked){
             self.TitleLabel.text = "Followers"
@@ -90,7 +93,10 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
        
         let cell = TableViewCellFollowerFollowing(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier2")
         cell.myButton1.setTitle("\(users[indexPath.row].username)", forState: .Normal)
-        print(users[indexPath.row].username)
+        if(users[indexPath.row].profilePic.absoluteString != ""){
+            cell.fotoButton.sd_setImageWithURL(users[indexPath.row].profilePic, forState: UIControlState.Normal)
+        }
+        
         cell.myButton1.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.fotoButton.addTarget(self, action: "pressedProfile2:", forControlEvents: UIControlEvents.TouchUpInside)
         

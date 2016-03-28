@@ -30,6 +30,7 @@ struct notifications{
     var actor:String = ""
     var target:String = ""
     var sentence:String = ""
+    var picture_url: NSURL = NSURL()
 }
 
 var nextU:NSURL!
@@ -228,20 +229,10 @@ public class Molocate {
             let nsError = error;
             
             do {
-                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                //print(result)
                 var user = User()
-//                user.email = result["email"] as! String
-//                user.username = result["username"] as! String
-//                user.first_name = result["first_name"] as! String
-//                user.last_name = result["last_name"] as! String
-//                user.profilePic = result["picture_url"] is NSNull ? NSURL():NSURL(string: result["picture_url"] as! String)!
-//                user.follower_count = result["follower_count"] as! Int
-//                user.following_count = result["following_count"]as! Int
-//                user.isFollowing = result["is_following"] as! Int == 1 ? true:false
-//                print(result["is_following"] as! Int)
-                //print(user.isFollowing)
+
                 completionHandler(data: user, response: response , error: nsError  )
             } catch{
                 completionHandler(data: User() , response: nil , error: nsError  )
@@ -279,8 +270,7 @@ public class Molocate {
                 user.follower_count = result["follower_count"] as! Int
                 user.following_count = result["following_count"]as! Int
                 user.isFollowing = result["is_following"] as! Int == 1 ? true:false
-               // print(result["is_following"] as! Int)
-                //print(user.isFollowing)
+           
                 completionHandler(data: user, response: response , error: nsError  )
             } catch{
                 completionHandler(data: User() , response: nil , error: nsError  )
@@ -430,7 +420,7 @@ public class Molocate {
                     videoStr.isFollowing = jsonObject!!["is_following"] as! Int
                     videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
                     videoStr.dateStr = item["date_str"] as! String
-                    //videoStr.taggedUsers = item["tagged_users"] as! [String]
+                    videoStr.taggedUsers = item["tagged_users"] as! [String]
         
                     videoArray.append(videoStr)
                     
@@ -460,21 +450,15 @@ public class Molocate {
                 var notificationArray = [notifications]()
                 let array = result as! NSArray
                 for item in array {
-                    let action = item ["action"] as! String
-                    let owner = item ["owner"] as! String
-                    let actor = item["actor"] as! String
-                    let sentence = item["sentence"] as! String
-                    let date = item["date_str"] as! String
-                    let target = item["target"] as! String
                     var notification = notifications()
-                    notification.action = action
-                    notification.owner = owner
-                    notification.actor = actor
-                    notification.date = date
-                    notification.sentence = sentence
-                    notification.target = target
+                    notification.action = item ["action"] as! String
+                    notification.owner =  item ["owner"] as! String
+                    notification.actor = item["actor"] as! String
+                    notification.date = item["date_str"] as! String
+                    notification.sentence = item["sentence"] as! String
+                    notification.target = item["target"] as! String
+                    notification.picture_url = item["picture_url"] is NSNull ? NSURL():NSURL(string: item["picture_url"] as! String)!
                     notificationArray.append(notification)
-                    
                 }
                 completionHandler(data: notificationArray, response: response, error: nsError)
             }catch{

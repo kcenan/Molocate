@@ -1,10 +1,6 @@
-//
 //  HomePageViewController.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 26.02.2016.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 import Foundation
@@ -16,11 +12,7 @@ import SDWebImage
 import Haneke
 
 class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
-//    
-//    var isSearching = false
-//    var locationManager: CLLocationManager!
-    
-    // @IBOutlet var venueTable: UITableView!
+
     var videoData:NSMutableData!
     var connection:NSURLConnection!
     var response:NSHTTPURLResponse!
@@ -43,17 +35,11 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
     
-   
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        session = Session.sharedSession()
-//        session.logger = ConsoleLogger()
         
-       // venueTable.hidden = true
-        //searchText.delegate = self
         NSUserDefaults.standardUserDefaults().setObject(userToken, forKey: "userToken")
+        
         self.player1 = Player()
         self.player1.delegate = self
         self.player1.playbackLoops = true
@@ -68,26 +54,15 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         toolBar.clipsToBounds = true
         
         tableView.allowsSelection = false
+        tableView.tableFooterView = UIView()
         let index = NSIndexPath(forRow: 0, inSection: 0)
-//        self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
-//        collectionView.contentSize.width = screenSize.size.width * 2
-//        collectionView.backgroundColor = swiftColor3
-//        
-//        
-//        locationManager = CLLocationManager()
-//        locationManager.delegate = self
-//        locationManager.requestWhenInUseAuthorization()
-//        locationManager.startUpdatingLocation()
-//        location = locationManager.location
+
         self.view.backgroundColor = swiftColor
         
         if(choosedIndex != 3 && profileOn == 1){
             NSNotificationCenter.defaultCenter().postNotificationName("closeProfile", object: nil)
         }
         
-      
-        
-           // collectionView.hidden = false
             tableView.frame = CGRectMake(0, 88, screenSize.width, screenSize.height - 88)
             videoArray.removeAll()
             let url = NSURL(string: baseUrl + "video/api/news_feed/?category=all")!
@@ -115,7 +90,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         self.player2.stop()
    
         SDImageCache.sharedImageCache().clearMemory()
-        // tableView.hidden = true
+   
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
@@ -123,8 +98,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        //tableView.hidden = true
-                Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
+
+        Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 self.tableView.hidden = true
                 self.videoArray.removeAll()
@@ -135,7 +110,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.tableView.hidden = false
                 self.activityIndicator.removeFromSuperview()
                 self.refreshing = false
-                            }
+            }
                 
             
 
@@ -241,12 +216,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func tableView(atableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-       // if atableView == tableView {
-            
             if !pressedLike && !pressedFollow {
                 let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
-                let index = indexPath.row
                 
                 cell.initialize(indexPath.row, videoInfo:  videoArray[indexPath.row])
                 
@@ -279,17 +250,16 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                         let cached = DiskCache(path: path.absoluteString).pathForKey(url)
                         let file = NSURL(fileURLWithPath: cached)
                         if indexPath.row % 2 == 1 {
-                            //self.player1.stop()
+                   
                             self.player1.setUrl(file)
                             self.player1.view.frame = cell.newRect
                             cell.contentView.addSubview(self.player1.view)
-                            //self.player1.playFromBeginning()
+                           
                         }else{
-                            //self.player2.stop()
+                           
                             self.player2.setUrl(file)
                             self.player2.view.frame = cell.newRect
                             cell.contentView.addSubview(self.player2.view)
-                            //self.player2.playFromBeginning()
                         }
                     }
                     
@@ -363,8 +333,6 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func pressedLikeCount(sender: UIButton) {
-        //print("____________________________--------------")
-        //print(sender.tag)
         video_id = videoArray[sender.tag].id
         videoIndex = sender.tag
         let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
@@ -413,7 +381,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         let buttonRow = sender.tag
         videoIndex = buttonRow
         video_id = videoArray[videoIndex].id
-        
+        myViewController = "HomeController"
         Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 comments = data
@@ -485,16 +453,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         
         if (isUploaded) {
             CaptionText = ""
-//            if isSearching != true {
-                self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
-//            }
-//            else {
-//                self.cameraButton.image = UIImage(named: "technology3.png")
-//                self.cameraButton.title = nil
-//                self.isSearching = false
-//                self.venueTable.hidden = true
-//                self.searchText.resignFirstResponder()
-//            }
+            self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
         }
     }
     
@@ -558,40 +517,11 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        //isSearching = true
         cameraButton.image = nil
         cameraButton.title = "Cancel"
-//        venueTable.hidden = false
-//        self.view.layer.addSublayer(venueTable.layer)
         
     }
     
-//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
-//    {        venueTable.hidden = false
-//        let whitespaceCharacterSet = NSCharacterSet.symbolCharacterSet()
-//        let strippedString = searchText.text!.stringByTrimmingCharactersInSet(whitespaceCharacterSet)
-//        
-//        if self.location == nil {
-//            return true
-//        }
-//        
-//        currentTask?.cancel()
-//        var parameters = [Parameter.query:strippedString]
-//        parameters += self.location.parameters()
-//        currentTask = session.venues.search(parameters) {
-//            (result) -> Void in
-//            if let response = result.response {
-//                self.venues = response["venues"] as? [JSONParameters]
-//                //print(self.venues)
-//                self.venueTable.reloadData()
-//            }
-//        }
-//        currentTask?.start()
-//        
-//        
-//        return true
-//    }
-//    
-    
+
     
 }

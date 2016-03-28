@@ -1,19 +1,12 @@
-//
 //  capturePreviewController.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 5.12.2015.
-//  Copyright © 2015 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 import AVFoundation
 import AVKit
 
-
 var CaptionText = ""
-
-//backende : fun, food, travel , makeup, fashion, sport, event, beauty, university olarak gönderilecek
 
 class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,PlayerDelegate {
     var categ:String!
@@ -230,9 +223,6 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             self.textField.backgroundColor = swiftColor2
             self.textField.autocapitalizationType = .Words
         }
-
-        //NSNotificationCenter.defaultCenter().addObserver(self, selector: "putVideo", name: "putVideo", object: nil)
-        
         
         textField.delegate = self
         placeTable.delegate = self
@@ -241,20 +231,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.hidden = true
         
         putVideo()
-//        videoURL = NSURL(fileURLWithPath: videoPath!, isDirectory: false)
-//        
-//        let asset = AVAsset(URL: videoURL!)
-//        let playerItem = AVPlayerItem(asset: asset)
-//        player = AVPlayer(playerItem: playerItem)
-//        playerLayer = AVPlayerLayer(player: player)
-//        _ = (self.view.frame.height-self.view.frame.width)/2
-//      
+  
         newRect = CGRect(x: 0, y: self.collectionView.frame.maxY, width: self.view.frame.width, height: self.view.frame.width)
-//        playerLayer?.frame = newRect
-//        playerLayer?.videoGravity = AVLayerVideoGravityResizeAspect
-//        
-//        view.layer.addSublayer(playerLayer!)
-//        player?.play()
+
         view.layer.addSublayer(placeTable.layer)
         view.layer.addSublayer(textField.layer)
         

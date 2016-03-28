@@ -19,6 +19,7 @@ var video_id: String = ""
 var user: User = User()
 var videoIndex = 0
 var isUploaded = true
+var myViewController = "MainController"
 
 class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var isSearching = false
@@ -92,6 +93,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         }
         
         tableView.allowsSelection = false
+        tableView.tableFooterView = UIView()
         switch(choosedIndex){
         case 0:
             tableView.reloadData()
@@ -153,23 +155,6 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     
     func playerPlaybackDidEnd(player: Player) {
-    }
-    
-    func scrollViewEndDecelerating(scrollView: UIScrollView) {
-        
-        //        let rowHeight = screenSize.width + 138
-        //        let y = scrollView.contentOffset.y
-        //        let front = ceil(y/rowHeight)
-        //        if front * rowHeight - y > rowHeight/3 {
-        //            if (ceil(y) - 1 ) % 2 == 1{
-        //                player1.playFromBeginning()
-        //                print("player1")
-        //            }else{
-        //                player2.playFromBeginning()
-        //                 print("player2")
-        //            }
-        //        }
-        
     }
     
     func refresh(sender:AnyObject){
@@ -345,7 +330,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                         if indexPath.row % 2 == 1 {
                             //self.player1.stop()
                             self.player1.setUrl(file)
+                     
                             self.player1.view.frame = cell.newRect
+                      
                             cell.contentView.addSubview(self.player1.view)
                             //self.player1.playFromBeginning()
                         }else{
@@ -506,7 +493,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         let buttonRow = sender.tag
         videoIndex = buttonRow
         video_id = videoArray[videoIndex].id
-       
+        myViewController = "MainController"
+        
         Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 comments = data

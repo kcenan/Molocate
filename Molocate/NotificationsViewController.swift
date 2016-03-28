@@ -1,9 +1,6 @@
 //  NotificationsViewController.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 26.02.2016.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 import Foundation
@@ -20,6 +17,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.tableFooterView = UIView()
         Molocate.getNotifications(NSURL()) { (data, response, error) -> () in
             
             dispatch_async(dispatch_get_main_queue()){
@@ -54,7 +52,26 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         let cell = notificationCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
         cell.myButton.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.fotoButton.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.myLabel.text = notificationArray[indexPath.row].sentence
+     
+        cell.myButton.setTitle(notificationArray[indexPath.row].actor, forState: UIControlState.Normal)
+        let buttonWidth = cell.myButton.intrinsicContentSize().width
+        cell.myButton.frame = CGRectMake(44 , 10 , buttonWidth + 5  , 34)
+        cell.myButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        cell.myButton.contentHorizontalAlignment = .Left
+        cell.myButton.setTitleColor(swiftColor, forState: UIControlState.Normal)
+        if(notificationArray[indexPath.row].picture_url.absoluteString != ""){
+        cell.fotoButton.sd_setImageWithURL(notificationArray[indexPath.row].picture_url, forState: UIControlState.Normal)
+        }
+        cell.contentView.addSubview(cell.myButton)
+        
+        cell.myLabel = UILabel()
+        cell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
+        cell.myLabel.text = notificationArray[indexPath.row].sentence // sample label text
+        cell.myLabel.textAlignment = .Left
+        cell.myLabel.frame = CGRectMake(buttonWidth + 49 , 10 , screenSize.width - buttonWidth - 52 , 34)
+        cell.myLabel.numberOfLines = 1
+        cell.contentView.addSubview(cell.myLabel)
+
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

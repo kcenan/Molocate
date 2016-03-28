@@ -35,9 +35,15 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         Molocate.commentAVideo(video_id, comment: newComment.text) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                  self.newComment.text = ""
+                if(myViewController == "MainController"){
                 (self.parentViewController as! MainController).videoArray[videoIndex].commentCount += 1
                 (self.parentViewController as! MainController).tableView.reloadRowsAtIndexPaths(
                     [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+                }else{
+                    (self.parentViewController as! HomePageViewController).videoArray[videoIndex].commentCount += 1
+                    (self.parentViewController as! HomePageViewController).tableView.reloadRowsAtIndexPaths(
+                        [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+                }
             }
         }
     }
@@ -47,16 +53,14 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+     
         newComment.text = "Yorumunu buradan yazabilirsin"
         newComment.textColor = UIColor.lightGrayColor()
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
         
-       // newComment.becomeFirstResponder()
-        
-//        newComment.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+       
         tableView.estimatedRowHeight = 68
         tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -185,16 +189,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 UIControlState.Normal)
             
             cell.profilePhoto.sd_setImageWithURL(comments[indexPath.row].photo, forState: UIControlState.Normal)
-//            
-//            Molocate.getDataFromUrl(comments[indexPath.row].photo, completion: { (data, response, error) -> Void in
-//                dispatch_async(dispatch_get_main_queue()){
-//                    
-//                    cell.profilePhoto.setBackgroundImage(UIImage(data: data!)!, forState:
-//                        UIControlState.Normal)
-//                    
-//                }
-//            })
-            //photo.image = UIImage(data: data!)!
+
         }else{
             cell.profilePhoto.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
                 UIControlState.Normal)
@@ -228,14 +223,6 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         comments.removeAll()
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+ 
 
 }

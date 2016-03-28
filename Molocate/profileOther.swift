@@ -122,6 +122,13 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
 
         
+
+        profilePhoto.layer.borderWidth = 0.1
+        profilePhoto.layer.masksToBounds = false
+        profilePhoto.layer.borderColor = UIColor.whiteColor().CGColor
+        profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2
+        profilePhoto.clipsToBounds = true
+
         //       Molocate.follow("kcenan4") { (data, response, error) -> () in
         //
         //            print(data)
@@ -201,15 +208,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         }
         
         if(user.profilePic.absoluteString != ""){
-            profilePhoto.image = UIImage(named: "profilepic.png")!
             profilePhoto.sd_setImageWithURL(user.profilePic)
-//            Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
-//                dispatch_async(dispatch_get_main_queue()){
-//                  self.profilePhoto.image = UIImage(data: data!)!
-//                    
-//                }
-//            })
-            //photo.image = UIImage(data: data!)!
         }else{
             profilePhoto.image = UIImage(named: "profilepic.png")!
         }

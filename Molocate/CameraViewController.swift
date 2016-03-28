@@ -340,60 +340,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                         
                         }
                     }
-                    
-                   
-//                    if(item["verified"]! as! NSObject == 1){
-//                        
-//                    }
-//                    print(item["name"])
-//                    print(item["location"]!["address"])//!["distance"])
-//                    print(item["verified"])
-//                    print(item["stats"]!["checkinsCount"])
-//                    print("----------")
                 }
-                //                self.tableView.reloadData()
+               
             }
         }
         searchTask.start()
-//        placesClient = GMSPlacesClient()
-//        placesClient?.currentPlaceWithCallback({
-//            (placeLikelihoodList: GMSPlaceLikelihoodList?, error: NSError?) -> Void in
-//            
-//            if let error = error {
-//                print("Pick Place error: \(error.localizedDescription)")
-//                return
-//            }
-//
-//        
-//                
-//                var array = placeLikelihoodList!.likelihoods
-//            
-//                
-//                for item in array {
-//                    print(item)
-//                    var tempPlace: GMSPlace = item.place
-//                    var tempPlaceTypes = tempPlace.types as NSArray
-//                    let c : NSArray = ["airport", "amusement_park", "aquarium" , "art_gallery","bakery","bar","beauty_salon","bicycle_store","book_store","bowling_alley","cafe","campground","casino","church","city_hall","clothing_store","convenience_store","department_store","electronics_store","embassy","finance","florist","food","furniture_store","gas_station","grocery_or_supermarket","gym","hair_care","hardware_store","health","hindu_temple","home_goods_store","hospital","jewelry_store","library","liquor_store","lodging","meal_delivery","meal_takeaway","mosque","movie_theater","museum","night_club","painter","park","parking","pet_store","place_of_worship","restaurant","rv_park","school","shoe_store","shopping_mall","spa","stadium","store","synagogue","train_station","university","veterinary_care","zoo"]
-//                
-//                    
-//                    var placeLon = tempPlace.coordinate.longitude
-//                    var PlaceLat = tempPlace.coordinate.latitude
-//                    var diflon = placeLon - self.deviceLon!
-//                    var diflat = PlaceLat - self.deviceLat!
-//                    
-//                    var distancedeg = (diflon*diflon) + (diflat*diflat)
-//                    var distance = sqrt(distancedeg)*111
-//                   
-//                    if(distance < 0.500){
-//                        placesArray.append(tempPlace.name)
-//                        
-//                    }
-//                    
-//                    
-//                }
-//                
-//            
-//        })
+
 
     }
 
@@ -470,72 +422,6 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         
     }
-
-    
-    
-    
-    
-    /*
-    @IBAction func startRecord(sender: AnyObject) {
-        self.camChange.enabled = false
-        self.recordButton.enabled = false
-       
-
-        dispatch_async(self.sessionQueue!) {
-        
-            if !self.videoOutput!.recording {
-                if UIDevice.currentDevice().multitaskingSupported {
-                    // Setup background task. This is needed because the -[captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:]
-                    // callback is not received until AVCam returns to the foreground unless you request background execution time.
-                    // This also ensures that there will be time to write the file to the photo library when AVCam is backgrounded.
-                    // To conclude this background execution, -endBackgroundTask is called in
-                    // -[captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:] after the recorded file has been saved.
-                    self.backgroundRecordingID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler(nil)
-                }
-                
-                // Update the orientation on the movie file output video connection before starting recording.
-                let connection = self.videoOutput!.connectionWithMediaType(AVMediaTypeVideo)
-                
-                connection.videoOrientation = self.previewLayer!.connection.videoOrientation
-                
-                // Turn OFF flash for video recording.
-                
-                
-                
-                // Start recording to a temporary file.
-                let outputFileName = NSProcessInfo.processInfo().globallyUniqueString as NSString
-                let outputFilePath: String = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(outputFileName.stringByAppendingPathExtension("mov")!)
-                self.videoOutput!.startRecordingToOutputFileURL(NSURL.fileURLWithPath(outputFilePath), recordingDelegate: self)
-                
-            } else {
-                self.videoOutput!.stopRecording()
-                
-            }
-            
-                
-                
-            
-
-            }
-        
-
-        
-        
-        
-        
-        
-        
-
-                    
-
-                    
-                    
-
-       
-        
-    } */
-
-
     
     func captureOutput(captureOutput: AVCaptureFileOutput!, didStartRecordingToOutputFileAtURL fileURL: NSURL!, fromConnections connections: [AnyObject]!) {
         // Enable the Record button to let the user stop the recording.
@@ -546,10 +432,6 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
     
     func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
-        // Note that currentBackgroundRecordingID is used to end the background task associated with this recording.
-        // This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's isRecording property
-        // is back to NO — which happens sometime after this method returns.
-        // Note: Since we use a unique file path for each recording, a new recording will not overwrite a recording currently being saved.
         
         let currentBackgroundRecordingID = self.backgroundRecordingID
         self.backgroundRecordingID = UIBackgroundTaskInvalid
@@ -583,8 +465,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 let firstTrack = merge.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
                 _ = merge.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
                 let firstTrackAudio = merge.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
-                                //var firstLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: firstTrack)
-                //var mainInstruction = AVMutableVideoCompositionInstruction()
+                
                 
                 
                 
@@ -592,30 +473,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 do {
                         try firstTrack.insertTimeRange(CMTimeRange(start: kCMTimeZero, duration: firstAsset.duration), ofTrack: firstAsset.tracksWithMediaType(AVMediaTypeVideo)[0], atTime: kCMTimeZero)
                         try firstTrack.insertTimeRange(CMTimeRange(start: kCMTimeZero, duration: secondAsset.duration), ofTrack: secondAsset.tracksWithMediaType(AVMediaTypeVideo)[0], atTime: firstAsset.duration)
-//                    
+                    
                         try firstTrackAudio.insertTimeRange(CMTimeRange(start: kCMTimeZero, duration: firstAsset.duration), ofTrack: firstAsset.tracksWithMediaType(AVMediaTypeAudio)[0], atTime: kCMTimeZero)
                         try firstTrackAudio.insertTimeRange(CMTimeRange(start: kCMTimeZero, duration: secondAsset.duration), ofTrack: secondAsset.tracksWithMediaType(AVMediaTypeAudio)[0], atTime: firstAsset.duration)
 
                     
-//                    // 2.1
-//                    var mainInstruction = AVMutableVideoCompositionInstruction()
-//                    mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(firstAsset.duration, secondAsset.duration))
-////
-////                    // 2.2
-//                    let firstInstruction = videoCompositionInstructionForTrack(firstTrack, asset: firstAsset)
-//                    firstInstruction.setOpacity(0.0, atTime: firstAsset.duration)
-//                    let secondInstruction = videoCompositionInstructionForTrack(secondTrack, asset: secondAsset)
-//                    
-//                    // 2.3
-//                    mainInstruction.layerInstructions = [firstInstruction, secondInstruction]
-//                    let mainComposition = AVMutableVideoComposition()
-//                    mainComposition.instructions = [mainInstruction]
-//                    mainComposition.frameDuration = CMTimeMake(1, 30)
-//                    mainComposition.renderSize = CGSize(width: UIScreen.mainScreen().bounds.width,
-//                        height: UIScreen.mainScreen().bounds.height)
-////
-                    
-                    
+         
                     
                     
                         _ = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
