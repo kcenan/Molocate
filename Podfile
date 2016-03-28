@@ -12,6 +12,7 @@ use_frameworks!
 pod 'QuadratTouch', '>= 1.0'
 pod "RecordButton"
 pod 'SDWebImage'
+pod 'HanekeSwift'
 
 end
 

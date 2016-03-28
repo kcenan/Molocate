@@ -4,6 +4,7 @@ import CoreLocation
 import QuadratTouch
 import MapKit
 import SDWebImage
+import Haneke
 
 
 //video caption ve süre eklenecek, report send edilecek
@@ -37,6 +38,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     var currentTask: Task?
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
+    var myCache = Shared.dataCache
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var searchText: UITextField!
@@ -287,20 +289,30 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
                 
                 
-                dispatch_async(dispatch_get_main_queue()){
-                    if indexPath.row % 2 == 1 {
-                        //self.player1.stop()
-                        self.player1.setUrl(self.videoArray[indexPath.row].urlSta)
-                        self.player1.view.frame = cell.newRect
-                        cell.contentView.addSubview(self.player1.view)
-                        //self.player1.playFromBeginning()
-                    }else{
-                        //self.player2.stop()
-                        self.player2.setUrl(self.videoArray[indexPath.row].urlSta)
-                        self.player2.view.frame = cell.newRect
-                        cell.contentView.addSubview(self.player2.view)
-                        //self.player2.playFromBeginning()
+                myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                    dispatch_async(dispatch_get_main_queue()){
+                        
+                        
+                        let url = self.videoArray[indexPath.row].urlSta.absoluteString
+                        
+                        let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
+                        let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+                        let file = NSURL(fileURLWithPath: cached)
+                        if indexPath.row % 2 == 1 {
+                            //self.player1.stop()
+                            self.player1.setUrl(file)
+                            self.player1.view.frame = cell.newRect
+                            cell.contentView.addSubview(self.player1.view)
+                            //self.player1.playFromBeginning()
+                        }else{
+                            //self.player2.stop()
+                            self.player2.setUrl(file)
+                            self.player2.view.frame = cell.newRect
+                            cell.contentView.addSubview(self.player2.view)
+                            //self.player2.playFromBeginning()
+                        }
                     }
+                    
                 }
                 return cell
             }else{
@@ -577,21 +589,20 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        
         Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 self.player1.stop()
                 self.player2.stop()
-                              self.videoArray.removeAll()
+                self.videoArray.removeAll()
                 self.videoArray = data!
-                self.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 self.tableView.hidden = false
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
-                
+                self.tableView.reloadData()
             }
+            
         })
-        
+       
     }
     func changeFrame() {
         

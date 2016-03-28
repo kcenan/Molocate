@@ -13,6 +13,7 @@ import CoreLocation
 import QuadratTouch
 import MapKit
 import SDWebImage
+import Haneke
 
 class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
 //    
@@ -29,6 +30,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
     var refreshing: Bool = false
+    var myCache = Shared.dataCache
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     var refreshControl:UIRefreshControl!
@@ -105,6 +107,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func refresh(sender:AnyObject){
+        
         refreshing = true
         let url = NSURL(string: baseUrl  + "video/api/news_feed/?category=all")
         self.player1.stop()
@@ -120,21 +123,19 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         //tableView.hidden = true
-        Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
+                Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
-                
                 self.tableView.hidden = true
                 self.videoArray.removeAll()
-                for item in data! {
-                    self.videoArray.append(item)
-                }
+                self.videoArray = data!
                 self.refreshControl.endRefreshing()
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 self.tableView.hidden = false
                 self.activityIndicator.removeFromSuperview()
                 self.refreshing = false
-                self.tableView.reloadData()
-            }
+                            }
+            self.tableView.reloadData()
+
         })
         
     }
@@ -200,7 +201,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
-            
+        
             if( (indexPath.row%8 == 0)&&(nextU != nil)){
                 
                 Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
@@ -255,20 +256,30 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
                 
                 
-                dispatch_async(dispatch_get_main_queue()){
-                    if indexPath.row % 2 == 1 {
-                        //self.player1.stop()
-                        self.player1.setUrl(self.videoArray[indexPath.row].urlSta)
-                        self.player1.view.frame = cell.newRect
-                        cell.contentView.addSubview(self.player1.view)
-                        //self.player1.playFromBeginning()
-                    }else{
-                        //self.player2.stop()
-                        self.player2.setUrl(self.videoArray[indexPath.row].urlSta)
-                        self.player2.view.frame = cell.newRect
-                        cell.contentView.addSubview(self.player2.view)
-                        //self.player2.playFromBeginning()
+                myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                    dispatch_async(dispatch_get_main_queue()){
+                        
+                        
+                        let url = self.videoArray[indexPath.row].urlSta.absoluteString
+                        
+                        let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
+                        let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+                        let file = NSURL(fileURLWithPath: cached)
+                        if indexPath.row % 2 == 1 {
+                            //self.player1.stop()
+                            self.player1.setUrl(file)
+                            self.player1.view.frame = cell.newRect
+                            cell.contentView.addSubview(self.player1.view)
+                            //self.player1.playFromBeginning()
+                        }else{
+                            //self.player2.stop()
+                            self.player2.setUrl(file)
+                            self.player2.view.frame = cell.newRect
+                            cell.contentView.addSubview(self.player2.view)
+                            //self.player2.playFromBeginning()
+                        }
                     }
+                    
                 }
                 return cell
             }else{
