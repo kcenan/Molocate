@@ -19,8 +19,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     
     @IBOutlet var username: UILabel!
     @IBOutlet var addedButton: UIButton!
-    let AVc :Added =  Added(nibName: "Added", bundle: nil);
-    let BVc :Tagged =  Tagged(nibName: "Tagged", bundle: nil);
+    var AVc :Added =  Added(nibName: "Added", bundle: nil);
+    var BVc :Tagged =  Tagged(nibName: "Tagged", bundle: nil);
     @IBOutlet var taggedButton: UIButton!
     
     @IBOutlet var followingsCount: UIButton!
