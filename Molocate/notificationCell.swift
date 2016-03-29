@@ -33,7 +33,9 @@ class notificationCell: UITableViewCell {
         contentView.addSubview(fotoButton)
         
         myButton = UIButton()
+        myButton.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size: 12)
         myButton.titleLabel?.numberOfLines = 1
+        
         myLabel = UILabel()
         
     }

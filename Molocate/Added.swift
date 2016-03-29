@@ -43,7 +43,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         self.view.addSubview(tableView)
         // Do any additional setup after loading the view.
         
-        print(self.username)
+        print(user.username)
         Molocate.getUserVideos(user.username, type: "user", completionHandler: { (data, response, error) in
             dispatch_async(dispatch_get_main_queue()) {
                 self.videoArray = data!

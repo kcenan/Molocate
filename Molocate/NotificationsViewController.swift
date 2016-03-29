@@ -66,10 +66,10 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         cell.contentView.addSubview(cell.myButton)
         
         cell.myLabel = UILabel()
-        cell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
+        cell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 12)
         cell.myLabel.text = notificationArray[indexPath.row].sentence // sample label text
         cell.myLabel.textAlignment = .Left
-        cell.myLabel.frame = CGRectMake(buttonWidth + 49 , 10 , screenSize.width - buttonWidth - 52 , 34)
+        cell.myLabel.frame = CGRectMake(buttonWidth + 44 , 10 , screenSize.width - buttonWidth - 52 , 34)
         cell.myLabel.numberOfLines = 1
         cell.contentView.addSubview(cell.myLabel)
         
