@@ -84,9 +84,8 @@ class videoCell: UITableViewCell {
         
         videoComment = UILabel()
         videoComment.frame = CGRectMake( 10 , 59 + screenSize.width , screenSize.width - 50 , 50)
-        videoComment.font = UIFont(name: "AvenirNext-Medium", size: 11)
         videoComment.textAlignment = .Left
-        videoComment.textColor = UIColor.blackColor()
+       // videoComment.textColor = UIColor.blackColor()
         videoComment.numberOfLines = 2
         videoComment.lineBreakMode = .ByWordWrapping
         contentView.addSubview(videoComment)
@@ -211,14 +210,33 @@ class videoCell: UITableViewCell {
         self.commentButton.tag = row
         self.commentCount.text = "\(commentCount)"
         self.reportButton.tag = row
-        self.videoComment.text = videoInfo.caption
+     
         self.videoTime.text = videoInfo.dateStr
         if(videoInfo.isLiked==1){
             self.likeButton.setBackgroundImage(UIImage(named: "LikeFilled.png"), forState: UIControlState.Normal)
         }
+        
+        var textstring = " "
         for(var i = 0; i < videoInfo.taggedUsers.count; i += 1 ){
-            videoComment.text =    videoComment.text!  + " @" + videoInfo.taggedUsers[i]
+            textstring +=  "@" + videoInfo.taggedUsers[i]
         }
+        var multipleAttributes = [String : NSObject]()
+        multipleAttributes[NSForegroundColorAttributeName] = swiftColor2
+        multipleAttributes[NSFontAttributeName] =  UIFont(name: "AvenirNext-Medium", size: 11)
+        
+        let tags =  NSAttributedString(string: textstring, attributes: multipleAttributes)
+        
+        var multipleAttributes2 = [String : NSObject]()
+        multipleAttributes2[NSFontAttributeName] =  UIFont(name: "AvenirNext-Medium", size: 11)
+        multipleAttributes2[NSForegroundColorAttributeName] = UIColor.blackColor()
+
+
+        let commentext = NSMutableAttributedString(string: videoInfo.caption, attributes:  multipleAttributes2)
+        
+        commentext.appendAttributedString(tags)
+       
+        videoComment.attributedText = commentext
+        
        // print(profilePic.absoluteString)
         if(videoInfo.userpic.absoluteString != ""){
             
