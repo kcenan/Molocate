@@ -41,6 +41,10 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         self.navigationController?.navigationBar.hidden = false
         tableView.delegate      =   self
         tableView.dataSource    =   self
+        
+        tableView.allowsSelection = false
+        tableView.tableFooterView = UIView()
+        
         print(video_id)
         Molocate.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
            
@@ -76,6 +80,11 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         }else{
             cell.followLike.hidden = true
         }
+        cell.profileImage.layer.borderWidth = 0.1
+        cell.profileImage.layer.masksToBounds = false
+        cell.profileImage.layer.borderColor = UIColor.whiteColor().CGColor
+        cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height/2
+        cell.profileImage.clipsToBounds = true
         
         
         if(users[indexPath.row].profilePic.absoluteString != ""){

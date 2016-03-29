@@ -59,6 +59,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         session = Session.sharedSession()
         session.logger = ConsoleLogger()
         
+        tableView.separatorColor = UIColor.clearColor()
+        
         venueTable.hidden = true
         searchText.delegate = self
         

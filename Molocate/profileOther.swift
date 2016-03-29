@@ -37,7 +37,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             }
         }else {
             if !user.isFollowing{
-                FollowButton.image = UIImage(named: "tick.png")
+                FollowButton.image = UIImage(named: "unfollow.png")
                 user.isFollowing = true
                 Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
                     print("follow"+data)
@@ -121,8 +121,6 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         settings.layer.cornerRadius = 20
         
 
-        
-
         profilePhoto.layer.borderWidth = 0.1
         profilePhoto.layer.masksToBounds = false
         profilePhoto.layer.borderColor = UIColor.whiteColor().CGColor
@@ -191,14 +189,14 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             username.text = user.username
             self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
             self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
-            self.FollowButton.image = UIImage(named: "shapes.png")
+            self.FollowButton.image = UIImage(named: "optionsButton.png")
             choosedIndex = 4
         }else{
             
             self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
             self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
             if(user.isFollowing){
-                self.FollowButton.image = UIImage(named: "tick.png")
+                self.FollowButton.image = UIImage(named: "unfollow.png")
             }else{
                 self.FollowButton.image = UIImage(named: "shapes.png")
             }

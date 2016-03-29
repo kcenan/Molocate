@@ -18,6 +18,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
+        tableView.separatorColor = UIColor.blackColor()
         Molocate.getNotifications(NSURL()) { (data, response, error) -> () in
             
             dispatch_async(dispatch_get_main_queue()){
@@ -71,7 +72,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         cell.myLabel.frame = CGRectMake(buttonWidth + 49 , 10 , screenSize.width - buttonWidth - 52 , 34)
         cell.myLabel.numberOfLines = 1
         cell.contentView.addSubview(cell.myLabel)
-
+        
+        tableView.allowsSelection = false
+        tableView.tableFooterView = UIView()
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

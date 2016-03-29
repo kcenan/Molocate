@@ -22,16 +22,21 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     @IBOutlet var bottomConstraint: NSLayoutConstraint!
     @IBOutlet var toolBar: UIToolbar!
     
+    @IBOutlet var sendImage: UIImageView!
     @IBOutlet var sendButton: UIButton!
     @IBOutlet var tableView: UITableView!
     
     @IBAction func sendButton(sender: AnyObject) {
+        if(newComment.text.characters.count >= 3 && newComment.text != "Yorumunu buradan yazabilirsin" ){
         var mycomment = comment()
         mycomment.text = newComment.text
         mycomment.photo = currentUser.profilePic
         mycomment.username = currentUser.username
         comments.append(mycomment)
         tableView.reloadData()
+        
+        tableView.allowsSelection = false
+        tableView.tableFooterView = UIView()
         Molocate.commentAVideo(video_id, comment: newComment.text) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                  self.newComment.text = ""
@@ -46,6 +51,9 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 }
             }
         }
+        }else{
+            
+        }
     }
     
     @IBOutlet var newComment: UITextView!
@@ -56,10 +64,12 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
      
         newComment.text = "Yorumunu buradan yazabilirsin"
         newComment.textColor = UIColor.lightGrayColor()
-        
+        tableView.separatorColor = UIColor.clearColor()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
-        
+        self.sendImage.layer.zPosition = 3
+        self.sendButton.layer.zPosition = 2
+
        
         tableView.estimatedRowHeight = 68
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -68,6 +78,13 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
         
+        newComment.layer.cornerRadius = 5
+        newComment.layer.borderWidth = 1
+        newComment.layer.borderColor = UIColor.whiteColor().CGColor
+        
+        sendButton.layer.cornerRadius = 5
+        sendButton.layer.borderWidth = 1
+        sendButton.layer.borderColor = swiftColor.CGColor
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification2:"), name:UIKeyboardWillHideNotification, object: nil);
         //topConstraint.priority = 999
@@ -75,7 +92,9 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         self.newComment.layer.zPosition = 2
         self.tableView.layer.zPosition = 1
         self.newComment.returnKeyType = .Done
-      
+        
+        tableView.allowsSelection = false
+        tableView.tableFooterView = UIView()
 
      
     }
@@ -184,6 +203,13 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         cell.username.contentHorizontalAlignment = .Left
         cell.username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside )
         cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside )
+        
+        cell.profilePhoto.layer.borderWidth = 0.1
+        cell.profilePhoto.layer.masksToBounds = false
+        cell.profilePhoto.layer.borderColor = UIColor.whiteColor().CGColor
+        cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
+        cell.profilePhoto.clipsToBounds = true
+        
         if(comments[indexPath.row].photo.absoluteString != ""){
             cell.profilePhoto.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
                 UIControlState.Normal)

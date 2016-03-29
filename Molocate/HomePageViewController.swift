@@ -52,7 +52,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
-        
+        tableView.separatorColor = UIColor.clearColor()
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
         let index = NSIndexPath(forRow: 0, inSection: 0)
