@@ -29,7 +29,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     @IBOutlet var searchText: UITextField!
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     @IBOutlet var collectionView: UICollectionView!
-    
+    var location:CLLocation!
+    var locationManager:CLLocationManager!
     var videoArray = [videoInf]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
@@ -78,6 +79,11 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        location = locationManager.location
 
         
     }

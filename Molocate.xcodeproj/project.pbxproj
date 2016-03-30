@@ -927,7 +927,7 @@
 				);
 				INFOPLIST_FILE = Molocate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mellonapp.Molocate;
+				PRODUCT_BUNDLE_IDENTIFIER = "-73682DC5D.com.mellonapp.Molocate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -949,7 +949,7 @@
 				);
 				INFOPLIST_FILE = Molocate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mellonapp.Molocate;
+				PRODUCT_BUNDLE_IDENTIFIER = "-73682DC5D.com.mellonapp.Molocate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
