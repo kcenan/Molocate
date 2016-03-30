@@ -3,7 +3,7 @@ import SystemConfiguration
 
 let baseUrl = "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/"
 
-let categoryDict = ["EĞLENCE":"fun","YEMEK":"food","GEZİ":"travel","MODA":"fashion" , "GÜZELLİK":"makeup", "SPOR": "Sport","ETKİNLİK": "Event","KAMPÜS":"university", "HEPSİ":"all"]
+let categoryDict = ["Eğlence":"fun","Yemek":"food","Gezi":"travel","Moda":"fashion" , "Güzellik":"makeup", "Spor": "Sport","Etkinlik": "Event","Kampüs":"university", "Hepsi":"all"]
 struct videoInf{
     var id: String = ""
     var username:String = ""
@@ -86,6 +86,7 @@ struct Place{
     var web_site = ""
     var video_count = 0
     var phone = ""
+    var videoArray = [videoInf]()
 }
 
 
@@ -249,7 +250,7 @@ public class Molocate {
             do {
                 
                 let item = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                
+                print(item)
                 var place = Place()
                 place.id = placeid
                 place.name = item["name"] as! String
@@ -262,7 +263,44 @@ public class Molocate {
                 place.picture_url = item["picture_url"] is NSNull ? NSURL():NSURL(string: item["picture_url"] as! String)!
                 place.phone = item["phone"] as! String
                 place.web_site = item["web_site"] as! String
+                let videos = item["place_videos"] as! NSArray
+                if (item["next_place_videos"] != nil){
+                    if item["next_place_videos"] is NSNull {
+                        print("next is null")
+                        nextU = nil
+                    }else {
+                        let nextStr = item["next_place_videos"] as! String
+                        //print(nextStr)
+                        nextU = NSURL(string: nextStr)!
+                    }
+                }
                 
+                var videoArray = [videoInf]()
+                
+                for item in videos {
+                    //print(item)
+                    var videoStr = videoInf()
+                    //print(item)
+                    videoStr.id = item["video_id"] as! String
+                    videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
+                    videoStr.username = item["owner_user"]!!["username"] as! String
+                    videoStr.location = item["place_taken"]!!["name"] as! String
+                    videoStr.locationID = item["place_taken"]!!["place_id"] as! String
+                    videoStr.caption = item["caption"] as! String
+                    videoStr.likeCount = item["like_count"] as! Int
+                    videoStr.commentCount = item["comment_count"] as! Int
+                    videoStr.category = item["category"] as! String
+                    videoStr.isLiked = item["is_liked"] as! Int
+                    let jsonObject = item["owner_user"]
+                    videoStr.isFollowing = jsonObject!!["is_following"] as! Int
+                    videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
+                    videoStr.dateStr = item["date_str"] as! String
+                    videoStr.taggedUsers = item["tagged_users"] as! [String]
+                
+                    place.videoArray.append(videoStr)
+                    
+                }
+
                 completionHandler(data: place, response: response , error: nsError  )
             } catch{
                 completionHandler(data: Place() , response: nil , error: nsError  )

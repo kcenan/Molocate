@@ -89,23 +89,23 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             
             cell.initialize(indexPath.row, videoInfo: videoArray[indexPath.row])
             
-            //            cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-            //            cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
-            //            cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-            //
-            //            if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
-            //                cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
-            //            }else{
-            //                cell.followButton.hidden = true
-            //            }
-            //
-            //            cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
-            //
-            //            cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
-            //            cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
-            //            cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
-            //            cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
-            //            cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
+                        cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+                        cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
+                        cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+                        if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
+                            cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+                        }else{
+                            cell.followButton.hidden = true
+                        }
+            
+                        cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+                        cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+                        cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
+                        cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
+                        cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
+                        cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
             //
             //
             myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
@@ -232,7 +232,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 controller.view.frame = self.parentViewController!.view.bounds;
                 controller.willMoveToParentViewController(self.parentViewController!)
                 self.parentViewController!.view.addSubview(controller.view)
-                self.addChildViewController(controller)
+                self.parentViewController!.addChildViewController(controller)
                 controller.didMoveToParentViewController(self.parentViewController!)
             }
         }
@@ -257,7 +257,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         controller.view.frame = self.parentViewController!.view.bounds;
         controller.willMoveToParentViewController(self.parentViewController!)
         self.parentViewController!.view.addSubview(controller.view)
-        self.addChildViewController(controller)
+        self.parentViewController!.addChildViewController(controller)
         controller.didMoveToParentViewController(self.parentViewController!)
     }
     func pressedLike(sender: UIButton) {
@@ -310,7 +310,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 controller.view.frame = self.parentViewController!.view.bounds;
                 controller.willMoveToParentViewController(self.parentViewController!)
                 self.parentViewController!.view.addSubview(controller.view)
-                self.addChildViewController(controller)
+                self.parentViewController!.addChildViewController(controller)
                 controller.didMoveToParentViewController(self.parentViewController!)
                 
                 print("comment e basıldı at index path: \(buttonRow)")
@@ -357,7 +357,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 controller.view.frame = self.parentViewController!.view.bounds;
                 controller.willMoveToParentViewController(self.parentViewController!)
                 self.parentViewController!.view.addSubview(controller.view)
-                self.addChildViewController(controller)
+                self.parentViewController!.addChildViewController(controller)
                 controller.didMoveToParentViewController(self.parentViewController!)
                 controller.username.text = user.username
                 controller.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
