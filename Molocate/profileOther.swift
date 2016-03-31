@@ -23,6 +23,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     var BVc :Tagged =  Tagged(nibName: "Tagged", bundle: nil);
     @IBOutlet var taggedButton: UIButton!
     
+    @IBOutlet var back: UIBarButtonItem!
     @IBOutlet var followingsCount: UIButton!
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var followersCount: UIButton!
@@ -185,12 +186,15 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
         
         if(choosedIndex==3){
+            dispatch_async(dispatch_get_main_queue()) {
             user = currentUser
-            username.text = user.username
+            self.username.text = user.username
             self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
             self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
             self.FollowButton.image = UIImage(named: "optionsButton.png")
             choosedIndex = 4
+            self.back.image = UIImage(named:"three.png")         
+            }
         }else{
             
             self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)

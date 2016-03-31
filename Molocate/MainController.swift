@@ -52,7 +52,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
     var categories = ["HEPSİ","EĞLENCE","YEMEK","GEZİ","MODA" , "GÜZELLİK", "SPOR","ETKİNLİK","KAMPÜS"]
-   
+    var realCateg = ["HEPSİ":"Hepsi","EĞLENCE":"Eğlence","YEMEK":"Yemek","GEZİ":"Gezi","MODA":"Moda" , "GÜZELLİK":"Güzellik", "SPOR":"Spor","ETKİNLİK":"Etkinlik","KAMPÜS":"Kampüs"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -411,6 +411,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 controller.username.text = user.username
                 controller.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
                 controller.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
+                choosedIndex = 1
             }
         }
         
@@ -618,7 +619,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         //seçilmiş cell in labelının rengi değişsin
         refreshing = true
-        let url = NSURL(string: baseUrl  + "video/api/explore/?category=" + categoryDict[categories[indexPath.row]]!)
+        let url = NSURL(string: baseUrl  + "video/api/explore/?category=" + categoryDict[realCateg[categories[indexPath.row]]!]!)
         SDImageCache.sharedImageCache().clearMemory()
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center

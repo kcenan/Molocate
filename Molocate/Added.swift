@@ -369,6 +369,17 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        //self.tableView.removeFromSuperview()
+        SDImageCache.sharedImageCache().cleanDisk()
+        SDImageCache.sharedImageCache().clearMemory()
+        player1.stop()
+        player1.removeFromParentViewController()
+        player2.stop()
+        player2.removeFromParentViewController()
+    }
+
+    
     
     
     

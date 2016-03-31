@@ -310,6 +310,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 controller.username.text = user.username
                 controller.followingsCount.setTitle("\(data.following_count)", forState: .Normal)
                 controller.followersCount.setTitle("\(data.follower_count)", forState: .Normal)
+                choosedIndex = 0
             }
         }
         

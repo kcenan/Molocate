@@ -492,6 +492,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     dispatch_async(dispatch_get_main_queue()){
                     self.view.hidden = true
                     self.performSegueWithIdentifier("login", sender: self)
+                        user = currentUser
                     }
                 })
                

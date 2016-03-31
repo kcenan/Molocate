@@ -554,7 +554,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
 
     @IBAction func videoDone(sender: AnyObject) {
-        print(firstAsset.duration.seconds)
+        
         if self.progress > 0.2 {
         tempAssetURL = nil
         firstAsset = nil
@@ -930,10 +930,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     @IBAction func flashButton(sender: AnyObject) {
         if isFlashMode == false {
             isFlashMode = true
-            flashButton.setTitle("Kapa", forState: .Normal)
+            flashButton.setBackgroundImage(UIImage(named: "openflash.png"), forState: UIControlState.Normal)
+          
         } else {
             isFlashMode = false
-            flashButton.setTitle("Ac", forState: .Normal)
+            flashButton.setBackgroundImage(UIImage(named: "closedflash.png"), forState: UIControlState.Normal)
+
         }
     }
     

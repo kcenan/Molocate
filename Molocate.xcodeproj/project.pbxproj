@@ -49,6 +49,8 @@
 		C6537F4D1CA9EF26005EE0BA /* unfollow.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F4C1CA9EF26005EE0BA /* unfollow.png */; };
 		C6537F4F1CA9F3C1005EE0BA /* sendButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F4E1CA9F3C1005EE0BA /* sendButton.png */; };
 		C6537F511CA9F4E8005EE0BA /* Sent-96.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F501CA9F4E8005EE0BA /* Sent-96.png */; };
+		C6537F531CACA963005EE0BA /* openflash.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F521CACA963005EE0BA /* openflash.png */; };
+		C6537F551CACA96A005EE0BA /* closedflash.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F541CACA96A005EE0BA /* closedflash.png */; };
 		C6549E211CA740D100277848 /* followbutton1.png in Resources */ = {isa = PBXBuildFile; fileRef = C6549E201CA740D100277848 /* followbutton1.png */; };
 		C65A450E1C694AFC00E9DA6F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65A450B1C694AFC00E9DA6F /* FBSDKCoreKit.framework */; };
 		C65A450F1C694AFC00E9DA6F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65A450C1C694AFC00E9DA6F /* FBSDKLoginKit.framework */; };
@@ -175,6 +177,8 @@
 		C6537F4C1CA9EF26005EE0BA /* unfollow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unfollow.png; sourceTree = "<group>"; };
 		C6537F4E1CA9F3C1005EE0BA /* sendButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sendButton.png; sourceTree = "<group>"; };
 		C6537F501CA9F4E8005EE0BA /* Sent-96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sent-96.png"; sourceTree = "<group>"; };
+		C6537F521CACA963005EE0BA /* openflash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = openflash.png; sourceTree = "<group>"; };
+		C6537F541CACA96A005EE0BA /* closedflash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = closedflash.png; sourceTree = "<group>"; };
 		C6549E201CA740D100277848 /* followbutton1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = followbutton1.png; sourceTree = "<group>"; };
 		C65A450B1C694AFC00E9DA6F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../Downloads/FacebookSDKs-iOS-20160115/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		C65A450C1C694AFC00E9DA6F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../../Downloads/FacebookSDKs-iOS-20160115/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
@@ -407,6 +411,8 @@
 		C67C97721C44BE080001BEF5 /* ImagesForProfile */ = {
 			isa = PBXGroup;
 			children = (
+				C6537F541CACA96A005EE0BA /* closedflash.png */,
+				C6537F521CACA963005EE0BA /* openflash.png */,
 				C6537F501CA9F4E8005EE0BA /* Sent-96.png */,
 				C69B824A1CA1102D008658CF /* sign-2.png */,
 				C6537F4C1CA9EF26005EE0BA /* unfollow.png */,
@@ -629,6 +635,7 @@
 				C678301A1C9CC76E00DC969D /* LatoTR-Hairline.ttf in Resources */,
 				C678301B1C9CC76E00DC969D /* LatoTR-Light.ttf in Resources */,
 				C69B82431CA0FF11008658CF /* Comments.png in Resources */,
+				C6537F551CACA96A005EE0BA /* closedflash.png in Resources */,
 				C6537F511CA9F4E8005EE0BA /* Sent-96.png in Resources */,
 				C678301C1C9CC76E00DC969D /* LatoTR-Regular.ttf in Resources */,
 				C6537F471CA9ECC0005EE0BA /* LikeFilled.png in Resources */,
@@ -644,6 +651,7 @@
 				C61FDAB71BFBD3A9007B940E /* FollowingViewController.xib in Resources */,
 				38F771001C95028E0079FACD /* home.png in Resources */,
 				C6C5DA4A1C951B6000DC16EF /* circle.png in Resources */,
+				C6537F531CACA963005EE0BA /* openflash.png in Resources */,
 				C63FBD0E1BF3E5B900DBB34C /* Assets.xcassets in Resources */,
 				C6537F4D1CA9EF26005EE0BA /* unfollow.png in Resources */,
 				38F771011C95028E0079FACD /* people.png in Resources */,
