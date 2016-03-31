@@ -301,13 +301,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             } else {
                 //Success
                 print("success")
-                
                 let fbAccessToken: String = FBSDKAccessToken.currentAccessToken().tokenString
                 
                 let json = ["access_token":fbAccessToken]
                 fbToken = fbAccessToken
                 print(json)
-                //burada a yı yolla.
                 do {
                     
                     let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
@@ -333,22 +331,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                 
                                 print("Result -> \(resultJson)")
                                 
-//                                if true {
-//                                    
-//                                    
-//                                    
-//                                    Molocate.getCurrentUser({ (data, response, error) in
-//                                        
-//                                    })
-//                                    
-//                                    self.performSegueWithIdentifier("login", sender: self)
-//                                    
-//                                } else {
-//                                    
-//                                    faceMail = resultJson["email_validation"] as! String
-//                                    faceUsername = resultJson["suggested_username"] as! String
-//                                    self.performSegueWithIdentifier("facebookLogin", sender: self)
-//                                }
+                                if (resultJson["logged_in"] as! Int == 1) {
+                                    
+                                    
+                                    userToken = resultJson["access_token"] as! String
+                                    Molocate.getCurrentUser({ (data, response, error) in
+                                        
+                                    })
+                                    
+                                    self.performSegueWithIdentifier("login", sender: self)
+                                    
+                                } else {
+                                    
+                                    faceMail = resultJson["email_validation"] as! String
+                                    faceUsername = resultJson["suggested_username"] as! String
+                                    self.performSegueWithIdentifier("facebookLogin", sender: self)
+                                }
                                 
                             } catch{
                                 print("Error:: in mole.follow()")

@@ -322,17 +322,26 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     if (distance < 400){
                         if(isVerified||enoughCheckin){
                          placesArray.append(item["name"] as! String)
-                         let name = item["name"] as! String
-                         let id = item["id"] as! String
-                         let lat = item["location"]!["lat"] as! Float
-                         let lon = item["location"]!["lng"] as! Float
-                         //let adress = item["location"]!["address"]
-                         var loc = locations()
-                         loc.name = name
-                         loc.id = id
-                         loc.lat = lat
-                         loc.lon = lon
-                         //loc.adress = adress
+                            let name = item["name"] as! String
+                            let id = item["id"] as! String
+                            let lat = item["location"]!["lat"] as! Float
+                            let lon = item["location"]!["lng"] as! Float
+                            let address = item["location"]!["formattedAddress"] as! [String]
+                            
+                            var loc = locations()
+                            loc.name = name
+                            loc.id = id
+                            loc.lat = lat
+                            loc.lon = lon
+                            for item in address {
+                                loc.adress = loc.adress + item
+                            }
+                            if let photo = item["photo"]{
+                                print("foto var")
+                            } else {
+                                
+                                print("foto yok")
+                            }
 
                         var locationDictitem = [name:loc]
                             locationDict.append(locationDictitem)
