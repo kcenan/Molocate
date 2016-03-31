@@ -137,7 +137,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.addTarget(self, action: #selector(MainController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
         
 
@@ -301,24 +301,27 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 
                 cell.initialize(indexPath.row, videoInfo: videoArray[indexPath.row])
                                 
-                cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.Username.addTarget(self, action: #selector(MainController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.placeName.addTarget(self, action: #selector(MainController.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 
                 if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
-                    cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+                    cell.followButton.addTarget(self, action: #selector(MainController.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 }else{
                     cell.followButton.hidden = true
                 }
                 
-                cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.likeButton.addTarget(self, action: #selector(MainController.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
                 cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
                 cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
-                cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
-                
+                cell.commentButton.addTarget(self, action: #selector(MainController.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.reportButton.addTarget(self, action: #selector(MainController.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+               cell.likeCount.addTarget(self, action: #selector(MainController.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                let tap = UITapGestureRecognizer(target: self, action:#selector(MainController.doubleTapped(_:) ));
+                tap.numberOfTapsRequired = 2
+                cell.contentView.addGestureRecognizer(tap)
+                cell.contentView.tag = index
                 
                 myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                     dispatch_async(dispatch_get_main_queue()){
@@ -458,6 +461,43 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
+    }
+    
+    func doubleTapped(sender: UITapGestureRecognizer) {
+        let buttonRow = sender.view!.tag
+        print("like a basıldı at index path: \(buttonRow) ")
+        pressedLike = true
+        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [NSIndexPath]()
+        indexes.append(indexpath)
+        
+        if(videoArray[buttonRow].isLiked == 0){
+            
+            self.videoArray[buttonRow].isLiked=1
+            self.videoArray[buttonRow].likeCount+=1
+            
+            
+            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            
+            Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    print(data)
+                }
+            }
+        }else{
+           
+            
+            self.videoArray[buttonRow].isLiked=0
+            self.videoArray[buttonRow].likeCount-=1
+            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            
+            
+            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    print(data)
+                }
+            }
+        }
     }
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
