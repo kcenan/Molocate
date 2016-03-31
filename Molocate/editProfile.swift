@@ -297,7 +297,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
        //UIImagePNGRepresentation(photo.image!)
         
         var image = editProfile.RBSquareImageTo(photo.image!, size: CGSize(width: 192, height: 192))
-        let imageData = UIImageJPEGRepresentation(image, 0.5)
+        let imageData = UIImageJPEGRepresentation(image, 1)
         Molocate.uploadProfilePhoto(imageData!) { (data, response, error) -> () in
             print(data)
             currentUser.profilePic = NSURL(string: data!)!
