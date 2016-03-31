@@ -555,7 +555,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
     @IBAction func videoDone(sender: AnyObject) {
         
-        if self.progress > 0.2 {
+        if ((self.progress > 0.2)&&(fakeoutputFileURL != nil)) {
         tempAssetURL = nil
         firstAsset = nil
         secondAsset = nil

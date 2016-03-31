@@ -51,6 +51,8 @@
 		C6537F511CA9F4E8005EE0BA /* Sent-96.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F501CA9F4E8005EE0BA /* Sent-96.png */; };
 		C6537F531CACA963005EE0BA /* openflash.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F521CACA963005EE0BA /* openflash.png */; };
 		C6537F551CACA96A005EE0BA /* closedflash.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F541CACA96A005EE0BA /* closedflash.png */; };
+		C6537F571CAD5D63005EE0BA /* appstore1024-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F561CAD5D63005EE0BA /* appstore1024-1024.png */; };
+		C6537F591CAD64F9005EE0BA /* Menunew.png in Resources */ = {isa = PBXBuildFile; fileRef = C6537F581CAD64F9005EE0BA /* Menunew.png */; };
 		C6549E211CA740D100277848 /* followbutton1.png in Resources */ = {isa = PBXBuildFile; fileRef = C6549E201CA740D100277848 /* followbutton1.png */; };
 		C65A450E1C694AFC00E9DA6F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65A450B1C694AFC00E9DA6F /* FBSDKCoreKit.framework */; };
 		C65A450F1C694AFC00E9DA6F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65A450C1C694AFC00E9DA6F /* FBSDKLoginKit.framework */; };
@@ -179,6 +181,8 @@
 		C6537F501CA9F4E8005EE0BA /* Sent-96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sent-96.png"; sourceTree = "<group>"; };
 		C6537F521CACA963005EE0BA /* openflash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = openflash.png; sourceTree = "<group>"; };
 		C6537F541CACA96A005EE0BA /* closedflash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = closedflash.png; sourceTree = "<group>"; };
+		C6537F561CAD5D63005EE0BA /* appstore1024-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appstore1024-1024.png"; sourceTree = "<group>"; };
+		C6537F581CAD64F9005EE0BA /* Menunew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Menunew.png; sourceTree = "<group>"; };
 		C6549E201CA740D100277848 /* followbutton1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = followbutton1.png; sourceTree = "<group>"; };
 		C65A450B1C694AFC00E9DA6F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../Downloads/FacebookSDKs-iOS-20160115/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		C65A450C1C694AFC00E9DA6F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../../Downloads/FacebookSDKs-iOS-20160115/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
@@ -411,6 +415,7 @@
 		C67C97721C44BE080001BEF5 /* ImagesForProfile */ = {
 			isa = PBXGroup;
 			children = (
+				C6537F561CAD5D63005EE0BA /* appstore1024-1024.png */,
 				C6537F541CACA96A005EE0BA /* closedflash.png */,
 				C6537F521CACA963005EE0BA /* openflash.png */,
 				C6537F501CA9F4E8005EE0BA /* Sent-96.png */,
@@ -427,6 +432,7 @@
 				38F770FD1C95028E0079FACD /* people.png */,
 				C6537F461CA9ECC0005EE0BA /* LikeFilled.png */,
 				38F770FE1C95028E0079FACD /* sound.png */,
+				C6537F581CAD64F9005EE0BA /* Menunew.png */,
 				C6C5DA511C9528E600DC16EF /* technology3.png */,
 				C6549E201CA740D100277848 /* followbutton1.png */,
 				C650C9C61C87EAB80067275B /* comment2.png */,
@@ -660,6 +666,7 @@
 				C6E53DC31C8A9C4E00379C31 /* Logo.png in Resources */,
 				C6C5DA581C952C1B00DC16EF /* shapes.png in Resources */,
 				C6C5DA521C9528E600DC16EF /* technology3.png in Resources */,
+				C6537F591CAD64F9005EE0BA /* Menunew.png in Resources */,
 				C69B82471CA10033008658CF /* Menu-100.png in Resources */,
 				C6F7B26B1C1351A20062E408 /* Added.xib in Resources */,
 				C61FDAB51BFBD393007B940E /* CameraViewController.xib in Resources */,
@@ -675,6 +682,7 @@
 				C610230A1C19FDCA00E9CA73 /* Main.storyboard in Resources */,
 				38F771021C95028E0079FACD /* sound.png in Resources */,
 				C6C5DA561C952B0900DC16EF /* change.png in Resources */,
+				C6537F571CAD5D63005EE0BA /* appstore1024-1024.png in Resources */,
 				C69B824B1CA1102D008658CF /* sign-2.png in Resources */,
 				C6DA6BE61C43389800E24392 /* elmander.jpg in Resources */,
 			);

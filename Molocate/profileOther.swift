@@ -172,7 +172,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
         AVc.view.frame.origin.x = 0
         AVc.view.frame.origin.y = 0
-        AVc.view.frame.size.width = screenSize.width + 1
+        AVc.view.frame.size.width = screenSize.width 
         AVc.view.frame.size.height = scrollView.frame.height
         var adminFrame :CGRect = AVc.view.frame;
         adminFrame.origin.x = screenWidth

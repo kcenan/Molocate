@@ -79,7 +79,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         let index = NSIndexPath(forRow: 0, inSection: 0)
         self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
-        collectionView.contentSize.width = screenSize.size.width * 9 / 5
+        collectionView.contentSize.width = 75 * 9
         collectionView.backgroundColor = swiftColor3
         
         
@@ -586,7 +586,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return  CGSize.init(width: screenSize.width / 5 , height: 44)
+        return  CGSize.init(width: 75 , height: 44)
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -606,9 +606,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         //myCell.layer.borderWidth = 0
         myCell.backgroundColor = swiftColor3
         myCell.myLabel?.text = categories[indexPath.row]
-        myCell.frame.size.width = screenSize.width / 5
+        myCell.frame.size.width = 75
         myCell.myLabel.textAlignment = .Center
-        myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
+        myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
         
         
         

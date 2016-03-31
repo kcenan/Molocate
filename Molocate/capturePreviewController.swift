@@ -216,7 +216,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
    
         let index = NSIndexPath(forRow: 0, inSection: 0)
         self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
-        collectionView.contentSize.width = screenSize.size.width * 2
+        collectionView.contentSize.width = 75 * 8
         collectionView.backgroundColor = swiftColor3
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -245,7 +245,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         caption.titleLabel!.textColor = UIColor.blackColor()
         caption.backgroundColor = UIColor.whiteColor()
         if CaptionText == "" {
-            caption.setTitle("Buraya basarak yorumunu ve arkadaşlarını ekleyebilirsin", forState: .Normal)
+            caption.setTitle("Yorum ve arkadaş ekle", forState: .Normal)
         }else{
             caption.setTitle(CaptionText, forState: .Normal)
         }
@@ -278,6 +278,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
 
     
     func pressedCaption(sender: UIButton) {
+        
+        //bu ne lan 
+        
         CaptionText == caption.titleLabel?.text
         let controller:tagComment = self.storyboard!.instantiateViewControllerWithIdentifier("tagComment") as! tagComment
         //controller.ANYPROPERTY=THEVALUE // If you want to pass value
@@ -291,7 +294,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let a : CGSize = CGSize.init(width: screenSize.width * 2 / 9, height: 44)
+        let a : CGSize = CGSize.init(width: 75, height: 44)
 
         
         return a
@@ -313,7 +316,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         myCell.layer.borderWidth = 0
         myCell.backgroundColor = swiftColor3
         myCell.label?.text = categories[indexPath.row]
-        myCell.frame.size.width = screenSize.width / 5
+        myCell.frame.size.width = 75
         myCell.label.textAlignment = .Center
         
         
