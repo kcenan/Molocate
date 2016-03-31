@@ -110,8 +110,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                             
                             let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options:  NSJSONWritingOptions.PrettyPrinted)
                            // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
-                            print(jsonData)
-                            // create post request
+                           // print(jsonData)
+                           // create post request
                            
                             let request = NSMutableURLRequest(URL: NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/update/")!,
                                 cachePolicy: .UseProtocolCachePolicy,
@@ -214,14 +214,15 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         self.player.playbackLoops = true
         videoLocation = locations()
    
-        let index = NSIndexPath(forRow: 0, inSection: 0)
-        self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
-        collectionView.contentSize.width = 75 * 8
-        collectionView.backgroundColor = swiftColor3
+
         
         dispatch_async(dispatch_get_main_queue()) {
             self.textField.backgroundColor = swiftColor2
             self.textField.autocapitalizationType = .Words
+            let index = NSIndexPath(forRow: 0, inSection: 0)
+            self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
+            self.collectionView.contentSize.width = 75 * 8
+            self.collectionView.backgroundColor = swiftColor3
         }
         
         textField.delegate = self
@@ -309,31 +310,33 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let myCell : captureCollectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! captureCollectionCell
+        dispatch_async(dispatch_get_main_queue()) {
+
         let backgroundView = UIView()
         backgroundView.backgroundColor = swiftColor2
         myCell.selectedBackgroundView = backgroundView
         
         myCell.layer.borderWidth = 0
         myCell.backgroundColor = swiftColor3
-        myCell.label?.text = categories[indexPath.row]
+        myCell.label?.text = self.categories[indexPath.row]
         myCell.frame.size.width = 75
         myCell.label.textAlignment = .Center
-        
-        
+        }
         
         return myCell
     }
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
        
+        //dispatch_async(dispatch_get_main_queue()) {
         
-        
-        categ = categoryDict[categories[indexPath.row]]
-        
-       isCategorySelected = true
-        
+        self.categ = categoryDict[self.categories[indexPath.row]]
+        self.isCategorySelected = true
+        //}
         //  cell.backgroundColor = UIColor.purpleColor()
         
     }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

@@ -58,7 +58,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         super.viewDidLoad()
         session = Session.sharedSession()
         session.logger = ConsoleLogger()
-        
+
         tableView.separatorColor = UIColor.clearColor()
         
         venueTable.hidden = true
@@ -707,8 +707,17 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         currentTask = session.venues.search(parameters) {
             (result) -> Void in
             if let response = result.response {
-                self.venues = response["venues"] as? [JSONParameters]
-                //print(self.venues)
+                var tempVenues = [JSONParameters]()
+                let venueItems = response["venues"] as? [JSONParameters]
+                for item in venueItems! {
+                    let isVerified = item["verified"] as! Bool
+                    let checkinsCount = item["stats"]!["checkinsCount"] as! NSInteger
+                    let enoughCheckin:Bool = (checkinsCount > 700)
+                    if (isVerified||enoughCheckin){
+                        tempVenues.append(item)
+                    }
+                }
+                self.venues = tempVenues
                 self.venueTable.reloadData()
             }
         }

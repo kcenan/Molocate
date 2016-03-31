@@ -91,7 +91,9 @@ struct Place{
 
 
 var currentUser:User = User()
-
+var faceUsername = ""
+var faceMail = ""
+var fbToken = ""
 public class Molocate {
     
     class func follow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){

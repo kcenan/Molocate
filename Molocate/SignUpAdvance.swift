@@ -89,8 +89,8 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         username.layer.masksToBounds = true
         //burada bize çağatay atanan username i gönderecek onu  yazıcaz
         // a diye atıyorum bunu butonun aksiyonunda çek edicez değişmişse username değiştirme yollıcaz
-        let sendName = "kcenan"
-        username.text = sendName
+      
+        username.placeholder = "Kullanıcı Adı"
         border.borderWidth = width
         username.layer.addSublayer(border)
         username.textAlignment = .Left
@@ -120,8 +120,8 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         email.layer.masksToBounds = true
         //burada bize çağatay atanan username i gönderecek onu  yazıcaz
         // a diye atıyorum bunu butonun aksiyonunda çek edicez değişmişse username değiştirme yollıcaz
-        let sendemail = "kcenan@ku.edu.tr"
-        email.text = sendemail
+        
+        email.placeholder = "E-Mail"
         email.layer.addSublayer(border2)
         email.textAlignment = .Left
         email.layer.masksToBounds = true
@@ -131,6 +131,12 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         self.email.delegate = self
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpAdvance.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        
+        if(faceMail != "not_valid"){
+            email.text = faceMail
+        } else {
+            
+        }
     }
     func pressedOnay(sender: UIButton) {
         
@@ -143,22 +149,112 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         }
         else{
             
-            if sendName==username.text{
-                //burada username i atamasına tekrar gerek var mı?
-                performSegueWithIdentifier("usernameAfter", sender: .None)
+            var uname = username.text! as String
+            var mail = email.text! as String
+            var token = fbToken
+            let json = ["access_token": token , "username": uname, "email": mail]
+            
+            
+            do {
+                
+                let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+                
+                // create post request
+                let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/account/facebook_login/")!
+                let request = NSMutableURLRequest(URL: url)
+                request.HTTPMethod = "POST"
+                
+                // insert json data to the request
+                
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                //request.addValue("application/json", forHTTPHeaderField: "Accept")
+                request.HTTPBody = jsonData
+                
+                
+                let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+                    //print(response)
+                    //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if error != nil{
+                            print("Error -> \(error)")
+                            
+                            //return
+                        }
+                        
+                        do {
+                            let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+                            
+                            //print("Result -> \(result)")
+                            
+                            
+                                //print("dsfasfdsadsfa")
+                                
+                            if result["username"] != nil {
+                                let usernameExist: Bool = (result["username"] as! String == "username_exist")
+                                let emailNotValid: Bool = (result["email"] as! String == "not_valid")
+                                if (usernameExist && emailNotValid){
+                                    self.displayAlert("Dikkat!", message: "Kullanıcı adınız ve e-mailiniz daha önce alındı.")
+                                } else {
+                                    if usernameExist {
+                                        self.displayAlert("Dikkat!", message: "Kullanıcı adı daha önce alındı.")
+                                        
+                                    } else {
+                                        self.displayAlert("Dikkat!", message: "Lütfen e-mailinizi değiştirin.")
+                                    }
+                                }
+                            } else {
+                                userToken = result["access_token"] as? String
+                                Molocate.getCurrentUser({ (data, response, error) -> () in
+                                    
+                                })
+                            }
+//                                self.displayAlert("Hata", message: result["result"] as! String)
+//                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+//                                self.activityIndicator.stopAnimating()
+//                                self.activityIndicator.hidesWhenStopped = true
+                            
+                            
+                            
+                            
+                            
+                        } catch {
+                            print("Error -> \(error)")
+                            
+                        }
+                        
+                    })
+                }
+                
+                
+                task.resume()
+                
+                
+                
+                
+            } catch {
+                print(error)
+                
+                
             }
-            else{
-                // check et username exist mi diye exist değilse database e kaydetip yolla existse alert koy
-                
-                
-                //let alertController = UIAlertController(title: "Üzgünüz", message:
-                //                "Seçtiğiniz kullanıcı adı daha önce alınmış, başka bir kullanıcı adı deneyin", preferredStyle: UIAlertControllerStyle.Alert)
-                //                alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.Default,handler: nil))
-                //
-                //                self.presentViewController(alertController, animated: true, completion: nil)
-                
-                
-            }
+
+            
+//            if sendName==username.text{
+//                //burada username i atamasına tekrar gerek var mı?
+//                performSegueWithIdentifier("usernameAfter", sender: .None)
+//            }
+//            else{
+//                // check et username exist mi diye exist değilse database e kaydetip yolla existse alert koy
+//                
+//                
+//                //let alertController = UIAlertController(title: "Üzgünüz", message:
+//                //                "Seçtiğiniz kullanıcı adı daha önce alınmış, başka bir kullanıcı adı deneyin", preferredStyle: UIAlertControllerStyle.Alert)
+//                //                alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.Default,handler: nil))
+//                //
+//                //                self.presentViewController(alertController, animated: true, completion: nil)
+//                
+//                
+//            }
         }
         
         
@@ -189,8 +285,19 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func displayAlert(title: String, message: String) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
     
-
+    
+    override func viewDidDisappear(animated: Bool) {
+        print("Hoca")
+    }
     /*
     // MARK: - Navigation
 

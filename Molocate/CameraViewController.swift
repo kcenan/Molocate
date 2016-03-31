@@ -321,7 +321,6 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     let enoughCheckin:Bool = (checkinsCount > 700)
                     if (distance < 400){
                         if(isVerified||enoughCheckin){
-                            print(item)
                          placesArray.append(item["name"] as! String)
                          let name = item["name"] as! String
                          let id = item["id"] as! String

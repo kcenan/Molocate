@@ -289,85 +289,81 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     func fbLoginInitiate() {
         let loginManager = FBSDKLoginManager()
-        loginManager.logInWithReadPermissions(["public_profile", "email","user_birthday", "user_friends"], handler: {(result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+        loginManager.logInWithReadPermissions(["public_profile", "email","user_birthday", "user_friends"], handler: {(Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+            
             if (error != nil) {
                 // Process error
                 self.removeFbData()
-            } else if result.isCancelled {
+            } else if Result.isCancelled {
                 // User Cancellation
                 print("Error in fbLoginInitiate")
                 self.removeFbData()
             } else {
                 //Success
                 print("success")
+                
                 let fbAccessToken: String = FBSDKAccessToken.currentAccessToken().tokenString
                 
                 let json = ["access_token":fbAccessToken]
-              //burada a yı yolla.
+                fbToken = fbAccessToken
+                print(json)
+                //burada a yı yolla.
                 do {
                     
                     let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                   // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
-                    
-                    // create post request
-                    let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/account/facebook_login/")!
+                   
+                    let url = NSURL(string: baseUrl + "/account/facebook_login/")!
                     let request = NSMutableURLRequest(URL: url)
                     request.HTTPMethod = "POST"
                     
-                    // insert json data to the request
-                    
                     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                    //request.addValue("application/json", forHTTPHeaderField: "Accept")
                     request.HTTPBody = jsonData
                     
                     
                     let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
                       //  print(response)
-                        //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if error != nil{
-                                print("Error -> \(error)")
-                                
-                                return
-                            }
+                        print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                        dispatch_async(dispatch_get_main_queue()) {
+                            
+                            
+                            let nsError = error
                             
                             do {
+                                let resultJson = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
                                 
-                                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                                print("Result -> \(resultJson)")
                                 
-                                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                                print("Result -> \(result)")
-//                                var dictionary : NSDictionary = result as! NSDictionary
-//                                if(dictionary.objectForKey("token") != nil){
-//                                    userToken = result["token"] as! String
+//                                if true {
+//                                    
+//                                    
+//                                    
+//                                    Molocate.getCurrentUser({ (data, response, error) in
+//                                        
+//                                    })
+//                                    
 //                                    self.performSegueWithIdentifier("login", sender: self)
-//                                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
 //                                    
 //                                } else {
-//                                    self.displayAlert("Hata", message: "Kullanıcı Adı ya da Parola Yanlış!")
-//                                    self.activityIndicator.stopAnimating()
-//                                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+//                                    
+//                                    faceMail = resultJson["email_validation"] as! String
+//                                    faceUsername = resultJson["suggested_username"] as! String
+//                                    self.performSegueWithIdentifier("facebookLogin", sender: self)
 //                                }
                                 
-                            } catch {
-                                print("Error -> \(error)")
+                            } catch{
+                                print("Error:: in mole.follow()")
                             }
-                        })
-                    }
-                    
+                            
+                        }}
                     task.resume()
                     
-                    
-                    
-                    
+
                 } catch {
                     print(error)
-                    
-                    
                 }
 
                
-                if result.grantedPermissions.contains("email") {
+                if Result.grantedPermissions.contains("email") {
                     //Do work
                     self.fetchFacebookProfile()
                 } else {
