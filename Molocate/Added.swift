@@ -301,7 +301,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         let buttonRow = sender.tag
         videoIndex = buttonRow
         video_id = videoArray[videoIndex].id
-        myViewController = "MainController"
+        myViewController = "Added"
         
         Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
