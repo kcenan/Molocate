@@ -225,12 +225,17 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         // scrollPosition = !scrollPosition
         if (scrollView.contentOffset.x < BVc.view.frame.origin.x/2){
             
+            BVc.player1.stop()
+            BVc.player2.stop()
             addedButton.backgroundColor = swiftColor
             taggedButton.backgroundColor = swiftColor3
             addedButton.titleLabel?.textColor = UIColor.whiteColor()
             taggedButton.titleLabel?.textColor = UIColor.blackColor()
         }
         else{
+            
+            AVc.player1.stop()
+            AVc.player2.stop()
             addedButton.backgroundColor = swiftColor3
             taggedButton.backgroundColor = swiftColor
             taggedButton.titleLabel?.textColor = UIColor.whiteColor()

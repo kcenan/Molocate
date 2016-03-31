@@ -1,10 +1,6 @@
-//
 //  Added.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 5.12.2015.
-//  Copyright © 2015 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 import Haneke
@@ -39,7 +35,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         tableView.dataSource    =   self
         
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
+        tableView.allowsSelection = false
+        tableView.tableFooterView = UIView()
         self.view.addSubview(tableView)
         // Do any additional setup after loading the view.
         
@@ -85,28 +82,30 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if !pressedLike && !pressedFollow {
             let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
-            let index = indexPath.row
             
             cell.initialize(indexPath.row, videoInfo: videoArray[indexPath.row])
             
-                        cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-                        cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
-                        cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.Username.addTarget(self, action: #selector(Tagged.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.placeName.addTarget(self, action: #selector(Tagged.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.profilePhoto.addTarget(self, action: #selector(Tagged.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
-                        if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
-                            cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
-                        }else{
-                            cell.followButton.hidden = true
-                        }
+            if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
+                cell.followButton.addTarget(self, action: #selector(Tagged.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            }else{
+                cell.followButton.hidden = true
+            }
             
-                        cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.likeButton.addTarget(self, action: #selector(Tagged.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
-                        cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
-                        cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
-                        cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
-                        cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
-                        cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
-            
+            cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+            cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
+            cell.commentButton.addTarget(self, action: #selector(Tagged.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.reportButton.addTarget(self, action: #selector(Tagged.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.likeCount.addTarget(self, action: #selector(Tagged.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            let tap = UITapGestureRecognizer(target: self, action:#selector(MainController.doubleTapped(_:) ));
+            tap.numberOfTapsRequired = 2
+            cell.contentView.addGestureRecognizer(tap)
+            cell.contentView.tag = indexPath.row
             
             myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                 dispatch_async(dispatch_get_main_queue()){
@@ -223,6 +222,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     }
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
+        player1.stop()
+        player2.stop()
         print("place e basıldı at index path: \(buttonRow) ")
         print("================================" )
         Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
@@ -251,6 +252,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     func pressedLikeCount(sender: UIButton) {
         //print("____________________________--------------")
         //print(sender.tag)
+        player1.stop()
+        player2.stop()
         video_id = videoArray[sender.tag].id
         videoIndex = sender.tag
         let controller:likeVideo = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
@@ -297,9 +300,50 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }
         }
     }
+    
+    
+    func doubleTapped(sender: UITapGestureRecognizer) {
+        let buttonRow = sender.view!.tag
+        print("like a basıldı at index path: \(buttonRow) ")
+        pressedLike = true
+        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [NSIndexPath]()
+        indexes.append(indexpath)
+        
+        if(videoArray[buttonRow].isLiked == 0){
+            
+            self.videoArray[buttonRow].isLiked=1
+            self.videoArray[buttonRow].likeCount+=1
+            
+            
+            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            
+            Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    print(data)
+                }
+            }
+        }else{
+            
+            
+            self.videoArray[buttonRow].isLiked=0
+            self.videoArray[buttonRow].likeCount-=1
+            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            
+            
+            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    print(data)
+                }
+            }
+        }
+    }
+    
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag
         videoIndex = buttonRow
+        player1.stop()
+        player2.stop()
         video_id = videoArray[videoIndex].id
         myViewController = "Tagged"
         
@@ -324,6 +368,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     
     func pressedReport(sender: UIButton) {
         let buttonRow = sender.tag
+        player1.stop()
+        player2.stop()
         Molocate.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
             print(data)
         }
@@ -349,7 +395,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
         print("username e basıldı at index path: \(buttonRow)")
-        
+        player1.stop()
+        player2.stop()
         Molocate.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
