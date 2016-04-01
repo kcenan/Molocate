@@ -646,7 +646,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         let instruction = AVMutableVideoCompositionInstruction()
         instruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(60, 30))
         let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
-        let t1 = CGAffineTransformMakeTranslation(clipVideoTrack.naturalSize.height, -(clipVideoTrack.naturalSize.width - clipVideoTrack.naturalSize.height)/2)
+        let t1 = CGAffineTransformMakeTranslation(clipVideoTrack.naturalSize.height, -4*(self.toolbar.frame.height+self.toolbarYancı.frame.height))
         
         let t2 = CGAffineTransformRotate(t1, 3.141593/2)
         _ = t2
