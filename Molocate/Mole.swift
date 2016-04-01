@@ -152,6 +152,54 @@ public class Molocate {
         task.resume()
     }
     
+    class func followAPlace(place_id: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        let url = NSURL(string: baseUrl + "place/api/follow/?place_id=" + (place_id as String))!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
+            let nsError = error
+            do {
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+            } catch{
+                completionHandler(data: "" , response: nil , error: nsError  )
+                print("Error:: in mole.followAPlace()")
+            }
+            
+        }
+        
+        task.resume()
+    }
+    
+    class func unfollowAPlace(place_id: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        let url = NSURL(string: baseUrl + "place/api/unfollow/?place_id==" + (place_id as String))!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
+            let nsError = error
+            do {
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+            } catch{
+                completionHandler(data: "" , response: nil , error: nsError  )
+                print("Error:: in mole.unfollowAPlace()")
+            }
+            
+        }
+        
+        task.resume()
+    }
+    
+    
+    
     class func getFollowers(username: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int, next: String?, previous: String? ) -> ()) {
         
         let url = NSURL(string: baseUrl + "relation/api/followers/?username=" + (username as String) )!
