@@ -75,7 +75,13 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         self.player2.delegate = self
         self.player2.playbackLoops = true
 
-        
+        if self.videoArray.count == 0 {
+            tableView.hidden = true
+            
+            
+            self.followButton.enabled = false
+            
+        }
        
     }
 

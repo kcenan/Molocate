@@ -99,6 +99,7 @@
 		C6DA6BE21C4332D100E24392 /* videoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DA6BE11C4332D100E24392 /* videoCell.swift */; };
 		C6DA6BE61C43389800E24392 /* elmander.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C6DA6BE51C43389800E24392 /* elmander.jpg */; };
 		C6E074361C8D356F00C79299 /* balloon.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E074301C8D356F00C79299 /* balloon.png */; };
+		C6E34D4F1CADE86D00C7306A /* Dikdörtgen 3.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E34D4E1CADE86D00C7306A /* Dikdörtgen 3.png */; };
 		C6E53DC31C8A9C4E00379C31 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E53DC21C8A9C4E00379C31 /* Logo.png */; };
 		C6F7B2651C134FAF0062E408 /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7B2641C134FAF0062E408 /* Tagged.swift */; };
 		C6F7B2671C134FBF0062E408 /* Added.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7B2661C134FBF0062E408 /* Added.swift */; };
@@ -229,6 +230,7 @@
 		C6DA6BE11C4332D100E24392 /* videoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = videoCell.swift; sourceTree = "<group>"; };
 		C6DA6BE51C43389800E24392 /* elmander.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elmander.jpg; sourceTree = "<group>"; };
 		C6E074301C8D356F00C79299 /* balloon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = balloon.png; sourceTree = "<group>"; };
+		C6E34D4E1CADE86D00C7306A /* Dikdörtgen 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dikdörtgen 3.png"; sourceTree = "<group>"; };
 		C6E53DC21C8A9C4E00379C31 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		C6F7B2641C134FAF0062E408 /* Tagged.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tagged.swift; sourceTree = "<group>"; };
 		C6F7B2661C134FBF0062E408 /* Added.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Added.swift; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 			children = (
 				C6537F561CAD5D63005EE0BA /* appstore1024-1024.png */,
 				C6537F541CACA96A005EE0BA /* closedflash.png */,
+				C6E34D4E1CADE86D00C7306A /* Dikdörtgen 3.png */,
 				C6537F521CACA963005EE0BA /* openflash.png */,
 				C6537F501CA9F4E8005EE0BA /* Sent-96.png */,
 				C69B824A1CA1102D008658CF /* sign-2.png */,
@@ -639,6 +642,7 @@
 			files = (
 				C67830191C9CC76E00DC969D /* LatoTR-Bold.ttf in Resources */,
 				C678301A1C9CC76E00DC969D /* LatoTR-Hairline.ttf in Resources */,
+				C6E34D4F1CADE86D00C7306A /* Dikdörtgen 3.png in Resources */,
 				C678301B1C9CC76E00DC969D /* LatoTR-Light.ttf in Resources */,
 				C69B82431CA0FF11008658CF /* Comments.png in Resources */,
 				C6537F551CACA96A005EE0BA /* closedflash.png in Resources */,

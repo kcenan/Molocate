@@ -495,7 +495,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     override func viewDidAppear(animated: Bool) {
         //print("bom")
-        player1.playFromBeginning()
+        player2.playFromBeginning()
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
         
     }

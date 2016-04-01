@@ -1169,6 +1169,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bu konumda henüz bir video paylaşılmadı :(" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IsM-23-6co">
+                                <rect key="frame" x="16" y="257" width="343" height="154"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="343" id="Iph-83-4pJ"/>
+                                    <constraint firstAttribute="height" constant="154" id="lhB-JP-alo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="elmander.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Kv3-Kd-Gjb">
                                 <rect key="frame" x="16" y="60" width="90" height="90"/>
                                 <constraints>
@@ -1197,14 +1207,6 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tkQ-go-XXc">
-                                <rect key="frame" x="16" y="174" width="343" height="449"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="gJM-YO-RNX" id="gzs-o8-0Gt"/>
-                                    <outlet property="delegate" destination="gJM-YO-RNX" id="0AB-Nh-8Lm"/>
-                                </connections>
-                            </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nmB-IB-5C0">
                                 <rect key="frame" x="16" y="16" width="343" height="44"/>
                                 <constraints>
@@ -1309,6 +1311,14 @@
                                     <action selector="followersButton:" destination="gJM-YO-RNX" eventType="touchUpInside" id="g8j-Qr-0Y9"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tkQ-go-XXc">
+                                <rect key="frame" x="16" y="174" width="343" height="449"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="gJM-YO-RNX" id="gzs-o8-0Gt"/>
+                                    <outlet property="delegate" destination="gJM-YO-RNX" id="0AB-Nh-8Lm"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1325,6 +1335,7 @@
                             <constraint firstItem="4TG-FI-9yr" firstAttribute="centerX" secondItem="NgR-iF-VhF" secondAttribute="centerX" id="ElX-b6-YGT"/>
                             <constraint firstItem="av1-qZ-kKJ" firstAttribute="top" secondItem="x8r-Pu-U4I" secondAttribute="bottom" constant="4" id="J0B-80-eUQ"/>
                             <constraint firstItem="Mtg-Zq-iCy" firstAttribute="top" secondItem="tkQ-go-XXc" secondAttribute="bottom" id="Jl2-LO-N9U"/>
+                            <constraint firstItem="IsM-23-6co" firstAttribute="centerX" secondItem="3hD-wK-cGf" secondAttribute="centerX" id="LvE-bq-7Gj"/>
                             <constraint firstItem="R0O-QE-z6d" firstAttribute="leading" secondItem="3hD-wK-cGf" secondAttribute="leadingMargin" constant="70" id="NGF-jo-aAN"/>
                             <constraint firstItem="4TG-FI-9yr" firstAttribute="top" secondItem="NgR-iF-VhF" secondAttribute="bottom" constant="-5" id="Nzy-Nf-SC8"/>
                             <constraint firstItem="x8r-Pu-U4I" firstAttribute="leading" secondItem="Kv3-Kd-Gjb" secondAttribute="trailing" constant="5" id="PDs-CI-Qsd"/>
@@ -1351,6 +1362,7 @@
                             <constraint firstItem="Kv3-Kd-Gjb" firstAttribute="top" secondItem="nmB-IB-5C0" secondAttribute="bottom" id="tiE-aa-X9l"/>
                             <constraint firstItem="w2I-vX-Zfr" firstAttribute="leading" secondItem="3hD-wK-cGf" secondAttribute="leadingMargin" id="vYR-Qd-U6o"/>
                             <constraint firstItem="R0O-QE-z6d" firstAttribute="leading" secondItem="3hD-wK-cGf" secondAttribute="leadingMargin" constant="45" id="vdB-Sm-8Kk"/>
+                            <constraint firstItem="IsM-23-6co" firstAttribute="centerY" secondItem="3hD-wK-cGf" secondAttribute="centerY" id="vdC-zq-TK8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tkQ-go-XXc" secondAttribute="trailing" id="x5L-82-24V"/>
                             <constraint firstItem="R0O-QE-z6d" firstAttribute="leading" secondItem="3hD-wK-cGf" secondAttribute="leadingMargin" constant="70" id="zJc-zl-UVx"/>
                             <constraint firstItem="R0O-QE-z6d" firstAttribute="leading" secondItem="3hD-wK-cGf" secondAttribute="leadingMargin" constant="65" id="zhi-mk-ZFx"/>

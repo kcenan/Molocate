@@ -185,7 +185,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                         do {
                             let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
                             
-                            //print("Result -> \(result)")
+                            print("Result -> \(result)")
                             
                             
                                 //print("dsfasfdsadsfa")
@@ -289,7 +289,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
+            //self.dismissViewControllerAnimated(true, completion: nil)
         })))
         self.presentViewController(alert, animated: true, completion: nil)
     }

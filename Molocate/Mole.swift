@@ -252,8 +252,11 @@ public class Molocate {
             do {
                 
                 let item = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(item)
                 var place = Place()
+                if let notExist = item["result"]{
+                    place.name = "notExist"
+                } else{
+                
                 place.id = placeid
                 place.name = item["name"] as! String
                 place.city = item["city"] as! String
@@ -301,6 +304,7 @@ public class Molocate {
                 
                     place.videoArray.append(videoStr)
                     
+                    }
                 }
 
                 completionHandler(data: place, response: response , error: nsError  )
@@ -329,7 +333,7 @@ public class Molocate {
             do {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                //print(result)
+                print(result)
                 var user = User()
                 user.email = result["email"] as! String
                 user.username = result["username"] as! String
@@ -338,6 +342,8 @@ public class Molocate {
                 user.profilePic = result["picture_url"] is NSNull ? NSURL():NSURL(string: result["picture_url"] as! String)!
                 user.follower_count = result["follower_count"] as! Int
                 user.following_count = result["following_count"]as! Int
+                user.tag_count = result["tag_count"] as! Int
+                user.post_count = result["post_count"]as! Int
                 user.isFollowing = result["is_following"] as! Int == 1 ? true:false
            
                 completionHandler(data: user, response: response , error: nsError  )

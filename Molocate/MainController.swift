@@ -140,7 +140,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         self.refreshControl.addTarget(self, action: #selector(MainController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
         
-        
+
         
     }
     
@@ -421,8 +421,36 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    func tableView(atableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if atableView == tableView {
+        atableView.deselectRowAtIndexPath(indexPath, animated: false)
+        } else {
+            
+            Molocate.getPlace(self.venues[indexPath.row]["id"] as! String) { (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    thePlace = data
+                    let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
+                    if thePlace.name == "notExist"{
+                    thePlace.name = self.venues[indexPath.row]["name"] as! String
+                    let addressArr = self.venues[indexPath.row]["location"]!["formattedAddress"] as! [String]
+                        for item in addressArr{
+                            thePlace.address = thePlace.address + item
+                        }
+                        controller.followButton = nil
+                        
+                     }
+                    
+                    controller.view.frame = self.view.bounds;
+                    controller.willMoveToParentViewController(self)
+                    self.view.addSubview(controller.view)
+                    self.addChildViewController(controller)
+                    controller.didMoveToParentViewController(self)
+                }
+            }
+            
+            self.searchText.resignFirstResponder()
+            
+        }
     }
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
@@ -604,6 +632,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         //print("bom")
         player1.stop()
         player2.stop()
+        player2.playFromBeginning()
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
         
     }
@@ -767,6 +796,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                     let enoughCheckin:Bool = (checkinsCount > 700)
                     if (isVerified||enoughCheckin){
                         tempVenues.append(item)
+                        
                     }
                 }
                 self.venues = tempVenues

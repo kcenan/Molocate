@@ -145,7 +145,11 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
-        
+        dispatch_async(dispatch_get_main_queue()) {
+        self.taggedButton.setTitle("@ETİKET(\(user.tag_count))", forState: .Normal)
+        self.addedButton.setTitle("▶︎GÖNDERİ(\(user.post_count))", forState: .Normal)
+            print(user)
+        }
         if who == true{
             FollowButton.enabled = false
         }

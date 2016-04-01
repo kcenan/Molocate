@@ -51,9 +51,10 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = notificationCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
-        cell.myButton.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.fotoButton.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-     
+        cell.myButton.addTarget(self, action: #selector(NotificationsViewController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cell.fotoButton.addTarget(self, action: #selector(NotificationsViewController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cell.myButton.tag = indexPath.row
+        cell.fotoButton.tag = indexPath.row
         cell.myButton.setTitle(notificationArray[indexPath.row].actor, forState: UIControlState.Normal)
         let buttonWidth = cell.myButton.intrinsicContentSize().width
         cell.myButton.frame = CGRectMake(44 , 10 , buttonWidth + 5  , 34)
@@ -91,12 +92,17 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
         print("username e basıldı at index path: \(buttonRow)")
+        Molocate.getUser(notificationArray[buttonRow].actor) { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+        user = data
         let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
         controller.view.frame = self.view.bounds
         controller.willMoveToParentViewController(self)
+                controller.username.text = self.notificationArray[buttonRow].actor
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
+            }}
         
     }
     
