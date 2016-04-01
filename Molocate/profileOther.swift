@@ -16,7 +16,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     var who = false
     @IBOutlet var settings: UITableView!
     @IBOutlet var scrollView: UIScrollView!
-    
+    var leftButton = "side"
     @IBOutlet var username: UILabel!
     @IBOutlet var addedButton: UIButton!
     var AVc :Added =  Added(nibName: "Added", bundle: nil);
@@ -57,7 +57,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
     @IBAction func backButton(sender: AnyObject) {
-        if(choosedIndex < 3){
+        if(choosedIndex < 3 || (leftButton == "back")){
             self.willMoveToParentViewController(nil)
             self.view.removeFromSuperview()
             self.removeFromParentViewController()

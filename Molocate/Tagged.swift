@@ -417,7 +417,9 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 controller.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
                 controller.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
                 controller.AVc.username = user.username
+                controller.leftButton = "back"
                 //controller.BVc.username = user.username
+                
             }
         }
         
