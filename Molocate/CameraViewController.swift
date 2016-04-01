@@ -111,8 +111,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         recordButton.progressColor = .redColor()
         recordButton.closeWhenFinished = false
         recordButton.buttonColor = swiftColor
-        recordButton.addTarget(self, action: "holdDown", forControlEvents: .TouchDown)
-        recordButton.addTarget(self, action: "holdRelease", forControlEvents: .TouchUpInside)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), forControlEvents: .TouchDown)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), forControlEvents: .TouchUpInside)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), forControlEvents: UIControlEvents.TouchDragExit)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), forControlEvents: UIControlEvents.TouchDragEnter)
+        
         recordButton.center.x = self.view.center.x
         view.addSubview(recordButton)
         

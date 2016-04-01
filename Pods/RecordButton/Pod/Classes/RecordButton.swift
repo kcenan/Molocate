@@ -33,8 +33,8 @@
             case .Idle:
                 self.alpha = 1.0
                 currentProgress = 0
-                setProgress(0)
-                setRecording(false)
+//                setProgress(0)
+//                setRecording(false)
             case .Recording:
                 self.alpha = 1.0
                 setRecording(true)
