@@ -149,16 +149,40 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     
+    
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if(!refreshing) {
             let rowHeight = screenSize.width + 138
-            let y = scrollView.contentOffset.y
-            
-            let front = ceil(y/rowHeight)
-            //print(front * rowHeight/2 - y)
+            let ymin = scrollView.contentOffset.y
+            let ymax = ymin+scrollView.frame.height
+            let front = ceil(ymin/rowHeight)
+            let exCell =  videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
+            let y1 = (front-1)*rowHeight + exCell.newRect.maxY
+            let y2 = front*rowHeight + exCell.newRect.minY
+            print(scrollView.frame.height)
+//            print(front)
+//            print(scrollView.contentOffset.y)
             dispatch_async(dispatch_get_main_queue()){
-                if front * rowHeight-rowHeight/2 - y < 0 {
-                    if (front) % 2 == 1{
+                if(ymax-y2) > (y1-ymin){
+                                        if (front) % 2 == 1{
+                    
+                                            if self.player1.playbackState.description != "Playing" {
+                                                self.player2.stop()
+                                                self.player1.playFromBeginning()
+                                                //print("player1")
+                                            }
+                                        }else{
+                                            if self.player2.playbackState.description != "Playing"{
+                                                self.player1.stop()
+                                                self.player2.playFromBeginning()
+                                                //print("player2")
+                                            }
+                    }
+//  
+                } else {
+                    
+                    if (front-1) % 2 == 1{
                         
                         if self.player1.playbackState.description != "Playing" {
                             self.player2.stop()
@@ -172,7 +196,25 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                             //print("player2")
                         }
                     }
+                    
                 }
+//                if front * rowHeight-rowHeight/2 - y < 0 {
+//                    if (front) % 2 == 1{
+//
+//                        if self.player1.playbackState.description != "Playing" {
+//                            self.player2.stop()
+//                            self.player1.playFromBeginning()
+//                            //print("player1")
+//                        }
+//                    }else{
+//                        if self.player2.playbackState.description != "Playing"{
+//                            self.player1.stop()
+//                            self.player2.playFromBeginning()
+//                            //print("player2")
+//                        }
+//                    }
+//                }
+                
             }
             
             
@@ -234,7 +276,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             cell.Username.addTarget(self, action: #selector(HomePageViewController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.placeName.addTarget(self, action: #selector(HomePageViewController.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.profilePhoto.addTarget(self, action: #selector(HomePageViewController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            
+            cell.commentCount.addTarget(self, action: #selector(HomePageViewController.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
                 cell.followButton.addTarget(self, action: #selector(HomePageViewController.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             }else{
@@ -244,7 +286,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             cell.likeButton.addTarget(self, action: #selector(HomePageViewController.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
             cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
-            cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
+            cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", forState: .Normal) 
             cell.commentButton.addTarget(self, action: #selector(HomePageViewController.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.reportButton.addTarget(self, action: #selector(HomePageViewController.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.likeCount.addTarget(self, action: #selector(HomePageViewController.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)

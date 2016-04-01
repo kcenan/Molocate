@@ -89,6 +89,8 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             cell.Username.addTarget(self, action: #selector(Added.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.placeName.addTarget(self, action: #selector(Added.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.profilePhoto.addTarget(self, action: #selector(Added.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.commentCount.addTarget(self, action: #selector(Added.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", forState: .Normal)
             
             if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
                 cell.followButton.addTarget(self, action: #selector(Added.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
@@ -99,7 +101,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             cell.likeButton.addTarget(self, action: #selector(Added.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
             cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
-            cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
+            
             cell.commentButton.addTarget(self, action: #selector(Added.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.reportButton.addTarget(self, action: #selector(Added.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.likeCount.addTarget(self, action: #selector(Added.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)

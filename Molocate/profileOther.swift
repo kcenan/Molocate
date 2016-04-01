@@ -186,10 +186,14 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         scrollView.setContentOffset(deneme.origin, animated: true)
         
         configureScrollView()
+        if user.username == currentUser.username {
+            dispatch_async(dispatch_get_main_queue()) {
+            self.FollowButton.image = UIImage(named: "optionsButton.png")
+            }
+        }
         
         
-        
-        if(choosedIndex==3){
+        if(choosedIndex==3 ){
             dispatch_async(dispatch_get_main_queue()) {
             user = currentUser
             self.username.text = user.username
@@ -284,7 +288,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                 self.settings.hidden = true
             }
         }
-        else {
+        if indexPath.row == 2 {
             print("log out yapılacak")
             sideClicked = false
             profileOn = 0
@@ -331,9 +335,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             cell.nameOption.textAlignment = .Center
             cell.nameOption.textColor = UIColor.blackColor()
             cell.arrow.hidden = true
-            
             cell.cancelLabel.hidden = false
-            
             
         }
             

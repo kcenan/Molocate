@@ -65,8 +65,6 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         self.address.text = thePlace.address
         self.videoCount.text = "Videos(\(thePlace.video_count))"
         self.videoArray = thePlace.videoArray
-        //videocounta mekanda çekilen video toplamı yazacak
-        
         self.player1 = Player()
         self.player1.delegate = self
         self.player1.playbackLoops = true
@@ -113,9 +111,10 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             }
             
             cell.likeButton.addTarget(self, action: #selector(profileLocation.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            
+            cell.commentCount.addTarget(self, action: #selector(profileLocation.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", forState: .Normal)
             cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
-            cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
+            
             cell.commentButton.addTarget(self, action: #selector(profileLocation.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.reportButton.addTarget(self, action: #selector(profileLocation.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.likeCount.addTarget(self, action: #selector(profileLocation.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)

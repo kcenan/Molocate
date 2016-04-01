@@ -314,8 +314,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 cell.likeButton.addTarget(self, action: #selector(MainController.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 
                 cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
-                cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
+                cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", forState: .Normal)
                 cell.commentButton.addTarget(self, action: #selector(MainController.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.commentCount.addTarget(self, action: #selector(MainController.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.reportButton.addTarget(self, action: #selector(MainController.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.likeCount.addTarget(self, action: #selector(MainController.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 let tap = UITapGestureRecognizer(target: self, action:#selector(MainController.doubleTapped(_:) ));

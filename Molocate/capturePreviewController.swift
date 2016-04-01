@@ -81,6 +81,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                     print("Result -> \(result)")
                     let statue = result["result"] as! String
                     if(statue == "success"){
+                        
                         let videoId = result["video_id"] as! String
                         let videoUrl = result["video_url"] as! String
                         //print(self.videoLocation)
@@ -413,6 +414,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.hidden = true
         self.view.endEditing(true)
         videoLocation = locationDict[indexPath.row][placesArray[indexPath.row]]
+        print(videoLocation.adress)
         isLocationSelected = true
         if isCategorySelected {
             self.bottomToolbar.barTintColor = swiftColor

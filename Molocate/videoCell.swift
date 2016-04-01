@@ -22,7 +22,7 @@ class videoCell: UITableViewCell {
     var likeButton : UIButton!
     var profilePhoto : UIButton!
     var likeCount : UIButton!
-    var commentCount : UILabel!
+    var commentCount : UIButton!
     var videoComment : UILabel!
     var videoTime : UILabel!
     var label1 : UILabel!
@@ -103,10 +103,10 @@ class videoCell: UITableViewCell {
         videoTime.frame = CGRectMake( screenSize.width - 30  , 59 + screenSize.width , 25 , 25)
         //yazı ortalama ekle
         videoTime.text = "2s"
-        videoTime.font = UIFont(name: "AvenirNext-UltraLight", size: 14)
+        videoTime.font = UIFont(name: "AvenirNext-UltraLight", size: 13)
         videoTime.textAlignment = .Right
         videoTime.textColor = UIColor.blackColor()
-        videoTime.sizeToFit()
+        //videoTime.sizeToFit()
         contentView.addSubview(videoTime)
         
     
@@ -156,12 +156,12 @@ class videoCell: UITableViewCell {
         label2.textColor = UIColor.blackColor()
         contentView.addSubview(label2)
         
-        commentCount = UILabel()
+        commentCount = UIButton()
         commentCount.frame = CGRectMake( 130 , 123 + screenSize.width , 44 , 18)
-        commentCount.text = "0"
-        commentCount.font = UIFont(name: "AvenirNext-Medium", size: 14)
-        commentCount.textAlignment = .Center
-        commentCount.textColor = swiftColor
+        commentCount.setTitle("0", forState: .Normal)
+        commentCount.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 14)
+        commentCount.contentHorizontalAlignment = .Center
+        commentCount.setTitleColor(swiftColor, forState: .Normal)
         contentView.addSubview(commentCount)
         
         reportButton = UIButton()
@@ -207,7 +207,8 @@ class videoCell: UITableViewCell {
         self.likeCount.setTitle("\(likeCount)", forState: .Normal)
         self.likeCount.tag = row
         self.commentButton.tag = row
-        self.commentCount.text = "\(commentCount)"
+        self.commentCount.tag = row
+        self.commentCount.setTitle("\(commentCount)", forState: .Normal)
         self.reportButton.tag = row
      
         self.videoTime.text = videoInfo.dateStr

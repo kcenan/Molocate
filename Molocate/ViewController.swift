@@ -565,11 +565,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-   // override func viewDidAppear(animated: Bool) {
-     //   if let username = PFUser.currentUser()?.username{
-    
-       //         self.performSegueWithIdentifier("login", sender: self)
-        //}    }
+   
 
     override func viewWillAppear(animated: Bool) {
         scrollWidth = 3 * self.view.frame.size.width
@@ -600,7 +596,7 @@ func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: F
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
+            
         })))
         self.presentViewController(alert, animated: true, completion: nil)
     }

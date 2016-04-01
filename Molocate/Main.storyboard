@@ -214,6 +214,16 @@
                                     <outlet property="delegate" destination="zZm-St-8ac" id="Wcr-ar-9fc"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YORUMLAR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cI9-hc-4yi">
+                                <rect key="frame" x="136" y="28" width="102" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="102" id="cRC-sW-Gdr"/>
+                                    <constraint firstAttribute="height" constant="20" id="pL2-cj-75E"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <constraints>
                             <constraint firstItem="l0I-zA-kZ7" firstAttribute="top" secondItem="dk4-Rx-amy" secondAttribute="bottom" id="Anm-FB-Yd6"/>
@@ -224,6 +234,7 @@
                             <constraint firstItem="dk4-Rx-amy" firstAttribute="top" secondItem="SAZ-nE-bMT" secondAttribute="bottom" id="XCD-xo-K7f"/>
                             <constraint firstItem="dk4-Rx-amy" firstAttribute="leading" secondItem="nnx-2R-t3m" secondAttribute="leadingMargin" id="YQx-yA-qkH"/>
                             <constraint firstItem="SAZ-nE-bMT" firstAttribute="bottom" secondItem="nnx-2R-t3m" secondAttribute="bottomMargin" constant="60" id="Ysg-kB-rrJ"/>
+                            <constraint firstItem="cI9-hc-4yi" firstAttribute="centerX" secondItem="nnx-2R-t3m" secondAttribute="centerX" id="b0o-ia-YjS"/>
                             <constraint firstItem="SAZ-nE-bMT" firstAttribute="top" secondItem="8Fj-LH-j3Q" secondAttribute="bottom" id="d0O-9J-BiM"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dk4-Rx-amy" secondAttribute="trailing" id="eH1-81-kKj"/>
                             <constraint firstAttribute="bottomMargin" secondItem="SAZ-nE-bMT" secondAttribute="bottom" constant="60" id="g4T-LX-Qn2"/>
@@ -231,6 +242,7 @@
                             <constraint firstItem="l0I-zA-kZ7" firstAttribute="top" secondItem="SAZ-nE-bMT" secondAttribute="bottom" id="mlj-jP-gSf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="8Fj-LH-j3Q" secondAttribute="trailing" id="n8Y-Ha-ALj"/>
                             <constraint firstItem="l0I-zA-kZ7" firstAttribute="top" secondItem="SAZ-nE-bMT" secondAttribute="bottom" constant="64" id="rjD-Oa-ezh"/>
+                            <constraint firstItem="cI9-hc-4yi" firstAttribute="top" secondItem="nnx-2R-t3m" secondAttribute="topMargin" constant="28" id="uPG-Oy-bFD"/>
                             <constraint firstItem="SAZ-nE-bMT" firstAttribute="leading" secondItem="nnx-2R-t3m" secondAttribute="leadingMargin" id="xah-1d-6EF"/>
                         </constraints>
                         <variation key="default">
@@ -347,6 +359,18 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BEĞENİLER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWG-Ql-GYK">
+                                <rect key="frame" x="136" y="28" width="102" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="Bua-bM-66x"/>
+                                    <constraint firstAttribute="width" constant="102" id="MZh-De-K7j"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="itW-Vv-Qyp"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="102" id="nTZ-7b-HNh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -354,8 +378,10 @@
                             <constraint firstItem="lDK-ip-h0n" firstAttribute="leading" secondItem="6WU-Q4-bYP" secondAttribute="leadingMargin" id="61f-lB-tQ6"/>
                             <constraint firstItem="GcO-iI-XjY" firstAttribute="leading" secondItem="6WU-Q4-bYP" secondAttribute="leadingMargin" id="68p-Em-X1I"/>
                             <constraint firstItem="GcO-iI-XjY" firstAttribute="top" secondItem="6WU-Q4-bYP" secondAttribute="topMargin" constant="16" id="IFQ-M3-kMb"/>
+                            <constraint firstItem="EWG-Ql-GYK" firstAttribute="top" secondItem="6WU-Q4-bYP" secondAttribute="topMargin" constant="28" id="RNY-j2-3bN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="GcO-iI-XjY" secondAttribute="trailing" id="W2A-Mw-TRr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lDK-ip-h0n" secondAttribute="trailing" id="e7x-0H-jmD"/>
+                            <constraint firstItem="EWG-Ql-GYK" firstAttribute="centerX" secondItem="6WU-Q4-bYP" secondAttribute="centerX" id="es3-Ui-VjD"/>
                             <constraint firstItem="ZWK-aN-tBx" firstAttribute="top" secondItem="lDK-ip-h0n" secondAttribute="bottom" id="lf3-TR-Bbn"/>
                         </constraints>
                     </view>
@@ -367,7 +393,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M82-sW-OJ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2983.5" y="-1867.5"/>
+            <point key="canvasLocation" x="2775.5" y="-1674.5"/>
         </scene>
         <!--One Video-->
         <scene sceneID="iSm-dK-OVS">
@@ -431,7 +457,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7BG-eV-yxE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3184" y="-1160"/>
+            <point key="canvasLocation" x="3180.5" y="-1674.5"/>
         </scene>
         <!--Tag Comment-->
         <scene sceneID="cb3-Sa-Snr">
@@ -931,7 +957,7 @@
                                     <constraint firstAttribute="height" constant="44" id="R5f-q7-IJ3"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem image="Menunew.png" id="aw8-F1-s69">
+                                    <barButtonItem image="Menu Filled-32.png" id="aw8-F1-s69">
                                         <color key="tintColor" red="1" green="0.97129626970000005" blue="0.99007940480000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="sideBar:" destination="Zc3-6u-ehc" id="YWj-KZ-EqS"/>
@@ -2275,7 +2301,7 @@
                                     <constraint firstAttribute="height" constant="44" id="zY5-sV-sgF"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem image="Menunew.png" id="GuI-ND-CuP">
+                                    <barButtonItem image="Menu Filled-32.png" id="GuI-ND-CuP">
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="sideBar:" destination="oAY-wX-J6m" id="nIT-Jl-41P"/>
@@ -2378,7 +2404,7 @@
                                 </constraints>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <items>
-                                    <barButtonItem image="Menunew.png" id="WJq-kT-vwr">
+                                    <barButtonItem image="Menu Filled-32.png" id="WJq-kT-vwr">
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="sideBar:" destination="pEW-a6-bHt" id="IMX-Kk-6RU"/>
@@ -2534,7 +2560,7 @@
     </scenes>
     <resources>
         <image name="FacebookButton.png" width="730" height="167"/>
-        <image name="Menunew.png" width="32" height="32"/>
+        <image name="Menu Filled-32.png" width="32" height="32"/>
         <image name="Sent-96.png" width="96" height="96"/>
         <image name="appstore1024-1024.png" width="1024" height="1024"/>
         <image name="backButton.png" width="40" height="40"/>
@@ -2546,7 +2572,7 @@
         <image name="technology3.png" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="REJ-1c-sKv"/>
+        <segue reference="RSN-Ei-cwL"/>
         <segue reference="iX5-7U-zGl"/>
     </inferredMetricsTieBreakers>
 </document>
