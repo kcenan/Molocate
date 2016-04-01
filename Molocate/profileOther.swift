@@ -38,13 +38,13 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             }
         }else {
             if !user.isFollowing{
-                FollowButton.image = UIImage(named: "unfollow.png")
+                FollowButton.image = UIImage(named: "unfollow")
                 user.isFollowing = true
                 Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
                     print("follow"+data)
                 })
             } else {
-                FollowButton.image = UIImage(named: "shapes.png")
+                FollowButton.image = UIImage(named: "follow")
                 user.isFollowing = false
                 Molocate.unfollow(user.username, completionHandler: { (data, response, error) -> () in
                     print("unfollow"+data)
@@ -188,7 +188,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         configureScrollView()
         if user.username == currentUser.username {
             dispatch_async(dispatch_get_main_queue()) {
-            self.FollowButton.image = UIImage(named: "optionsButton.png")
+            self.FollowButton.image = UIImage(named: "options")
             }
         }
         
@@ -199,18 +199,18 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             self.username.text = user.username
             self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
             self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
-            self.FollowButton.image = UIImage(named: "optionsButton.png")
+            self.FollowButton.image = UIImage(named: "options")
             choosedIndex = 4
-            self.back.image = UIImage(named:"three.png")         
+            self.back.image = UIImage(named:"sideMenu")         
             }
         }else{
             
             self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
             self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
             if(user.isFollowing){
-                self.FollowButton.image = UIImage(named: "unfollow.png")
+                self.FollowButton.image = UIImage(named: "unfollow")
             }else{
-                self.FollowButton.image = UIImage(named: "shapes.png")
+                self.FollowButton.image = UIImage(named: "follow")
             }
             //choosedIndex = 4
             

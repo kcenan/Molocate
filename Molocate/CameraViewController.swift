@@ -952,11 +952,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     @IBAction func flashButton(sender: AnyObject) {
         if isFlashMode == false {
             isFlashMode = true
-            flashButton.setBackgroundImage(UIImage(named: "openflash.png"), forState: UIControlState.Normal)
+            flashButton.setBackgroundImage(UIImage(named: "openFlash"), forState: UIControlState.Normal)
           
         } else {
             isFlashMode = false
-            flashButton.setBackgroundImage(UIImage(named: "closedflash.png"), forState: UIControlState.Normal)
+            flashButton.setBackgroundImage(UIImage(named: "closeFlash"), forState: UIControlState.Normal)
 
         }
     }

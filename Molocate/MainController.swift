@@ -664,7 +664,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             if isSearching != true {
                 self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
             } else {
-                self.cameraButton.image = UIImage(named: "technology3.png")
+                self.cameraButton.image = UIImage(named: "camera")
                 self.cameraButton.title = nil
                 self.isSearching = false
                 self.venueTable.hidden = true
@@ -761,7 +761,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         player2.stop()
         player2.removeFromParentViewController()
         if isSearching == true {
-            self.cameraButton.image = UIImage(named: "technology3.png")
+            self.cameraButton.image = UIImage(named: "camera")
             self.cameraButton.title = nil
             self.isSearching = false
             self.venueTable.hidden = true
