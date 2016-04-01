@@ -30,10 +30,19 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
    
     @IBOutlet var toolBar: UIToolbar!
     @IBAction func followButton(sender: AnyObject) {
-        followButton.tintColor = UIColor.clearColor()
-        followButton.enabled = false
-        Molocate.followAPlace(thePlace.id) { (data, response, error) in
-            print(data)
+        
+        if(thePlace.is_following == 0){
+            thePlace.is_following = 1
+            followButton.image = UIImage(named: "unfollow");
+            Molocate.followAPlace(thePlace.id) { (data, response, error) in
+                print(data)
+            }
+        }else{
+             followButton.image = UIImage(named: "follow");
+            thePlace.is_following = 0
+            Molocate.unfollowAPlace(thePlace.id) { (data, response, error) in
+                print(data)
+            }
         }
         
     }
@@ -78,10 +87,9 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         self.player2.playbackLoops = true
         
         if(thePlace.is_following==0 ){
-      
+            
         }else{
-            followButton.tintColor = UIColor.clearColor()
-            followButton.enabled = false
+            followButton.image = UIImage(named: "unfollow");
         }
         
         if self.videoArray.count == 0 {

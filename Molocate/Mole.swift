@@ -176,7 +176,7 @@ public class Molocate {
     }
     
     class func unfollowAPlace(place_id: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
-        let url = NSURL(string: baseUrl + "place/api/unfollow/?place_id==" + (place_id as String))!
+        let url = NSURL(string: baseUrl + "place/api/unfollow/?place_id=" + (place_id as String))!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
         request.addValue("Token "+userToken!, forHTTPHeaderField: "Authorization")
