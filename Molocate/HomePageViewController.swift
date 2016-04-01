@@ -41,6 +41,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         
         NSUserDefaults.standardUserDefaults().setObject(userToken, forKey: "userToken")
         
+        Molocate.getCurrentUser({ (data, response, error) -> () in
+            
+        })
         self.player1 = Player()
         self.player1.delegate = self
         self.player1.playbackLoops = true
@@ -345,11 +348,18 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         let buttonRow = sender.tag
         pressedFollow = true
         print("followa basıldı at index path: \(buttonRow) ")
+        self.videoArray[buttonRow].isFollowing = 1
+        var indexes = [NSIndexPath]()
+        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+        indexes.append(index)
+        self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
-        Molocate.follow (videoArray[buttonRow].username){ (data, response, error) -> () in
+        Molocate.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
             //print(data)
         }
+        pressedFollow = false
     }
+    
     
     func pressedLikeCount(sender: UIButton) {
         player1.stop()

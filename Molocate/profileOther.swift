@@ -148,7 +148,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         dispatch_async(dispatch_get_main_queue()) {
         self.taggedButton.setTitle("@ETİKET(\(user.tag_count))", forState: .Normal)
         self.addedButton.setTitle("▶︎GÖNDERİ(\(user.post_count))", forState: .Normal)
-            print(user)
+            //print(user)
         }
         if who == true{
             FollowButton.enabled = false

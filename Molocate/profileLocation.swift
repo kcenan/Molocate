@@ -102,24 +102,28 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             
             cell.initialize(indexPath.row, videoInfo:  videoArray[indexPath.row])
             
-            cell.Username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.placeName.addTarget(self, action: "pressedPlace:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.Username.addTarget(self, action: #selector(profileLocation.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.placeName.addTarget(self, action: #selector(profileLocation.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.profilePhoto.addTarget(self, action: #selector(profileLocation.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
             if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
-                cell.followButton.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.followButton.addTarget(self, action: #selector(profileLocation.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             }else{
                 cell.followButton.hidden = true
             }
             
-            cell.likeButton.addTarget(self, action: "pressedLike:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.likeButton.addTarget(self, action: #selector(profileLocation.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
             cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
             cell.commentCount.text = "\(videoArray[indexPath.row].commentCount)"
-            cell.commentButton.addTarget(self, action: "pressedComment:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.reportButton.addTarget(self, action: "pressedReport:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.likeCount.addTarget(self, action: "pressedLikeCount:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.commentButton.addTarget(self, action: #selector(profileLocation.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.reportButton.addTarget(self, action: #selector(profileLocation.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.likeCount.addTarget(self, action: #selector(profileLocation.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
+            let tap = UITapGestureRecognizer(target: self, action:#selector(MainController.doubleTapped(_:) ));
+            tap.numberOfTapsRequired = 2
+            cell.contentView.addGestureRecognizer(tap)
+            cell.contentView.tag = indexPath.row
             
             myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                 dispatch_async(dispatch_get_main_queue()){
@@ -174,7 +178,8 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
         print("username e basıldı at index path: \(buttonRow)")
-        
+        player1.stop()
+        player2.stop()
         Molocate.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
@@ -195,6 +200,8 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
+        player1.stop()
+        player2.stop()
         print("place e basıldı at index path: \(buttonRow) ")
         print("================================" )
         Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
@@ -210,19 +217,29 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         }
         
     }
+  
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
         pressedFollow = true
         print("followa basıldı at index path: \(buttonRow) ")
+        self.videoArray[buttonRow].isFollowing = 1
+        var indexes = [NSIndexPath]()
+        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+        indexes.append(index)
+        self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
-        Molocate.follow (videoArray[buttonRow].username){ (data, response, error) -> () in
+        Molocate.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
             //print(data)
         }
+        pressedFollow = false
     }
+    
     
     func pressedLikeCount(sender: UIButton) {
         video_id = videoArray[sender.tag].id
         videoIndex = sender.tag
+        player1.stop()
+        player2.stop()
         let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
@@ -267,6 +284,8 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag
+        player1.stop()
+        player2.stop()
         videoIndex = buttonRow
         video_id = videoArray[videoIndex].id
         myViewController = "HomeController"
@@ -291,6 +310,8 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     
     func pressedReport(sender: UIButton) {
         let buttonRow = sender.tag
+        player1.stop()
+        player2.stop()
         Molocate.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
             print(data)
         }
@@ -370,6 +391,43 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     }
 
     
+    func doubleTapped(sender: UITapGestureRecognizer) {
+        let buttonRow = sender.view!.tag
+        print("like a basıldı at index path: \(buttonRow) ")
+        pressedLike = true
+        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [NSIndexPath]()
+        indexes.append(indexpath)
+        
+        if(videoArray[buttonRow].isLiked == 0){
+            
+            self.videoArray[buttonRow].isLiked=1
+            self.videoArray[buttonRow].likeCount+=1
+            
+            
+            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            
+            Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    print(data)
+                }
+            }
+        }else{
+            
+            
+            self.videoArray[buttonRow].isLiked=0
+            self.videoArray[buttonRow].likeCount-=1
+            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            
+            
+            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
+                dispatch_async(dispatch_get_main_queue()){
+                    print(data)
+                }
+            }
+        }
+    }
+
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
             

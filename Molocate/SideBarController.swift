@@ -65,7 +65,7 @@ class SideBarController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-     
+        user = currentUser
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell?.backgroundColor = swiftColor

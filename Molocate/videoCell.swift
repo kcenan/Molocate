@@ -112,8 +112,7 @@ class videoCell: UITableViewCell {
     
         followButton = UIButton()
         followButton.frame = CGRectMake(screenSize.width - 41 , 9 , 36 , 36)
-        let followImage = UIImage(named: "follow1.png")! as UIImage
-        followButton.setBackgroundImage(followImage, forState: UIControlState.Normal)
+        followButton.setBackgroundImage(UIImage(named: "shapes.png"), forState: UIControlState.Normal)
         contentView.addSubview(followButton)
         
         likeButton = UIButton()
