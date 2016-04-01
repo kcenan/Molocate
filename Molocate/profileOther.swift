@@ -223,6 +223,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             profilePhoto.image = UIImage(named: "profilepic.png")!
         }
         
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
         
     }
     func configureScrollView(){

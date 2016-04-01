@@ -260,6 +260,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             
             self.captureSession!.commitConfiguration()
             self.captureSession?.startRunning()
+            
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
         }
         
 

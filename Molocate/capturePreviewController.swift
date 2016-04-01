@@ -88,9 +88,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                         let json = [
                             "video_id": videoId,
                             "video_url": videoUrl,
-                            "caption": "",
+                            "caption": CaptionText,
                             "category": self.categ,
-                            "tagged_users": [],
+                            "tagged_users": self.taggedUsers,
                             "location": [
                                 [
                                     "id": self.videoLocation.id,

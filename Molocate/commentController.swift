@@ -104,7 +104,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
-
+        
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
      
     }
     func dismissKeyboard() {
@@ -208,6 +209,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! commentCell
     
         cell.username.setTitle(comments[indexPath.row].username, forState: .Normal)
+        cell.username.tintColor = swiftColor
         cell.comment.text = comments[indexPath.row].text
         cell.username.contentHorizontalAlignment = .Left
         cell.username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside )

@@ -59,6 +59,8 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
             
         }
         
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        
         // Do any additional setup after loading the view.
     }
     

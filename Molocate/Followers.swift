@@ -70,7 +70,8 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         }
        
             
-  
+        
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
         
        
     }

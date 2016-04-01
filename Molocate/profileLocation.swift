@@ -80,6 +80,8 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             self.followButton.enabled = false
             
         }
+        
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
        
     }
 
@@ -169,6 +171,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             }
             return cell
         }
+        
 
     }
     

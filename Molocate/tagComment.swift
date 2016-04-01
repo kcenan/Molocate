@@ -54,8 +54,8 @@ class tagComment: UIViewController, UITextViewDelegate {
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
-        if(CaptionText == "Buraya basarak yorumunu ve arkadaşlarını ekleyebilirsin") {
-            textField.text = "Yorumunu buraya ekleyebilirsin..."
+        if(CaptionText == "Yorum ve arkadaş ekle") {
+            textField.text = "Yorum ve arkadaş ekle"
         }else{
             textField.text = CaptionText
         }
@@ -67,6 +67,8 @@ class tagComment: UIViewController, UITextViewDelegate {
                 self.users = data
                 self.tableView.reloadData()
              }
+            
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
         }
        // let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         //view.addGestureRecognizer(tap)

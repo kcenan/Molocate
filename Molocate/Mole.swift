@@ -35,7 +35,7 @@ struct notifications{
 
 var nextU:NSURL!
 var userToken: String?
-
+var theVideo:videoInf!
 struct User{
     var username:String = ""
     var email : String = ""
@@ -510,6 +510,51 @@ public class Molocate {
     }
     
     
+    class func getVideo(id: String?, completionHandler: (data: videoInf?, response: NSURLResponse!, error: NSError!) -> ()){
+        var url = NSURL(string: baseUrl+"video/get_video/?video_id="+id!)
+        let request = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+            let nsError = error
+            do {
+                let item = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+
+                    print(item)
+                    var videoStr = videoInf()
+                    //print(item)
+                    videoStr.id = item["video_id"] as! String
+                    videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
+                    videoStr.username = item["owner_user"]!!["username"] as! String
+                    videoStr.location = item["place_taken"]!!["name"] as! String
+                    videoStr.locationID = item["place_taken"]!!["place_id"] as! String
+                    videoStr.caption = item["caption"] as! String
+                    videoStr.likeCount = item["like_count"] as! Int
+                    videoStr.commentCount = item["comment_count"] as! Int
+                    videoStr.category = item["category"] as! String
+                    videoStr.isLiked = item["is_liked"] as! Int
+                    let jsonObject = item["owner_user"]
+                    videoStr.isFollowing = jsonObject!!["is_following"] as! Int
+                    videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
+                    videoStr.dateStr = item["date_str"] as! String
+                    videoStr.taggedUsers = item["tagged_users"] as! [String]
+                    
+                
+                    
+                
+                completionHandler(data: videoStr, response: response, error: nsError)
+            }catch{
+                completionHandler(data: nil, response: NSURLResponse(), error: nsError)
+                print("Error: in mole.getExploreVideos")
+            }
+        }
+        task.resume()
+    }
+
+    
     class func getUserVideos(name: String,type:String , completionHandler: (data: [videoInf]?, response: NSURLResponse!, error: NSError!) -> ()){
         var nextURL = NSURL()
         switch(type){
@@ -598,6 +643,7 @@ public class Molocate {
                 var notificationArray = [notifications]()
                 let array = result as! NSArray
                 for item in array {
+                    print(item)
                     var notification = notifications()
                     notification.action = item ["action"] as! String
                     notification.owner =  item ["owner"] as! String

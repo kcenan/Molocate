@@ -188,6 +188,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.tableView.hidden = false
                 self.activityIndicator.removeFromSuperview()
                 self.refreshing = false
+                
             }
             
             
@@ -404,6 +405,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         print("username e basıldı at index path: \(buttonRow)")
         player1.stop()
         player2.stop()
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         Molocate.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
@@ -417,6 +425,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 controller.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
                 controller.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
                 choosedIndex = 1
+                self.activityIndicator.removeFromSuperview()
             }
         }
         
@@ -426,7 +435,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         if atableView == tableView {
         atableView.deselectRowAtIndexPath(indexPath, animated: false)
         } else {
-            
+            activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+            activityIndicator.center = self.view.center
+            activityIndicator.hidesWhenStopped = true
+            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+            view.addSubview(activityIndicator)
+            activityIndicator.startAnimating()
+            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
             Molocate.getPlace(self.venues[indexPath.row]["id"] as! String) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     thePlace = data
@@ -446,6 +461,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                     self.view.addSubview(controller.view)
                     self.addChildViewController(controller)
                     controller.didMoveToParentViewController(self)
+                    self.activityIndicator.removeFromSuperview()
                 }
             }
             
@@ -459,6 +475,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         print("================================" )
         player1.stop()
         player2.stop()
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 thePlace = data
@@ -468,6 +491,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.view.addSubview(controller.view)
                 self.addChildViewController(controller)
                 controller.didMoveToParentViewController(self)
+                self.activityIndicator.removeFromSuperview()
             }
         }
         
@@ -484,6 +508,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         Molocate.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
             //print(data)
+        
         }
         pressedFollow = false
     }
@@ -583,6 +608,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         player2.stop()
         video_id = videoArray[videoIndex].id
         myViewController = "MainController"
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         
         Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
@@ -593,7 +625,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.view.addSubview(controller.view)
                 self.addChildViewController(controller)
                 controller.didMoveToParentViewController(self)
-                
+                self.activityIndicator.removeFromSuperview()
                 print("comment e basıldı at index path: \(buttonRow)")
             }
         }
@@ -659,6 +691,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     @IBAction func openCamera(sender: AnyObject) {
         player1.stop()
         player2.stop()
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         if (isUploaded) {
             CaptionText = ""
             if isSearching != true {
@@ -670,6 +709,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.venueTable.hidden = true
                 self.searchText.resignFirstResponder()
             }
+            self.activityIndicator.removeFromSuperview()
         }
     }
     

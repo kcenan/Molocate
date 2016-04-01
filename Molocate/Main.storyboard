@@ -592,7 +592,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1x5-C9-eCA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4215" y="-466"/>
+            <point key="canvasLocation" x="4267" y="-408"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -1492,7 +1492,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AYE-Lu-5qE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2119.5" y="-273.5"/>
+            <point key="canvasLocation" x="1953.5" y="-273.5"/>
         </scene>
         <!--Change Passwordd-->
         <scene sceneID="mq8-lb-Wu8">
@@ -2574,7 +2574,7 @@
         <image name="sideMenu" width="42" height="42"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RSN-Ei-cwL"/>
+        <segue reference="1yU-cO-5h3"/>
         <segue reference="iX5-7U-zGl"/>
     </inferredMetricsTieBreakers>
 </document>

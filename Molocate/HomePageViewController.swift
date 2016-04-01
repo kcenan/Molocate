@@ -120,6 +120,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.tableView.hidden = false
                 self.activityIndicator.removeFromSuperview()
                 self.refreshing = false
+                
             }
             
             
@@ -348,6 +349,13 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         print("username e basıldı at index path: \(buttonRow)")
         player1.stop()
         player2.stop()
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         Molocate.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
@@ -361,6 +369,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 controller.followingsCount.setTitle("\(data.following_count)", forState: .Normal)
                 controller.followersCount.setTitle("\(data.follower_count)", forState: .Normal)
                 choosedIndex = 0
+                self.activityIndicator.removeFromSuperview()
             }
         }
         
@@ -371,6 +380,13 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         let buttonRow = sender.tag
         player1.stop()
         player2.stop()
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         print("place e basıldı at index path: \(buttonRow) ")
         print("================================" )
         Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
@@ -382,6 +398,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.view.addSubview(controller.view)
                 self.addChildViewController(controller)
                 controller.didMoveToParentViewController(self)
+                self.activityIndicator.removeFromSuperview()
             }
         }
         
@@ -567,9 +584,17 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     @IBAction func openCamera(sender: AnyObject) {
         player1.stop()
         player2.stop()
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         if (isUploaded) {
             CaptionText = ""
             self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
+            self.activityIndicator.removeFromSuperview()
         }
     }
     

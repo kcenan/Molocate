@@ -8,7 +8,7 @@ import CoreLocation
 
 class NotificationsViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate  {
     var locationManager: CLLocationManager!
-    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     
@@ -74,24 +74,50 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         cell.myLabel.numberOfLines = 1
         cell.contentView.addSubview(cell.myLabel)
         
-        tableView.allowsSelection = false
+        //tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print(indexPath.row)
-        let controller:oneVideo = self.storyboard!.instantiateViewControllerWithIdentifier("oneVideo") as! oneVideo
-        controller.view.frame = self.view.bounds
-        controller.willMoveToParentViewController(self)
-        self.view.addSubview(controller.view)
-        self.addChildViewController(controller)
-        controller.didMoveToParentViewController(self)
+        if notificationArray[indexPath.row].action == "like" || notificationArray[indexPath.row].action == "comment" {
+            activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+            activityIndicator.center = self.view.center
+            activityIndicator.hidesWhenStopped = true
+            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+            view.addSubview(activityIndicator)
+            activityIndicator.startAnimating()
+            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+
+            Molocate.getVideo(notificationArray[indexPath.row].target, completionHandler: { (data, response, error) in
+                dispatch_async(dispatch_get_main_queue()){
+                    theVideo = data
+                    let controller:oneVideo = self.storyboard!.instantiateViewControllerWithIdentifier("oneVideo") as! oneVideo
+                    controller.view.frame = self.view.bounds
+                    controller.willMoveToParentViewController(self)
+                    self.view.addSubview(controller.view)
+                    self.addChildViewController(controller)
+                    controller.didMoveToParentViewController(self)
+                    self.activityIndicator.stopAnimating()
+                }
+            })
+
+        } else {
+            pressedUsername((tableView.cellForRowAtIndexPath(indexPath) as! notificationCell).myButton)
+        }
     }
     
     
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
         print("username e basıldı at index path: \(buttonRow)")
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+
         Molocate.getUser(notificationArray[buttonRow].actor) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
         user = data
@@ -102,6 +128,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
+                self.activityIndicator.stopAnimating()
             }}
         
     }
@@ -130,6 +157,13 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     @IBAction func openCamera(sender: AnyObject) {
          if (isUploaded) {
+            activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+            activityIndicator.center = self.view.center
+            activityIndicator.hidesWhenStopped = true
+            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+            view.addSubview(activityIndicator)
+            activityIndicator.startAnimating()
+            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         self.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
         }
     }
