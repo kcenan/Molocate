@@ -524,7 +524,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                                 fakeoutputFileURL = exporter?.outputURL
                                 //print(fakeoutputFileURL)
                                 tempAssetURL = fakeoutputFileURL
-                                
+                               
+                            
 //                                print(self.secondAsset!.duration)
 //                                print(AVAsset(URL: tempAssetURL).duration)
 
@@ -701,8 +702,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
     @IBOutlet var backtoCont: UIBarButtonItem!
     @IBAction func backtoCont(sender: AnyObject) {
+        
+            tempAssetURL = nil
+            firstAsset = nil
+            secondAsset = nil
         dispatch_async(dispatch_get_main_queue()) {
-            
             let cleanup: dispatch_block_t = {
                 do {
                     
@@ -734,7 +738,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             do {
                 try device.lockForConfiguration()
                 defer {device.unlockForConfiguration()}
-                if device.isFlashModeSupported(AVCaptureFlashMode.On){
+                print(device.description)
+                print(device.isFlashModeSupported(AVCaptureFlashMode.On))
+                
+                if (device.position == AVCaptureDevicePosition.Back){
                     device.torchMode = .On
                 }else {
                     print("burda")
@@ -829,7 +836,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         do {
             try device.lockForConfiguration()
             defer {device.unlockForConfiguration()}
-            if device.isFlashModeSupported(AVCaptureFlashMode.On){
+            if (device.position == AVCaptureDevicePosition.Back){
                 device.torchMode = .Off
             }else {
                 print("burda")

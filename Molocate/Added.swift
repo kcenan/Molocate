@@ -434,6 +434,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         player1.removeFromParentViewController()
         player2.stop()
         player2.removeFromParentViewController()
+        myCache.removeAll()
     }
     
     

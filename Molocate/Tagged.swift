@@ -431,6 +431,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         player1.removeFromParentViewController()
         player2.stop()
         player2.removeFromParentViewController()
+        myCache.removeAll()
     }
     
     

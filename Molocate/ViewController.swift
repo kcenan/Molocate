@@ -482,9 +482,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         
             if NSUserDefaults.standardUserDefaults().objectForKey("userToken") != nil {
                 userToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as! String
+                self.view.hidden = true
                 Molocate.getCurrentUser({ (data, response, error) in
                     dispatch_async(dispatch_get_main_queue()){
-                    self.view.hidden = true
                     self.performSegueWithIdentifier("login", sender: self)
                         user = currentUser
                     }

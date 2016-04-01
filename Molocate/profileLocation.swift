@@ -341,6 +341,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         player1.removeFromParentViewController()
         player2.stop()
         player2.removeFromParentViewController()
+        myCache.removeAll()
         
     }
     

@@ -31,6 +31,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     var isLocationSelected = false
     @IBOutlet var collectionView: UICollectionView!
     
+    @IBOutlet var bottomToolbar: UIToolbar!
     
     var autocompleteUrls = [String]()
     var videoURL: NSURL?
@@ -95,7 +96,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                                     "latitude": self.videoLocation.lat,
                                     "longitude": self.videoLocation.lon,
                                     "name": self.videoLocation.name,
-                                    "address": "İstanbul"
+                                    "address": self.videoLocation.adress
                                 ]
                             ]
                         ]
@@ -331,6 +332,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         
         self.categ = categoryDict[self.categories[indexPath.row]]
         self.isCategorySelected = true
+        if isLocationSelected {
+         self.bottomToolbar.barTintColor = swiftColor
+        }
         //}
         //  cell.backgroundColor = UIColor.purpleColor()
         
@@ -410,6 +414,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         self.view.endEditing(true)
         videoLocation = locationDict[indexPath.row][placesArray[indexPath.row]]
         isLocationSelected = true
+        if isCategorySelected {
+            self.bottomToolbar.barTintColor = swiftColor
+        }
         
     }
     

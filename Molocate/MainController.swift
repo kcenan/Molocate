@@ -766,6 +766,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             self.venueTable.hidden = true
             self.searchText.resignFirstResponder()
         }
+        myCache.removeAll()
         
     }
     
