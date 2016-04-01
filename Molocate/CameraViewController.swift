@@ -194,8 +194,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     //self.bottomLayer.frame = bottomRect
                     self.topLayer.backgroundColor = UIColor.whiteColor().CGColor
                     //self.bottomLayer.backgroundColor = UIColor.whiteColor().CGColor
-                    self.topLayer.opacity = 0.6
-                    self.bottomLayer.opacity = 0.6
+                    self.topLayer.opacity = 0.4
+                    self.bottomLayer.opacity = 0.4
+                    self.toolbar.layer.opacity = 0.4
+                    self.toolbarYancı.layer.opacity = 0.4
+                    self.bottomToolbar.layer.opacity = 0.4
+                    
                     self.view.layer.addSublayer(self.previewLayer!)
                     self.view.layer.addSublayer(self.bottomLayer)
                     self.view.layer.addSublayer(self.bottomToolbar.layer)
@@ -649,7 +653,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         let t1 = CGAffineTransformMakeTranslation(clipVideoTrack.naturalSize.height, -4*(self.toolbar.frame.height+self.toolbarYancı.frame.height))
         
         let t2 = CGAffineTransformRotate(t1, 3.141593/2)
-        _ = t2
+        
         transformer.setTransform(t2, atTime: kCMTimeZero)
         instruction.layerInstructions = NSArray(object: transformer) as! [AVVideoCompositionLayerInstruction]
         videoComposition.instructions = NSArray(object: instruction) as! [AVVideoCompositionInstructionProtocol]
