@@ -302,7 +302,7 @@
                                                         <constraint firstAttribute="height" constant="34" id="4mD-YA-PJR"/>
                                                         <constraint firstAttribute="width" constant="34" id="6Gu-PC-ZMw"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="follow1.png"/>
+                                                    <state key="normal" backgroundImage="shapes.png"/>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -2540,7 +2540,6 @@
         <image name="change.png" width="32" height="32"/>
         <image name="closedflash.png" width="44" height="44"/>
         <image name="elmander.jpg" width="360" height="240"/>
-        <image name="follow1.png" width="64" height="64"/>
         <image name="profilepic.png" width="256" height="256"/>
         <image name="shapes.png" width="32" height="32"/>
         <image name="technology3.png" width="32" height="32"/>

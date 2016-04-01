@@ -97,32 +97,55 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             cell.fotoButton.sd_setImageWithURL(users[indexPath.row].profilePic, forState: UIControlState.Normal)
         }
         
-        cell.myButton1.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.fotoButton.addTarget(self, action: "pressedProfile2:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+        cell.myButton1.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cell.fotoButton.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cell.myButton1.tag = indexPath.row
+        cell.fotoButton.tag = indexPath.row
+        if(follewersclicked && user.username == currentUser.username && !users[indexPath.row].isFollowing){
+         cell.myLabel1.hidden = false
+         cell.myLabel1.tag = indexPath.row
+         cell.myLabel1.addTarget(self, action: #selector(Followers.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+          
+        }else{
+            cell.myLabel1.hidden = true
+        }
         return cell
+
+    }
+    
+    func pressedFollow(sender: UIButton) {
+        let buttonRow = sender.tag
+        print("followa basıldı at index path: \(buttonRow) ")
+        self.users[buttonRow].isFollowing = true
+        var indexes = [NSIndexPath]()
+        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+        indexes.append(index)
+        self.myTable.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
-        let label = UILabel()
-        label.adjustsFontSizeToFitWidth = true
-        label.numberOfLines = 1
+        Molocate.follow(users[buttonRow].username){ (data, response, error) -> () in
+            print(data)
+        }
         
     }
     
-    func pressedProfile2(sender: UIButton) {
+    func pressedProfile(sender: UIButton) {
         print("pressedProfile")
+        let buttonRow = sender.tag
+        Molocate.getUser(users[buttonRow].username) { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                user = data
         let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
         //controller.ANYPROPERTY=THEVALUE // If you want to pass value
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
+                controller.username.text = user.username
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
+            }
+    }
     }
    
-    func pressedProfile(sender: UIButton) {
-        print("pressedProfile değil")
-    }
-    
     
     @IBAction func back(sender: AnyObject) {
          dispatch_async(dispatch_get_main_queue()) {

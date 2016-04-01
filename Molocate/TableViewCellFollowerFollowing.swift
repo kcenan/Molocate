@@ -10,7 +10,7 @@ import UIKit
 
 class TableViewCellFollowerFollowing: UITableViewCell {
     
-    var myLabel1: UIImageView!
+    var myLabel1: UIButton!
     var myButton1: UIButton!
     var fotoButton: UIButton!
     
@@ -51,10 +51,16 @@ class TableViewCellFollowerFollowing: UITableViewCell {
         myButton1.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         contentView.addSubview(myButton1)
         
-        let tick = UIImage(named: "tick.png")! as UIImage
-        myLabel1 = UIImageView(image: tick)
+        let tick = UIImage(named: "shapes.png")! as UIImage
+        myLabel1 = UIButton()
         myLabel1.frame = CGRect(x:UIScreen.mainScreen().bounds.width - 40 , y: gap + 5, width: 30, height: 30)
+        myLabel1.setBackgroundImage(tick, forState: .Normal)
         contentView.addSubview(myLabel1)
+        myLabel1.hidden = true
+        //let tick = UIImage(named: "shapes.png")! as UIImage
+        //myLabel1 = UIImageView(image: tick)
+        //myLabel1.frame = CGRect(x:UIScreen.mainScreen().bounds.width - 40 , y: gap + 5, width: 30, height: 30)
+        //contentView.addSubview(myLabel1)
         
         
         

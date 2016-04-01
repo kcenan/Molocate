@@ -9,17 +9,17 @@
 import UIKit
 
 class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
-
+    
     @IBOutlet var toolBar: UIToolbar!
     let cellIdentifier = "cell5"
     var users = [User]()
-   
-  
+    
+    
     @IBOutlet var tableView: UITableView!
     
     
     @IBAction func backButton(sender: AnyObject) {
-      
+        
         dispatch_async(dispatch_get_main_queue()) {
             
             self.willMoveToParentViewController(nil)
@@ -37,7 +37,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         toolBar.barTintColor = swiftColor
         toolBar.translucent = false
         toolBar.clipsToBounds = true
-   
+        
         self.navigationController?.navigationBar.hidden = false
         tableView.delegate      =   self
         tableView.dataSource    =   self
@@ -47,7 +47,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         
         print(video_id)
         Molocate.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
-           
+            
             self.users.removeAll()
             dispatch_async(dispatch_get_main_queue()){
                 for thing in data{
@@ -72,11 +72,11 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! likeVideoCell
         
-       cell.username.setTitle("\(self.users[indexPath.row].username)", forState: .Normal)
-       cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        cell.username.setTitle("\(self.users[indexPath.row].username)", forState: .Normal)
+        cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         
         if(!users[indexPath.row].isFollowing && users[indexPath.row].username != currentUser.username){
-        
+            
         }else{
             cell.followLike.hidden = true
         }
@@ -93,7 +93,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
             print(users[indexPath.row].profilePic.absoluteString)
             Molocate.getDataFromUrl(users[indexPath.row].profilePic, completion: { (data, response, error) -> Void in
                 dispatch_async(dispatch_get_main_queue()){
-                
+                    
                     cell.profileImage.setBackgroundImage(UIImage(data: data!)!, forState:
                         UIControlState.Normal)
                     
@@ -104,11 +104,11 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
             cell.profileImage.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
                 UIControlState.Normal)
         }
-        cell.username.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.profileImage.addTarget(self, action: "pressedProfile:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.username.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         //burda follow ediyosa buttonu hidden etmesi lazım
-        cell.followLike.addTarget(self, action: "pressedFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.followLike.addTarget(self, action: #selector(likeVideo.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         return cell
         
@@ -116,14 +116,23 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         
     }
     func pressedProfile(sender: UIButton) {
-    print("pressed profile")
-        let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
+        let buttonRow = sender.tag
+        print("pressed profile")
         
-        controller.view.frame = self.view.bounds;
-        controller.willMoveToParentViewController(self)
-        self.view.addSubview(controller.view)
-        self.addChildViewController(controller)
-        controller.didMoveToParentViewController(self)
+        Molocate.getUser(users[buttonRow].username) { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                user = data
+                let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
+                controller.view.frame = self.view.bounds;
+                controller.willMoveToParentViewController(self)
+                controller.username.text = user.username
+                
+                self.view.addSubview(controller.view)
+                
+                self.addChildViewController(controller)
+                controller.didMoveToParentViewController(self)
+            }
+        }
     }
     
     func pressedFollow(sender: UIButton) {
@@ -135,11 +144,11 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         return self.users.count
         
     }
-
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }
