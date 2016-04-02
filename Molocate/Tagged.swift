@@ -190,9 +190,9 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
             
-            if((indexPath.row%8 == 0)&&(nextU != nil)){
+            if((indexPath.row%8 == 0)&&(nextT != nil)){
                 
-                Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
+                Molocate.getExploreVideos(nextT, completionHandler: { (data, response, error) -> () in
                     dispatch_async(dispatch_get_main_queue()){
                         for item in data!{
                             self.videoArray.append(item)

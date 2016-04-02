@@ -32,7 +32,7 @@ struct notifications{
     var sentence:String = ""
     var picture_url: NSURL = NSURL()
 }
-
+var nextT:NSURL!
 var nextU:NSURL!
 var userToken: String?
 var theVideo:videoInf!
@@ -629,17 +629,37 @@ public class Molocate {
             do {
                 let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
                 print(result)
-                let videos = result["results"] as! NSArray
-                if (result["next"] != nil){
-                    if result["next"] is NSNull {
-                        print("next is null")
-                        nextU = nil
-                    }else {
-                        let nextStr = result["next"] as! String
-                        //print(nextStr)
-                        nextU = NSURL(string: nextStr)!
+                switch(type){
+                case "user":
+                    if (result["next"] != nil){
+                        if result["next"] is NSNull {
+                            print("next is null")
+                            nextU = nil
+                        }else {
+                            let nextStr = result["next"] as! String
+                            //print(nextStr)
+                            nextU = NSURL(string: nextStr)!
+                        }
                     }
+                    break
+                case "tagged":
+                    if (result["next"] != nil){
+                        if result["next"] is NSNull {
+                            print("next is null")
+                            nextT = nil
+                        }else {
+                            let nextStr = result["next"] as! String
+                            //print(nextStr)
+                            nextT = NSURL(string: nextStr)!
+                        }
+                    }
+                    break
+                default:
+                    break
                 }
+                
+                let videos = result["results"] as! NSArray
+
                 
                 var videoArray = [videoInf]()
                 
