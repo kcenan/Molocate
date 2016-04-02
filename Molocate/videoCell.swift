@@ -217,7 +217,7 @@ class videoCell: UITableViewCell {
         }
         
         var textstring = " "
-        print(videoInfo.taggedUsers)
+        //print(videoInfo.taggedUsers)
         for(var i = 0; i < videoInfo.taggedUsers.count; i += 1 ){
             textstring +=  "@" + videoInfo.taggedUsers[i]
         }
@@ -233,7 +233,7 @@ class videoCell: UITableViewCell {
 
 
         let commentext = NSMutableAttributedString(string: videoInfo.caption, attributes:  multipleAttributes2)
-        print(videoInfo.caption+"--------------")
+        //print(videoInfo.caption+"--------------")
         commentext.appendAttributedString(tags)
        
         videoComment.attributedText = commentext

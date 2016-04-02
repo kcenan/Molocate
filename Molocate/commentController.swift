@@ -212,7 +212,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         cell.username.tintColor = swiftColor
         cell.comment.text = comments[indexPath.row].text
         cell.username.contentHorizontalAlignment = .Left
-        cell.username.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside )
+        cell.username.addTarget(self, action: #selector(commentController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside )
         cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside )
         
         cell.profilePhoto.layer.borderWidth = 0.1

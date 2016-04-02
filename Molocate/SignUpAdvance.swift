@@ -28,7 +28,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
     @IBAction func back(sender: AnyObject) {
         //geri basarsa yeni username olmadığı için üye oluşmamış olucak
     }
-    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
        override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -140,6 +140,14 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
     }
     func pressedOnay(sender: UIButton) {
         
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+
         if username.text?.characters.count < 4 {
             let alertController = UIAlertController(title: "Hata", message:
                 "Seçtiğiniz kullanıcı adı 4 ile 20 karakter arasında olmalıdır.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -208,6 +216,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                                 Molocate.getCurrentUser({ (data, response, error) -> () in
                                                dispatch_async(dispatch_get_main_queue(), {
                                                 self.performSegueWithIdentifier("usernameAfter", sender: self)
+                                                self.activityIndicator.removeFromSuperview()
                                                 })
                                 })
                             }

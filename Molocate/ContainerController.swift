@@ -18,7 +18,7 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
 
         }
         
-        
+         UIApplication.sharedApplication().endIgnoringInteractionEvents()
         scrollView.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeSideBar", name: "closeSideBar", object: nil)

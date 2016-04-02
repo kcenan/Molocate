@@ -134,6 +134,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func playerReady(player: Player) {
+        print("ready")
     }
     
     func playerPlaybackStateDidChange(player: Player) {
@@ -169,12 +170,12 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
 
             let longest = scrollView.contentOffset.y + scrollView.frame.height
             if direction == 1 {
-                print("down")
+                //print("down")
             let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
                 //print(cellap)
             let row = self.tableView.indexPathsForVisibleRows![1].row
             if cellap > 0 {
-                 dispatch_async(dispatch_get_main_queue()){
+                
                     if (row) % 2 == 1{
                 
                     if self.player1.playbackState.description != "Playing" {
@@ -191,16 +192,16 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             }
             }
             }
-            }
+            
             
          else {
-                print("up")
+                //print("up")
                 
                 let cellap = longest - self.tableView.visibleCells[1].center.y
                 //print(cellap)
                 let row = self.tableView.indexPathsForVisibleRows![0].row
                 if cellap < 0 {
-                    dispatch_async(dispatch_get_main_queue()){
+                   
                         if (row) % 2 == 1{
                             
                             if self.player1.playbackState.description != "Playing" {
@@ -218,7 +219,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                     }
                 }
             
-        }
+        
         
         }
     }
@@ -247,8 +248,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                             self.videoArray.append(item)
                             let newIndexPath = NSIndexPath(forRow: self.videoArray.count-1, inSection: 0)
                             self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                            //self.tableView.reloadRowsAtIndexPaths([newIndexPath], withRowAnimation: .None)
                         }
-                        
+                        self.tableView.reloadData()
                         
                         
                     }
@@ -299,7 +301,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             
             myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
-                dispatch_async(dispatch_get_main_queue()){
+             
                     
                     
                     let url = self.videoArray[indexPath.row].urlSta.absoluteString
@@ -319,7 +321,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                         self.player2.view.frame = cell.newRect
                         cell.contentView.addSubview(self.player2.view)
                     }
-                }
+                //}
                 
             }
             return cell

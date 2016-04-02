@@ -57,7 +57,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
     @IBAction func backButton(sender: AnyObject) {
-        if(choosedIndex < 3 || (leftButton == "back")){
+
+        if(choosedIndex < 3 || (self.parentViewController?.parentViewController?.parentViewController != nil)){
             self.willMoveToParentViewController(nil)
             self.view.removeFromSuperview()
             self.removeFromParentViewController()

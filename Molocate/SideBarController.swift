@@ -73,6 +73,9 @@ class SideBarController: UITableViewController {
         self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedIndex = indexPath.row
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil )
         cell?.backgroundColor = swiftColor2
+        if indexPath.row == 3 {
+            
+        }
         
     }
 
