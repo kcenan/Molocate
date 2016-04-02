@@ -190,7 +190,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                             
                                 //print("dsfasfdsadsfa")
                                 
-                            if result["username"] != nil {
+                            if result["logged_in"] as! Int == 0 {
                                 let usernameExist: Bool = (result["username"] as! String == "username_exist")
                                 let emailNotValid: Bool = (result["email"] as! String == "not_valid")
                                 if (usernameExist && emailNotValid){
@@ -206,7 +206,9 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                             } else {
                                 userToken = result["access_token"] as? String
                                 Molocate.getCurrentUser({ (data, response, error) -> () in
-                                    
+                                               dispatch_async(dispatch_get_main_queue(), {
+                                                self.performSegueWithIdentifier("usernameAfter", sender: self)
+                                                })
                                 })
                             }
 //                                self.displayAlert("Hata", message: result["result"] as! String)

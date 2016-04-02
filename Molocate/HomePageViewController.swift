@@ -12,7 +12,7 @@ import SDWebImage
 import Haneke
 
 class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
-    
+    var pointNow:CGFloat!
     var videoData:NSMutableData!
     var connection:NSURLConnection!
     var response:NSHTTPURLResponse!
@@ -23,6 +23,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     var pressedFollow: Bool = false
     var refreshing: Bool = false
     var myCache = Shared.dataCache
+    var direction = 0 // 0 is down and 1 is up
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     var refreshControl:UIRefreshControl!
@@ -33,7 +34,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     var locationManager:CLLocationManager!
     var videoArray = [videoInf]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
-    
+    var Ekran : CGFloat = 0.0
     var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
     
     override func viewDidLoad() {
@@ -59,6 +60,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         tableView.separatorColor = UIColor.clearColor()
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
+        
+        Ekran = self.view.frame.height - self.toolBar.frame.maxY
+        
         let index = NSIndexPath(forRow: 0, inSection: 0)
         
         self.view.backgroundColor = swiftColor
@@ -144,81 +148,78 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     func playerPlaybackDidEnd(player: Player) {
     }
     
-    func scrollViewEndDecelerating(scrollView: UIScrollView) {
-        
-        
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        pointNow = scrollView.contentOffset.y
     }
-    
     
     
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if(!refreshing) {
-            let rowHeight = screenSize.width + 138
-            let ymin = scrollView.contentOffset.y
-            let ymax = ymin+scrollView.frame.height
-            let front = ceil(ymin/rowHeight)
-            let exCell =  videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
-            let y1 = (front-1)*rowHeight + exCell.newRect.maxY
-            let y2 = front*rowHeight + exCell.newRect.minY
-            print(scrollView.frame.height)
-//            print(front)
-//            print(scrollView.contentOffset.y)
-            dispatch_async(dispatch_get_main_queue()){
-                if(ymax-y2) > (y1-ymin){
-                                        if (front) % 2 == 1{
-                    
-                                            if self.player1.playbackState.description != "Playing" {
-                                                self.player2.stop()
-                                                self.player1.playFromBeginning()
-                                                //print("player1")
-                                            }
-                                        }else{
-                                            if self.player2.playbackState.description != "Playing"{
-                                                self.player1.stop()
-                                                self.player2.playFromBeginning()
-                                                //print("player2")
-                                            }
-                    }
-//  
-                } else {
-                    
-                    if (front-1) % 2 == 1{
-                        
-                        if self.player1.playbackState.description != "Playing" {
-                            self.player2.stop()
-                            self.player1.playFromBeginning()
-                            //print("player1")
-                        }
-                    }else{
-                        if self.player2.playbackState.description != "Playing"{
-                            self.player1.stop()
-                            self.player2.playFromBeginning()
-                            //print("player2")
-                        }
-                    }
-                    
-                }
-//                if front * rowHeight-rowHeight/2 - y < 0 {
-//                    if (front) % 2 == 1{
-//
-//                        if self.player1.playbackState.description != "Playing" {
-//                            self.player2.stop()
-//                            self.player1.playFromBeginning()
-//                            //print("player1")
-//                        }
-//                    }else{
-//                        if self.player2.playbackState.description != "Playing"{
-//                            self.player1.stop()
-//                            self.player2.playFromBeginning()
-//                            //print("player2")
-//                        }
-//                    }
-//                }
+            
+            if (scrollView.contentOffset.y<pointNow) {
+                direction = 0
+            } else if (scrollView.contentOffset.y>pointNow) {
+                direction = 1
+            }
+
+        
+//            let ymax = y+scrollView.frame.height
+//            
+
+            let longest = scrollView.contentOffset.y + scrollView.frame.height
+            if direction == 1 {
+                print("down")
+            let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
+                //print(cellap)
+            let row = self.tableView.indexPathsForVisibleRows![1].row
+            if cellap > 0 {
+                 dispatch_async(dispatch_get_main_queue()){
+                    if (row) % 2 == 1{
                 
+                    if self.player1.playbackState.description != "Playing" {
+                       self.player2.stop()
+                       self.player1.playFromBeginning()
+                                                                //print("player1")
+                                    }
+                            }else{
+                    if self.player2.playbackState.description != "Playing"{
+                        self.player1.stop()
+                        self.player2.playFromBeginning()
+                                                                //print("player2")
+                                                            }
+            }
+            }
+            }
             }
             
+         else {
+                print("up")
+                
+                let cellap = longest - self.tableView.visibleCells[1].center.y
+                //print(cellap)
+                let row = self.tableView.indexPathsForVisibleRows![0].row
+                if cellap < 0 {
+                    dispatch_async(dispatch_get_main_queue()){
+                        if (row) % 2 == 1{
+                            
+                            if self.player1.playbackState.description != "Playing" {
+                                self.player2.stop()
+                                self.player1.playFromBeginning()
+                                //print("player1")
+                            }
+                        }else{
+                            if self.player2.playbackState.description != "Playing"{
+                                self.player1.stop()
+                                self.player2.playFromBeginning()
+                                //print("player2")
+                            }
+                        }
+                    }
+                }
             
+        }
+        
         }
     }
     

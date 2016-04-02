@@ -223,10 +223,12 @@ public class Molocate {
                 var users: Array<User> = Array<User>()
                 
                 if(count != 0){
+                    print(result["results"] )
                     for thing in result["results"] as! NSArray{
                         var user = User()
                         user.username = thing["username"] as! String
                         user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                        //user.isFollowing = thing["is_following"] as! Int == 0 ? false:true
                         users.append(user)
                     }
                 }

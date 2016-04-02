@@ -44,7 +44,9 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         myTable.allowsSelection = false
         self.myTable.frame         =   CGRectMake(0, 60, self.screenSize.width, self.screenSize.height-60);
         if(follewersclicked){
-            self.TitleLabel.text = "Followers"
+            self.TitleLabel.text = "Takipçi"
+            self.TitleLabel.textColor = UIColor.whiteColor()
+            self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
             Molocate.getFollowers(user.username) { (data, response, error, count, next, previous) -> () in
             
                 for thing in data{
@@ -55,7 +57,9 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                 }
             
         }}else{
-                self.TitleLabel.text = "Followings"
+                self.TitleLabel.text = "Takip"
+                self.TitleLabel.textColor = UIColor.whiteColor()
+                self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
             Molocate.getFollowings(user.username) { (data, response, error, count, next, previous) -> () in
                 
                 for thing in data{
@@ -102,14 +106,17 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         cell.fotoButton.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.myButton1.tag = indexPath.row
         cell.fotoButton.tag = indexPath.row
-        if(follewersclicked && user.username == currentUser.username && !users[indexPath.row].isFollowing){
-         cell.myLabel1.hidden = false
-         cell.myLabel1.tag = indexPath.row
-         cell.myLabel1.addTarget(self, action: #selector(Followers.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-          
-        }else{
-            cell.myLabel1.hidden = true
-        }
+        print(users[indexPath.row].isFollowing)
+        cell.myLabel1.hidden = true
+        cell.myLabel1.enabled = false
+//        if(follewersclicked && user.username == currentUser.username && !users[indexPath.row].isFollowing){
+//         cell.myLabel1.hidden = false
+//         cell.myLabel1.tag = indexPath.row
+//         cell.myLabel1.addTarget(self, action: #selector(Followers.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+//          
+//        }else{
+//            cell.myLabel1.hidden = true
+//        }
         return cell
 
     }

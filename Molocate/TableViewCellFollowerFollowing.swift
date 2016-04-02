@@ -53,9 +53,11 @@ class TableViewCellFollowerFollowing: UITableViewCell {
         
         let tick = UIImage(named: "shapes.png")! as UIImage
         myLabel1 = UIButton()
+        
         myLabel1.frame = CGRect(x:UIScreen.mainScreen().bounds.width - 40 , y: gap + 5, width: 30, height: 30)
         myLabel1.setBackgroundImage(tick, forState: .Normal)
         contentView.addSubview(myLabel1)
+        
         myLabel1.hidden = true
         //let tick = UIImage(named: "shapes.png")! as UIImage
         //myLabel1 = UIImageView(image: tick)

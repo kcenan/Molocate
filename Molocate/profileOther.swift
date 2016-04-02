@@ -122,9 +122,9 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         settings.layer.cornerRadius = 20
         
 
-        profilePhoto.layer.borderWidth = 0.1
+        profilePhoto.layer.borderWidth = 0.5
         profilePhoto.layer.masksToBounds = false
-        profilePhoto.layer.borderColor = UIColor.whiteColor().CGColor
+        profilePhoto.layer.borderColor = UIColor.grayColor().CGColor
         profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2
         profilePhoto.clipsToBounds = true
 
