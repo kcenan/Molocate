@@ -819,7 +819,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         myCell.myLabel?.text = categories[indexPath.row]
         myCell.frame.size.width = 75
         myCell.myLabel.textAlignment = .Center
-        //myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
         
         
         

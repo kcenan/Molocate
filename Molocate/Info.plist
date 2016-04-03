@@ -58,7 +58,9 @@
 		<string>LatoTR-Bold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>Launch Screen</string>
+	<key>UILaunchImageFile~iphone</key>
+	<string>mole</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

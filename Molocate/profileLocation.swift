@@ -73,6 +73,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     var myCache = Shared.dataCache
     var refreshControl:UIRefreshControl!
     
+    @IBOutlet var profilePhoto: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,6 +99,11 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             
         }else{
             followButton.image = UIImage(named: "unfollow");
+        }
+        if(user.profilePic.absoluteString != ""){
+            profilePhoto.sd_setImageWithURL(thePlace.picture_url)
+        }else{
+            profilePhoto.image = UIImage(named: "profilepic.png")!
         }
         
         if self.videoArray.count == 0 {

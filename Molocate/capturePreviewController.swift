@@ -233,7 +233,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.scrollEnabled = true
         placeTable.hidden = true
         
-        putVideo()
+        //putVideo()
   
         newRect = CGRect(x: 0, y: self.collectionView.frame.maxY, width: self.view.frame.width, height: self.view.frame.width)
 
@@ -256,9 +256,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         caption.addTarget(self, action: "pressedCaption:", forControlEvents: UIControlEvents.TouchUpInside)
         caption.contentHorizontalAlignment = .Left
         self.view.addSubview(caption)
-        
 
- 
         
         
     }
