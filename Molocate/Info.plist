@@ -29,7 +29,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>FacebookAppID</key>
 	<string>1622592488004581</string>
 	<key>FacebookDisplayName</key>
@@ -57,10 +57,10 @@
 		<string>LatoTR-Regular.ttf</string>
 		<string>LatoTR-Bold.ttf</string>
 	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>Launch Screen</string>
 	<key>UILaunchImageFile~iphone</key>
 	<string>mole</string>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

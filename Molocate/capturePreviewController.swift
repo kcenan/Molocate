@@ -11,7 +11,7 @@ var CaptionText = ""
 class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,PlayerDelegate {
     var categ:String!
     @IBOutlet var toolBar: UIToolbar!
-    
+    var is4s = false
         var caption: UIButton!
         var player:Player!
         var newRect:CGRect!
@@ -38,7 +38,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
   
 
     @IBOutlet var textField: UITextField!
-    var categories = ["Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
+    var categories = ["Eğlence","Yemek","Gezi","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
     var videoLocation:locations!
     @IBOutlet var placeTable: UITableView!
     var taggedUsers = [String]()
@@ -233,7 +233,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.scrollEnabled = true
         placeTable.hidden = true
         
-        //putVideo()
+        putVideo()
   
         newRect = CGRect(x: 0, y: self.collectionView.frame.maxY, width: self.view.frame.width, height: self.view.frame.width)
 
@@ -243,8 +243,13 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         caption = UIButton()
         caption.frame.size.width = screenSize.width
         caption.frame.origin.x = 0
-        caption.frame.origin.y = newRect.origin.y + screenSize.width
         caption.frame.size.height = screenSize.height - 192 - screenSize.width
+        if is4s {
+            caption.hidden = true
+        } else {
+            caption.frame.origin.y = newRect.origin.y + screenSize.width
+        }
+        
         caption.titleLabel!.textColor = UIColor.blackColor()
         caption.backgroundColor = UIColor.whiteColor()
         if CaptionText == "" {
@@ -330,6 +335,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         //dispatch_async(dispatch_get_main_queue()) {
         
         self.categ = categoryDict[self.categories[indexPath.row]]
+        print(self.categories[indexPath.row])
+        print(self.categ)
         self.isCategorySelected = true
         if isLocationSelected {
          self.bottomToolbar.barTintColor = swiftColor
@@ -472,6 +479,34 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             //self.dismissViewControllerAnimated(true, completion: nil)
         })))
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        adjustViewLayout(size)
+    }
+    override func viewWillAppear(animated: Bool) {
+        adjustViewLayout(UIScreen.mainScreen().bounds.size)
+    }
+    func adjustViewLayout(size: CGSize) {
+        
+        
+        switch(size.width, size.height) {
+        case (480, 320):
+            break                        // iPhone 4S in landscape
+
+        case (320, 480):
+            is4s = true                    // iPhone 4s pportrait
+            break
+        case (414, 736):                        // iPhone 6 Plus in portrait
+
+            break
+        case (736, 414):                        // iphone 6 Plus in landscape
+
+            break
+        default:
+            break
+        }
     }
 
 }
