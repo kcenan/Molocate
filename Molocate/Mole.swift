@@ -1031,6 +1031,7 @@ public class Molocate {
                 currentUser.follower_count = result["follower_count"] as! Int
                 currentUser.following_count = result["following_count"]as! Int
                 currentUser.gender =  result["gender"] is NSNull ? "": (result["gender"] as! String)
+                currentUser.birthday = result["birthday"] as! String
                 
                 completionHandler(data: currentUser, response: response , error: nsError  )
             } catch{

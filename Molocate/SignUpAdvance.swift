@@ -181,7 +181,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                 
                 let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
                     //print(response)
-                    //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                    print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                     
                     dispatch_async(dispatch_get_main_queue(), {
                         if error != nil{
@@ -299,7 +299,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
     }
    
     func displayAlert(title: String, message: String) {
-        
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             //self.dismissViewControllerAnimated(true, completion: nil)

@@ -404,6 +404,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 tap.numberOfTapsRequired = 2
                 cell.contentView.addGestureRecognizer(tap)
                 cell.contentView.tag = index
+                let playtap = UITapGestureRecognizer(target: self, action:#selector(MainController.playTapped(_:) ));
+                playtap.numberOfTapsRequired = 1
+                cell.contentView.addGestureRecognizer(playtap)
                 
                 var trueURL = NSURL()
                 if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
@@ -615,6 +618,25 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
     }
+    func playTapped(sender: UITapGestureRecognizer) {
+        let row = sender.view!.tag
+        print("like a basıldı at index path: \(row) ")
+        if (row) % 2 == 1{
+            
+            if self.player1.playbackState.description != "Playing" {
+                 self.player1.playFromBeginning()
+            }else{
+                 self.player1.stop()
+            }
+            
+        }else{
+            if self.player2.playbackState.description != "Playing"{
+                self.player1.stop()
+                self.player2.playFromBeginning()
+                ////print("player2")
+            }
+        }
+    }
     
     func doubleTapped(sender: UITapGestureRecognizer) {
         let buttonRow = sender.view!.tag
@@ -652,6 +674,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             }
         }
     }
+    
+    
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
         print("like a basıldı at index path: \(buttonRow) ")
