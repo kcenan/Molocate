@@ -83,7 +83,7 @@ class tagComment: UIViewController, UITextViewDelegate {
     
     func textViewDidEndEditing(textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "Yorumunu buraya ekleyebilirsin..."
+            textView.text = ""
             textView.textColor = UIColor.lightGrayColor()
         }
         CaptionText = textField.text
