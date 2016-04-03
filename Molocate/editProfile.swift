@@ -7,7 +7,7 @@
 //kare foto seçme ekle
 
 import UIKit
-
+import SDWebImage
 extension UIImageView {
     func downloadedFrom(url url:NSURL, contentMode mode: UIViewContentMode) {
         contentMode = mode
@@ -27,7 +27,7 @@ extension UIImageView {
 
 class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigationControllerDelegate {
     
-    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     @IBOutlet var toolBar: UIToolbar!
     
@@ -69,7 +69,8 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
-        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
@@ -103,12 +104,12 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         if(user.profilePic.absoluteString != ""){
             photo.image = UIImage(named: "profilepic.png")!
             photo.sd_setImageWithURL(user.profilePic)
-//            Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
-//                dispatch_async(dispatch_get_main_queue()){
-//                    self.photo.image = UIImage(data: data!)!
-//                    
-//                }
-//            })
+            //            Molocate.getDataFromUrl(user.profilePic, completion: { (data, response, error) -> Void in
+            //                dispatch_async(dispatch_get_main_queue()){
+            //                    self.photo.image = UIImage(data: data!)!
+            //
+            //                }
+            //            })
             //photo.image = UIImage(data: data!)!
         }else{
             photo.image = UIImage(named: "profilepic.png")!
@@ -116,7 +117,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         
         photo!.frame = CGRectMake(10 , 60 + (scr * 2) / 120 , (scr * 26) / 120 , (scr * 26) / 120)
         self.view.addSubview(photo!)
-
+        
         name = UILabel()
         name.frame = CGRectMake(0, 60 + (scr * (32 / 120)), screenWidth / 3, (scr * 6) / 120)
         name.text = "İsim Soyisim:"
@@ -178,12 +179,12 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         self.view.addSubview(switchDemo)
         
         
-        let femaleButton   = UIButton(type: UIButtonType.System) 
+        let femaleButton   = UIButton(type: UIButtonType.System)
         femaleButton.frame = CGRectMake(screenWidth / 3 + 51 , 60 + (scr * (55 / 120)) - 6 , 38 , 38)
         //femaleButton.setTitle("◽️", forState: UIControlState.Normal)
         femaleButton.addTarget(self, action: "femaleSelected:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(femaleButton)
-    
+        
         
         let maleButton   = UIButton(type: UIButtonType.System) as UIButton
         maleButton.frame = CGRectMake(screenWidth / 3 + 141 , 60 + (scr * (55 / 120)) - 6 , 38 , 38)
@@ -241,7 +242,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         password.layer.cornerRadius = 10
         password.layer.borderWidth = 0
         self.view.addSubview(password)
-    
+        
         
         erkek = UILabel()
         erkek.frame = CGRectMake(screenWidth / 3 + 100 , 60 + (scr * (52 / 120)) , 50, (scr * 6) / 120)
@@ -252,11 +253,11 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         
         
         if(user.gender == "male"){
-                erkekimage.text = "🔳"
-           
-                                }
+            erkekimage.text = "🔳"
+            
+        }
         if(user.gender == "female"){
-                kadınimage.text = "🔳"
+            kadınimage.text = "🔳"
         }
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
@@ -294,23 +295,37 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         currentUser.printUser()
         
         
-       //UIImagePNGRepresentation(photo.image!)
+        //UIImagePNGRepresentation(photo.image!)
         
-        var image = editProfile.RBSquareImageTo(photo.image!, size: CGSize(width: 192, height: 192))
-        let imageData = UIImageJPEGRepresentation(image, 1)
+        let imageData = UIImageJPEGRepresentation(photo.image!, 1)
+        activityIndicator.frame = sender.frame
+        activityIndicator.center = sender.center
+        sender.hidden = true
+        self.view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
         Molocate.uploadProfilePhoto(imageData!) { (data, response, error) -> () in
-            print(data)
-            currentUser.profilePic = NSURL(string: data!)!
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                
+                print(data)
+                SDImageCache.sharedImageCache().removeImageForKey(data!)
+                SDImageCache.sharedImageCache().storeImage(self.photo.image!, forKey: data!)
+                currentUser.profilePic = NSURL(string: data!)!
+                Molocate.EditUser { (data, response, error) -> () in
+                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                        self.activityIndicator.stopAnimating()
+                        self.performSegueWithIdentifier("goBackProfile", sender: self)
+                    }
+                }
+            }
         }
         
-        Molocate.EditUser { (data, response, error) -> () in
-            
-        }
+        
+        
         print("Button tapped")
     }
     
     
-   
+    
     
     func changePassword(sender:UIButton!)
     {
@@ -339,13 +354,15 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!) {
         let selectedImage : UIImage = image
-        photo.image=selectedImage
+        photo.image=editProfile.RBSquareImageTo(selectedImage, size: CGSize(width: 192, height: 192))
+        
         print("new image")
         self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
+        
         print("picker cancel.")
     }
     
@@ -435,7 +452,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     }
     
     
-     class func RBSquareImageTo(image: UIImage, size: CGSize) -> UIImage {
+    class func RBSquareImageTo(image: UIImage, size: CGSize) -> UIImage {
         return RBResizeImage(RBSquareImage(image), targetSize: size)
     }
     
