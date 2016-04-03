@@ -45,6 +45,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
     var myCache = Shared.dataCache
+    var dictionary = NSMutableDictionary()
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var searchText: UITextField!
@@ -144,7 +145,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl.addTarget(self, action: #selector(MainController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
-        
+        searchText.layer.borderColor = UIColor.whiteColor().CGColor
 
         
     }
@@ -404,36 +405,37 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 cell.contentView.addGestureRecognizer(tap)
                 cell.contentView.tag = index
                 
-//                myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
-//                    dispatch_async(dispatch_get_main_queue()){
-//                        
-//                        
-//                        let url = self.videoArray[indexPath.row].urlSta.absoluteString
-//                        
-//                        let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
-//                        let cached = DiskCache(path: path.absoluteString).pathForKey(url)
-//                        let file = NSURL(fileURLWithPath: cached)
-                        if indexPath.row % 2 == 1 {
-                            //self.player1.stop()
-                            self.player1.setUrl(self.videoArray[indexPath.row].urlSta)
-                            
-                            self.player1.view.frame = cell.newRect
-                            
-                            cell.contentView.addSubview(self.player1.view)
-                            //self.player1.playFromBeginning()
-                        }else{
-                            //self.player2.stop()
-                            self.player2.setUrl(self.videoArray[indexPath.row].urlSta)
-                            self.player2.view.frame = cell.newRect
-                            cell.contentView.addSubview(self.player2.view)
-                            if indexPath.row == 0 {
-                                self.player2.playFromBeginning()
-                            }
-                            //self.player2.playFromBeginning()
+                var trueURL = NSURL()
+                if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
+                    trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
+                } else {
+                    trueURL = self.videoArray[indexPath.row].urlSta
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                            let url = self.videoArray[indexPath.row].urlSta.absoluteString
+                            let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
+                            let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+                            let file = NSURL(fileURLWithPath: cached)
+                            self.dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
                         }
-//                    }
-//                    
-//                }
+                    }
+                }
+                
+                if indexPath.row % 2 == 1 {
+                    
+                    self.player1.setUrl(trueURL)
+                    self.player1.view.frame = cell.newRect
+                    cell.contentView.addSubview(self.player1.view)
+                    
+                }else{
+                    
+                    self.player2.setUrl(trueURL)
+                    self.player2.view.frame = cell.newRect
+                    cell.contentView.addSubview(self.player2.view)
+                }
+
+                
+
                 return cell
             }else{
                 let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
@@ -771,19 +773,20 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     @IBAction func openCamera(sender: AnyObject) {
         player1.stop()
         player2.stop()
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
-        activityIndicator.center = self.view.center
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-        view.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+
         if (isUploaded) {
             CaptionText = ""
             if isSearching != true {
+                activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+                activityIndicator.center = self.view.center
+                activityIndicator.hidesWhenStopped = true
+                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+                view.addSubview(activityIndicator)
+                activityIndicator.startAnimating()
+                UIApplication.sharedApplication().beginIgnoringInteractionEvents()
                 self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
             } else {
-                self.cameraButton.image = UIImage(named: "camera")
+                self.cameraButton.image = UIImage(named: "Camera")
                 self.cameraButton.title = nil
                 self.isSearching = false
                 self.venueTable.hidden = true
@@ -816,7 +819,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         myCell.myLabel?.text = categories[indexPath.row]
         myCell.frame.size.width = 75
         myCell.myLabel.textAlignment = .Center
-        myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        //myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
         
         
         
@@ -888,6 +891,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             self.searchText.resignFirstResponder()
         }
         myCache.removeAll()
+        dictionary.removeAllObjects()
         
     }
     

@@ -23,6 +23,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     var username = ""
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var tableView = UITableView()
+    var dictionary = NSMutableDictionary()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,34 +115,35 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             cell.contentView.addGestureRecognizer(tap)
             cell.contentView.tag = indexPath.row
             
-//            myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
-//                dispatch_async(dispatch_get_main_queue()){
-//                    
-//            
-//                    let url = self.videoArray[indexPath.row].urlSta.absoluteString
-//                    
-//                    let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
-//                    let cached = DiskCache(path: path.absoluteString).pathForKey(url)
-//                    let file = NSURL(fileURLWithPath: cached)
-                    if indexPath.row % 2 == 1 {
-                        //self.player1.stop()
-                        self.player1.setUrl(self.videoArray[indexPath.row].urlSta)
-                        
-                        self.player1.view.frame = cell.newRect
-                        
-                        cell.contentView.addSubview(self.player1.view)
-                        //self.player1.playFromBeginning()
-                    }else{
-                        //self.player2.stop()
-                        self.player2.setUrl(self.videoArray[indexPath.row].urlSta)
-                        self.player2.view.frame = cell.newRect
-                        cell.contentView.addSubview(self.player2.view)
-
+            var trueURL = NSURL()
+            if dictionary.objectForKey("cached\(indexPath.row)") != nil {
+                trueURL = dictionary.objectForKey("cached\(indexPath.row)") as! NSURL
+            } else {
+                trueURL = self.videoArray[indexPath.row].urlSta
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                        let url = self.videoArray[indexPath.row].urlSta.absoluteString
+                        let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
+                        let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+                        let file = NSURL(fileURLWithPath: cached)
+                        self.dictionary.setObject(file, forKey: "cached\(indexPath.row)")
                     }
-
-//                }
-//                
-//            }
+                }
+            }
+            
+            if indexPath.row % 2 == 1 {
+                
+                self.player1.setUrl(trueURL)
+                self.player1.view.frame = cell.newRect
+                cell.contentView.addSubview(self.player1.view)
+                
+            }else{
+                
+                self.player2.setUrl(trueURL)
+                self.player2.view.frame = cell.newRect
+                cell.contentView.addSubview(self.player2.view)
+            }
+            
             return cell
         }else{
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
@@ -523,6 +525,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         player2.stop()
         player2.removeFromParentViewController()
         myCache.removeAll()
+        dictionary.removeAllObjects()
     }
     
     

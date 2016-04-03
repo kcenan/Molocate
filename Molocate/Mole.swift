@@ -261,7 +261,7 @@ public class Molocate {
             do {
                 
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                //print(result)
+                print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String

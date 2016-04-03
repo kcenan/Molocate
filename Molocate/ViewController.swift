@@ -531,6 +531,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         facebookButton.frame.size.height = (screenHeight * 40) / 450
         forgotButton.frame.size.height = (screenHeight * 25 ) / 450
         registeredText.frame.size.height = (screenHeight * 25) / 450
+        username.layer.borderColor = UIColor.whiteColor().CGColor
+        password.layer.borderColor = UIColor.whiteColor().CGColor
+        email.layer.borderColor = UIColor.whiteColor().CGColor
         
         
         

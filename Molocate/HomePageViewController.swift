@@ -39,7 +39,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var Ekran : CGFloat = 0.0
     var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
-    
+    var dictionary = NSMutableDictionary()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -83,6 +83,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             dispatch_async(dispatch_get_main_queue()){
                 self.videoArray = data!
                 self.tableView.reloadData()
+                if self.videoArray.count == 0 {
+                    
+                }
             }
         })
         ////print("refresh")
@@ -95,6 +98,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         location = locationManager.location
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
         
         
     }
@@ -334,29 +338,38 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             cell.contentView.tag = indexPath.row
             
             
-//            myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
-//             
-//                
-//                    
-//                    let url = self.videoArray[indexPath.row].urlSta.absoluteString
-//                    
-//                    let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
-//                    let cached = DiskCache(path: path.absoluteString).pathForKey(url)
-//                    let file = NSURL(fileURLWithPath: cached)
+
+            var trueURL = NSURL()
+            if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
+                trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
+            } else {
+                trueURL = self.videoArray[indexPath.row].urlSta
+                dispatch_async(dispatch_get_main_queue()) {
+                self.myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                    let url = self.videoArray[indexPath.row].urlSta.absoluteString
+                    let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
+                    let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+                    let file = NSURL(fileURLWithPath: cached)
+                    self.dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
+                }
+                }
+            }
+            
                     if indexPath.row % 2 == 1 {
                         
-                        self.player1.setUrl(videoArray[indexPath.row].urlSta)
+                        self.player1.setUrl(trueURL)
                         self.player1.view.frame = cell.newRect
                         cell.contentView.addSubview(self.player1.view)
                         
                     }else{
                         
-                        self.player2.setUrl(videoArray[indexPath.row].urlSta)
+                        self.player2.setUrl(trueURL)
                         self.player2.view.frame = cell.newRect
                         cell.contentView.addSubview(self.player2.view)
                     }
+
                 //}
-                
+            
           //  }
             return cell
         }else{
@@ -383,7 +396,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
-        //print("username e basıldı at index path: \(buttonRow)")
+        ////print("username e basıldı at index path: \(buttonRow)")
         player1.stop()
         player2.stop()
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
@@ -692,6 +705,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         player2.stop()
         player2.removeFromParentViewController()
         myCache.removeAll()
+        dictionary.removeAllObjects()
         
     }
     
