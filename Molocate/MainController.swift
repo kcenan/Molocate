@@ -902,6 +902,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
+        
+        player1.stop()
+        player2.stop()
         isSearching = true
         cameraButton.image = nil
         cameraButton.title = "Cancel"
