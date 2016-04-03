@@ -498,7 +498,6 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
          
                     
                     
-                        _ = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
                         let outputFileName = NSProcessInfo.processInfo().globallyUniqueString as NSString
                         let exportPath = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(outputFileName.stringByAppendingPathExtension("mov")!)
                         print(exportPath)
@@ -687,7 +686,20 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 } catch _ {
                     
                 }
-        
+            var thumbnail = UIImage()
+            let contentURL = NSURL(fileURLWithPath: videoPath!)
+            let asset = AVAsset(URL: contentURL)
+            let imageGenerator = AVAssetImageGenerator(asset: asset)
+            let time = CMTime(seconds: 1, preferredTimescale: 1)
+            
+            do {
+                let imageRef = try imageGenerator.copyCGImageAtTime(time, actualTime: nil)
+                thumbnail = UIImage(CGImage: imageRef)
+            } catch {
+                print(error)
+                
+            }
+            print(thumbnail.description)
             self.performSegueWithIdentifier("capturePreview", sender: self)
             
           

@@ -12,6 +12,9 @@ import SDWebImage
 import Haneke
 
 class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
+    var lastOffset:CGPoint!
+    var lastOffsetCapture:NSTimeInterval!
+    var isScrollingFast:Bool = false
     var pointNow:CGFloat!
     var videoData:NSMutableData!
     var connection:NSURLConnection!
@@ -45,6 +48,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         Molocate.getCurrentUser({ (data, response, error) -> () in
             
         })
+        lastOffset = CGPoint(x: 0, y: 0)
         self.player1 = Player()
         self.player1.delegate = self
         self.player1.playbackLoops = true
@@ -81,7 +85,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.tableView.reloadData()
             }
         })
-        print("refresh")
+        ////print("refresh")
         self.refreshControl = UIRefreshControl()
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
@@ -134,7 +138,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func playerReady(player: Player) {
-        print("ready")
+        //print("ready")
     }
     
     func playerPlaybackStateDidChange(player: Player) {
@@ -151,6 +155,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         pointNow = scrollView.contentOffset.y
+        lastOffsetCapture = NSDate().timeIntervalSinceReferenceDate
     }
     
     
@@ -163,31 +168,54 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             } else if (scrollView.contentOffset.y>pointNow) {
                 direction = 1
             }
-
+            
+            var currentOffset = scrollView.contentOffset
+            var currentTime = NSDate().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
+            
+            var timeDiff = currentTime - lastOffsetCapture;
+            if(timeDiff > 0.1) {
+                var distance = currentOffset.y - lastOffset.y;
+                //The multiply by 10, / 1000 isn't really necessary.......
+                var scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
+                
+                var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
+                if (scrollSpeed > 5) {
+                    isScrollingFast = true
+                    print("hızlı")
+                    
+                } else {
+                    isScrollingFast = false
+                    
+                }
+                
+                lastOffset = currentOffset;
+                lastOffsetCapture = currentTime;
+            }
         
-//            let ymax = y+scrollView.frame.height
-//            
-
+            if (scrollView.contentOffset.y > 10) && (scrollView.contentOffset.y+scrollView.frame.height < scrollView.contentSize.height
+            ) && !isScrollingFast
+            {
             let longest = scrollView.contentOffset.y + scrollView.frame.height
             if direction == 1 {
-                //print("down")
+                ////print("down")
             let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
-                //print(cellap)
+                ////print(cellap)
             let row = self.tableView.indexPathsForVisibleRows![1].row
             if cellap > 0 {
                 
                     if (row) % 2 == 1{
-                
+                        //self.tableView.visibleCells[1].reloadInputViews()
                     if self.player1.playbackState.description != "Playing" {
                        self.player2.stop()
                        self.player1.playFromBeginning()
-                                                                //print("player1")
+                        print(self.tableView.indexPathsForVisibleRows![0].row)
+                                                                ////print("player1")
                                     }
                             }else{
                     if self.player2.playbackState.description != "Playing"{
                         self.player1.stop()
                         self.player2.playFromBeginning()
-                                                                //print("player2")
+                                                                ////print("player2")
                                                             }
             }
             }
@@ -195,10 +223,10 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             
          else {
-                //print("up")
+                ////print("up")
                 
                 let cellap = longest - self.tableView.visibleCells[1].center.y
-                //print(cellap)
+                ////print(cellap)
                 let row = self.tableView.indexPathsForVisibleRows![0].row
                 if cellap < 0 {
                    
@@ -207,17 +235,18 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                             if self.player1.playbackState.description != "Playing" {
                                 self.player2.stop()
                                 self.player1.playFromBeginning()
-                                //print("player1")
+                                ////print("player1")
                             }
                         }else{
                             if self.player2.playbackState.description != "Playing"{
                                 self.player1.stop()
                                 self.player2.playFromBeginning()
-                                //print("player2")
+                                ////print("player2")
                             }
                         }
                     }
                 }
+            }
             
         
         
@@ -232,30 +261,35 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             return 44
         }
     }
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        
+    
+    func tableView(atableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if atableView == tableView {
+           // tableView.cellForRowAtIndexPath(indexPath)
+        }
     }
+
     
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
             
-            if((!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)){
+            if((!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)&&(!exploreInProcess)){
                 
                 Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
+                    exploreInProcess = true
                     dispatch_async(dispatch_get_main_queue()){
                         
                         for item in data!{
                             self.videoArray.append(item)
                             let newIndexPath = NSIndexPath(forRow: self.videoArray.count-1, inSection: 0)
-                            self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
-                            //self.tableView.reloadRowsAtIndexPaths([newIndexPath], withRowAnimation: .None)
+                            atableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+
                         }
-                        self.tableView.reloadData()
                         
-                        
+                       exploreInProcess = false
                     }
                     
                 })
+                
                 
             }
         }
@@ -300,30 +334,30 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             cell.contentView.tag = indexPath.row
             
             
-            myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
-             
-                    
-                    
-                    let url = self.videoArray[indexPath.row].urlSta.absoluteString
-                    
-                    let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
-                    let cached = DiskCache(path: path.absoluteString).pathForKey(url)
-                    let file = NSURL(fileURLWithPath: cached)
+//            myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+//             
+//                
+//                    
+//                    let url = self.videoArray[indexPath.row].urlSta.absoluteString
+//                    
+//                    let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
+//                    let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+//                    let file = NSURL(fileURLWithPath: cached)
                     if indexPath.row % 2 == 1 {
                         
-                        self.player1.setUrl(file)
+                        self.player1.setUrl(videoArray[indexPath.row].urlSta)
                         self.player1.view.frame = cell.newRect
                         cell.contentView.addSubview(self.player1.view)
                         
                     }else{
                         
-                        self.player2.setUrl(file)
+                        self.player2.setUrl(videoArray[indexPath.row].urlSta)
                         self.player2.view.frame = cell.newRect
                         cell.contentView.addSubview(self.player2.view)
                     }
                 //}
                 
-            }
+          //  }
             return cell
         }else{
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
@@ -349,7 +383,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
-        print("username e basıldı at index path: \(buttonRow)")
+        //print("username e basıldı at index path: \(buttonRow)")
         player1.stop()
         player2.stop()
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
@@ -390,8 +424,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        print("place e basıldı at index path: \(buttonRow) ")
-        print("================================" )
+//        //print("place e basıldı at index path: \(buttonRow) ")
+//        //print("================================" )
         Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 thePlace = data
@@ -409,7 +443,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
         pressedFollow = true
-        print("followa basıldı at index path: \(buttonRow) ")
+       // //print("followa basıldı at index path: \(buttonRow) ")
         self.videoArray[buttonRow].isFollowing = 1
         var indexes = [NSIndexPath]()
         let index = NSIndexPath(forRow: buttonRow, inSection: 0)
@@ -417,7 +451,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
         Molocate.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
-            //print(data)
+            ////print(data)
         }
         pressedFollow = false
     }
@@ -438,7 +472,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     func doubleTapped(sender: UITapGestureRecognizer) {
         let buttonRow = sender.view!.tag
-        print("like a basıldı at index path: \(buttonRow) ")
+        ////print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
         var indexes = [NSIndexPath]()
@@ -454,7 +488,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
-                    print(data)
+                    ////print(data)
                 }
             }
         }else{
@@ -467,14 +501,14 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
-                    print(data)
+                    ////print(data)
                 }
             }
         }
     }
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
-        print("like a basıldı at index path: \(buttonRow) ")
+        ////print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
         var indexes = [NSIndexPath]()
@@ -489,7 +523,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
-                    print(data)
+                    ////print(data)
                 }
             }
         }else{
@@ -502,7 +536,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
-                    print(data)
+                    //print(data)
                 }
             }
         }
@@ -524,7 +558,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.addChildViewController(controller)
                 controller.didMoveToParentViewController(self)
                 
-                print("comment e basıldı at index path: \(buttonRow)")
+                //print("comment e basıldı at index path: \(buttonRow)")
             }
         }
         
@@ -538,9 +572,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         player1.stop()
         player2.stop()
         Molocate.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
-            print(data)
+            //print(data)
         }
-        print("pressedReport at index path: \(buttonRow)")
+        //print("pressedReport at index path: \(buttonRow)")
         let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
         let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
@@ -551,7 +585,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         
         let reportVideo: UIAlertAction = UIAlertAction(title: "Report the Video", style: .Default) { action -> Void in
             
-            print("reported")
+            //print("reported")
         }
         actionSheetController.addAction(reportVideo)
         
@@ -566,7 +600,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     override func viewDidAppear(animated: Bool) {
-        //print("bom")
+        ////print("bom")
         player2.playFromBeginning()
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
         
@@ -629,7 +663,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         
-        //print(indexPath.row)
+        ////print(indexPath.row)
         
     }
     func changeFrame() {

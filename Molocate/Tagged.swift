@@ -7,7 +7,13 @@ import Haneke
 import SDWebImage
 
 class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,PlayerDelegate {
-    
+    var lastOffset:CGPoint!
+    var lastOffsetCapture:NSTimeInterval!
+    var isScrollingFast:Bool = false
+    var pointNow:CGFloat!
+    var isSearching = false
+    var direction = 0
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var player1:Player!
     var player2: Player!
     var pressedLike: Bool = false
@@ -50,7 +56,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         
         
         
-        
+        lastOffset = CGPoint(x: 0, y: 0)
         
         
     }
@@ -108,18 +114,18 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             cell.contentView.addGestureRecognizer(tap)
             cell.contentView.tag = indexPath.row
             
-            myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
-                dispatch_async(dispatch_get_main_queue()){
-                    
-                    
-                    let url = self.videoArray[indexPath.row].urlSta.absoluteString
-                    
-                    let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
-                    let cached = DiskCache(path: path.absoluteString).pathForKey(url)
-                    let file = NSURL(fileURLWithPath: cached)
+//            myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+//                dispatch_async(dispatch_get_main_queue()){
+//                    
+//            
+//                    let url = self.videoArray[indexPath.row].urlSta.absoluteString
+//                    
+//                    let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
+//                    let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+//                    let file = NSURL(fileURLWithPath: cached)
                     if indexPath.row % 2 == 1 {
                         //self.player1.stop()
-                        self.player1.setUrl(file)
+                        self.player1.setUrl(self.videoArray[indexPath.row].urlSta)
                         
                         self.player1.view.frame = cell.newRect
                         
@@ -127,14 +133,15 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                         //self.player1.playFromBeginning()
                     }else{
                         //self.player2.stop()
-                        self.player2.setUrl(file)
+                        self.player2.setUrl(self.videoArray[indexPath.row].urlSta)
                         self.player2.view.frame = cell.newRect
                         cell.contentView.addSubview(self.player2.view)
-                        //self.player2.playFromBeginning()
+
                     }
-                }
-                
-            }
+
+//                }
+//                
+//            }
             return cell
         }else{
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
@@ -159,51 +166,132 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         
     }
     
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        pointNow = scrollView.contentOffset.y
+        lastOffsetCapture = NSDate().timeIntervalSinceReferenceDate
+        
+    }
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        let rowHeight = screenSize.width + 138
-        let y = scrollView.contentOffset.y
         
-        let front = ceil(y/rowHeight)
-        //print(front * rowHeight/2 - y)
-        dispatch_async(dispatch_get_main_queue()){
-            if front * rowHeight-rowHeight/2 - y < 0 {
-                if (front) % 2 == 1{
+        
+        if (scrollView.contentOffset.y<pointNow) {
+            direction = 0
+        } else if (scrollView.contentOffset.y>pointNow) {
+            direction = 1
+        }
+        
+        var currentOffset = scrollView.contentOffset
+        var currentTime = NSDate().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
+        
+        var timeDiff = currentTime - lastOffsetCapture;
+        if(timeDiff > 0.1) {
+            var distance = currentOffset.y - lastOffset.y;
+            //The multiply by 10, / 1000 isn't really necessary.......
+            var scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
+            
+            var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
+            if (scrollSpeed > 5) {
+                isScrollingFast = true
+                print("hızlı")
+                
+            } else {
+                isScrollingFast = false
+                
+            }
+            
+            lastOffset = currentOffset;
+            lastOffsetCapture = currentTime;
+        }
+        
+        if (scrollView.contentOffset.y > 10) && (scrollView.contentOffset.y+scrollView.frame.height < scrollView.contentSize.height
+            ) && !isScrollingFast
+        {
+            let longest = scrollView.contentOffset.y + scrollView.frame.height
+            if direction == 1 {
+                ////print("down")
+                let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
+                ////print(cellap)
+                let row = self.tableView.indexPathsForVisibleRows![0].row+1
+                if cellap > 0 {
                     
-                    if self.player1.playbackState.description != "Playing" {
-                        self.player2.stop()
-                        self.player1.playFromBeginning()
-                        //print("player1")
+                    if (row) % 2 == 1{
+                        //self.tableView.visibleCells[1].reloadInputViews()
+                        if self.player1.playbackState.description != "Playing" {
+                            self.player2.stop()
+                            self.player1.playFromBeginning()
+                            print(self.tableView.indexPathsForVisibleRows![0].row)
+                            ////print("player1")
+                        }
+                    }else{
+                        if self.player2.playbackState.description != "Playing"{
+                            self.player1.stop()
+                            self.player2.playFromBeginning()
+                            ////print("player2")
+                        }
                     }
-                }else{
-                    if self.player2.playbackState.description != "Playing"{
-                        self.player1.stop()
-                        self.player2.playFromBeginning()
-                        //print("player2")
+                }
+            }
+                
+                
+            else {
+                ////print("up")
+                
+                let cellap = longest - self.tableView.visibleCells[0].center.y-150-self.view.frame.width
+                //print(cellap)
+                let row = self.tableView.indexPathsForVisibleRows![0].row
+                if cellap < 0 {
+                    
+                    if (row) % 2 == 1{
+                        
+                        if self.player1.playbackState.description != "Playing" {
+                            self.player2.stop()
+                            self.player1.playFromBeginning()
+                            ////print("player1")
+                        }
+                    }else{
+                        if self.player2.playbackState.description != "Playing"{
+                            self.player1.stop()
+                            self.player2.playFromBeginning()
+                            ////print("player2")
+                        }
                     }
                 }
             }
         }
         
+        
+        
+        
+        
     }
+
     
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
             
-            if((indexPath.row%8 == 0)&&(nextT != nil)){
+            
+            if((indexPath.row%8 == 0)&&(nextU != nil)&&(!exploreInProcess)){
                 
-                Molocate.getExploreVideos(nextT, completionHandler: { (data, response, error) -> () in
+                Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
+                    exploreInProcess = true
                     dispatch_async(dispatch_get_main_queue()){
+                        
                         for item in data!{
                             self.videoArray.append(item)
                             let newIndexPath = NSIndexPath(forRow: self.videoArray.count-1, inSection: 0)
-                            self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                            atableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                            
                         }
                         
+                        exploreInProcess = false
                     }
                     
                 })
+                
+                
             }
+
         }
         else {
             

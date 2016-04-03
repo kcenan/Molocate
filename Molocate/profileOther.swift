@@ -75,6 +75,10 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     }
     
     @IBAction func followersButton(sender: AnyObject) {
+        AVc.player2.stop()
+        AVc.player1.stop()
+        BVc.player2.stop()
+        BVc.player1.stop()
         follewersclicked = true
         let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
         controller.view.frame = self.view.bounds;
@@ -100,6 +104,10 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         scrollView.setContentOffset(b.origin, animated: true)
     }
     @IBAction func followingsButton(sender: AnyObject) {
+        AVc.player2.stop()
+        AVc.player1.stop()
+        BVc.player2.stop()
+        BVc.player1.stop()
         follewersclicked = false
         let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
         controller.view.frame = self.view.bounds;

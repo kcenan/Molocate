@@ -36,6 +36,7 @@ var nextT:NSURL!
 var nextU:NSURL!
 var userToken: String?
 var theVideo:videoInf!
+var exploreInProcess = false
 struct User{
     var username:String = ""
     var email : String = ""
@@ -94,6 +95,7 @@ var currentUser:User = User()
 var faceUsername = ""
 var faceMail = ""
 var fbToken = ""
+
 public class Molocate {
     
     class func follow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
