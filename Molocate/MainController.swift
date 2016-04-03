@@ -46,6 +46,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     var pressedFollow: Bool = false
     var myCache = Shared.dataCache
     var dictionary = NSMutableDictionary()
+    var on = true
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var searchText: UITextField!
@@ -167,7 +168,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     func refresh(sender:AnyObject){
         
-        
+        on = true
         refreshing = true
         let url = refreshURL
         self.player1.stop()
@@ -433,7 +434,10 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                     self.player2.view.frame = cell.newRect
                     cell.contentView.addSubview(self.player2.view)
                 }
-
+                if indexPath.row == 0 && on {
+                    self.player2.playFromBeginning()
+                    on = false
+                }
                 
 
                 return cell
@@ -519,6 +523,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         if atableView == tableView {
         atableView.deselectRowAtIndexPath(indexPath, animated: false)
         } else {
+            
             activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
             activityIndicator.center = self.view.center
             activityIndicator.hidesWhenStopped = true
@@ -829,6 +834,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         
         //seçilmiş cell in labelının rengi değişsin
+        on = true
         refreshing = true
         let url = NSURL(string: baseUrl  + "video/api/explore/?category=" + categoryDict[realCateg[categories[indexPath.row]]!]!)
         SDImageCache.sharedImageCache().clearMemory()

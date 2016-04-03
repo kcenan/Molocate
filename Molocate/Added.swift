@@ -24,6 +24,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var tableView = UITableView()
     var dictionary = NSMutableDictionary()
+    var on = true
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -147,7 +148,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 self.player2.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player2.view)
             }
-            if indexPath.row == 0 {
+            if indexPath.row == 0 && on {
                 self.player2.playFromBeginning()
             }
             
