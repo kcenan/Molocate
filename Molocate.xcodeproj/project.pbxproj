@@ -104,7 +104,6 @@
 		C6E34D551CAECD1D00C7306A /* Camera Filled-32.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E34D531CAECD1D00C7306A /* Camera Filled-32.png */; };
 		C6E53DC31C8A9C4E00379C31 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E53DC21C8A9C4E00379C31 /* Logo.png */; };
 		C6E86EAF1CB0E68E00203513 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6E86EAE1CB0E68D00203513 /* Launch Screen.storyboard */; };
-		C6E86EB11CB102FA00203513 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E86EB01CB102FA00203513 /* StoreKit.framework */; };
 		C6F7B2651C134FAF0062E408 /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7B2641C134FAF0062E408 /* Tagged.swift */; };
 		C6F7B2671C134FBF0062E408 /* Added.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7B2661C134FBF0062E408 /* Added.swift */; };
 		C6F7B26B1C1351A20062E408 /* Added.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6F7B26A1C1351A20062E408 /* Added.xib */; };
@@ -239,7 +238,6 @@
 		C6E34D531CAECD1D00C7306A /* Camera Filled-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera Filled-32.png"; sourceTree = "<group>"; };
 		C6E53DC21C8A9C4E00379C31 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		C6E86EAE1CB0E68D00203513 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		C6E86EB01CB102FA00203513 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		C6F7B2641C134FAF0062E408 /* Tagged.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tagged.swift; sourceTree = "<group>"; };
 		C6F7B2661C134FBF0062E408 /* Added.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Added.swift; sourceTree = "<group>"; };
 		C6F7B26A1C1351A20062E408 /* Added.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Added.xib; path = ../Added.xib; sourceTree = "<group>"; };
@@ -266,7 +264,6 @@
 				C6BA0A151BFA422B0091E088 /* libz.tbd in Frameworks */,
 				C6BA0A131BFA421D0091E088 /* SystemConfiguration.framework in Frameworks */,
 				C6BA0A0F1BFA42110091E088 /* QuartzCore.framework in Frameworks */,
-				C6E86EB11CB102FA00203513 /* StoreKit.framework in Frameworks */,
 				C6BA0A101BFA42110091E088 /* Security.framework in Frameworks */,
 				C6BA0A0A1BFA42000091E088 /* CoreGraphics.framework in Frameworks */,
 				C6BA0A0B1BFA42000091E088 /* CoreLocation.framework in Frameworks */,
@@ -473,7 +470,6 @@
 		C686D2C91C05FEA5003484A5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C6E86EB01CB102FA00203513 /* StoreKit.framework */,
 				C68956291C4EC3E200D391F2 /* Accounts.framework */,
 				C68956271C4EC3D500D391F2 /* Social.framework */,
 				C6560BA21C0E610B00DD0BA5 /* Facebook */,
@@ -611,7 +607,7 @@
 						DevelopmentTeam = 573682DC5D;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.WAC = {
 								enabled = 0;

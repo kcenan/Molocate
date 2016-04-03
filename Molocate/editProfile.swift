@@ -288,7 +288,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        user.birthday = dateFormatter.stringFromDate( datepicker.date)
+        user.birthday = dateFormatter.stringFromDate(datepicker.date)
         user.printUser()
         
         currentUser = user

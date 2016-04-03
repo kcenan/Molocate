@@ -11,7 +11,7 @@
 import UIKit
 
 class SignUpAdvance: UIViewController , UITextFieldDelegate {
-
+    
     
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var username : UITextField!
@@ -29,14 +29,12 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         //geri basarsa yeni username olmadığı için üye oluşmamış olucak
     }
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
-       override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
-        
-        
         message = UILabel()
         message.frame = CGRectMake(screenSize.width / 2 - 90 , screenSize.height / 4 - 30 , 180, 40)
         message.textColor = swiftColor
@@ -56,7 +54,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         
         onay = UIButton()
         onay.frame = CGRectMake(screenSize.width / 2 - 90 ,screenSize.height / 2 + 90 , 180 , 50)
-       // onay.titleLabel?.sizeToFit()
+        // onay.titleLabel?.sizeToFit()
         onay.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         onay.contentHorizontalAlignment = .Center
         onay.backgroundColor = swiftColor
@@ -89,7 +87,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         username.layer.masksToBounds = true
         //burada bize çağatay atanan username i gönderecek onu  yazıcaz
         // a diye atıyorum bunu butonun aksiyonunda çek edicez değişmişse username değiştirme yollıcaz
-      
+        
         username.placeholder = "Kullanıcı Adı"
         border.borderWidth = width
         username.layer.addSublayer(border)
@@ -147,8 +145,10 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-
+        
         if username.text?.characters.count < 4 {
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            activityIndicator.stopAnimating()
             let alertController = UIAlertController(title: "Hata", message:
                 "Seçtiğiniz kullanıcı adı 4 ile 20 karakter arasında olmalıdır.", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.Default,handler: nil))
@@ -196,8 +196,8 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                             print("Result -> \(result)")
                             
                             
-                                //print("dsfasfdsadsfa")
-                                
+                            //print("dsfasfdsadsfa")
+                            
                             if result["logged_in"] as! Int == 0 {
                                 let usernameExist: Bool = (result["username"] as! String == "username_exist")
                                 let emailNotValid: Bool = (result["email"] as! String == "not_valid")
@@ -214,16 +214,16 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                             } else {
                                 userToken = result["access_token"] as? String
                                 Molocate.getCurrentUser({ (data, response, error) -> () in
-                                               dispatch_async(dispatch_get_main_queue(), {
-                                                self.performSegueWithIdentifier("usernameAfter", sender: self)
-                                                self.activityIndicator.removeFromSuperview()
-                                                })
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        self.performSegueWithIdentifier("usernameAfter", sender: self)
+                                        self.activityIndicator.removeFromSuperview()
+                                    })
                                 })
                             }
-//                                self.displayAlert("Hata", message: result["result"] as! String)
-//                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
-//                                self.activityIndicator.stopAnimating()
-//                                self.activityIndicator.hidesWhenStopped = true
+                            //                                self.displayAlert("Hata", message: result["result"] as! String)
+                            //                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            //                                self.activityIndicator.stopAnimating()
+                            //                                self.activityIndicator.hidesWhenStopped = true
                             
                             
                             
@@ -248,54 +248,56 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                 
                 
             }
-
             
-//            if sendName==username.text{
-//                //burada username i atamasına tekrar gerek var mı?
-//                performSegueWithIdentifier("usernameAfter", sender: .None)
-//            }
-//            else{
-//                // check et username exist mi diye exist değilse database e kaydetip yolla existse alert koy
-//                
-//                
-//                //let alertController = UIAlertController(title: "Üzgünüz", message:
-//                //                "Seçtiğiniz kullanıcı adı daha önce alınmış, başka bir kullanıcı adı deneyin", preferredStyle: UIAlertControllerStyle.Alert)
-//                //                alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.Default,handler: nil))
-//                //
-//                //                self.presentViewController(alertController, animated: true, completion: nil)
-//                
-//                
-//            }
+            
+            //            if sendName==username.text{
+            //                //burada username i atamasına tekrar gerek var mı?
+            //                performSegueWithIdentifier("usernameAfter", sender: .None)
+            //            }
+            //            else{
+            //                // check et username exist mi diye exist değilse database e kaydetip yolla existse alert koy
+            //
+            //
+            //                //let alertController = UIAlertController(title: "Üzgünüz", message:
+            //                //                "Seçtiğiniz kullanıcı adı daha önce alınmış, başka bir kullanıcı adı deneyin", preferredStyle: UIAlertControllerStyle.Alert)
+            //                //                alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.Default,handler: nil))
+            //                //
+            //                //                self.presentViewController(alertController, animated: true, completion: nil)
+            //
+            //
+            //            }
         }
         
         
         
-
+        
         
     }
     func dismissKeyboard() {
         view.endEditing(true)
     }
+  
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         if textField == username {
-        let maxLength = 20
-        let currentString: NSString = username.text!
-        let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
-        
+            let maxLength = 20
+            let currentString: NSString = username.text!
+            let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
+            
             return newString.length <= maxLength
-        
+            
         }
         else{
             return true
         }
     }
-        override func didReceiveMemoryWarning() {
-            
-            
+    override func didReceiveMemoryWarning() {
+        
+        
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+   
     func displayAlert(title: String, message: String) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
@@ -305,18 +307,17 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    
     override func viewDidDisappear(animated: Bool) {
         print("Hoca")
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
