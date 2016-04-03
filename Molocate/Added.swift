@@ -79,7 +79,27 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
     func playerPlaybackDidEnd(player: Player) {
     }
     
+    func playTapped(sender: UITapGestureRecognizer) {
+        let row = sender.view!.tag
+        print("like a basıldı at index path: \(row) ")
+        if (row) % 2 == 1{
+            
+            if self.player1.playbackState.description != "Playing" {
+                self.player1.playFromCurrentTime()
+            }else{
+                self.player1.stop()
+            }
+            
+        }else{
+            if self.player2.playbackState.description != "Playing" {
+                self.player2.playFromCurrentTime()
+            }else{
+                self.player2.stop()
+            }
+        }
+    }
     
+
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let rowHeight = screenSize.width + 150
         return rowHeight
@@ -117,6 +137,9 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             tap.numberOfTapsRequired = 2
             cell.contentView.addGestureRecognizer(tap)
             cell.contentView.tag = indexPath.row
+            let playtap = UITapGestureRecognizer(target: self, action:#selector(MainController.playTapped(_:) ));
+            playtap.numberOfTapsRequired = 1
+            cell.contentView.addGestureRecognizer(playtap)
             
             var trueURL = NSURL()
             if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {

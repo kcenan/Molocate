@@ -624,16 +624,16 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         if (row) % 2 == 1{
             
             if self.player1.playbackState.description != "Playing" {
-                 self.player1.playFromBeginning()
+                 self.player1.playFromCurrentTime()
             }else{
                  self.player1.stop()
             }
             
         }else{
-            if self.player2.playbackState.description != "Playing"{
-                self.player1.stop()
-                self.player2.playFromBeginning()
-                ////print("player2")
+            if self.player2.playbackState.description != "Playing" {
+                self.player2.playFromCurrentTime()
+            }else{
+                self.player2.stop()
             }
         }
     }
