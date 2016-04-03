@@ -362,7 +362,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
-        
+        self.dismissViewControllerAnimated(true, completion: nil)
         print("picker cancel.")
     }
     
