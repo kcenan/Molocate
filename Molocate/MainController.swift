@@ -555,8 +555,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     }
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
-        print("place e basıldı at index path: \(buttonRow) ")
-        print("================================" )
+//        print("place e basıldı at index path: \(buttonRow) ")
+//        print("================================" )
         player1.stop()
         player2.stop()
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))

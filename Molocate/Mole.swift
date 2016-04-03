@@ -32,6 +32,13 @@ struct notifications{
     var sentence:String = ""
     var picture_url: NSURL = NSURL()
 }
+struct following {
+    var is_following = 0
+    var picture_url = NSURL()
+    var type:String = ""
+    var username:String = ""
+    var place_id:String = ""
+}
 var nextT:NSURL!
 var nextU:NSURL!
 var userToken: String?
@@ -246,7 +253,7 @@ public class Molocate {
     }
     
     
-    class func getFollowings(username: String, completionHandler: (data: Array<User>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
+    class func getFollowings(username: String, completionHandler: (data: Array<following>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
         
         let url = NSURL(string: baseUrl + "relation/api/followings/?username=" + (username as String));
         let request = NSMutableURLRequest(URL: url!)
@@ -266,21 +273,25 @@ public class Molocate {
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
                 
-                var users: Array<User> = Array<User>()
+                var followings: Array<following> = Array<following>()
                 
                 if(count != 0){
                     for thing in result["results"] as! NSArray{
-                        var user = User()
+                        var user = following()
                         user.username = thing["username"] as! String
-                        user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
-                        users.append(user)
+                        user.picture_url = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                        user.type = thing["type"] as! String
+                        if user.type == "place" {
+                            user.place_id = thing["place_id"] as! String
+                        }
+                        followings.append(user)
                     }
                 }
                 
                 
-                completionHandler(data: users , response: response , error: nsError, count: count, next: next, previous: previous  )
+                completionHandler(data: followings , response: response , error: nsError, count: count, next: next, previous: previous  )
             } catch{
-                completionHandler(data:  Array<User>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                completionHandler(data:  Array<following>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
                 print("Error:: in mole.getFollowings()")
             }
             

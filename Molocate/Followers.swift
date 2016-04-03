@@ -12,7 +12,7 @@ var follewersclicked: Bool = true
 
 class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
-    
+    var activityIndicator = UIActivityIndicatorView()
     
     @IBOutlet weak var TitleLabel: UILabel!
     
@@ -22,9 +22,10 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
 
     
     var users = [User]()
+    var followings = [following]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var myTable: UITableView!
-    
+    var follower = true
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -57,13 +58,14 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                 }
             
         }}else{
+                follower = false
                 self.TitleLabel.text = "Takip"
                 self.TitleLabel.textColor = UIColor.whiteColor()
                 self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
             Molocate.getFollowings(user.username) { (data, response, error, count, next, previous) -> () in
                 
                 for thing in data{
-                    self.users.append(thing)
+                    self.followings.append(thing)
                 }
                 dispatch_async(dispatch_get_main_queue()){
                     self.myTable.reloadData()
@@ -91,22 +93,36 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         return rowHeight
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return users.count+followings.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
        
         let cell = TableViewCellFollowerFollowing(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier2")
-        cell.myButton1.setTitle("\(users[indexPath.row].username)", forState: .Normal)
-        if(users[indexPath.row].profilePic.absoluteString != ""){
-            cell.fotoButton.sd_setImageWithURL(users[indexPath.row].profilePic, forState: UIControlState.Normal)
-        }
-        
+
+        if follower {
+            cell.myButton1.setTitle("\(users[indexPath.row].username)", forState: .Normal)
+            if(users[indexPath.row].profilePic.absoluteString != ""){
+                cell.fotoButton.sd_setImageWithURL(users[indexPath.row].profilePic, forState: UIControlState.Normal)
+            }
         cell.myButton1.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.fotoButton.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        } else {
+            cell.myButton1.setTitle("\(followings[indexPath.row].username)", forState: .Normal)
+            if(followings[indexPath.row].picture_url.absoluteString != ""){
+                cell.fotoButton.sd_setImageWithURL(followings[indexPath.row].picture_url, forState: UIControlState.Normal)
+            }
+            if followings[indexPath.row].type == "place" {
+                cell.myButton1.addTarget(self, action: #selector(Followers.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.fotoButton.addTarget(self, action: #selector(Followers.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            } else {
+                cell.myButton1.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.fotoButton.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            }
+        }
         cell.myButton1.tag = indexPath.row
         cell.fotoButton.tag = indexPath.row
-        print(users[indexPath.row].isFollowing)
+        //print(users[indexPath.row].isFollowing)
         cell.myLabel1.hidden = true
         cell.myLabel1.enabled = false
 //        if(follewersclicked && user.username == currentUser.username && !users[indexPath.row].isFollowing){
@@ -137,22 +153,63 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     }
     
     func pressedProfile(sender: UIButton) {
-        print("pressedProfile")
+        //print("pressedProfile")
         let buttonRow = sender.tag
-        Molocate.getUser(users[buttonRow].username) { (data, response, error) -> () in
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        var username = ""
+        if follower {
+            username = users[buttonRow].username
+        } else {
+            username = followings[buttonRow].username
+        }
+        Molocate.getUser(username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
         let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
         //controller.ANYPROPERTY=THEVALUE // If you want to pass value
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
-                controller.username.text = user.username
+        controller.username.text = user.username
         self.view.addSubview(controller.view)
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
+        self.activityIndicator.removeFromSuperview()
             }
     }
     }
+    
+    func pressedPlace(sender: UIButton) {
+        let buttonRow = sender.tag
+//        print("place e basıldı at index path: \(buttonRow) ")
+//        print("================================" )
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        Molocate.getPlace(followings[buttonRow].place_id) { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                thePlace = data
+                let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
+                controller.view.frame = self.view.bounds;
+                controller.willMoveToParentViewController(self)
+                self.view.addSubview(controller.view)
+                self.addChildViewController(controller)
+                controller.didMoveToParentViewController(self)
+                self.activityIndicator.removeFromSuperview()
+            }
+        }
+        
+    }
+
    
     
     @IBAction func back(sender: AnyObject) {
@@ -168,6 +225,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     override func viewDidDisappear(animated: Bool) {
         users.removeAll()
+        followings.removeAll()
     }
     
     
