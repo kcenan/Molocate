@@ -18,12 +18,10 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
     var player2: Player!
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
-    var myCache = Shared.dataCache
     var videoArray = [videoInf]()
     var username = ""
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var tableView = UITableView()
-    var dictionary = NSMutableDictionary()
     var on = true
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,17 +119,17 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             cell.contentView.tag = indexPath.row
             
             var trueURL = NSURL()
-            if dictionary.objectForKey("cached\(indexPath.row)") != nil {
-                trueURL = dictionary.objectForKey("cached\(indexPath.row)") as! NSURL
+            if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
+                trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
             } else {
                 trueURL = self.videoArray[indexPath.row].urlSta
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                        myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                         let url = self.videoArray[indexPath.row].urlSta.absoluteString
                         let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
                         let cached = DiskCache(path: path.absoluteString).pathForKey(url)
                         let file = NSURL(fileURLWithPath: cached)
-                        self.dictionary.setObject(file, forKey: "cached\(indexPath.row)")
+                        dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
                     }
                 }
             }
@@ -529,8 +527,6 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         player1.removeFromParentViewController()
         player2.stop()
         player2.removeFromParentViewController()
-        myCache.removeAll()
-        dictionary.removeAllObjects()
     }
     
     

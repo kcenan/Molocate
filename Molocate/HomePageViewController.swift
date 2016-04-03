@@ -10,7 +10,8 @@ import QuadratTouch
 import MapKit
 import SDWebImage
 import Haneke
-
+var dictionary = NSMutableDictionary()
+var myCache = Shared.dataCache
 class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var lastOffset:CGPoint!
     var lastOffsetCapture:NSTimeInterval!
@@ -25,7 +26,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
     var refreshing: Bool = false
-    var myCache = Shared.dataCache
+    
     var direction = 0 // 0 is down and 1 is up
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
@@ -39,7 +40,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var Ekran : CGFloat = 0.0
     var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
-    var dictionary = NSMutableDictionary()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -345,12 +346,12 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             } else {
                 trueURL = self.videoArray[indexPath.row].urlSta
                 dispatch_async(dispatch_get_main_queue()) {
-                self.myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                     let url = self.videoArray[indexPath.row].urlSta.absoluteString
                     let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
                     let cached = DiskCache(path: path.absoluteString).pathForKey(url)
                     let file = NSURL(fileURLWithPath: cached)
-                    self.dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
+                    dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
                 }
                 }
             }
@@ -704,8 +705,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         player1.removeFromParentViewController()
         player2.stop()
         player2.removeFromParentViewController()
-        myCache.removeAll()
-        dictionary.removeAllObjects()
+       // myCache.removeAll()
+       // dictionary.removeAllObjects()
         
     }
     

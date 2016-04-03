@@ -44,8 +44,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     var currentTask: Task?
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
-    var myCache = Shared.dataCache
-    var dictionary = NSMutableDictionary()
+    //var dictionary = NSMutableDictionary()
     var on = true
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
@@ -412,12 +411,12 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 } else {
                     trueURL = self.videoArray[indexPath.row].urlSta
                     dispatch_async(dispatch_get_main_queue()) {
-                        self.myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                        myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                             let url = self.videoArray[indexPath.row].urlSta.absoluteString
                             let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
                             let cached = DiskCache(path: path.absoluteString).pathForKey(url)
                             let file = NSURL(fileURLWithPath: cached)
-                            self.dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
+                            dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
                         }
                     }
                 }
@@ -896,8 +895,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             self.venueTable.hidden = true
             self.searchText.resignFirstResponder()
         }
-        myCache.removeAll()
-        dictionary.removeAllObjects()
+        //myCache.removeAll()
+        //dictionary.removeAllObjects()
         
     }
     
