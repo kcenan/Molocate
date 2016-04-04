@@ -33,7 +33,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
-    var errorMessage = "Please try again later"
+    var errorMessage = "Lütfen tekrar deneyiniz."
     
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
@@ -74,7 +74,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     @IBAction func loginButton(sender: AnyObject) {
         choosedIndex = 1
         if username.text == "" || password.text == "" {
-            displayAlert("Error in form", message: "Please enter a username and password")
+            displayAlert("Hata", message: "lütfen kullanıcı adı ve parola giriniz.")
        }
             //uyarı çıkıyor error varsa
         else {
@@ -86,12 +86,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             view.addSubview(activityIndicator)
             activityIndicator.startAnimating()
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        }
+        
         
         
         if loginActive == true {
             
-            let uname: String = username.text!
+            let uname: String = (username.text?.lowercaseString)!
             let pwd: String = password.text!
             let json = ["username": uname, "password": pwd]
             
@@ -166,9 +166,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
           
     else {
             
-            let uname: String = username.text!
+            let uname: String = username.text!.lowercaseString
             let pwd: String = password.text!
-            let mail: String = email.text!
+            let mail: String = email.text!.lowercaseString
             
             let json = ["username": uname, "password": pwd, "email": mail]
             
@@ -212,7 +212,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                             //print("dsfasfdsadsfa")
                         
                         } else{
-                            self.displayAlert("Hata", message: result["result"] as! String)
+                            let error = result["result"] as! String
+                            var errorString = ""
+                            switch (error){
+                                case "user_exist":
+                                errorString = "Lütfen daha önce kullanılmamış bir email seçiniz."
+                                break
+                                case "not_valid":
+                                errorString = "Lütfen geçerli bir email adresi giriniz."
+                                break
+                            default:
+                                break
+                                
+                            }
+                            self.displayAlert("Hata", message: errorString)
                             UIApplication.sharedApplication().endIgnoringInteractionEvents()
                             self.activityIndicator.stopAnimating()
                             self.activityIndicator.hidesWhenStopped = true
@@ -243,6 +256,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
 
           
        }
+        }
     }
     
     
