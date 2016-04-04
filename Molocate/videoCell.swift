@@ -228,12 +228,12 @@ class videoCell: UITableViewCell {
         }
         var multipleAttributes = [String : NSObject]()
         multipleAttributes[NSForegroundColorAttributeName] = swiftColor2
-        multipleAttributes[NSFontAttributeName] =  UIFont(name: "AvenirNext-Medium", size: 11)
+        multipleAttributes[NSFontAttributeName] =  UIFont(name: "AvenirNext-Medium", size: 12.5)
         
         let tags =  NSAttributedString(string: textstring, attributes: multipleAttributes)
         
         var multipleAttributes2 = [String : NSObject]()
-        multipleAttributes2[NSFontAttributeName] =  UIFont(name: "AvenirNext-Medium", size: 11)
+        multipleAttributes2[NSFontAttributeName] =  UIFont(name: "AvenirNext-Medium", size: 12.5)
         multipleAttributes2[NSForegroundColorAttributeName] = UIColor.blackColor()
 
 
