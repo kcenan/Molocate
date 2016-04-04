@@ -27,6 +27,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     var pressedFollow: Bool = false
     var refreshing: Bool = false
     
+    @IBOutlet var nofollowings: UILabel!
     var direction = 0 // 0 is down and 1 is up
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
@@ -43,12 +44,21 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.nofollowings.hidden = true
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+
         NSUserDefaults.standardUserDefaults().setObject(userToken, forKey: "userToken")
         
         Molocate.getCurrentUser({ (data, response, error) -> () in
             
         })
+        
         lastOffset = CGPoint(x: 0, y: 0)
         self.player1 = Player()
         self.player1.delegate = self
@@ -85,8 +95,10 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.videoArray = data!
                 self.tableView.reloadData()
                 if self.videoArray.count == 0 {
-                    
+                    self.nofollowings.hidden = false
                 }
+                self.activityIndicator.stopAnimating()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
             }
         })
         ////print("refresh")
@@ -133,6 +145,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.tableView.hidden = false
                 self.activityIndicator.removeFromSuperview()
                 self.refreshing = false
+                if self.videoArray.count == 0 {
+                    self.nofollowings.hidden = false
+                }
                 
             }
             
