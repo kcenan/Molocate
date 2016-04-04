@@ -725,9 +725,11 @@ public class Molocate {
         request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+             print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             let nsError = error
             do {
                 let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+                print(result)
                 var notificationArray = [notifications]()
                 let array = result as! NSArray
                 for item in array {
@@ -745,7 +747,7 @@ public class Molocate {
                 completionHandler(data: notificationArray, response: response, error: nsError)
             }catch{
                 completionHandler(data: nil, response: NSURLResponse(), error: nsError)
-                print("Error: in mole.getExploreVideos")
+                print(nsError)
             }
         }
         task.resume()

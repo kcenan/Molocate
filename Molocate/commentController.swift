@@ -213,7 +213,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         cell.comment.text = comments[indexPath.row].text
         cell.username.contentHorizontalAlignment = .Left
         cell.username.addTarget(self, action: #selector(commentController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside )
-        cell.profilePhoto.addTarget(self, action: "pressedUsername:", forControlEvents: UIControlEvents.TouchUpInside )
+        cell.profilePhoto.addTarget(self, action: #selector(commentController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside )
         
         cell.profilePhoto.layer.borderWidth = 0.1
         cell.profilePhoto.layer.masksToBounds = false
