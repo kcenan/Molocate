@@ -282,9 +282,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        removeDatas()
-    }
+
     
     override func viewWillAppear(animated: Bool) {
         dispatch_async(self.sessionQueue!) {
@@ -1004,40 +1002,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    func removeDatas(){
-        dispatch_async(dispatch_get_main_queue()) {
-            let cleanup: dispatch_block_t = {
-                do {
-                    
-                    try NSFileManager.defaultManager().removeItemAtURL(fakeoutputFileURL!)
-                    //try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
-                    
-                } catch _ {}
-                
-            }
-            if(fakeoutputFileURL != nil){
-                cleanup()
-                print("siliniyor")
-                
-            }
-            
-            
-            let cleanuppath: dispatch_block_t = {
-                do {
-                    
-                    try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
-                    
-                } catch _ {}
-                
-            }
-            if(videoPath != ""){
-                cleanuppath()
-                print("siliniyor")
-                
-            }
-        }
-    }
-
+    
 }
 
 extension CLLocation {
