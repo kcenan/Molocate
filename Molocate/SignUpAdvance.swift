@@ -95,7 +95,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         username.layer.masksToBounds = true
         view.addSubview(username)
         
-        self.username.delegate = self
+        username.delegate = self
         
         emailLabel = UILabel()
         emailLabel.frame = CGRectMake(20 , screenSize.height / 4 + 140, 90, 40)
@@ -129,7 +129,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         self.email.delegate = self
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpAdvance.dismissKeyboard))
         view.addGestureRecognizer(tap)
-        
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
         if(faceMail != "not_valid"){
             email.text = faceMail
         } else {
@@ -143,6 +143,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
         view.addSubview(activityIndicator)
+        activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         
@@ -157,9 +158,9 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         }
         else{
             
-            var uname = username.text! as String
-            var mail = email.text! as String
-            var token = fbToken
+            let uname = (username.text! as String).lowercaseString
+            let mail = (email.text! as String).lowercaseString
+            let token = fbToken
             let json = ["access_token": token , "username": uname, "email": mail]
             
             
@@ -199,8 +200,9 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                             //print("dsfasfdsadsfa")
                             
                             if result["logged_in"] as! Int == 0 {
-                                let usernameExist: Bool = (result["username"] as! String == "username_exist")
+                                let usernameExist: Bool = (result["username"] as! String == "username_exists")
                                 let emailNotValid: Bool = (result["email"] as! String == "not_valid")
+                                print(result["username"])
                                 if (usernameExist && emailNotValid){
                                     self.displayAlert("Dikkat!", message: "Kullanıcı adınız ve e-mailiniz daha önce alındı.")
                                 } else {
@@ -216,7 +218,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                                 Molocate.getCurrentUser({ (data, response, error) -> () in
                                     dispatch_async(dispatch_get_main_queue(), {
                                         self.performSegueWithIdentifier("usernameAfter", sender: self)
-                                        self.activityIndicator.removeFromSuperview()
+                                        
                                     })
                                 })
                             }
@@ -281,12 +283,22 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         if textField == username {
             let maxLength = 20
-            let aSet = NSCharacterSet(charactersInString:"abcdefghijklmnoprstuvyzxwq0123456789").invertedSet
+            let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq0123456789").invertedSet
             let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
+            let numberFiltered = compSepByCharInSet.joinWithSeparator("")
             let currentString: NSString = username.text!
             let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
+            if newString.length > maxLength{
+                return false
+                
+            }else{
+                if(string == numberFiltered && newString.length <= maxLength){
+                    return true
+                }else{
+                    return false
+                }
+            }
             
-            return newString.length <= maxLength
             
         }
         else{
@@ -302,6 +314,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
    
     func displayAlert(title: String, message: String) {
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        self.activityIndicator.stopAnimating()
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             //self.dismissViewControllerAnimated(true, completion: nil)

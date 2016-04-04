@@ -823,6 +823,7 @@
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="back:" destination="qX4-H7-jxJ" id="5Ik-Aw-w40"/>
+                                            <segue destination="BYZ-38-t0r" kind="show" id="Vlr-i7-pN8"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -2578,7 +2579,8 @@
         <image name="switch" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9Fc-m2-Rjq"/>
+        <segue reference="REJ-1c-sKv"/>
+        <segue reference="Vlr-i7-pN8"/>
         <segue reference="iX5-7U-zGl"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -302,9 +302,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     func fbLoginInitiate() {
+        
         let loginManager = FBSDKLoginManager()
         loginManager.logInWithReadPermissions(["public_profile", "email","user_birthday", "user_friends"], handler: {(Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
-            
+
             if (error != nil) {
                 // Process error
                 self.removeFbData()
@@ -377,6 +378,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                
                 if Result.grantedPermissions.contains("email") {
                     //Do work
+                    self.activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+                    self.activityIndicator.center = self.view.center
+                    self.activityIndicator.hidesWhenStopped = true
+                    self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+                    self.view.addSubview(self.activityIndicator)
+                    self.activityIndicator.hidesWhenStopped = true
+                    self.activityIndicator.startAnimating()
+                    UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+                    
                     self.fetchFacebookProfile()
                 } else {
                     //Handle error
