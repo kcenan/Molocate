@@ -554,16 +554,16 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         }else{
             
             
-            self.videoArray[buttonRow].isLiked=0
-            self.videoArray[buttonRow].likeCount-=1
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
-            
-            
-            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
-                    ////print(data)
-                }
-            }
+//            self.videoArray[buttonRow].isLiked=0
+//            self.videoArray[buttonRow].likeCount-=1
+//            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+//            
+//            
+//            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
+//                dispatch_async(dispatch_get_main_queue()){
+//                    ////print(data)
+//                }
+//            }
         }
     }
     func pressedLike(sender: UIButton) {
