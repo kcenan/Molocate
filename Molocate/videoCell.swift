@@ -79,7 +79,9 @@ class videoCell: UITableViewCell {
         placeName.titleLabel?.sizeToFit()
         placeName.contentHorizontalAlignment = .Left
         placeName.setTitle("koç university", forState: .Normal)
-        placeName.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 17)
+        placeName.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 14)
+        
+    
         contentView.addSubview(placeName)
         
         videoComment = UILabel()

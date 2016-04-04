@@ -382,7 +382,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     
     
-
+    override func viewDidDisappear(animated: Bool) {
+        removeDatas()
+    }
     
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
@@ -474,7 +476,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     }
     
     @IBAction func backToCamera(sender: AnyObject) {
-       
+        dispatch_async(dispatch_get_main_queue()) {
         let cleanup: dispatch_block_t = {
             do {
                 try NSFileManager.defaultManager().removeItemAtURL(self.videoURL!)
@@ -483,10 +485,10 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             
         }
         cleanup()
-        performSegueWithIdentifier("backToCamera", sender: self)
+        self.performSegueWithIdentifier("backToCamera", sender: self)
         placesArray.removeAll()
 
-        
+        }
         
     }
     
@@ -535,6 +537,22 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             break
         default:
             break
+        }
+    }
+    
+    func removeDatas(){
+        dispatch_async(dispatch_get_main_queue()) {
+            let cleanup: dispatch_block_t = {
+                do {
+                    try NSFileManager.defaultManager().removeItemAtURL(self.videoURL!)
+                    
+                } catch _ {}
+                
+            }
+            cleanup()
+            self.performSegueWithIdentifier("backToCamera", sender: self)
+            placesArray.removeAll()
+            
         }
     }
 

@@ -233,7 +233,7 @@ public class Molocate {
                 var users: Array<User> = Array<User>()
                 
                 if(count != 0){
-                    print(result["results"] )
+                    //print(result["results"] )
                     for thing in result["results"] as! NSArray{
                         var user = User()
                         user.username = thing["username"] as! String
@@ -269,7 +269,7 @@ public class Molocate {
             do {
                 
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(result)
+                //print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
@@ -436,7 +436,7 @@ public class Molocate {
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
             
             let nsError = error;
-           print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+           //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             do {
                 
@@ -487,7 +487,7 @@ public class Molocate {
             do {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                print(result)
+                //print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
@@ -589,7 +589,7 @@ public class Molocate {
             do {
                 let item = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
 
-                    print(item)
+                    //print(item)
                     var videoStr = videoInf()
                     //print(item)
                     videoStr.id = item["video_id"] as! String
@@ -645,7 +645,7 @@ public class Molocate {
             let nsError = error
             do {
                 let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
-                print(result)
+                //print(result)
                 switch(type){
                 case "user":
                     if (result["next"] != nil){
@@ -725,7 +725,7 @@ public class Molocate {
         request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
-             print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             let nsError = error
             do {
                 let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)

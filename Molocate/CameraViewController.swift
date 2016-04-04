@@ -31,7 +31,7 @@ private enum AVCamSetupResult: Int {
     case CameraNotAuthorized
     case SessionConfigurationFailed
 }
-var videoPath: String?
+var videoPath: String? = ""
 var videoData: NSData?
 var fakeoutputFileURL: NSURL?
 var fakebackgrounID: NSInteger?
@@ -282,6 +282,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        removeDatas()
+    }
+    
     override func viewWillAppear(animated: Bool) {
         dispatch_async(self.sessionQueue!) {
             switch self.setupResult {
@@ -473,7 +477,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 firstAsset = AVAsset(URL: outputFileURL)
                 tempAssetURL = outputFileURL
                 fakeoutputFileURL = outputFileURL
-                
+                self.videoDone.enabled = true
             } else {
                 
                 firstAsset = AVAsset(URL: tempAssetURL)
@@ -524,15 +528,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
                                 
                                 fakeoutputFileURL = exporter?.outputURL
-                                //print(fakeoutputFileURL)
                                 tempAssetURL = fakeoutputFileURL
-                               
-                            
-//                                print(self.secondAsset!.duration)
-//                                print(AVAsset(URL: tempAssetURL).duration)
+                                self.videoDone.enabled = true
 
-                                
                             }
+                            
 
                         })
                     
@@ -567,10 +567,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             // Only enable the ability to change camera if the device has more than one camera.
             self.cameraChange.enabled = (AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo).count > 1)
             self.recordButton.enabled = true
+            
             //self.recordButton.setTitle(NSLocalizedString("Record", comment: "Recording button record title"), forState: .Normal)
         }
     }
 
+    @IBOutlet var videoDone: UIBarButtonItem!
     @IBAction func videoDone(sender: AnyObject) {
         
         if ((self.progress > 0.2)&&(fakeoutputFileURL != nil)) {
@@ -721,27 +723,44 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             tempAssetURL = nil
             firstAsset = nil
             secondAsset = nil
+       
         dispatch_async(dispatch_get_main_queue()) {
             let cleanup: dispatch_block_t = {
                 do {
                     
                     try NSFileManager.defaultManager().removeItemAtURL(fakeoutputFileURL!)
-                    
+                    //try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
                     
                 } catch _ {}
                 
             }
             if(fakeoutputFileURL != nil){
             cleanup()
+                print("siliniyor")
+                
             }
         
+        
+        let cleanuppath: dispatch_block_t = {
+            do {
+
+                try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
+                
+            } catch _ {}
+            
+        }
+        if(videoPath != ""){
+            cleanuppath()
+            print("siliniyor")
+            
+        }
         self.performSegueWithIdentifier("backToCont", sender: self)
         }
         
         }
 
     func holdDown(){
-        
+        self.videoDone.enabled = false
         self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
         self.cameraChange.enabled = false
         self.recordButton.enabled = false
@@ -983,6 +1002,40 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             //self.dismissViewControllerAnimated(true, completion: nil)
         })))
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func removeDatas(){
+        dispatch_async(dispatch_get_main_queue()) {
+            let cleanup: dispatch_block_t = {
+                do {
+                    
+                    try NSFileManager.defaultManager().removeItemAtURL(fakeoutputFileURL!)
+                    //try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
+                    
+                } catch _ {}
+                
+            }
+            if(fakeoutputFileURL != nil){
+                cleanup()
+                print("siliniyor")
+                
+            }
+            
+            
+            let cleanuppath: dispatch_block_t = {
+                do {
+                    
+                    try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
+                    
+                } catch _ {}
+                
+            }
+            if(videoPath != ""){
+                cleanuppath()
+                print("siliniyor")
+                
+            }
+        }
     }
 
 }
