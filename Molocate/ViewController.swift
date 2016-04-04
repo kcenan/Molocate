@@ -18,7 +18,7 @@ var origin:CGFloat = 0.0
 var frame:CGRect = CGRect()
 
 class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
-
+    
     var loginActive = true
     @IBOutlet var username: UITextField!
     @IBOutlet var password: UITextField!
@@ -41,231 +41,236 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     @IBAction func forgotButton(sender: AnyObject) {
         print("user forgot password")
     }
-
+    
     //for alert
-
+    
     
     
     func textField(textField: UITextField!, shouldChangeCharactersInRange range: NSRange, replacementString string: String!) -> Bool {
         
         
         if(textField==username){
-        let maxLength = 20
-        let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq_-.").invertedSet
-        let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
-        let numberFiltered = compSepByCharInSet.joinWithSeparator("")
-        let currentString: NSString = textField.text!
-        let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
-        
-        if(string == numberFiltered && newString.length <= maxLength){
-            return true
-        }else{
-            return false
-        }
-        
+            let maxLength = 20
+            let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq_-.").invertedSet
+            let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
+            let numberFiltered = compSepByCharInSet.joinWithSeparator("")
+            let currentString: NSString = textField.text!
+            let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
+            
+            if(string == numberFiltered && newString.length <= maxLength){
+                return true
+            }else{
+                return false
+            }
+            
         }else{
             return true
         }
     }
     
     
-   
+    
     
     @IBAction func loginButton(sender: AnyObject) {
-        choosedIndex = 1
-        if username.text == "" || password.text == "" {
-            displayAlert("Hata", message: "lütfen kullanıcı adı ve parola giriniz.")
-       }
-            //uyarı çıkıyor error varsa
-        else {
-        
-            activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
-            activityIndicator.center = self.view.center
-            activityIndicator.hidesWhenStopped = true
-            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-            view.addSubview(activityIndicator)
-            activityIndicator.startAnimating()
-            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        
-        
-        
-        if loginActive == true {
-            
-            let uname: String = (username.text?.lowercaseString)!
-            let pwd: String = password.text!
-            let json = ["username": uname, "password": pwd]
-            
-            
-            do {
+        if(Molocate.isConnectedToNetwork()){
+            choosedIndex = 1
+            if username.text == "" || password.text == "" {
+                displayAlert("Hata", message: "lütfen kullanıcı adı ve parola giriniz.")
+            }
+                //uyarı çıkıyor error varsa
+            else {
                 
-                let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-               // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
-                
-                // create post request
-                let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/api-token-auth/")!
-                let request = NSMutableURLRequest(URL: url)
-                request.HTTPMethod = "POST"
-                
-                // insert json data to the request
-                
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                //request.addValue("application/json", forHTTPHeaderField: "Accept")
-                request.HTTPBody = jsonData
+                activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+                activityIndicator.center = self.view.center
+                activityIndicator.hidesWhenStopped = true
+                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+                view.addSubview(activityIndicator)
+                activityIndicator.startAnimating()
+                UIApplication.sharedApplication().beginIgnoringInteractionEvents()
                 
                 
-                let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                   // print(response)
-                    //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    dispatch_async(dispatch_get_main_queue(), {
-                    if error != nil{
-                        print("Error -> \(error)")
-                        
-                        return
-                    }
+                
+                if loginActive == true {
+                    
+                    let uname: String = (username.text?.lowercaseString)!
+                    let pwd: String = password.text!
+                    let json = ["username": uname, "password": pwd]
+                    
                     
                     do {
                         
-                        let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                        let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+                        // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
+                        
+                        // create post request
+                        let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/api-token-auth/")!
+                        let request = NSMutableURLRequest(URL: url)
+                        request.HTTPMethod = "POST"
+                        
+                        // insert json data to the request
+                        
+                        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                        //request.addValue("application/json", forHTTPHeaderField: "Accept")
+                        request.HTTPBody = jsonData
                         
                         
-                        print("Result -> \(result)")
-                        let dictionary : NSDictionary = result as! NSDictionary
-                        if(dictionary.objectForKey("token") != nil){
-                            userToken = result["token"] as? String
-                            Molocate.getCurrentUser({ (data, response, error) -> () in
+                        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+                            // print(response)
+                            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                            dispatch_async(dispatch_get_main_queue(), {
+                                if error != nil{
+                                    print("Error -> \(error)")
+                                    
+                                    return
+                                }
+                                
+                                do {
+                                    
+                                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                                    
+                                    
+                                    print("Result -> \(result)")
+                                    let dictionary : NSDictionary = result as! NSDictionary
+                                    if(dictionary.objectForKey("token") != nil){
+                                        userToken = result["token"] as? String
+                                        Molocate.getCurrentUser({ (data, response, error) -> () in
+                                            
+                                        })
+                                        self.performSegueWithIdentifier("login", sender: self)
+                                        
+                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                        
+                                    } else {
+                                        self.displayAlert("Hata", message: "Kullanıcı Adı ya da Parola Yanlış!")
+                                        self.activityIndicator.stopAnimating()
+                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                    }
+                                    
+                                } catch {
+                                    print("Error -> \(error)")
+                                }
+                            })
+                        }
+                        
+                        task.resume()
+                        
+                        
+                        
+                        
+                    } catch {
+                        print(error)
+                        
+                        
+                    }
+                    
+                }
+                    
+                else {
+                    
+                    let uname: String = username.text!.lowercaseString
+                    let pwd: String = password.text!
+                    let mail: String = email.text!.lowercaseString
+                    
+                    let json = ["username": uname, "password": pwd, "email": mail]
+                    
+                    
+                    do {
+                        
+                        let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+                        // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
+                        
+                        // create post request
+                        let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/account/register/")!
+                        let request = NSMutableURLRequest(URL: url)
+                        request.HTTPMethod = "POST"
+                        
+                        // insert json data to the request
+                        
+                        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                        //request.addValue("application/json", forHTTPHeaderField: "Accept")
+                        request.HTTPBody = jsonData
+                        
+                        
+                        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+                            //print(response)
+                            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                            
+                            dispatch_async(dispatch_get_main_queue(), {
+                                if error != nil{
+                                    print("Error -> \(error)")
+                                    
+                                    //return
+                                }
+                                
+                                do {
+                                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+                                    
+                                    //print("Result -> \(result)")
+                                    if(result.count > 1){
+                                        userToken = result["access_token"] as? String
+                                        self.performSegueWithIdentifier("login", sender: self)
+                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                        //print("dsfasfdsadsfa")
+                                        
+                                    } else{
+                                        let error = result["result"] as! String
+                                        var errorString = ""
+                                        switch (error){
+                                        case "user_exist":
+                                            errorString = "Lütfen daha önce kullanılmamış bir email seçiniz."
+                                            break
+                                        case "not_valid":
+                                            errorString = "Lütfen geçerli bir email adresi giriniz."
+                                            break
+                                        default:
+                                            break
+                                            
+                                        }
+                                        self.displayAlert("Hata", message: errorString)
+                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                        self.activityIndicator.stopAnimating()
+                                        self.activityIndicator.hidesWhenStopped = true
+                                    }
+                                    
+                                    
+                                    
+                                    
+                                } catch {
+                                    print("Error -> \(error)")
+                                    
+                                }
                                 
                             })
-                            self.performSegueWithIdentifier("login", sender: self)
-                            
-                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            
-                        } else {
-                            self.displayAlert("Hata", message: "Kullanıcı Adı ya da Parola Yanlış!")
-                            self.activityIndicator.stopAnimating()
-                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
                         }
                         
-                    } catch {
-                        print("Error -> \(error)")
-                    }
-                    })
-                }
-                
-                task.resume()
-                
-                
-                
-                
-            } catch {
-                print(error)
-                
-                
-            }
-            
-        }
-          
-    else {
-            
-            let uname: String = username.text!.lowercaseString
-            let pwd: String = password.text!
-            let mail: String = email.text!.lowercaseString
-            
-            let json = ["username": uname, "password": pwd, "email": mail]
-            
-            
-            do {
-                
-                let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-               // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
-                
-                // create post request
-                let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/account/register/")!
-                let request = NSMutableURLRequest(URL: url)
-                request.HTTPMethod = "POST"
-                
-                // insert json data to the request
-                
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                //request.addValue("application/json", forHTTPHeaderField: "Accept")
-                request.HTTPBody = jsonData
-                
-                
-                let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                    //print(response)
-                    //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    
-                    dispatch_async(dispatch_get_main_queue(), {
-                    if error != nil{
-                        print("Error -> \(error)")
                         
-                        //return
-                    }
-                    
-                    do {
-                        let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
-                       
-                        //print("Result -> \(result)")
-                        if(result.count > 1){
-                            userToken = result["access_token"] as? String
-                            self.performSegueWithIdentifier("login", sender: self)
-                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            //print("dsfasfdsadsfa")
-                        
-                        } else{
-                            let error = result["result"] as! String
-                            var errorString = ""
-                            switch (error){
-                                case "user_exist":
-                                errorString = "Lütfen daha önce kullanılmamış bir email seçiniz."
-                                break
-                                case "not_valid":
-                                errorString = "Lütfen geçerli bir email adresi giriniz."
-                                break
-                            default:
-                                break
-                                
-                            }
-                            self.displayAlert("Hata", message: errorString)
-                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            self.activityIndicator.stopAnimating()
-                            self.activityIndicator.hidesWhenStopped = true
-                        }
+                        task.resume()
                         
                         
                         
                         
                     } catch {
-                        print("Error -> \(error)")
+                        print(error)
+                        
                         
                     }
-                
-                        })
+                    
+                    
                 }
-               
-                
-                task.resume()
-                
-                
-                
-                
-            } catch {
-                print(error)
-                
-                
             }
-
-          
-       }
+        }else{
+            self.displayAlert("Hata", message: "İnternet bağlantınızı kontrol ediniz.")
         }
+        
     }
     
     
     
-
-   @IBAction func signupButton(sender: AnyObject) {
     
-    //signup butonuna basınca login ve signup yer değiştirip işlevi yer değiştiriyor
-    
+    @IBAction func signupButton(sender: AnyObject) {
+        
+        //signup butonuna basınca login ve signup yer değiştirip işlevi yer değiştiriyor
+        
         if loginActive == true{
             
             
@@ -298,14 +303,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     @IBAction func facebooklogin(sender: AnyObject) {
-        fbLoginInitiate()
+        if(Molocate.isConnectedToNetwork()){
+            fbLoginInitiate()
+        }else{
+            displayAlert("Hata", message: "İnternet bağlantınızı kontrol ediniz.")
+        }
     }
     
     func fbLoginInitiate() {
         
         let loginManager = FBSDKLoginManager()
         loginManager.logInWithReadPermissions(["public_profile", "email","user_birthday", "user_friends"], handler: {(Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
-
+            
             if (error != nil) {
                 // Process error
                 self.removeFbData()
@@ -324,7 +333,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 do {
                     
                     let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                   
+                    
                     let url = NSURL(string: baseUrl + "/account/facebook_login/")!
                     let request = NSMutableURLRequest(URL: url)
                     request.HTTPMethod = "POST"
@@ -334,7 +343,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     
                     
                     let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                      //  print(response)
+                        //  print(response)
                         print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                         dispatch_async(dispatch_get_main_queue()) {
                             
@@ -370,12 +379,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                         }}
                     task.resume()
                     
-
+                    
                 } catch {
                     print(error)
                 }
-
-               
+                
+                
                 if Result.grantedPermissions.contains("email") {
                     //Do work
                     self.activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
@@ -421,104 +430,107 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             })
         }
     }
-        
-//        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name,public_profile,email,user_birthday,user_location"])
-//              graphRequest.startWithCompletionHandler( {
-//       
-//                    (connection, result, error) -> Void in
-//        
-//                    if error != nil {
-//        
-//                        print(error)
-//        
-//                    } else if let result = result {
-//        
-//                        //  var myToken = FBSDKAccessToken.currentAccessToken().tokenString
-//                        //                  print(myToken)
-//          
-//
-//        
-//            if let error = error {
-//                
-//                print(error)
-//                
-//            } else {
-//                print("uservar")
-//             
-//
-//                        }
-//                
-//                }
-//                
-//                })
-//    }
-//    
     
-//
-//                if let user = user {
-//                 
-//                    var myToken = FBSDKAccessToken.currentAccessToken().tokenString
-//                    print(myToken)
-//                    // izinler burada belirleniyo, facebookda izin alabilceğin şeylerin listesi string olarak var
-//                   let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name"])
-//                    
-//                    // Send request to Facebook
-//                    graphRequest.startWithCompletionHandler {
-//                        
-//                        (connection, result, error) in
-//                        
-//                        if error != nil {
-//                            // Some error checking here
-//                        }
-//                        else if let result = result as? [String:AnyObject] {
-//                            
-//                            // Access user data
-//                            
-//                            let userId = result["id"] as! String
-//                            
-//                            let PFUser.currentUser()?["name"] = result["name"]  as? String
-//                            kc foto burdan facebookdan alınıyo linkin sonunu değiştirerek fotonun hangi boyutta olacağını ayarlayabiliriz
-//                            let facebookProfilePictureUrl = "https://graph.facebook.com/" + userId + "/picture?type=large"
-//                            
-//                                        if let fbpicUrl = NSURL(string: facebookProfilePictureUrl) {
-//                            
-//                                               if let data = NSData(contentsOfURL: fbpicUrl) {
-//                            
-//                        
-//                        
-//                                            let imageFile:PFFile = PFFile(data: data)!
-//                            
-//                                               //parse a burdan atıyor
-//                                                    PFUser.currentUser()?["image"] = imageFile
-//
-//                            
-//                        }
-                 //  }
-                
-             //      self.performSegueWithIdentifier("signUp", sender: self)
-        
-                
-      //  }
-        
-        
+    //        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name,public_profile,email,user_birthday,user_location"])
+    //              graphRequest.startWithCompletionHandler( {
+    //
+    //                    (connection, result, error) -> Void in
+    //
+    //                    if error != nil {
+    //
+    //                        print(error)
+    //
+    //                    } else if let result = result {
+    //
+    //                        //  var myToken = FBSDKAccessToken.currentAccessToken().tokenString
+    //                        //                  print(myToken)
+    //
+    //
+    //
+    //            if let error = error {
+    //
+    //                print(error)
+    //
+    //            } else {
+    //                print("uservar")
+    //
+    //
+    //                        }
+    //
+    //                }
+    //
+    //                })
+    //    }
+    //
     
-        override func viewDidAppear(animated: Bool) {
-        
+    //
+    //                if let user = user {
+    //
+    //                    var myToken = FBSDKAccessToken.currentAccessToken().tokenString
+    //                    print(myToken)
+    //                    // izinler burada belirleniyo, facebookda izin alabilceğin şeylerin listesi string olarak var
+    //                   let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name"])
+    //
+    //                    // Send request to Facebook
+    //                    graphRequest.startWithCompletionHandler {
+    //
+    //                        (connection, result, error) in
+    //
+    //                        if error != nil {
+    //                            // Some error checking here
+    //                        }
+    //                        else if let result = result as? [String:AnyObject] {
+    //
+    //                            // Access user data
+    //
+    //                            let userId = result["id"] as! String
+    //
+    //                            let PFUser.currentUser()?["name"] = result["name"]  as? String
+    //                            kc foto burdan facebookdan alınıyo linkin sonunu değiştirerek fotonun hangi boyutta olacağını ayarlayabiliriz
+    //                            let facebookProfilePictureUrl = "https://graph.facebook.com/" + userId + "/picture?type=large"
+    //
+    //                                        if let fbpicUrl = NSURL(string: facebookProfilePictureUrl) {
+    //
+    //                                               if let data = NSData(contentsOfURL: fbpicUrl) {
+    //
+    //
+    //
+    //                                            let imageFile:PFFile = PFFile(data: data)!
+    //
+    //                                               //parse a burdan atıyor
+    //                                                    PFUser.currentUser()?["image"] = imageFile
+    //
+    //
+    //                        }
+    //  }
+    
+    //      self.performSegueWithIdentifier("signUp", sender: self)
+    
+    
+    //  }
+    
+    
+    
+    override func viewDidAppear(animated: Bool) {
+        if(Molocate.isConnectedToNetwork()){
             if NSUserDefaults.standardUserDefaults().objectForKey("userToken") != nil {
                 userToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as! String
                 self.view.hidden = true
                 Molocate.getCurrentUser({ (data, response, error) in
                     dispatch_async(dispatch_get_main_queue()){
-                    self.performSegueWithIdentifier("login", sender: self)
+                        self.performSegueWithIdentifier("login", sender: self)
                         user = currentUser
                     }
                 })
-               
+                
             }
-       
+        }else{
+            displayAlert("Hata", message: "Internet bağlantınızı kontrol ediniz")
+        }
+        
         
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let screenHeight = screenSize.height
@@ -530,12 +542,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         _ = (screenHeight * 80)
         imageView.frame = CGRectMake((screenWidth / 2 ) - (screenHeight * 80), 10, (screenHeight  / 9) , (screenHeight  / 9))
         
-       
+        
         view.addSubview(imageView)
         username.delegate = self
         password.delegate = self
-      
-       // logoImage.frame.origin.y = (screenHeight * 80 ) / 450
+        
+        // logoImage.frame.origin.y = (screenHeight * 80 ) / 450
         username.frame.origin.y = (screenHeight * 135) / 450
         password.frame.origin.y = (screenHeight * 170) / 450
         email.frame.origin.y = (screenHeight * 205 ) / 450
@@ -563,63 +575,63 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         
         
         
-            //all frames
+        //all frames
         loginBut.layer.cornerRadius = 5
         loginBut.layer.borderWidth = 1
         loginBut.layer.borderColor = swiftColor.CGColor
-   
+        
         
         origin = self.view.frame.width
         frame = self.view.frame
         email.hidden = true
-       
+        
         if (FBSDKAccessToken.currentAccessToken() == nil) {
             print("Not loged in..")
         } else {
             print("Loged in...")
             
         }
-
-
+        
+        
         
         
     }
-
-        
     
-
+    
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-   
-
+    
+    
     override func viewWillAppear(animated: Bool) {
         scrollWidth = 3 * self.view.frame.size.width
         scrollHeight  = self.view.frame.size.height
         adjustViewLayout(UIScreen.mainScreen().bounds.size)
         // Do any additional setup after loading the view, typically from a nib.
         //print(scrollWidth)
-
+        
         
     }
     
-
-func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
     
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        
+        
+        if error == nil
+        {
+            print("login completed...")
+            
+        }
+        else
+        {
+            
+            print(error.localizedDescription)
+        }
+    }
     
-    if error == nil
-    {
-        print("login completed...")
-        
-    }
-    else
-    {
-        
-        print(error.localizedDescription)
-    }
-}
-
     func displayAlert(title: String, message: String) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
@@ -628,7 +640,7 @@ func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: F
         })))
         self.presentViewController(alert, animated: true, completion: nil)
     }
-
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let _ = touches.first {
             self.view.endEditing(true)   // ...
@@ -646,7 +658,7 @@ func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: F
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         adjustViewLayout(size)
     }
-
+    
     func adjustViewLayout(size: CGSize) {
         
         
@@ -667,8 +679,8 @@ func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: F
             break
         }
     }
-
-
+    
+    
 }
 
 extension UIColor {
