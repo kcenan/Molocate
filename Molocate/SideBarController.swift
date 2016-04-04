@@ -19,6 +19,7 @@ class SideBarController: UITableViewController {
         self.tableView.backgroundColor = swiftColor2
       
         tableView.contentInset = UIEdgeInsetsMake(30, 0, 0, 0);
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,6 +81,7 @@ class SideBarController: UITableViewController {
         
         } else {
         if indexPath.row == 2 {
+            (self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController as! NotificationsViewController).notificationArray.removeAll()
             self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController?.viewDidLoad()
         }
         }

@@ -727,15 +727,15 @@ public class Molocate {
         request.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
-             print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             let nsError = error
             do {
                 let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
-                print(result)
+                //print(result)
                 var notificationArray = [notifications]()
                 let array = result as! NSArray
                 for item in array {
-                    print(item)
+                    //print(item)
                     var notification = notifications()
                     notification.action = item ["action"] as! String
                     notification.owner =  item ["owner"] as! String

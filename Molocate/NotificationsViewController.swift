@@ -19,8 +19,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
         tableView.separatorColor = UIColor.blackColor()
+        
         Molocate.getNotifications(NSURL()) { (data, response, error) -> () in
-            
+            self.notificationArray.removeAll()
             dispatch_async(dispatch_get_main_queue()){
                 for item in data!{
                    self.notificationArray.append(item)
@@ -79,6 +80,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.backgroundColor = swiftColor
         if notificationArray[indexPath.row].action == "like" || notificationArray[indexPath.row].action == "comment" {
             activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
             activityIndicator.center = self.view.center
