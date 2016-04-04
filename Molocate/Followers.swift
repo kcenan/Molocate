@@ -20,7 +20,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     @IBOutlet var toolBar: UINavigationBar!
     
 
-    
+    var classUser = User()
     var users = [User]()
     var followings = [following]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
@@ -48,7 +48,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             self.TitleLabel.text = "Takipçi"
             self.TitleLabel.textColor = UIColor.whiteColor()
             self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
-            Molocate.getFollowers(user.username) { (data, response, error, count, next, previous) -> () in
+            Molocate.getFollowers(classUser.username) { (data, response, error, count, next, previous) -> () in
             
                 for thing in data{
                 self.users.append(thing)
@@ -62,7 +62,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                 self.TitleLabel.text = "Takip"
                 self.TitleLabel.textColor = UIColor.whiteColor()
                 self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
-            Molocate.getFollowings(user.username) { (data, response, error, count, next, previous) -> () in
+            Molocate.getFollowings(classUser.username) { (data, response, error, count, next, previous) -> () in
                 
                 for thing in data{
                     self.followings.append(thing)

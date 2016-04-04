@@ -13,6 +13,7 @@ import UIKit
 
 class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     //true ise kendi false başkası
+    var classUser = User()
     var who = false
     @IBOutlet var settings: UITableView!
     @IBOutlet var scrollView: UIScrollView!
@@ -81,6 +82,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         BVc.player1.stop()
         follewersclicked = true
         let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
+        controller.classUser = classUser
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
         self.view.addSubview(controller.view)
@@ -110,6 +112,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         BVc.player1.stop()
         follewersclicked = false
         let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
+        controller.classUser = classUser
         controller.view.frame = self.view.bounds;
         controller.willMoveToParentViewController(self)
         self.view.addSubview(controller.view)
@@ -130,7 +133,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         settings.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.width, self.view.frame.width)
         settings.layer.cornerRadius = 20
         
-
+        classUser = user
         profilePhoto.layer.borderWidth = 0.5
         profilePhoto.layer.masksToBounds = false
         profilePhoto.layer.borderColor = UIColor.grayColor().CGColor
