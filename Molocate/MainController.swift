@@ -535,6 +535,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 controller.username.text = user.username
                 controller.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
                 controller.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
+                controller.AVc.username = user.username
+                controller.BVc.username = user.username
                 choosedIndex = 1
                 self.activityIndicator.removeFromSuperview()
             }
