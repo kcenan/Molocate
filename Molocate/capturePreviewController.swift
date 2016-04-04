@@ -39,6 +39,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
 
     @IBOutlet var textField: UITextField!
     var categories = ["Eğlence","Yemek","Gezi","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
+   
     var videoLocation:locations!
     @IBOutlet var placeTable: UITableView!
     var taggedUsers = [String]()
@@ -233,6 +234,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     
     
 
+    @IBOutlet var share4s: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -244,7 +246,15 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         player.delegate = self
         self.player.playbackLoops = true
         videoLocation = locations()
-   
+        if is4s{
+            
+        } else {
+            self.share4s.hidden = true
+            self.share4s.enabled = false
+            self.share4s.tintColor = UIColor.clearColor()
+            
+            
+        }
 
         
         dispatch_async(dispatch_get_main_queue()) {
