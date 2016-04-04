@@ -90,10 +90,12 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         dateFormatter.dateFormat = "yyyy-MM-dd"
         datepicker.setValue(UIColor.blackColor(), forKeyPath: "textColor")
         var birthdaytext = user.birthday
+        if(birthdaytext != ""){
         let index = birthdaytext.startIndex.advancedBy(2)
         if(birthdaytext[index] == "/" ){
             let fullNameArr = birthdaytext.componentsSeparatedByString("/")
             birthdaytext =  fullNameArr[2] + "-" + fullNameArr[0] + "-"+fullNameArr[1]// First
+        }
         }
         datepicker.setDate( dateFormatter.dateFromString(birthdaytext)!, animated: true)
         //date pickerdan string al, max min value ata
