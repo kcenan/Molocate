@@ -125,14 +125,16 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         //print(users[indexPath.row].isFollowing)
         cell.myLabel1.hidden = true
         cell.myLabel1.enabled = false
-//        if(follewersclicked && user.username == currentUser.username && !users[indexPath.row].isFollowing){
-//         cell.myLabel1.hidden = false
-//         cell.myLabel1.tag = indexPath.row
-//         cell.myLabel1.addTarget(self, action: #selector(Followers.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-//          
-//        }else{
-//            cell.myLabel1.hidden = true
-//        }
+       
+        if(follewersclicked && user.username == currentUser.username && !users[indexPath.row].isFollowing){
+         cell.myLabel1.hidden = false
+         cell.myLabel1.enabled = true
+         cell.myLabel1.tag = indexPath.row
+         cell.myLabel1.addTarget(self, action: #selector(Followers.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        
+        }else{
+            cell.myLabel1.hidden = true
+       }
         return cell
 
     }
@@ -140,6 +142,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
         print("followa basıldı at index path: \(buttonRow) ")
+        currentUser.following_count += 1
         self.users[buttonRow].isFollowing = true
         var indexes = [NSIndexPath]()
         let index = NSIndexPath(forRow: buttonRow, inSection: 0)
@@ -214,7 +217,16 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     @IBAction func back(sender: AnyObject) {
          dispatch_async(dispatch_get_main_queue()) {
-       
+           
+            if let parentVC = self.parentViewController {
+                if let parentVC = parentVC as? profileOther{
+                    if(follewersclicked){
+                        parentVC.followersCount.setTitle(  "\(self.users.count)", forState: .Normal)
+                    }else{
+                         parentVC.followingsCount.setTitle("\(self.followings.count)", forState: .Normal)
+                    }
+                }
+            }
             self.willMoveToParentViewController(nil)
             self.view.removeFromSuperview()
             self.removeFromParentViewController()

@@ -42,14 +42,33 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                 FollowButton.image = UIImage(named: "unfollow")
                 user.isFollowing = true
                 Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
+                  currentUser.following_count += 1
+                 
                     print("follow"+data)
                 })
             } else {
                 FollowButton.image = UIImage(named: "follow")
                 user.isFollowing = false
                 Molocate.unfollow(user.username, completionHandler: { (data, response, error) -> () in
+                   currentUser.following_count -= 1
+                    if let parentVC = self.parentViewController {
+                        if let parentVC = parentVC as? Followers{
+                            Molocate.getFollowings(currentUser.username, completionHandler: { (data, response, error, count, next, previous) in
+                                print("Sucess")
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    parentVC.followings = data
+                                    parentVC.myTable.reloadData()
+                                }
+                                
+                                
+                            })
+                            
+                        }
+                    }
                     print("unfollow"+data)
                 })
+              
+
             }
             
         }

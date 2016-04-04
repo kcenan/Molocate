@@ -75,9 +75,9 @@ class SideBarController: UITableViewController {
         cell?.backgroundColor = swiftColor2
         if indexPath.row == 3 {
             Molocate.getCurrentUser({ (data, response, error) in
-                
             })
-          self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController?.viewDidLoad()
+            self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController?.viewDidLoad()
+        
         } else {
         if indexPath.row == 2 {
             self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController?.viewDidLoad()

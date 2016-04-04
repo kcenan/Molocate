@@ -43,13 +43,13 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             thePlace.is_following = 1
             followButton.image = UIImage(named: "unfollow");
             Molocate.followAPlace(thePlace.id) { (data, response, error) in
-                print(data)
+                currentUser.following_count += 1
             }
         }else{
-             followButton.image = UIImage(named: "follow");
+            followButton.image = UIImage(named: "follow");
             thePlace.is_following = 0
             Molocate.unfollowAPlace(thePlace.id) { (data, response, error) in
-                print(data)
+                currentUser.following_count -= 1
             }
         }
         
@@ -302,7 +302,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
         Molocate.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
-            //print(data)
+            currentUser.following_count += 1
         }
         pressedFollow = false
     }

@@ -233,12 +233,14 @@ public class Molocate {
                 var users: Array<User> = Array<User>()
                 
                 if(count != 0){
-                    //print(result["results"] )
+                    print(result["results"] )
                     for thing in result["results"] as! NSArray{
                         var user = User()
                         user.username = thing["username"] as! String
                         user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
-                        //user.isFollowing = thing["is_following"] as! Int == 0 ? false:true
+                        if(username == currentUser.username){
+                            user.isFollowing = thing["is_following"] as! Int == 0 ? false:true
+                        }
                         users.append(user)
                     }
                 }
@@ -269,7 +271,7 @@ public class Molocate {
             do {
                 
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                //print(result)
+                print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String

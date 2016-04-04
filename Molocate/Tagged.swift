@@ -383,7 +383,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
         Molocate.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
-            //print(data)
+            currentUser.following_count += 1
         }
         pressedFollow = false
     }
