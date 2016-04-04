@@ -661,6 +661,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         }
     }
     
+    
     func doubleTapped(sender: UITapGestureRecognizer) {
         let buttonRow = sender.view!.tag
         print("like a basıldı at index path: \(buttonRow) ")
