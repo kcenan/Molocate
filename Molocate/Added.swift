@@ -382,7 +382,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 }
             }
         }else{
-            
+              pressedLike = false
             
 //            self.videoArray[buttonRow].isLiked=0
 //            self.videoArray[buttonRow].likeCount-=1

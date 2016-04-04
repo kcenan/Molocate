@@ -626,7 +626,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 }
             }
         }else{
-            
+              pressedLike = false
             
 //            self.videoArray[buttonRow].isLiked=0
 //            self.videoArray[buttonRow].likeCount-=1
