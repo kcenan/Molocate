@@ -21,13 +21,13 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         tableView.separatorColor = UIColor.blackColor()
         Molocate.getNotifications(NSURL()) { (data, response, error) -> () in
             
-//            dispatch_async(dispatch_get_main_queue()){
-//                for item in data!{
-//                   self.notificationArray.append(item)
-//                   
-//                }
-//                self.tableView.reloadData()
-//            }
+            dispatch_async(dispatch_get_main_queue()){
+                for item in data!{
+                   self.notificationArray.append(item)
+                   
+                }
+                self.tableView.reloadData()
+            }
             
         }
         self.tabBarController?.tabBar.hidden = true
