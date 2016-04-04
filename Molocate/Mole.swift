@@ -23,7 +23,7 @@ struct videoInf{
     var taggedUsers = [String]()
     var thumbnailURL:NSURL = NSURL()
 }
-
+var is4s = false
 struct notifications{
     var owner:String = ""
     var date:String = ""

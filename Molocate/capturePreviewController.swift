@@ -11,7 +11,7 @@ var CaptionText = ""
 class capturePreviewController: UIViewController, UITextFieldDelegate, UITableViewDelegate ,UITableViewDataSource,UICollectionViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,PlayerDelegate {
     var categ:String!
     @IBOutlet var toolBar: UIToolbar!
-    var is4s = false
+    
         var caption: UIButton!
         var player:Player!
         var newRect:CGRect!
@@ -274,7 +274,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         caption.frame.origin.x = 0
         caption.frame.size.height = screenSize.height - 192 - screenSize.width
         if is4s {
-            caption.hidden = true
+            
         } else {
             caption.frame.origin.y = newRect.origin.y + screenSize.width
         }

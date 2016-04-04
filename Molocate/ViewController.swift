@@ -597,6 +597,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     override func viewWillAppear(animated: Bool) {
         scrollWidth = 3 * self.view.frame.size.width
         scrollHeight  = self.view.frame.size.height
+        adjustViewLayout(UIScreen.mainScreen().bounds.size)
         // Do any additional setup after loading the view, typically from a nib.
         //print(scrollWidth)
 
@@ -641,7 +642,31 @@ func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: F
         return true
         
     }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        adjustViewLayout(size)
+    }
 
+    func adjustViewLayout(size: CGSize) {
+        
+        
+        switch(size.width, size.height) {
+        case (480, 320):
+            break                        // iPhone 4S in landscape
+            
+        case (320, 480):
+            is4s = true                    // iPhone 4s pportrait
+            break
+        case (414, 736):                        // iPhone 6 Plus in portrait
+            
+            break
+        case (736, 414):                        // iphone 6 Plus in landscape
+            
+            break
+        default:
+            break
+        }
+    }
 
 
 }

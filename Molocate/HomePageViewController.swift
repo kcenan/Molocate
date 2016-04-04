@@ -188,16 +188,16 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 direction = 1
             }
             
-            var currentOffset = scrollView.contentOffset
-            var currentTime = NSDate().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
+            let currentOffset = scrollView.contentOffset
+            let currentTime = NSDate().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
             
-            var timeDiff = currentTime - lastOffsetCapture;
+            let timeDiff = currentTime - lastOffsetCapture;
             if(timeDiff > 0.1) {
-                var distance = currentOffset.y - lastOffset.y;
+                let distance = currentOffset.y - lastOffset.y;
                 //The multiply by 10, / 1000 isn't really necessary.......
-                var scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
+                let scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
                 
-                var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
+                let scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
                 if (scrollSpeed > 0.5) {
                     isScrollingFast = true
                     print("hızlı")
@@ -221,7 +221,65 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 lastOffset = currentOffset;
                 lastOffsetCapture = currentTime;
             }
-        
+            if is4s{
+                if (scrollView.contentOffset.y > 10) && (scrollView.contentOffset.y+scrollView.frame.height < scrollView.contentSize.height
+                    ) && !isScrollingFast
+                {
+                    let longest = scrollView.contentOffset.y + scrollView.frame.height
+                    if direction == 1 {
+                        ////print("down")
+                        let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
+                        ////print(cellap)
+                        let row = self.tableView.indexPathsForVisibleRows![0].row+1
+                        if cellap > 0 {
+                            
+                            if (row) % 2 == 1{
+                                //self.tableView.visibleCells[1].reloadInputViews()
+                                if self.player1.playbackState.description != "Playing" {
+                                    self.player2.stop()
+                                    self.player1.playFromBeginning()
+                                    print(self.tableView.indexPathsForVisibleRows![0].row)
+                                    ////print("player1")
+                                }
+                            }else{
+                                if self.player2.playbackState.description != "Playing"{
+                                    self.player1.stop()
+                                    self.player2.playFromBeginning()
+                                    ////print("player2")
+                                }
+                            }
+                        }
+                    }
+                        
+                        
+                    else {
+                        ////print("up")
+                        
+                        let cellap = longest - self.tableView.visibleCells[0].center.y-150-self.view.frame.width
+                        //print(cellap)
+                        let row = self.tableView.indexPathsForVisibleRows![0].row
+                        if cellap < 0 {
+                            
+                            if (row) % 2 == 1{
+                                
+                                if self.player1.playbackState.description != "Playing" {
+                                    self.player2.stop()
+                                    self.player1.playFromBeginning()
+                                    ////print("player1")
+                                }
+                            }else{
+                                if self.player2.playbackState.description != "Playing"{
+                                    self.player1.stop()
+                                    self.player2.playFromBeginning()
+                                    ////print("player2")
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                
+            } else {
             if (scrollView.contentOffset.y > 10) && (scrollView.contentOffset.y+scrollView.frame.height < scrollView.contentSize.height
             ) && !isScrollingFast
             {
@@ -280,6 +338,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
         
         
+        }
         }
     }
     
