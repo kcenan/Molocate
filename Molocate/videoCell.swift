@@ -39,7 +39,7 @@ class videoCell: UITableViewCell {
     var screenSize:CGRect!
     //var player: Videos!
     
-    
+    var cellthumbnail = UIImageView()
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:)")
@@ -179,6 +179,9 @@ class videoCell: UITableViewCell {
         }
         
         newRect = CGRectMake(0, 54, screenSize.width, screenSize.width)
+        cellthumbnail = UIImageView(frame: newRect)
+        contentView.layer.addSublayer(cellthumbnail.layer)
+        
         
     }
     func getStringHeight(mytext: String, fontSize: CGFloat, width: CGFloat)->CGFloat {

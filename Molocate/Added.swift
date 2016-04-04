@@ -141,7 +141,16 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
+            let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
+            if(thumbnailURL.absoluteString != ""){
+                cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
+                print("burda")
+            }else{
+                cell.cellthumbnail.image = UIImage(named: "Mole")!
+            }
+            
             var trueURL = NSURL()
+            if !isScrollingFast {
             if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
                 trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
             } else {
@@ -172,7 +181,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             if indexPath.row == 0 && on {
                 self.player2.playFromBeginning()
             }
-            
+            }
 
             return cell
         } else {

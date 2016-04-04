@@ -152,7 +152,41 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                             
                             task.resume()
                             
+                            let headers2 = ["content-type": "/*/", "content-disposition":"attachment;filename=molocate.png" ]
                             
+                            let thumbnailRequest = NSMutableURLRequest(URL: NSURL(string: baseUrl + "/video/api/upload_thumbnail/?video_id="+videoId)!, cachePolicy:.UseProtocolCachePolicy, timeoutInterval: 10.0)
+                            
+                            thumbnailRequest.HTTPMethod = "POST"
+                            thumbnailRequest.allHTTPHeaderFields = headers2
+                            let image = UIImageJPEGRepresentation(thumbnail, 1)
+                            thumbnailRequest.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
+                            thumbnailRequest.HTTPBody = image
+                            let thumbnailTask = NSURLSession.sharedSession().dataTaskWithRequest(thumbnailRequest){data, response, error  in
+                                //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                                
+                                let nsError = error;
+                                
+                                
+                                do {
+                                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                                    print(result)
+//                                    var urlString = ""
+//                                    if(result["result"] as! String=="success"){
+//                                        urlString = result["picture_url"] as! String
+//                                    }else{
+//                                        urlString = ""
+//                                    }
+                                    
+                                } catch{
+                                   
+                                    
+                                    print(nsError)
+                                }
+                                
+                            }
+                            
+                            thumbnailTask.resume();
+
                             
                             
                         } catch {

@@ -98,7 +98,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         }else{
             followButton.image = UIImage(named: "unfollow");
         }
-        if(user.profilePic.absoluteString != ""){
+        if(thePlace.picture_url.absoluteString != ""){
             profilePhoto.sd_setImageWithURL(thePlace.picture_url)
         }else{
             profilePhoto.image = UIImage(named: "pin")!
@@ -157,7 +157,17 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             let playtap = UITapGestureRecognizer(target: self, action:#selector(MainController.playTapped(_:) ));
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
+            
+            let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
+            if(thumbnailURL.absoluteString != ""){
+                cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
+                print("burda")
+            }else{
+                cell.cellthumbnail.image = UIImage(named: "Mole")!
+            }
+            
             var trueURL = NSURL()
+            if !isScrollingFast {
             if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
                 trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
             } else {
@@ -186,7 +196,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
                 cell.contentView.addSubview(self.player2.view)
             }
             
-
+            }
 //            }
             return cell
         }else{
@@ -447,7 +457,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             var scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
             
             var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
-            if (scrollSpeed > 5) {
+            if (scrollSpeed > 2) {
                 isScrollingFast = true
                 print("hızlı")
                 

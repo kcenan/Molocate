@@ -93,6 +93,8 @@ class oneVideo: UIViewController,PlayerDelegate {
         cell.contentView.addGestureRecognizer(tap)
         cell.contentView.tag = indexPath.row
         
+        
+        
         self.player.setUrl(theVideo.urlSta)
         
         self.player.view.frame = cell.newRect

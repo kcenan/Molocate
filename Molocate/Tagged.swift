@@ -136,7 +136,16 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
+            let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
+            if(thumbnailURL.absoluteString != ""){
+                cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
+                print("burda")
+            }else{
+                cell.cellthumbnail.image = UIImage(named: "Mole")!
+            }
+            
             var trueURL = NSURL()
+            if !isScrollingFast {
             if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
                 trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
             } else {
@@ -164,7 +173,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 self.player2.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player2.view)
             }
-            
+            }
             return cell
         }else{
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell

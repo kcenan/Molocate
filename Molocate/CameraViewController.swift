@@ -40,6 +40,7 @@ var videoId:String!
 var videoUrl:String!
 var tempAssetURL: NSURL!
 var audioAsset:AVAsset!
+var thumbnail = UIImage()
 typealias JSONParameters = [String: AnyObject]
 
 class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptureFileOutputRecordingDelegate{
@@ -686,11 +687,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 } catch _ {
                     
                 }
-            var thumbnail = UIImage()
+            
             let contentURL = NSURL(fileURLWithPath: videoPath!)
             let asset = AVAsset(URL: contentURL)
             let imageGenerator = AVAssetImageGenerator(asset: asset)
-            let time = CMTime(seconds: 1, preferredTimescale: 1)
+            let time = CMTime(seconds: 0, preferredTimescale: 1)
             
             do {
                 let imageRef = try imageGenerator.copyCGImageAtTime(time, actualTime: nil)

@@ -21,6 +21,7 @@ struct videoInf{
     var userpic: NSURL = NSURL()
     var dateStr: String = ""
     var taggedUsers = [String]()
+    var thumbnailURL:NSURL = NSURL()
 }
 
 struct notifications{
@@ -364,7 +365,8 @@ public class Molocate {
                     videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
                     videoStr.dateStr = item["date_str"] as! String
                     videoStr.taggedUsers = item["tagged_users"] as! [String]
-                
+                    
+                    videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
                     place.videoArray.append(videoStr)
                     
                     }
@@ -559,7 +561,8 @@ public class Molocate {
                     videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
                     videoStr.dateStr = item["date_str"] as! String
                     videoStr.taggedUsers = item["tagged_users"] as! [String]
-        
+                    
+                    videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
                     videoArray.append(videoStr)
                     
                 }
@@ -604,7 +607,8 @@ public class Molocate {
                     videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
                     videoStr.dateStr = item["date_str"] as! String
                     videoStr.taggedUsers = item["tagged_users"] as! [String]
-                    
+                
+                    videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
                 
                     
                 
@@ -695,6 +699,7 @@ public class Molocate {
                     videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
                     videoStr.dateStr = item["date_str"] as! String
                     videoStr.taggedUsers = item["tagged_users"] as! [String]
+                    videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
                     
                     videoArray.append(videoStr)
                     

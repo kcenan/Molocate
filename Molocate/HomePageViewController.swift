@@ -184,7 +184,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 var scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
                 
                 var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
-                if (scrollSpeed > 5) {
+                if (scrollSpeed > 2) {
                     isScrollingFast = true
                     print("hızlı")
                     
@@ -341,8 +341,16 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
+            let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
+            if(thumbnailURL.absoluteString != ""){
+                cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
+                print("burda")
+            }else{
+                cell.cellthumbnail.image = UIImage(named: "Mole")!
+            }
 
             var trueURL = NSURL()
+            if !isScrollingFast {
             if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
                 trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
             } else {
@@ -374,6 +382,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 //}
             
           //  }
+            }
             return cell
         }else{
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
