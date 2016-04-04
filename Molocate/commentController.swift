@@ -97,9 +97,9 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification2:"), name:UIKeyboardWillHideNotification, object: nil);
         //topConstraint.priority = 999
-        self.sendButton.layer.zPosition = 3
-        self.newComment.layer.zPosition = 2
-        self.tableView.layer.zPosition = 1
+//        self.sendButton.layer.zPosition = 3
+//        self.newComment.layer.zPosition = 2
+//        self.tableView.layer.zPosition = 1
         self.newComment.returnKeyType = .Done
         
         tableView.allowsSelection = false
