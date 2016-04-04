@@ -297,7 +297,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         
         //UIImagePNGRepresentation(photo.image!)
         
-        let imageData = UIImageJPEGRepresentation(photo.image!, 1)
+        let imageData = UIImageJPEGRepresentation(photo.image!, 0.5)
         activityIndicator.frame = sender.frame
         activityIndicator.center = sender.center
         sender.hidden = true

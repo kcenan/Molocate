@@ -168,6 +168,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             
             var trueURL = NSURL()
             if !isScrollingFast {
+                cell.hasPlayer = true
             if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
                 trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
             } else {
@@ -457,12 +458,23 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             var scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
             
             var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
-            if (scrollSpeed > 2) {
+            if (scrollSpeed > 0.5) {
                 isScrollingFast = true
                 print("hızlı")
                 
             } else {
                 isScrollingFast = false
+                var ipArray = [NSIndexPath]()
+                for item in self.tableView.indexPathsForVisibleRows!{
+                    let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+                    if !cell.hasPlayer {
+                        ipArray.append(item)
+                    }
+                }
+                if ipArray.count != 0 {
+                    self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+                }
+
                 
             }
             

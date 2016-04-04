@@ -158,7 +158,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                             
                             thumbnailRequest.HTTPMethod = "POST"
                             thumbnailRequest.allHTTPHeaderFields = headers2
-                            let image = UIImageJPEGRepresentation(thumbnail, 1)
+                            let image = UIImageJPEGRepresentation(thumbnail, 0.5)
                             thumbnailRequest.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
                             thumbnailRequest.HTTPBody = image
                             let thumbnailTask = NSURLSession.sharedSession().dataTaskWithRequest(thumbnailRequest){data, response, error  in
@@ -170,12 +170,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                                 do {
                                     let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
                                     print(result)
-//                                    var urlString = ""
-//                                    if(result["result"] as! String=="success"){
-//                                        urlString = result["picture_url"] as! String
-//                                    }else{
-//                                        urlString = ""
-//                                    }
+
                                     
                                 } catch{
                                    

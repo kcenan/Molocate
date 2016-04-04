@@ -700,7 +700,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 print(error)
                 
             }
-            print(thumbnail.description)
+           // print(thumbnail.description)
             self.performSegueWithIdentifier("capturePreview", sender: self)
             
           

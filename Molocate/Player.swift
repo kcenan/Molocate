@@ -480,12 +480,12 @@ internal class PlayerView: UIView {
 
     convenience init() {
         self.init(frame: CGRectZero)
-        self.playerLayer.backgroundColor = UIColor.blackColor().CGColor
+        //self.playerLayer.backgroundColor = UIColor.blackColor().CGColor
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.playerLayer.backgroundColor = UIColor.blackColor().CGColor
+        //self.playerLayer.backgroundColor = UIColor.blackColor().CGColor
     }
 
     required init?(coder aDecoder: NSCoder) {

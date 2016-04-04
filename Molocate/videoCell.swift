@@ -38,7 +38,7 @@ class videoCell: UITableViewCell {
     let labelWidth: CGFloat = 140
     var screenSize:CGRect!
     //var player: Videos!
-    
+    var hasPlayer = false
     var cellthumbnail = UIImageView()
     
     required init(coder aDecoder: NSCoder) {
