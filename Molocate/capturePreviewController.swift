@@ -86,6 +86,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                         let videoId = result["video_id"] as! String
                         let videoUrl = result["video_url"] as! String
                         //print(self.videoLocation)
+                        
+                        CaptionText = CaptionText.componentsSeparatedByString("@")[0]
+                        
                         let json = [
                             "video_id": videoId,
                             "video_url": videoUrl,
