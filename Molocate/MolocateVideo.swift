@@ -16,7 +16,6 @@ struct MoleVideoInformation{
     var locationID:String = ""
     var caption:String = ""
     var urlSta:NSURL = NSURL()
-    var urlTemp:NSURL = NSURL()
     var likeCount = 0
     var commentCount = 0
     var comments = [String]()
@@ -53,17 +52,18 @@ public class MolocateVideo {
             
             do {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
                 //print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
-                
+                let commentdata = result["results"] as!  NSArray
                 var comments: Array<MoleVideoComment> = Array<MoleVideoComment>()
                 
                 if(count != 0){
-                    for thing in result["results"] as! NSArray{
+                    for (var i = 0 ; i < commentdata.count ; i+=1){
                         var thecomment = MoleVideoComment()
+                        let thing = commentdata[i] as! [String:AnyObject]
                         thecomment.username = thing["username"] as! String
                         thecomment.photo = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
                         thecomment.text = thing["comment"] as! String
@@ -94,8 +94,10 @@ public class MolocateVideo {
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
             let nsError = error
             do {
-                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers ) as! [String: AnyObject]
+                
                 let videos = result["results"] as! NSArray
+        
                 if (result["next"] != nil){
                     if result["next"] is NSNull {
                         print("next is null")
@@ -109,23 +111,25 @@ public class MolocateVideo {
                 
                 var videoArray = [MoleVideoInformation]()
                 
-                for item in videos {
-                    //print(item)
+                for (var i = 0 ; i < videos.count ; i+=1){
+                    let item = videos[i] as! [String:AnyObject]
+                    let owner_user = item["owner_user"] as! [String:AnyObject]
+                    let place_taken = item["place_taken"] as! [String:String]
+                    
                     var videoStr = MoleVideoInformation()
                     //print(item)
                     videoStr.id = item["video_id"] as! String
                     videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
-                    videoStr.username = item["owner_user"]!!["username"] as! String
-                    videoStr.location = item["place_taken"]!!["name"] as! String
-                    videoStr.locationID = item["place_taken"]!!["place_id"] as! String
+                    videoStr.username = owner_user["username"] as! String
+                    videoStr.location = place_taken["name"]!
+                    videoStr.locationID = place_taken["place_id"]!
                     videoStr.caption = item["caption"] as! String
                     videoStr.likeCount = item["like_count"] as! Int
                     videoStr.commentCount = item["comment_count"] as! Int
                     videoStr.category = item["category"] as! String
                     videoStr.isLiked = item["is_liked"] as! Int
-                    let jsonObject = item["owner_user"]
-                    videoStr.isFollowing = jsonObject!!["is_following"] as! Int
-                    videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
+                    videoStr.isFollowing = owner_user["is_following"] as! Int
+                    videoStr.userpic = owner_user["picture_url"] is NSNull ? NSURL():NSURL(string: owner_user["picture_url"] as! String)!
                     videoStr.dateStr = item["date_str"] as! String
                     videoStr.taggedUsers = item["tagged_users"] as! [String]
                     
@@ -160,16 +164,17 @@ public class MolocateVideo {
             
             do {
                 
-                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                //print(result)
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
+            
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
-                
+                let likers = result["results"] as! NSArray
                 var users: Array<MoleUser> = Array<MoleUser>()
                 
                 if(count != 0){
-                    for thing in result["results"] as! NSArray{
+                     for (var i = 0 ; i < likers.count ; i+=1){
+                        let thing = likers[i] as! [String:AnyObject]
                         var user = MoleUser()
                         user.username = thing["username"] as! String
                         user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
@@ -214,8 +219,8 @@ public class MolocateVideo {
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
             let nsError = error
             do {
-                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
-                //print(result)
+                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! [String:AnyObject]
+             
                 switch(type){
                 case "user":
                     if (result["next"] != nil){
@@ -245,34 +250,34 @@ public class MolocateVideo {
                     break
                 }
                 
+                
                 let videos = result["results"] as! NSArray
-                
-                
                 var videoArray = [MoleVideoInformation]()
                 
-                for item in videos {
-                    //print(item)
+                for (var i = 0 ; i < videos.count ; i+=1){
+                    let item = videos[i] as! [String:AnyObject]
+                    let owner_user = item["owner_user"] as! [String:AnyObject]
+                    let place_taken = item["place_taken"] as! [String:String]
+                    
                     var videoStr = MoleVideoInformation()
                     //print(item)
                     videoStr.id = item["video_id"] as! String
                     videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
-                    videoStr.username = item["owner_user"]!!["username"] as! String
-                    videoStr.location = item["place_taken"]!!["name"] as! String
-                    videoStr.locationID = item["place_taken"]!!["place_id"] as! String
+                    videoStr.username = owner_user["username"] as! String
+                    videoStr.location = place_taken["name"]!
+                    videoStr.locationID = place_taken["place_id"]!
                     videoStr.caption = item["caption"] as! String
                     videoStr.likeCount = item["like_count"] as! Int
                     videoStr.commentCount = item["comment_count"] as! Int
                     videoStr.category = item["category"] as! String
                     videoStr.isLiked = item["is_liked"] as! Int
-                    let jsonObject = item["owner_user"]
-                    videoStr.isFollowing = jsonObject!!["is_following"] as! Int
-                    videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
+                    videoStr.isFollowing = owner_user["is_following"] as! Int
+                    videoStr.userpic = owner_user["picture_url"] is NSNull ? NSURL():NSURL(string: owner_user["picture_url"] as! String)!
                     videoStr.dateStr = item["date_str"] as! String
                     videoStr.taggedUsers = item["tagged_users"] as! [String]
+                    
                     videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
-                    
                     videoArray.append(videoStr)
-                    
                 }
                 completionHandler(data: videoArray, response: response, error: nsError)
             }catch{
@@ -295,24 +300,25 @@ public class MolocateVideo {
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
             let nsError = error
             do {
-                let item = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+                let item = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as![String: AnyObject]
                 
                 //print(item)
                 var videoStr = MoleVideoInformation()
-                //print(item)
+                let owner_user = item["owner_user"] as! [String:AnyObject]
+                let placeTaken = item["place_taken"] as! [String:String]
+                
                 videoStr.id = item["video_id"] as! String
                 videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
-                videoStr.username = item["owner_user"]!!["username"] as! String
-                videoStr.location = item["place_taken"]!!["name"] as! String
-                videoStr.locationID = item["place_taken"]!!["place_id"] as! String
+                videoStr.username = owner_user["username"] as! String
+                videoStr.location = placeTaken["name"]!
+                videoStr.locationID = placeTaken["place_id"]!
                 videoStr.caption = item["caption"] as! String
                 videoStr.likeCount = item["like_count"] as! Int
                 videoStr.commentCount = item["comment_count"] as! Int
                 videoStr.category = item["category"] as! String
                 videoStr.isLiked = item["is_liked"] as! Int
-                let jsonObject = item["owner_user"]
-                videoStr.isFollowing = jsonObject!!["is_following"] as! Int
-                videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
+                videoStr.isFollowing = owner_user["is_following"] as! Int
+                videoStr.userpic = owner_user["picture_url"] is NSNull ? NSURL():NSURL(string: owner_user["picture_url"] as! String)!
                 videoStr.dateStr = item["date_str"] as! String
                 videoStr.taggedUsers = item["tagged_users"] as! [String]
                 

@@ -27,13 +27,14 @@ public class MolocateNotifications{
             print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             let nsError = error
             do {
-                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
-                //print(result)
+                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSArray
+    
                 var notificationArray = [MoleUserNotifications]()
-                let array = result as! NSArray
-                for item in array {
-                    //print(item)
+                
+                for (var i = 0 ; i < result.count ; i+=1 ) {
+                    let item = result[i] as![String:AnyObject]
                     var notification = MoleUserNotifications()
+                    
                     notification.action = item ["action"] as! String
                     notification.owner =  item ["owner"] as! String
                     notification.actor = item["actor"] as! String

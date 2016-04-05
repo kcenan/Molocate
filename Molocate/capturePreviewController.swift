@@ -301,7 +301,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             caption.setTitle(CaptionText, forState: .Normal)
         }
         caption.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        caption.addTarget(self, action: "pressedCaption:", forControlEvents: UIControlEvents.TouchUpInside)
+        caption.addTarget(self, action: #selector(capturePreviewController.pressedCaption(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         caption.contentHorizontalAlignment = .Left
         self.view.addSubview(caption)
 
@@ -328,9 +328,6 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
     
     func pressedCaption(sender: UIButton) {
         
-        //bu ne lan 
-        
-        CaptionText == caption.titleLabel?.text
         let controller:tagComment = self.storyboard!.instantiateViewControllerWithIdentifier("tagComment") as! tagComment
         //controller.ANYPROPERTY=THEVALUE // If you want to pass value
         controller.view.frame = self.view.bounds;
