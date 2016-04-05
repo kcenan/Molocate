@@ -19,6 +19,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     var isSearching = false
     var direction = 0
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    var refreshControl:UIRefreshControl!
     @IBOutlet var LocationTitle: UILabel!
 
     @IBOutlet var videosTitle: UILabel!
@@ -68,7 +69,6 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     var pressedFollow: Bool = false
     var refreshing: Bool = false
     let screenSize: CGRect = UIScreen.mainScreen().bounds
-    var refreshControl:UIRefreshControl!
     
     @IBOutlet var profilePhoto: UIImageView!
     
@@ -92,6 +92,11 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         self.player2 = Player()
         self.player2.delegate = self
         self.player2.playbackLoops = true
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(refreshControl)
         
         if(thePlace.is_following==0 ){
             
@@ -161,7 +166,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
                 cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
-                print("burda")
+                //print("burda")
             }else{
                 cell.cellthumbnail.image = UIImage(named: "Mole")!
             }
@@ -226,7 +231,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     
     func playTapped(sender: UITapGestureRecognizer) {
         let row = sender.view!.tag
-        print("like a basıldı at index path: \(row) ")
+        //print("like a basıldı at index path: \(row) ")
         if (row) % 2 == 1{
             
             if self.player1.playbackState.description != "Playing" {
@@ -248,7 +253,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
-        print("username e basıldı at index path: \(buttonRow)")
+        //print("username e basıldı at index path: \(buttonRow)")
         player1.stop()
         player2.stop()
         Molocate.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
@@ -275,8 +280,8 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         let buttonRow = sender.tag
         player1.stop()
         player2.stop()
-        print("place e basıldı at index path: \(buttonRow) ")
-        print("================================" )
+        //print("place e basıldı at index path: \(buttonRow) ")
+        //print("================================" )
         Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 thePlace = data
@@ -294,7 +299,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
         pressedFollow = true
-        print("followa basıldı at index path: \(buttonRow) ")
+        //print("followa basıldı at index path: \(buttonRow) ")
         self.videoArray[buttonRow].isFollowing = 1
         var indexes = [NSIndexPath]()
         let index = NSIndexPath(forRow: buttonRow, inSection: 0)
@@ -322,7 +327,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     }
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
-        print("like a basıldı at index path: \(buttonRow) ")
+        //print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
         var indexes = [NSIndexPath]()
@@ -337,7 +342,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             
             Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
-                    print(data)
+                    //print(data)
                 }
             }
         }else{
@@ -350,7 +355,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             
             Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
-                    print(data)
+                    //print(data)
                 }
             }
         }
@@ -373,7 +378,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
                 self.addChildViewController(controller)
                 controller.didMoveToParentViewController(self)
                 
-                print("comment e basıldı at index path: \(buttonRow)")
+                //print("comment e basıldı at index path: \(buttonRow)")
             }
         }
         
@@ -387,9 +392,9 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         player1.stop()
         player2.stop()
         Molocate.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
-            print(data)
+            //print(data)
         }
-        print("pressedReport at index path: \(buttonRow)")
+        //print("pressedReport at index path: \(buttonRow)")
         let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
         let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
@@ -400,7 +405,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         
         let reportVideo: UIAlertAction = UIAlertAction(title: "Report the Video", style: .Default) { action -> Void in
             
-            print("reported")
+            //print("reported")
         }
         actionSheetController.addAction(reportVideo)
         
@@ -416,6 +421,32 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         player2.stop()
         player2.removeFromParentViewController()
     }
+    
+    func refresh(sender:AnyObject){
+        
+        
+        refreshing = true
+        let url = NSURL(string: baseUrl  + "video/api/news_feed/?category=all")
+        self.player1.stop()
+        self.player2.stop()
+        
+        SDImageCache.sharedImageCache().clearMemory()
+        
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        
+        Molocate.getPlace(thePlace.id) { (data, response, error) -> () in
+            dispatch_async(dispatch_get_main_queue()){
+                self.videoArray.removeAll()
+                self.videoArray = thePlace.videoArray
+                self.tableView.reloadData()
+                self.refreshControl.endRefreshing()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            }
+        }
+        
+    }
+    
+    
     
     func playerReady(player: Player) {
     }
@@ -463,7 +494,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
             if (scrollSpeed > 0.5) {
                 isScrollingFast = true
-                print("hızlı")
+                //print("hızlı")
                 
             } else {
                 isScrollingFast = false
@@ -490,9 +521,9 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         {
             let longest = scrollView.contentOffset.y + scrollView.frame.height
             if direction == 1 {
-                ////print("down")
+                //////print("down")
                 let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
-                ////print(cellap)
+                //////print(cellap)
                 let row = self.tableView.indexPathsForVisibleRows![0].row+1
                 if cellap > 0 {
                     
@@ -501,14 +532,14 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
                         if self.player1.playbackState.description != "Playing" {
                             self.player2.stop()
                             self.player1.playFromBeginning()
-                            print(self.tableView.indexPathsForVisibleRows![0].row)
-                            ////print("player1")
+                            //print(self.tableView.indexPathsForVisibleRows![0].row)
+                            //////print("player1")
                         }
                     }else{
                         if self.player2.playbackState.description != "Playing"{
                             self.player1.stop()
                             self.player2.playFromBeginning()
-                            ////print("player2")
+                            //////print("player2")
                         }
                     }
                 }
@@ -516,10 +547,10 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
                 
                 
             else {
-                ////print("up")
+                //////print("up")
                 
                 let cellap = longest - self.tableView.visibleCells[0].center.y-150-self.view.frame.width
-                //print(cellap)
+                ////print(cellap)
                 let row = self.tableView.indexPathsForVisibleRows![0].row
                 if cellap < 0 {
                     
@@ -528,13 +559,13 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
                         if self.player1.playbackState.description != "Playing" {
                             self.player2.stop()
                             self.player1.playFromBeginning()
-                            ////print("player1")
+                            //////print("player1")
                         }
                     }else{
                         if self.player2.playbackState.description != "Playing"{
                             self.player1.stop()
                             self.player2.playFromBeginning()
-                            ////print("player2")
+                            //////print("player2")
                         }
                     }
                 }
@@ -549,7 +580,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     
     func doubleTapped(sender: UITapGestureRecognizer) {
         let buttonRow = sender.view!.tag
-        print("like a basıldı at index path: \(buttonRow) ")
+        //print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
         var indexes = [NSIndexPath]()
@@ -565,7 +596,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             
             Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
-                    print(data)
+                    //print(data)
                 }
             }
         }else{
@@ -578,7 +609,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
 //            
 //            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
 //                dispatch_async(dispatch_get_main_queue()){
-//                    print(data)
+//                    //print(data)
 //                }
 //            }
         }

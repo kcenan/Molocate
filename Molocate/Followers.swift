@@ -122,7 +122,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         }
         cell.myButton1.tag = indexPath.row
         cell.fotoButton.tag = indexPath.row
-        //print(users[indexPath.row].isFollowing)
+        ////print(users[indexPath.row].isFollowing)
         cell.myLabel1.hidden = true
         cell.myLabel1.enabled = false
        
@@ -141,7 +141,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
-        print("followa basıldı at index path: \(buttonRow) ")
+        //print("followa basıldı at index path: \(buttonRow) ")
         currentUser.following_count += 1
         self.users[buttonRow].isFollowing = true
         var indexes = [NSIndexPath]()
@@ -150,13 +150,13 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         self.myTable.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
         Molocate.follow(users[buttonRow].username){ (data, response, error) -> () in
-            print(data)
+            //print(data)
         }
         
     }
     
     func pressedProfile(sender: UIButton) {
-        //print("pressedProfile")
+        ////print("pressedProfile")
         let buttonRow = sender.tag
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center
@@ -189,8 +189,8 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     func pressedPlace(sender: UIButton) {
         let buttonRow = sender.tag
-//        print("place e basıldı at index path: \(buttonRow) ")
-//        print("================================" )
+//        //print("place e basıldı at index path: \(buttonRow) ")
+//        //print("================================" )
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true

@@ -14,7 +14,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     var notificationArray = [notifications]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()

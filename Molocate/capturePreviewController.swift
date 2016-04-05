@@ -63,7 +63,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             "content-disposition": "attachment;filename=deneme.mp4",
             "cache-control": "no-cache"
         ]
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/upload/")!,
+        let request = NSMutableURLRequest(URL: NSURL(string: baseUrl + "video/upload/")!,
             cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData,
             timeoutInterval: 10.0)
         request.HTTPMethod = "POST"
@@ -116,7 +116,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                            // print(jsonData)
                            // create post request
                            
-                            let request = NSMutableURLRequest(URL: NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/update/")!,
+                            let request = NSMutableURLRequest(URL: NSURL(string: baseUrl + "video/update/")!,
                                 cachePolicy: .UseProtocolCachePolicy,
                                 timeoutInterval: 10.0)
                             request.HTTPMethod = "POST"
@@ -411,6 +411,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.hidden = false
         autocompleteUrls = placesArray
         placeTable.reloadData()
+        textField.text = ""
     }
     
     func searchAutocompleteEntriesWithSubstring(substring: String)

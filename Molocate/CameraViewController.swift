@@ -276,6 +276,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
     
     override func viewDidAppear(animated: Bool) {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        location = locationManager.location
 
 
         
@@ -450,6 +455,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         dispatch_async( dispatch_get_main_queue()) {
             self.recordButton.enabled = true
             //self.recordButton.setTitle(NSLocalizedString("Stop", comment: "Recording button stop title"), forState: .Normal)
+
         }
     }
     
@@ -468,7 +474,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         
         
-
+        if self.progress > 0.2 {
+            self.bottomToolbar.layer.opacity = 1
+        }
         
         var success = true
         

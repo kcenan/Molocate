@@ -169,7 +169,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                 let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
                 
                 // create post request
-                let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/account/facebook_login/")!
+                let url = NSURL(string: baseUrl + "account/facebook_login/")!
                 let request = NSMutableURLRequest(URL: url)
                 request.HTTPMethod = "POST"
                 

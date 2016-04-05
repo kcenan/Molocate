@@ -103,7 +103,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                         // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                         
                         // create post request
-                        let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/api-token-auth/")!
+                        let url = NSURL(string: baseUrl + "api-token-auth/")!
                         let request = NSMutableURLRequest(URL: url)
                         request.HTTPMethod = "POST"
                         
@@ -180,7 +180,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                         // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                         
                         // create post request
-                        let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/account/register/")!
+                        let url = NSURL(string: baseUrl + "account/register/")!
                         let request = NSMutableURLRequest(URL: url)
                         request.HTTPMethod = "POST"
                         
@@ -535,7 +535,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         super.viewDidLoad()
         let screenHeight = screenSize.height
         let screenWidth = screenSize.width
-        
+        loginBut.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).CGColor
+        loginBut.layer.shadowOffset = CGSizeMake(0.0, 0.7)
+        loginBut.layer.shadowOpacity = 1.0
+        loginBut.layer.shadowRadius = 1.0
+        loginBut.layer.masksToBounds = false
+        loginBut.layer.cornerRadius = 4.0
         let imageName = "Logo.png"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)

@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
         SDImageCache.sharedImageCache().clearMemory()
         SDImageCache.sharedImageCache().clearDisk()
-        SDImageCache.sharedImageCache().maxMemoryCountLimit = 20
+        SDImageCache.sharedImageCache().maxMemoryCountLimit = 40
         
         
         // [Optional] Track statistics around application opens.

@@ -45,7 +45,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                 Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
                   currentUser.following_count += 1
                  
-                    print("follow"+data)
+                    //print("follow"+data)
                 })
             } else {
                 FollowButton.image = UIImage(named: "follow")
@@ -55,7 +55,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                     if let parentVC = self.parentViewController {
                         if let parentVC = parentVC as? Followers{
                             Molocate.getFollowings(currentUser.username, completionHandler: { (data, response, error, count, next, previous) in
-                                print("Sucess")
+                                //print("Sucess")
                                 dispatch_async(dispatch_get_main_queue()) {
                                     parentVC.followings = data
                                     parentVC.myTable.reloadData()
@@ -66,7 +66,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                             
                         }
                     }
-                    print("unfollow"+data)
+                    //print("unfollow"+data)
                 })
               
 
@@ -162,9 +162,9 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
 
         //       Molocate.follow("kcenan4") { (data, response, error) -> () in
         //
-        //            print(data)
+        //            //print(data)
         //            Molocate.getFollowings(currentUser.username) { (data, response, error, count, next, previous) -> () in
-        //                data[0].printUser()
+        //                data[0].//printUser()
         //            }
         //        }
         //
@@ -184,7 +184,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         dispatch_async(dispatch_get_main_queue()) {
         self.taggedButton.setTitle("@ETİKET(\(user.tag_count))", forState: .Normal)
         self.addedButton.setTitle("▶︎GÖNDERİ(\(user.post_count))", forState: .Normal)
-        //print(user)
+        ////print(user)
         }
         
         if who == true{
@@ -298,7 +298,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        print(scrollView.contentOffset.x)
+        //print(scrollView.contentOffset.x)
         
     }
     
@@ -334,7 +334,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             }
         }
         if indexPath.row == 2 {
-            print("log out yapılacak")
+            //print("log out yapılacak")
             sideClicked = false
             profileOn = 0
             category = "All"
@@ -398,12 +398,12 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     func switchValueDidChange(sender:UISwitch!)
     {
         if (sender.on == true){
-            print("on")
+            //print("on")
             
             
         }
         else{
-            print("off")
+            //print("off")
         }
     }
     func showTable(){

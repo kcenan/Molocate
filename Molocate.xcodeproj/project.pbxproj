@@ -100,8 +100,6 @@
 		C6DA6BE61C43389800E24392 /* elmander.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C6DA6BE51C43389800E24392 /* elmander.jpg */; };
 		C6E074361C8D356F00C79299 /* balloon.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E074301C8D356F00C79299 /* balloon.png */; };
 		C6E34D4F1CADE86D00C7306A /* Dikdörtgen 3.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E34D4E1CADE86D00C7306A /* Dikdörtgen 3.png */; };
-		C6E34D541CAECD1D00C7306A /* Menu Filled-32.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E34D521CAECD1D00C7306A /* Menu Filled-32.png */; };
-		C6E34D551CAECD1D00C7306A /* Camera Filled-32.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E34D531CAECD1D00C7306A /* Camera Filled-32.png */; };
 		C6E53DC31C8A9C4E00379C31 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E53DC21C8A9C4E00379C31 /* Logo.png */; };
 		C6E86EAF1CB0E68E00203513 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6E86EAE1CB0E68D00203513 /* Launch Screen.storyboard */; };
 		C6F7B2651C134FAF0062E408 /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7B2641C134FAF0062E408 /* Tagged.swift */; };
@@ -234,8 +232,6 @@
 		C6DA6BE51C43389800E24392 /* elmander.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elmander.jpg; sourceTree = "<group>"; };
 		C6E074301C8D356F00C79299 /* balloon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = balloon.png; sourceTree = "<group>"; };
 		C6E34D4E1CADE86D00C7306A /* Dikdörtgen 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dikdörtgen 3.png"; sourceTree = "<group>"; };
-		C6E34D521CAECD1D00C7306A /* Menu Filled-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Menu Filled-32.png"; sourceTree = "<group>"; };
-		C6E34D531CAECD1D00C7306A /* Camera Filled-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera Filled-32.png"; sourceTree = "<group>"; };
 		C6E53DC21C8A9C4E00379C31 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		C6E86EAE1CB0E68D00203513 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C6F7B2641C134FAF0062E408 /* Tagged.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tagged.swift; sourceTree = "<group>"; };
@@ -333,8 +329,6 @@
 				C6F9F5501C12574500E62856 /* capturePreviewController.swift */,
 				C6917F911BFA60B700CA501A /* CameraViewController.swift */,
 				C6F9B5C71C80DD9300C7E9FC /* HomePageViewController.swift */,
-				C6E34D521CAECD1D00C7306A /* Menu Filled-32.png */,
-				C6E34D531CAECD1D00C7306A /* Camera Filled-32.png */,
 				C6F9B5C91C80DDF400C7E9FC /* NotificationsViewController.swift */,
 				C609053B1C48145700614C7F /* SideBarController.swift */,
 			);
@@ -682,11 +676,9 @@
 				C6E86EAF1CB0E68E00203513 /* Launch Screen.storyboard in Resources */,
 				C6537F591CAD64F9005EE0BA /* Menunew.png in Resources */,
 				C69B82471CA10033008658CF /* Menu-100.png in Resources */,
-				C6E34D541CAECD1D00C7306A /* Menu Filled-32.png in Resources */,
 				C6F7B26B1C1351A20062E408 /* Added.xib in Resources */,
 				C61FDAB51BFBD393007B940E /* CameraViewController.xib in Resources */,
 				C69B82441CA0FF11008658CF /* Like.png in Resources */,
-				C6E34D551CAECD1D00C7306A /* Camera Filled-32.png in Resources */,
 				C6C5DA541C95297300DC16EF /* three.png in Resources */,
 				C6C5DA4C1C951B6F00DC16EF /* leftarrow.png in Resources */,
 				C6E074361C8D356F00C79299 /* balloon.png in Resources */,
@@ -944,7 +936,7 @@
 			baseConfigurationReference = 30E8D7C448993011BA2B8851 /* Pods-Molocate.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Kagan Cenan (573682DC5D)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -966,7 +958,7 @@
 			baseConfigurationReference = 85240C29B79988CE027A1541 /* Pods-Molocate.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Kagan Cenan (573682DC5D)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
