@@ -276,12 +276,13 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
     
     override func viewDidAppear(animated: Bool) {
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        location = locationManager.location
-
+        dispatch_async(dispatch_get_main_queue()){
+        self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+        self.location = self.locationManager.location
+        }
 
         
         
@@ -300,13 +301,15 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 
             case .CameraNotAuthorized:
                 dispatch_async(dispatch_get_main_queue()){
-                    let message = NSLocalizedString("AVCam doesn't have permission to use the camera, please change privacy settings", comment: "Alert message when the user has denied access to the camera" )
-                    let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    let message = NSLocalizedString("Molocate'in kamera kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
+                    let alertController = UIAlertController(title: "Molocate Kamera", message: message, preferredStyle: UIAlertControllerStyle.Alert)
                     let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
                     alertController.addAction(cancelAction)
                     // Provide quick access to Settings.
-                    let settingsAction = UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
+                    let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
                         UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                        
                     }
                     alertController.addAction(settingsAction)
                     self.presentViewController(alertController, animated: true, completion: nil)

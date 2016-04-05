@@ -214,12 +214,14 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         cell.username.contentHorizontalAlignment = .Left
         cell.username.addTarget(self, action: #selector(commentController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside )
         cell.profilePhoto.addTarget(self, action: #selector(commentController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside )
+        cell.username.tag = indexPath.row
         
         cell.profilePhoto.layer.borderWidth = 0.1
         cell.profilePhoto.layer.masksToBounds = false
         cell.profilePhoto.layer.borderColor = UIColor.whiteColor().CGColor
         cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
         cell.profilePhoto.clipsToBounds = true
+        cell.profilePhoto.tag = indexPath.row
         
         if(comments[indexPath.row].photo.absoluteString != ""){
             cell.profilePhoto.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:

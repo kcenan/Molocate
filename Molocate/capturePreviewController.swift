@@ -411,7 +411,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         placeTable.hidden = false
         autocompleteUrls = placesArray
         placeTable.reloadData()
+        dispatch_async(dispatch_get_main_queue()){
         textField.text = ""
+        }
     }
     
     func searchAutocompleteEntriesWithSubstring(substring: String)

@@ -76,7 +76,8 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         
         cell.username.setTitle("\(self.users[indexPath.row].username)", forState: .Normal)
         cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        
+        cell.username.tag = indexPath.row
+        cell.username.tintColor = swiftColor
         if(!users[indexPath.row].isFollowing && users[indexPath.row].username != currentUser.username){
             
         }else{
@@ -87,7 +88,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         cell.profileImage.layer.borderColor = UIColor.whiteColor().CGColor
         cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height/2
         cell.profileImage.clipsToBounds = true
-        
+        cell.profileImage.tag = indexPath.row
         
         if(users[indexPath.row].profilePic.absoluteString != ""){
             cell.profileImage.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
