@@ -87,6 +87,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         toolbar.barTintColor = swiftColor
         toolbar.translucent = false
         toolbar.clipsToBounds = true
+        placesArray.removeAll()
         
         bottomToolbar.barTintColor = swiftColor
         bottomToolbar.translucent = false

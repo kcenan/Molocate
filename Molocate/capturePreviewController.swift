@@ -503,7 +503,8 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         }
         cleanup()
         self.performSegueWithIdentifier("backToCamera", sender: self)
-        placesArray.removeAll()
+       
+            
 
         }
         
@@ -568,7 +569,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
             }
             cleanup()
             self.performSegueWithIdentifier("backToCamera", sender: self)
-            placesArray.removeAll()
+            
             
         }
     }

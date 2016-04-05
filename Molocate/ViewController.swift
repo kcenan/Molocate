@@ -513,8 +513,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     override func viewDidAppear(animated: Bool) {
         if(MolocateDevice.isConnectedToNetwork()){
-            if NSUserDefaults.standardUserDefaults().objectForKey("MoleUserToken") != nil {
-                MoleUserToken = NSUserDefaults.standardUserDefaults().objectForKey("MoleUserToken") as! String
+            if NSUserDefaults.standardUserDefaults().objectForKey("userToken") != nil {
+                MoleUserToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as! String
                 self.view.hidden = true
                 MolocateAccount.getCurrentUser({ (data, response, error) in
                     dispatch_async(dispatch_get_main_queue()){
