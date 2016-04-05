@@ -13,6 +13,7 @@ import UIKit
 
 class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     //true ise kendi false başkası
+    @IBOutlet var errorMessage: UILabel!
     var classUser = User()
     var who = false
     @IBOutlet var settings: UITableView!
@@ -22,8 +23,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     @IBOutlet var addedButton: UIButton!
     var AVc :Added =  Added(nibName: "Added", bundle: nil);
     var BVc :Tagged =  Tagged(nibName: "Tagged", bundle: nil);
-    @IBOutlet var taggedButton: UIButton!
     
+    @IBOutlet var taggedButton: UIButton!
     @IBOutlet var back: UIBarButtonItem!
     @IBOutlet var followingsCount: UIButton!
     @IBOutlet var toolBar: UIToolbar!
@@ -176,11 +177,16 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
+        
+            if(user.post_count != 0 ){
+                errorMessage.hidden = true
+            }
         dispatch_async(dispatch_get_main_queue()) {
         self.taggedButton.setTitle("@ETİKET(\(user.tag_count))", forState: .Normal)
         self.addedButton.setTitle("▶︎GÖNDERİ(\(user.post_count))", forState: .Normal)
-            //print(user)
+        //print(user)
         }
+        
         if who == true{
             FollowButton.enabled = false
         }
@@ -265,17 +271,24 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         // scrollPosition = !scrollPosition
         if (scrollView.contentOffset.x < BVc.view.frame.origin.x/2){
             
+            
             BVc.player1.stop()
             BVc.player2.stop()
             addedButton.backgroundColor = swiftColor
             taggedButton.backgroundColor = swiftColor3
             addedButton.titleLabel?.textColor = UIColor.whiteColor()
             taggedButton.titleLabel?.textColor = UIColor.blackColor()
+            if(classUser.post_count != 0 ) {
+                errorMessage.hidden = true
+            }
         }
         else{
             
             AVc.player1.stop()
             AVc.player2.stop()
+            if(classUser.tag_count != 0 ) {
+                errorMessage.hidden = true
+            }
             addedButton.backgroundColor = swiftColor3
             taggedButton.backgroundColor = swiftColor
             taggedButton.titleLabel?.textColor = UIColor.whiteColor()

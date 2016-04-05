@@ -65,7 +65,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         session = Session.sharedSession()
         session.logger = ConsoleLogger()
-        
+ 
         tableView.separatorColor = UIColor.clearColor()
         
         venueTable.hidden = true

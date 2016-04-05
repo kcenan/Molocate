@@ -80,8 +80,7 @@ class videoCell: UITableViewCell {
         placeName.contentHorizontalAlignment = .Left
         placeName.setTitle("koç university", forState: .Normal)
         placeName.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 14)
-        
-    
+        placeName.titleLabel?.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         contentView.addSubview(placeName)
         
         videoComment = UILabel()
