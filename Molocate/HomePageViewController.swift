@@ -149,6 +149,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.refreshing = false
                 if self.videoArray.count == 0 {
                     self.nofollowings.hidden = false
+                } else {
+                    self.nofollowings.hidden = true
                 }
                 
             }

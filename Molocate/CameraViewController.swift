@@ -61,7 +61,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     var isFlashMode = false
     var deviceLat: CLLocationDegrees?
     var deviceLon: CLLocationDegrees?
-    //var placesClient: GMSPlacesClient?
+    var brightness:CGFloat = 0.0
     @IBOutlet var toolbarYancı: UILabel!
     
     @IBOutlet var bottomToolbar: UIToolbar!
@@ -776,12 +776,13 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 if (device.position == AVCaptureDevicePosition.Back){
                     device.torchMode = .On
                 }else {
-                    print("burda")
                     dispatch_async(dispatch_get_main_queue()) {
                     let newFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
                     self.flashLayer.frame = newFrame
                     self.flashLayer.backgroundColor = UIColor.whiteColor().CGColor
-                    self.flashLayer.opacity = 0.7
+                    self.flashLayer.opacity = 0.8
+                    self.brightness = UIScreen.mainScreen().brightness
+                    UIScreen.mainScreen().brightness = 1.0
                     self.view.layer.addSublayer(self.flashLayer)
                     }
                     
@@ -871,9 +872,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             if (device.position == AVCaptureDevicePosition.Back){
                 device.torchMode = .Off
             }else {
-                print("burda")
                 dispatch_async(dispatch_get_main_queue()) {
                     self.flashLayer.removeFromSuperlayer()
+                    UIScreen.mainScreen().brightness = self.brightness
                 }
                 
             }
