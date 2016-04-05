@@ -58,6 +58,117 @@ var FbToken = ""
 
 public class MolocateAccount {
     
+    class func login(username: String, password: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        
+        let json = ["username": username, "password": password]
+        
+        do {
+            
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            
+            let url = NSURL(string: MolocateBaseUrl + "api-token-auth/")!
+            
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.HTTPBody = jsonData
+            
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+                dispatch_async(dispatch_get_main_queue(), {
+                    let nsError = error
+                    
+                    do {
+                        
+                        let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                        
+                        let dictionary : NSDictionary = result as! NSDictionary
+                        
+                        if(dictionary.objectForKey("token") != nil){
+                            MoleUserToken = result["token"] as? String
+                            MolocateAccount.getCurrentUser({ (data, response, error) -> () in
+                                completionHandler(data:"success" , response: response , error: nsError  )
+                            })
+                            
+                            
+                            
+                        } else {
+                            completionHandler(data: "Hata" , response: response , error: nsError  )
+                        }
+                        
+                    } catch {
+                        
+                        completionHandler(data: "JsonError" , response: response , error: nsError  )
+                    }
+                })
+            }
+            
+            task.resume()
+            
+        } catch {
+            completionHandler(data: "JsonError" , response: NSURLResponse() , error: NSError(coder: NSCoder()) )
+        }
+    }
+    
+    class func signUp(username: String, password: String, email: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        
+        let json = ["username": username, "password": password, "email": email]
+        
+        do {
+            
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            
+            let url = NSURL(string: MolocateBaseUrl + "account/register/")!
+            
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.HTTPBody = jsonData
+            
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+                
+                let nsError = error
+                
+                do {
+                    
+                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+                    
+                    if(result.count > 1){
+                        MoleUserToken = result["access_token"] as? String
+                        completionHandler(data: "success" , response: response , error: nsError  )
+                        
+                    } else{
+                        let error = result["result"] as! String
+                        
+                        switch (error){
+                        case "user_exist":
+                            completionHandler(data: "Lütfen daha önce kullanılmamış bir email seçiniz." , response: response , error: nsError  )
+                            break
+                        case "not_valid":
+                            completionHandler(data: "Lütfen geçerli bir email adresi giriniz." , response: response , error: nsError  )
+                            break
+                        default:
+                            completionHandler(data: "Lütfen geçerli bir email adresi giriniz." , response: response , error: nsError  )
+                            break
+                            
+                        }
+                    }
+                    
+                } catch {
+                    
+                    completionHandler(data: "JsonError" , response: response , error: nsError  )
+                }
+            }
+            
+            task.resume()
+            
+        } catch {
+            completionHandler(data: "JsonError" , response: NSURLResponse() , error: NSError(coder: NSCoder()) )
+        }
+    }
+
+    
     class func follow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
         
         let url = NSURL(string: MolocateBaseUrl + "/relation/api/follow/?username=" + (username as String))!

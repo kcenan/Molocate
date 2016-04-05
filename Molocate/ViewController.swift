@@ -69,8 +69,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     
-    
-    
     @IBAction func loginButton(sender: AnyObject) {
         if(MolocateDevice.isConnectedToNetwork()){
             choosedIndex = 1
@@ -88,172 +86,48 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 activityIndicator.startAnimating()
                 UIApplication.sharedApplication().beginIgnoringInteractionEvents()
                 
+                let uname: String = (username.text?.lowercaseString)!
+                let pwd: String = password.text!
                 
-                
-                if loginActive == true {
+                if loginActive {
                     
-                    let uname: String = (username.text?.lowercaseString)!
-                    let pwd: String = password.text!
-                    let json = ["username": uname, "password": pwd]
+                    MolocateAccount.login(uname, password: pwd, completionHandler: { (data, response, error) in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if( data == "success" ){
+                                self.performSegueWithIdentifier("login", sender: self)
+                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                self.activityIndicator.stopAnimating()
+                            }else{
+                                self.displayAlert("Hata", message: "Kullanıcı Adı ya da Parola Yanlış!")
+                                self.activityIndicator.stopAnimating()
+                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            }
+                        })
+                    })
                     
                     
-                    do {
-                        
-                        let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                        // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
-                        
-                        // create post request
-                        let url = NSURL(string: MolocateBaseUrl + "api-token-auth/")!
-                        let request = NSMutableURLRequest(URL: url)
-                        request.HTTPMethod = "POST"
-                        
-                        // insert json data to the request
-                        
-                        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                        //request.addValue("application/json", forHTTPHeaderField: "Accept")
-                        request.HTTPBody = jsonData
-                        
-                        
-                        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                            // print(response)
-                            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                            dispatch_async(dispatch_get_main_queue(), {
-                                if error != nil{
-                                    print("Error -> \(error)")
-                                    
-                                    return
-                                }
-                                
-                                do {
-                                    
-                                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
-                                    
-                                    
-                                    print("Result -> \(result)")
-                                    let dictionary : NSDictionary = result as! NSDictionary
-                                    if(dictionary.objectForKey("token") != nil){
-                                        MoleUserToken = result["token"] as? String
-                                        MolocateAccount.getCurrentUser({ (data, response, error) -> () in
-                                            
-                                        })
-                                        self.performSegueWithIdentifier("login", sender: self)
-                                        
-                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                                        
-                                    } else {
-                                        self.displayAlert("Hata", message: "Kullanıcı Adı ya da Parola Yanlış!")
-                                        self.activityIndicator.stopAnimating()
-                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                                    }
-                                    
-                                } catch {
-                                    print("Error -> \(error)")
-                                }
-                            })
-                        }
-                        
-                        task.resume()
-                        
-                        
-                        
-                        
-                    } catch {
-                        print(error)
-                        
-                        
-                    }
+                }else {
                     
-                }
                     
-                else {
-                    
-                    let uname: String = username.text!.lowercaseString
-                    let pwd: String = password.text!
                     let mail: String = email.text!.lowercaseString
                     
-                    let json = ["username": uname, "password": pwd, "email": mail]
-                    
-                    
-                    do {
-                        
-                        let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                        // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
-                        
-                        // create post request
-                        let url = NSURL(string: MolocateBaseUrl + "account/register/")!
-                        let request = NSMutableURLRequest(URL: url)
-                        request.HTTPMethod = "POST"
-                        
-                        // insert json data to the request
-                        
-                        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                        //request.addValue("application/json", forHTTPHeaderField: "Accept")
-                        request.HTTPBody = jsonData
-                        
-                        
-                        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                            //print(response)
-                            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                    MolocateAccount.signUp(uname, password: pwd, email: mail, completionHandler: { (data, response, error) in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if(data == "success"){
+                                self.performSegueWithIdentifier("login", sender: self)
+                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                
+                            } else{
+                                self.displayAlert("Hata", message: data)
+                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                self.activityIndicator.stopAnimating()
+                                self.activityIndicator.hidesWhenStopped = true
+                            }
                             
-                            dispatch_async(dispatch_get_main_queue(), {
-                                if error != nil{
-                                    print("Error -> \(error)")
-                                    
-                                    //return
-                                }
-                                
-                                do {
-                                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
-                                    
-                                    //print("Result -> \(result)")
-                                    if(result.count > 1){
-                                        MoleUserToken = result["access_token"] as? String
-                                        self.performSegueWithIdentifier("login", sender: self)
-                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                                        //print("dsfasfdsadsfa")
-                                        
-                                    } else{
-                                        let error = result["result"] as! String
-                                        var errorString = ""
-                                        switch (error){
-                                        case "user_exist":
-                                            errorString = "Lütfen daha önce kullanılmamış bir email seçiniz."
-                                            break
-                                        case "not_valid":
-                                            errorString = "Lütfen geçerli bir email adresi giriniz."
-                                            break
-                                        default:
-                                            break
-                                            
-                                        }
-                                        self.displayAlert("Hata", message: errorString)
-                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                                        self.activityIndicator.stopAnimating()
-                                        self.activityIndicator.hidesWhenStopped = true
-                                    }
-                                    
-                                    
-                                    
-                                    
-                                } catch {
-                                    print("Error -> \(error)")
-                                    
-                                }
-                                
-                            })
-                        }
+                        })
                         
-                        
-                        task.resume()
-                        
-                        
-                        
-                        
-                    } catch {
-                        print(error)
-                        
-                        
-                    }
+                    })
+                    
                     
                     
                 }
