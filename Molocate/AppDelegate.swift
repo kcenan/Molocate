@@ -1,10 +1,6 @@
 //
 //  AppDelegate.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 11.11.2015.
-//  Copyright © 2015 MellonApp. All rights reserved.
-//
 
 import UIKit
 import FBSDKCoreKit

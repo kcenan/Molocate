@@ -1,10 +1,6 @@
-//
 //  likeVideo.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 18.03.2016.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 

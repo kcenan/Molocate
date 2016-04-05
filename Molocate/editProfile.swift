@@ -4,7 +4,6 @@
 //  Created by MellonCorp on 3/10/16.
 //  Copyright © 2016 MellonApp. All rights reserved.
 //
-//kare foto seçme ekle
 
 import UIKit
 import SDWebImage
@@ -267,7 +266,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
             kadınimage.text = "🔳"
         }
         
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(editProfile.dismissKeyboard))
         view.addGestureRecognizer(tap)
         imagePicker.delegate = self
     }
@@ -464,8 +463,8 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     }
     
     class func RBSquareImage(image: UIImage) -> UIImage {
-        var originalWidth  = image.size.width
-        var originalHeight = image.size.height
+        let originalWidth  = image.size.width
+        let originalHeight = image.size.height
         var x: CGFloat = 0.0
         var y: CGFloat = 0.0
         var edge: CGFloat = 0.0
@@ -486,8 +485,8 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
             edge = originalWidth
         }
         
-        var cropSquare = CGRectMake(x, y, edge, edge)
-        var imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
+        let cropSquare = CGRectMake(x, y, edge, edge)
+        let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
         
         return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
     }

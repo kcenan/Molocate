@@ -1,11 +1,6 @@
-
-//
 //  CameraViewController.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 16.11.2015.
-//  Copyright © 2015 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 import AssetsLibrary

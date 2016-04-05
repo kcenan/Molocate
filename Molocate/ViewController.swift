@@ -46,7 +46,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     
-    func textField(textField: UITextField!, shouldChangeCharactersInRange range: NSRange, replacementString string: String!) -> Bool {
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         
         
         if(textField==username){

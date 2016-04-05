@@ -1,7 +1,5 @@
 //  HomePageViewController.swift
 //  Molocate
-
-
 import UIKit
 import Foundation
 import SDWebImage

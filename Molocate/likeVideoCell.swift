@@ -1,10 +1,6 @@
 //
 //  likeVideoCell.swift
-//  
-//
-//  Created by Kagan Cenan on 18.03.2016.
-//
-//
+
 
 import UIKit
 

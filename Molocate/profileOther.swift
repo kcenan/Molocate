@@ -1,10 +1,7 @@
 //
 //  profileOther.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 2.03.2016.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 

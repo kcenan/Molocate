@@ -1,18 +1,8 @@
-//
 //  SignUpAdvance.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 15.12.2015.
-//  Copyright © 2015 MellonApp. All rights reserved.
-
-//
-
-
 import UIKit
 
 class SignUpAdvance: UIViewController , UITextFieldDelegate {
-    
-    
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var username : UITextField!
     var usernameLabel : UILabel!
@@ -83,18 +73,15 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         border.borderColor = swiftColor.CGColor
         border.frame = CGRect(x: 0, y: username.frame.size.height - width, width:  username.frame.size.width, height: username.frame.size.height )
         border.borderWidth = width
+        
         username.layer.addSublayer(border)
         username.layer.masksToBounds = true
-        //burada bize çağatay atanan username i gönderecek onu  yazıcaz
-        // a diye atıyorum bunu butonun aksiyonunda çek edicez değişmişse username değiştirme yollıcaz
-        
         username.placeholder = "Kullanıcı Adı"
         border.borderWidth = width
         username.layer.addSublayer(border)
         username.textAlignment = .Left
         username.layer.masksToBounds = true
         view.addSubview(username)
-        
         username.delegate = self
         
         emailLabel = UILabel()
@@ -116,17 +103,13 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         border2.borderWidth = width
         email.layer.addSublayer(border2)
         email.layer.masksToBounds = true
-        //burada bize çağatay atanan username i gönderecek onu  yazıcaz
-        // a diye atıyorum bunu butonun aksiyonunda çek edicez değişmişse username değiştirme yollıcaz
-        
         email.placeholder = "E-Mail"
         email.layer.addSublayer(border2)
         email.textAlignment = .Left
         email.layer.masksToBounds = true
         view.addSubview(email)
-        
-        
         self.email.delegate = self
+        
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpAdvance.dismissKeyboard))
         view.addGestureRecognizer(tap)
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
@@ -163,127 +146,36 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
             let token = FbToken
             let json = ["access_token": token , "username": uname, "email": mail]
             
-            
-            do {
-                
-                let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                
-                // create post request
-                let url = NSURL(string: MolocateBaseUrl + "account/facebook_login/")!
-                let request = NSMutableURLRequest(URL: url)
-                request.HTTPMethod = "POST"
-                
-                // insert json data to the request
-                
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                //request.addValue("application/json", forHTTPHeaderField: "Accept")
-                request.HTTPBody = jsonData
-                
-                
-                let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                    //print(response)
-                    print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if error != nil{
-                            print("Error -> \(error)")
+            MolocateAccount.FacebookSignup(json, completionHandler: { (data, response, error) in
+                if(data == "success"){
+                    MolocateAccount.getCurrentUser({ (data, response, error) -> () in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.performSegueWithIdentifier("usernameAfter", sender: self)
                             
-                            //return
-                        }
-                        
-                        do {
-                            let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
-                            
-                            print("Result -> \(result)")
-                            
-                            
-                            //print("dsfasfdsadsfa")
-                            
-                            if result["logged_in"] as! Int == 0 {
-                                let usernameExist: Bool = (result["username"] as! String == "username_exists")
-                                let emailNotValid: Bool = (result["email"] as! String == "not_valid")
-                                print(result["username"])
-                                if (usernameExist && emailNotValid){
-                                    self.displayAlert("Dikkat!", message: "Kullanıcı adınız ve e-mailiniz daha önce alındı.")
-                                } else {
-                                    if usernameExist {
-                                        self.displayAlert("Dikkat!", message: "Kullanıcı adı daha önce alındı.")
-                                        
-                                    } else {
-                                        self.displayAlert("Dikkat!", message: "Lütfen e-mailinizi değiştirin.")
-                                    }
-                                }
-                            } else {
-                                MoleUserToken = result["access_token"] as? String
-                                MolocateAccount.getCurrentUser({ (data, response, error) -> () in
-                                    dispatch_async(dispatch_get_main_queue(), {
-                                        self.performSegueWithIdentifier("usernameAfter", sender: self)
-                                        
-                                    })
-                                })
-                            }
-                            //                                self.displayAlert("Hata", message: result["result"] as! String)
-                            //                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            //                                self.activityIndicator.stopAnimating()
-                            //                                self.activityIndicator.hidesWhenStopped = true
-                            
-                            
-                            
-                            
-                            
-                        } catch {
-                            print("Error -> \(error)")
-                            
-                        }
-                        
+                        })
                     })
+                    
+                }else if (data != "error"){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.displayAlert("Dikkat!", message: data)
+                    })
+                }else{
+                    self.displayAlert("FatalError", message: "JsonError")
                 }
-                
-                
-                task.resume()
-                
-                
-                
-                
-            } catch {
-                print(error)
-                
-                
-            }
-            
-            
-            //            if sendName==username.text{
-            //                //burada username i atamasına tekrar gerek var mı?
-            //                performSegueWithIdentifier("usernameAfter", sender: .None)
-            //            }
-            //            else{
-            //                // check et username exist mi diye exist değilse database e kaydetip yolla existse alert koy
-            //
-            //
-            //                //let alertController = UIAlertController(title: "Üzgünüz", message:
-            //                //                "Seçtiğiniz kullanıcı adı daha önce alınmış, başka bir kullanıcı adı deneyin", preferredStyle: UIAlertControllerStyle.Alert)
-            //                //                alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.Default,handler: nil))
-            //                //
-            //                //                self.presentViewController(alertController, animated: true, completion: nil)
-            //
-            //
-            //            }
+            })
         }
-        
-        
-        
-        
-        
     }
+    
+    
     func dismissKeyboard() {
         view.endEditing(true)
     }
-  
+    
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         if textField == username {
             let maxLength = 20
-            let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq0123456789").invertedSet
+            let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq0123456789-_.").invertedSet
             let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
             let numberFiltered = compSepByCharInSet.joinWithSeparator("")
             let currentString: NSString = username.text!
@@ -306,12 +198,10 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         }
     }
     override func didReceiveMemoryWarning() {
-        
-        
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-   
+    
     func displayAlert(title: String, message: String) {
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
         self.activityIndicator.stopAnimating()
@@ -325,14 +215,5 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
     override func viewDidDisappear(animated: Bool) {
         print("Hoca")
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

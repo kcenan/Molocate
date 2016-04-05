@@ -1,10 +1,7 @@
 //
 //  notificationCell.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 21.01.2016.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 

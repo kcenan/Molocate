@@ -1,10 +1,7 @@
 //
 //  profileLocation.swift
 //  Molocate
-//
-//  Created by Kagan Cenan on 23.02.2016.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
+
 
 import UIKit
 import SDWebImage

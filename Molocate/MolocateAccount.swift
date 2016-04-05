@@ -131,12 +131,13 @@ public class MolocateAccount {
                     
                     if (resultJson["logged_in"] as! Int == 1) {
                         MoleUserToken = resultJson["access_token"] as? String
-                        completionHandler(data: "sucess", response:  response, error: error)
+                        completionHandler(data: "success", response:  response, error: error)
                         
                     } else {
-                         FaceMail = resultJson["email_validation"] as! String
-                         FaceUsername = resultJson["suggested_username"] as! String
-                         completionHandler(data: "signup", response:  response, error: error)
+                        FaceMail = resultJson["email_validation"] as! String
+                        FaceUsername = resultJson["suggested_username"] as! String
+                        print(resultJson)
+                        completionHandler(data: "signup", response:  response, error: error)
                     }
                     
                 } catch{
@@ -148,6 +149,58 @@ public class MolocateAccount {
             task.resume()
         } catch {
                  completionHandler(data: "error", response: NSURLResponse(), error: nil)
+        }
+    }
+
+    class func FacebookSignup(json: JSONParameters,completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+        
+        
+        do {
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            let url = NSURL(string: MolocateBaseUrl + "/account/facebook_login/")!
+            
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.HTTPBody = jsonData
+            
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+                let Nserror = error
+                
+                do {
+                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                    
+                    
+                    if result["logged_in"] as! Int == 0 {
+                        let usernameExist: Bool = (result["username"] as! String == "username_exists")
+                        let emailNotValid: Bool = (result["email"] as! String == "not_valid")
+                    
+                        if (usernameExist && emailNotValid){
+                             completionHandler(data: "Kullanıcı adınız ve e-mailiniz daha önce alındı.", response:  response, error: Nserror)
+                        } else {
+                            if usernameExist {
+                                completionHandler(data: "Kullanıcı adı daha önce alındı.", response:  response, error: Nserror)
+                                
+                            } else {
+                                completionHandler(data: "Lütfen e-mailinizi değiştirin.", response:  response, error: Nserror)
+                             
+                            }
+                        }
+                    } else {
+                        MoleUserToken = result["access_token"] as? String
+                        completionHandler(data: "success", response:  response, error: Nserror)
+                    }
+                    
+                } catch{
+                    print("Error:: in mole.follow()")
+                    completionHandler(data: "error", response:  response, error: Nserror)
+                }
+                
+            }
+            task.resume()
+        } catch {
+            completionHandler(data: "error", response: NSURLResponse(), error: nil)
         }
     }
 
