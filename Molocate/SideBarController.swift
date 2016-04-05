@@ -66,7 +66,7 @@ class SideBarController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        user = currentUser
+        user = MoleCurrentUser
         //tableView.deselectRowAtIndexPath(indexPath, animated: false)
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell?.backgroundColor = swiftColor
@@ -75,7 +75,7 @@ class SideBarController: UITableViewController {
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil )
         cell?.backgroundColor = swiftColor2
         if indexPath.row == 3 {
-            Molocate.getCurrentUser({ (data, response, error) in
+            MolocateAccount.getCurrentUser({ (data, response, error) in
             })
             self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController?.viewDidLoad()
         

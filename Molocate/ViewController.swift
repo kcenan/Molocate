@@ -72,7 +72,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     @IBAction func loginButton(sender: AnyObject) {
-        if(Molocate.isConnectedToNetwork()){
+        if(MolocateDevice.isConnectedToNetwork()){
             choosedIndex = 1
             if username.text == "" || password.text == "" {
                 displayAlert("Hata", message: "lütfen kullanıcı adı ve parola giriniz.")
@@ -103,7 +103,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                         // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                         
                         // create post request
-                        let url = NSURL(string: baseUrl + "api-token-auth/")!
+                        let url = NSURL(string: MolocateBaseUrl + "api-token-auth/")!
                         let request = NSMutableURLRequest(URL: url)
                         request.HTTPMethod = "POST"
                         
@@ -132,8 +132,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                     print("Result -> \(result)")
                                     let dictionary : NSDictionary = result as! NSDictionary
                                     if(dictionary.objectForKey("token") != nil){
-                                        userToken = result["token"] as? String
-                                        Molocate.getCurrentUser({ (data, response, error) -> () in
+                                        MoleUserToken = result["token"] as? String
+                                        MolocateAccount.getCurrentUser({ (data, response, error) -> () in
                                             
                                         })
                                         self.performSegueWithIdentifier("login", sender: self)
@@ -180,7 +180,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                         // print(NSString(data: jsonData, encoding: NSUTF8StringEncoding))
                         
                         // create post request
-                        let url = NSURL(string: baseUrl + "account/register/")!
+                        let url = NSURL(string: MolocateBaseUrl + "account/register/")!
                         let request = NSMutableURLRequest(URL: url)
                         request.HTTPMethod = "POST"
                         
@@ -207,7 +207,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                     
                                     //print("Result -> \(result)")
                                     if(result.count > 1){
-                                        userToken = result["access_token"] as? String
+                                        MoleUserToken = result["access_token"] as? String
                                         self.performSegueWithIdentifier("login", sender: self)
                                         UIApplication.sharedApplication().endIgnoringInteractionEvents()
                                         //print("dsfasfdsadsfa")
@@ -303,7 +303,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     @IBAction func facebooklogin(sender: AnyObject) {
-        if(Molocate.isConnectedToNetwork()){
+        if(MolocateDevice.isConnectedToNetwork()){
             fbLoginInitiate()
         }else{
             displayAlert("Hata", message: "İnternet bağlantınızı kontrol ediniz.")
@@ -328,13 +328,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 let fbAccessToken: String = FBSDKAccessToken.currentAccessToken().tokenString
                 
                 let json = ["access_token":fbAccessToken]
-                fbToken = fbAccessToken
+                FbToken = fbAccessToken
                 print(json)
                 do {
                     
                     let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
                     
-                    let url = NSURL(string: baseUrl + "/account/facebook_login/")!
+                    let url = NSURL(string: MolocateBaseUrl + "/account/facebook_login/")!
                     let request = NSMutableURLRequest(URL: url)
                     request.HTTPMethod = "POST"
                     
@@ -358,8 +358,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                 if (resultJson["logged_in"] as! Int == 1) {
                                     
                                     
-                                    userToken = resultJson["access_token"] as! String
-                                    Molocate.getCurrentUser({ (data, response, error) in
+                                    MoleUserToken = resultJson["access_token"] as! String
+                                    MolocateAccount.getCurrentUser({ (data, response, error) in
                                         
                                     })
                                     
@@ -367,8 +367,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                     
                                 } else {
                                     
-                                    faceMail = resultJson["email_validation"] as! String
-                                    faceUsername = resultJson["suggested_username"] as! String
+                                    FaceMail = resultJson["email_validation"] as! String
+                                    FaceUsername = resultJson["suggested_username"] as! String
                                     self.performSegueWithIdentifier("facebookLogin", sender: self)
                                 }
                                 
@@ -512,14 +512,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     override func viewDidAppear(animated: Bool) {
-        if(Molocate.isConnectedToNetwork()){
-            if NSUserDefaults.standardUserDefaults().objectForKey("userToken") != nil {
-                userToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as! String
+        if(MolocateDevice.isConnectedToNetwork()){
+            if NSUserDefaults.standardUserDefaults().objectForKey("MoleUserToken") != nil {
+                MoleUserToken = NSUserDefaults.standardUserDefaults().objectForKey("MoleUserToken") as! String
                 self.view.hidden = true
-                Molocate.getCurrentUser({ (data, response, error) in
+                MolocateAccount.getCurrentUser({ (data, response, error) in
                     dispatch_async(dispatch_get_main_queue()){
                         self.performSegueWithIdentifier("login", sender: self)
-                        user = currentUser
+                        user = MoleCurrentUser
                     }
                 })
                 

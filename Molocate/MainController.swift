@@ -14,13 +14,13 @@ var category = "All"
 let swiftColor = UIColor(netHex: 0xEB2B5D)
 let swiftColor2 = UIColor(netHex: 0xC92451)
 let swiftColor3 = UIColor(red: 249/255, green: 223/255, blue: 230/255, alpha: 1)
-var comments = [comment]()
+var comments = [MoleVideoComment]()
 var video_id: String = ""
-var user: User = User()
+var user: MoleUser = MoleUser()
 var videoIndex = 0
 var isUploaded = true
 var myViewController = "MainController"
-var thePlace:Place!
+var thePlace:MolePlace!
 class MainController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
     var lastOffset:CGPoint!
     var lastOffsetCapture:NSTimeInterval!
@@ -54,7 +54,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     var refreshControl:UIRefreshControl!
     @IBOutlet var collectionView: UICollectionView!
     
-    var videoArray = [videoInf]()
+    var videoArray = [MoleVideoInformation]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     
     var categories = ["HEPSİ","EĞLENCE","YEMEK","GEZİ","MODA" , "GÜZELLİK", "SPOR","ETKİNLİK","KAMPÜS"]
@@ -115,7 +115,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             videoArray.removeAll()
             let url = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/api/explore/?category=all")!
             self.videoArray.removeAll()
-            Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
+            MolocateVideo.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     self.videoArray = data!
                     self.tableView.reloadData()
@@ -184,7 +184,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         //tableView.hidden = true
-        Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
+        MolocateVideo.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 self.tableView.hidden = true
                 self.videoArray.removeAll()
@@ -218,16 +218,16 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 direction = 1
             }
             
-            var currentOffset = scrollView.contentOffset
-            var currentTime = NSDate().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
+            let currentOffset = scrollView.contentOffset
+            let currentTime = NSDate().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
             
-            var timeDiff = currentTime - lastOffsetCapture;
+            let timeDiff = currentTime - lastOffsetCapture;
             if(timeDiff > 0.1) {
-                var distance = currentOffset.y - lastOffset.y;
+                let distance = currentOffset.y - lastOffset.y;
                 //The multiply by 10, / 1000 isn't really necessary.......
-                var scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
+                let scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
                 
-                var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
+                let scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
                 if (scrollSpeed > 0.5) {
                     isScrollingFast = true
                     //print("hızlı")
@@ -346,10 +346,10 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
             
-            if((!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)&&(!exploreInProcess)){
+            if((!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)&&(!IsExploreInProcess)){
                 
-                Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
-                    exploreInProcess = true
+                MolocateVideo.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
+                    IsExploreInProcess = true
                     dispatch_async(dispatch_get_main_queue()){
                         
                         for item in data!{
@@ -359,7 +359,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                             
                         }
                         
-                        exploreInProcess = false
+                        IsExploreInProcess = false
                     }
                     
                 })
@@ -398,7 +398,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 cell.placeName.addTarget(self, action: #selector(MainController.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 
-                if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
+                if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != MoleCurrentUser.username){
                     cell.followButton.addTarget(self, action: #selector(MainController.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 }else{
                     cell.followButton.hidden = true
@@ -524,7 +524,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        Molocate.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
+        MolocateAccount.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
                 let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
@@ -557,7 +557,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             view.addSubview(activityIndicator)
             activityIndicator.startAnimating()
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-            Molocate.getPlace(self.venues[indexPath.row]["id"] as! String) { (data, response, error) -> () in
+            MolocatePlace.getPlace(self.venues[indexPath.row]["id"] as! String) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     thePlace = data
                     let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
@@ -597,7 +597,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
+        MolocatePlace.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 thePlace = data
                 let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
@@ -621,8 +621,8 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         indexes.append(index)
         self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
-        Molocate.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
-          currentUser.following_count += 1
+        MolocateAccount.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
+          MoleCurrentUser.following_count += 1
         
         }
         pressedFollow = false
@@ -679,7 +679,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
-            Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     //print(data)
                 }
@@ -717,7 +717,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
-            Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     //print(data)
                 }
@@ -731,7 +731,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
             
-            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
+            MolocateVideo.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     //print(data)
                 }
@@ -754,7 +754,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         
-        Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
+        MolocateVideo.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 comments = data
                 let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
@@ -764,7 +764,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.addChildViewController(controller)
                 controller.didMoveToParentViewController(self)
                 self.activityIndicator.removeFromSuperview()
-                //print("comment e basıldı at index path: \(buttonRow)")
+                //print("MoleVideoComment e basıldı at index path: \(buttonRow)")
             }
         }
         
@@ -777,7 +777,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         let buttonRow = sender.tag
         player1.stop()
         player2.stop()
-        Molocate.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+        MolocateVideo.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
             //print(data)
         }
         //print("pressedReport at index path: \(buttonRow)")
@@ -885,7 +885,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         //seçilmiş cell in labelının rengi değişsin
         on = true
         refreshing = true
-        let url = NSURL(string: baseUrl  + "video/api/explore/?category=" + categoryDict[realCateg[categories[indexPath.row]]!]!)
+        let url = NSURL(string: MolocateBaseUrl  + "video/api/explore/?category=" + MoleCategoriesDictionary [realCateg[categories[indexPath.row]]!]!)
         SDImageCache.sharedImageCache().clearMemory()
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center
@@ -895,7 +895,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         refreshURL = url
-        Molocate.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
+        MolocateVideo.getExploreVideos(url, completionHandler: { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 self.player1.stop()
                 self.player2.stop()

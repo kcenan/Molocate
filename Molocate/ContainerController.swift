@@ -21,16 +21,16 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
          UIApplication.sharedApplication().endIgnoringInteractionEvents()
         scrollView.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeSideBar", name: "closeSideBar", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.closeSideBar), name: "closeSideBar", object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeSideBarFast", name: "closeSideBarFast", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "openSideBar", name: "openSideBar", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.closeSideBarFast), name: "closeSideBarFast", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.openSideBar), name: "openSideBar", object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "goProfile", name: "goProfile", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.goProfile), name: "goProfile", object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeProfile", name: "closeProfile", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.closeProfile), name: "closeProfile", object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deneme", name: "deneme", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.deneme), name: "deneme", object: nil)
        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "openProfile", name: "openProfile", object: nil)
        
         

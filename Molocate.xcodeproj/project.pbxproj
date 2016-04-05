@@ -38,7 +38,7 @@
 		C63FBD1C1BF3E5B900DBB34C /* MolocateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63FBD1B1BF3E5B900DBB34C /* MolocateTests.swift */; };
 		C63FBD271BF3E5B900DBB34C /* MolocateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63FBD261BF3E5B900DBB34C /* MolocateUITests.swift */; };
 		C642196C1BF92A14000CAD93 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C642196B1BF92A14000CAD93 /* ExploreViewController.swift */; };
-		C64B601E1C81D6A500E510DC /* Mole.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B601D1C81D6A500E510DC /* Mole.swift */; };
+		C64B601E1C81D6A500E510DC /* MolocateAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B601D1C81D6A500E510DC /* MolocateAccount.swift */; };
 		C650C9C11C87E57F0067275B /* follow1.png in Resources */ = {isa = PBXBuildFile; fileRef = C650C9BE1C87E57F0067275B /* follow1.png */; };
 		C650C9C31C87E57F0067275B /* like1.png in Resources */ = {isa = PBXBuildFile; fileRef = C650C9C01C87E57F0067275B /* like1.png */; };
 		C650C9C51C87E8090067275B /* report1.png in Resources */ = {isa = PBXBuildFile; fileRef = C650C9C41C87E8090067275B /* report1.png */; };
@@ -110,6 +110,11 @@
 		C6F9B5CA1C80DDF400C7E9FC /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9B5C91C80DDF400C7E9FC /* NotificationsViewController.swift */; };
 		C6F9F5511C12574500E62856 /* capturePreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9F5501C12574500E62856 /* capturePreviewController.swift */; };
 		C6FA823C1C02397D0099D2C8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6FA823B1C02397D0099D2C8 /* AVFoundation.framework */; };
+		E33DCC691CB3F5250081C0DF /* MolocateVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33DCC681CB3F5250081C0DF /* MolocateVideo.swift */; };
+		E33DCC6B1CB3F73C0081C0DF /* MolocatePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33DCC6A1CB3F73C0081C0DF /* MolocatePlace.swift */; };
+		E33DCC6D1CB3FA2D0081C0DF /* MolocateNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33DCC6C1CB3FA2C0081C0DF /* MolocateNotifications.swift */; };
+		E33DCC6F1CB3FD7F0081C0DF /* MolocateRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33DCC6E1CB3FD7F0081C0DF /* MolocateRecord.swift */; };
+		E33DCC711CB3FE5D0081C0DF /* MolocateDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33DCC701CB3FE5D0081C0DF /* MolocateDevice.swift */; };
 		E37D486D1C9B11DB00587406 /* profilepic.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D486C1C9B11DB00587406 /* profilepic.png */; };
 /* End PBXBuildFile section */
 
@@ -170,7 +175,7 @@
 		C63FBD261BF3E5B900DBB34C /* MolocateUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocateUITests.swift; sourceTree = "<group>"; };
 		C63FBD281BF3E5B900DBB34C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C642196B1BF92A14000CAD93 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
-		C64B601D1C81D6A500E510DC /* Mole.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mole.swift; sourceTree = "<group>"; };
+		C64B601D1C81D6A500E510DC /* MolocateAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateAccount.swift; sourceTree = "<group>"; };
 		C650C9BE1C87E57F0067275B /* follow1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = follow1.png; sourceTree = "<group>"; };
 		C650C9C01C87E57F0067275B /* like1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like1.png; sourceTree = "<group>"; };
 		C650C9C41C87E8090067275B /* report1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = report1.png; sourceTree = "<group>"; };
@@ -242,6 +247,11 @@
 		C6F9B5C91C80DDF400C7E9FC /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		C6F9F5501C12574500E62856 /* capturePreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = capturePreviewController.swift; sourceTree = "<group>"; };
 		C6FA823B1C02397D0099D2C8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E33DCC681CB3F5250081C0DF /* MolocateVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateVideo.swift; sourceTree = "<group>"; };
+		E33DCC6A1CB3F73C0081C0DF /* MolocatePlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocatePlace.swift; sourceTree = "<group>"; };
+		E33DCC6C1CB3FA2C0081C0DF /* MolocateNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateNotifications.swift; sourceTree = "<group>"; };
+		E33DCC6E1CB3FD7F0081C0DF /* MolocateRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateRecord.swift; sourceTree = "<group>"; };
+		E33DCC701CB3FE5D0081C0DF /* MolocateDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateDevice.swift; sourceTree = "<group>"; };
 		E37D486C1C9B11DB00587406 /* profilepic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profilepic.png; sourceTree = "<group>"; };
 		E98CE71F35380A6A5DF16FFF /* Pods_Molocate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Molocate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -374,7 +384,12 @@
 				C61023091C19FDCA00E9CA73 /* Main.storyboard */,
 				C6E86EAE1CB0E68D00203513 /* Launch Screen.storyboard */,
 				C63FBD121BF3E5B900DBB34C /* Info.plist */,
-				C64B601D1C81D6A500E510DC /* Mole.swift */,
+				E33DCC701CB3FE5D0081C0DF /* MolocateDevice.swift */,
+				E33DCC6E1CB3FD7F0081C0DF /* MolocateRecord.swift */,
+				C64B601D1C81D6A500E510DC /* MolocateAccount.swift */,
+				E33DCC681CB3F5250081C0DF /* MolocateVideo.swift */,
+				E33DCC6A1CB3F73C0081C0DF /* MolocatePlace.swift */,
+				E33DCC6C1CB3FA2C0081C0DF /* MolocateNotifications.swift */,
 				38F771031C9505670079FACD /* Player.swift */,
 				C63FBD061BF3E5B900DBB34C /* AppDelegate.swift */,
 				385FC3531C926A8300F85B29 /* Giriş- Üyelik */,
@@ -766,6 +781,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C68872861C8CED2800BDBE00 /* optionCell.swift in Sources */,
+				E33DCC691CB3F5250081C0DF /* MolocateVideo.swift in Sources */,
 				C63FBD091BF3E5B900DBB34C /* ViewController.swift in Sources */,
 				C61023161C1B407600E9CA73 /* Followers.swift in Sources */,
 				C638AFF31C9C7E74003085E8 /* likeVideo.swift in Sources */,
@@ -781,11 +797,15 @@
 				C6CBA4FF1C876EC300AE65AD /* profileOther.swift in Sources */,
 				C65C4F751C8E20B300DB5068 /* captureCollectionCell.swift in Sources */,
 				C6917F921BFA60B700CA501A /* CameraViewController.swift in Sources */,
-				C64B601E1C81D6A500E510DC /* Mole.swift in Sources */,
+				E33DCC6D1CB3FA2D0081C0DF /* MolocateNotifications.swift in Sources */,
+				C64B601E1C81D6A500E510DC /* MolocateAccount.swift in Sources */,
 				C61FDAAF1BFBD0BC007B940E /* ContainerViewController.swift in Sources */,
 				C609053A1C48143C00614C7F /* MainController.swift in Sources */,
+				E33DCC6F1CB3FD7F0081C0DF /* MolocateRecord.swift in Sources */,
+				E33DCC711CB3FE5D0081C0DF /* MolocateDevice.swift in Sources */,
 				38E621061C90D9AB00FB1AD5 /* editProfile.swift in Sources */,
 				C6F7B2671C134FBF0062E408 /* Added.swift in Sources */,
+				E33DCC6B1CB3F73C0081C0DF /* MolocatePlace.swift in Sources */,
 				C6F9F5511C12574500E62856 /* capturePreviewController.swift in Sources */,
 				C6F9B5CA1C80DDF400C7E9FC /* NotificationsViewController.swift in Sources */,
 				C6F7B2651C134FAF0062E408 /* Tagged.swift in Sources */,

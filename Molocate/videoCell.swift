@@ -199,7 +199,7 @@ class videoCell: UITableViewCell {
         return rect.size.height  
     }
     
-    func initialize(row: Int , videoInfo: videoInf){
+    func initialize(row: Int , videoInfo: MoleVideoInformation){
         self.Username.tag = row
         self.Username.setTitle(videoInfo.username, forState: .Normal)
         self.placeName.tag = row

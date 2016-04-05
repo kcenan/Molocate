@@ -18,7 +18,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
     var player2: Player!
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
-    var videoArray = [videoInf]()
+    var videoArray = [MoleVideoInformation]()
     var username = ""
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var tableView = UITableView()
@@ -47,7 +47,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         // Do any additional setup after loading the view.
         
         print(user.username)
-        Molocate.getUserVideos(user.username, type: "user", completionHandler: { (data, response, error) in
+        MolocateVideo.getUserVideos(user.username, type: "user", completionHandler: { (data, response, error) in
             dispatch_async(dispatch_get_main_queue()) {
                 self.videoArray = data!
                 self.tableView.reloadData()
@@ -120,7 +120,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             cell.commentCount.addTarget(self, action: #selector(Added.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", forState: .Normal)
             
-            if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != currentUser.username){
+            if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != MoleCurrentUser.username){
                 cell.followButton.addTarget(self, action: #selector(Added.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             }else{
                 cell.followButton.hidden = true
@@ -321,10 +321,10 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
             
-            if((indexPath.row%8 == 0)&&(nextU != nil)&&(!exploreInProcess)){
+            if((indexPath.row%8 == 0)&&(nextU != nil)&&(!IsExploreInProcess)){
                 
-                Molocate.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
-                    exploreInProcess = true
+                MolocateVideo.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
+                    IsExploreInProcess = true
                     dispatch_async(dispatch_get_main_queue()){
                         
                         for item in data!{
@@ -334,7 +334,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                             
                         }
                         
-                        exploreInProcess = false
+                        IsExploreInProcess = false
                     }
                     
                 })
@@ -376,7 +376,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
-            Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
                 }
@@ -403,7 +403,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         player2.stop()
         print("place e basıldı at index path: \(buttonRow) ")
         print("================================" )
-        Molocate.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
+        MolocatePlace.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 thePlace = data
                 let controller:profileLocation = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
@@ -426,8 +426,8 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         indexes.append(index)
         self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
-        Molocate.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
-                     currentUser.following_count += 1
+        MolocateAccount.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
+                     MoleCurrentUser.following_count += 1
         }
         pressedFollow = false
     }
@@ -464,7 +464,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
-            Molocate.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
                 }
@@ -477,7 +477,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
             
-            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
+            MolocateVideo.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
                 }
@@ -493,7 +493,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         video_id = videoArray[videoIndex].id
         myViewController = "Added"
         
-        Molocate.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
+        MolocateVideo.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 comments = data
                 let controller:commentController = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
@@ -516,7 +516,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         player1.stop()
         player2.stop()
         let buttonRow = sender.tag
-        Molocate.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+        MolocateVideo.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
             print(data)
         }
         print("pressedReport at index path: \(buttonRow)")
@@ -543,7 +543,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         print("username e basıldı at index path: \(buttonRow)")
         player1.stop()
         player2.stop()
-        Molocate.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
+        MolocateAccount.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
                 let controller:profileOther = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther

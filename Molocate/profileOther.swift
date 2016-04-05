@@ -14,7 +14,7 @@ import UIKit
 class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     //true ise kendi false başkası
     @IBOutlet var errorMessage: UILabel!
-    var classUser = User()
+    var classUser = MoleUser()
     var who = false
     @IBOutlet var settings: UITableView!
     @IBOutlet var scrollView: UIScrollView!
@@ -33,7 +33,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     
     @IBAction func FollowButton(sender: AnyObject) {
         
-        if(user.username == currentUser.username){
+        if(user.username == MoleCurrentUser.username){
             showTable()
             scrollView.userInteractionEnabled = false
             UIView.animateWithDuration(0.75) { () -> Void in
@@ -42,19 +42,19 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             if !user.isFollowing{
                 FollowButton.image = UIImage(named: "unfollow")
                 user.isFollowing = true
-                Molocate.follow(user.username, completionHandler: { (data, response, error) -> () in
-                  currentUser.following_count += 1
+                MolocateAccount.follow(user.username, completionHandler: { (data, response, error) -> () in
+                  MoleCurrentUser.following_count += 1
                  
                     //print("follow"+data)
                 })
             } else {
                 FollowButton.image = UIImage(named: "follow")
                 user.isFollowing = false
-                Molocate.unfollow(user.username, completionHandler: { (data, response, error) -> () in
-                   currentUser.following_count -= 1
+                MolocateAccount.unfollow(user.username, completionHandler: { (data, response, error) -> () in
+                   MoleCurrentUser.following_count -= 1
                     if let parentVC = self.parentViewController {
                         if let parentVC = parentVC as? Followers{
-                            Molocate.getFollowings(currentUser.username, completionHandler: { (data, response, error, count, next, previous) in
+                            MolocateAccount.getFollowings(MoleCurrentUser.username, completionHandler: { (data, response, error, count, next, previous) in
                                 //print("Sucess")
                                 dispatch_async(dispatch_get_main_queue()) {
                                     parentVC.followings = data
@@ -163,7 +163,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         //       Molocate.follow("kcenan4") { (data, response, error) -> () in
         //
         //            //print(data)
-        //            Molocate.getFollowings(currentUser.username) { (data, response, error, count, next, previous) -> () in
+        //            Molocate.getFollowings(MoleCurrentUser.username) { (data, response, error, count, next, previous) -> () in
         //                data[0].//printUser()
         //            }
         //        }
@@ -223,7 +223,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         scrollView.setContentOffset(deneme.origin, animated: true)
         
         configureScrollView()
-        if user.username == currentUser.username {
+        if user.username == MoleCurrentUser.username {
             dispatch_async(dispatch_get_main_queue()) {
             self.FollowButton.image = UIImage(named: "options")
             }
@@ -232,7 +232,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
         if(choosedIndex==3 ){
             dispatch_async(dispatch_get_main_queue()) {
-            user = currentUser
+            user = MoleCurrentUser
             self.username.text = user.username
             self.followingsCount.setTitle("\(user.following_count)", forState: .Normal)
             self.followersCount.setTitle("\(user.follower_count)", forState: .Normal)
@@ -338,17 +338,17 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             sideClicked = false
             profileOn = 0
             category = "All"
-            comments = [comment]()
+            comments = [MoleVideoComment]()
             video_id = ""
-            user = User()
+            user = MoleUser()
             videoIndex = 0
             isUploaded = true
             follewersclicked = true
             choosedIndex = 100
             origin = 0.0
             frame = CGRect()
-            currentUser = User()
-            userToken = ""
+            MoleCurrentUser = MoleUser()
+            MoleUserToken = ""
             NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "userToken")
             self.parentViewController!.performSegueWithIdentifier("logout", sender: self)
         }

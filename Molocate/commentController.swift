@@ -28,16 +28,16 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     
     @IBAction func sendButton(sender: AnyObject) {
         if(newComment.text.characters.count >= 3 && newComment.text != "Yorumunu buradan yazabilirsin" ){
-        var mycomment = comment()
+        var mycomment = MoleVideoComment()
         mycomment.text = newComment.text
-        mycomment.photo = currentUser.profilePic
-        mycomment.username = currentUser.username
+        mycomment.photo = MoleCurrentUser.profilePic
+        mycomment.username = MoleCurrentUser.username
         comments.append(mycomment)
         tableView.reloadData()
         
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
-        Molocate.commentAVideo(video_id, comment: newComment.text) { (data, response, error) -> () in
+        MolocateVideo.commentAVideo(video_id, comment: newComment.text) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                  self.newComment.text = ""
              if(myViewController == "MainController"){
@@ -74,7 +74,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         newComment.text = "Yorumunu buradan yazabilirsin"
         newComment.textColor = UIColor.lightGrayColor()
         tableView.separatorColor = UIColor.clearColor()
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(commentController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         self.sendImage.layer.zPosition = 3
         self.sendButton.layer.zPosition = 2
@@ -94,8 +94,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         sendButton.layer.cornerRadius = 5
         sendButton.layer.borderWidth = 1
         sendButton.layer.borderColor = swiftColor.CGColor
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification2:"), name:UIKeyboardWillHideNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentController.keyboardNotification(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentController.keyboardNotification2(_:)), name:UIKeyboardWillHideNotification, object: nil);
         //topConstraint.priority = 999
 //        self.sendButton.layer.zPosition = 3
 //        self.newComment.layer.zPosition = 2
@@ -128,7 +128,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             self.bottomConstraint?.constant = isShowing ? endFrameHeight : 0.0
-            let screenSize: CGRect = UIScreen.mainScreen().bounds
+         
             
             
             UIView.animateWithDuration(duration,
@@ -150,7 +150,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             self.bottomConstraint?.constant = isShowing ? endFrameHeight : 0
-            let screenSize: CGRect = UIScreen.mainScreen().bounds
+            
             
             UIView.animateWithDuration(duration,
                 delay: NSTimeInterval(0),
@@ -240,7 +240,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         let buttonRow = sender.tag
         print("username e basıldı at index path: \(buttonRow)")
         
-        Molocate.getUser(comments[buttonRow].username) { (data, response, error) -> () in
+        MolocateAccount.getUser(comments[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
                 let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther

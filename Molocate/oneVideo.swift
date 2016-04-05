@@ -69,13 +69,13 @@ class oneVideo: UIViewController,PlayerDelegate {
         
         let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "cell")
         
-        cell.initialize(indexPath.row, videoInfo:  theVideo)
+        cell.initialize(indexPath.row, videoInfo:  MoleGlobalVideo)
         
         cell.Username.addTarget(self, action: #selector(oneVideo.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.placeName.addTarget(self, action: #selector(oneVideo.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.profilePhoto.addTarget(self, action: #selector(oneVideo.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.commentCount.addTarget(self, action: #selector(oneVideo.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        if(theVideo.isFollowing==0 && theVideo.username != currentUser.username){
+        if(MoleGlobalVideo.isFollowing==0 && MoleGlobalVideo.username != MoleCurrentUser.username){
             cell.followButton.addTarget(self, action: #selector(oneVideo.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         }else{
             cell.followButton.hidden = true
@@ -83,8 +83,8 @@ class oneVideo: UIViewController,PlayerDelegate {
         
         cell.likeButton.addTarget(self, action: #selector(oneVideo.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
-        cell.likeCount.setTitle("\(theVideo.likeCount)", forState: .Normal)
-        cell.commentCount.setTitle("\(theVideo.commentCount)", forState: .Normal)
+        cell.likeCount.setTitle("\(MoleGlobalVideo.likeCount)", forState: .Normal)
+        cell.commentCount.setTitle("\(MoleGlobalVideo.commentCount)", forState: .Normal)
         cell.commentButton.addTarget(self, action: #selector(oneVideo.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.reportButton.addTarget(self, action: #selector(oneVideo.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.likeCount.addTarget(self, action: #selector(oneVideo.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
@@ -95,7 +95,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         
         
         
-        self.player.setUrl(theVideo.urlSta)
+        self.player.setUrl(MoleGlobalVideo.urlSta)
         
         self.player.view.frame = cell.newRect
         
@@ -111,7 +111,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         print("username e basıldı at index path: \(buttonRow)")
         player.stop()
         
-        Molocate.getUser(theVideo.username) { (data, response, error) -> () in
+        MolocateAccount.getUser(MoleGlobalVideo.username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
                 let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
@@ -136,7 +136,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         
         print("place e basıldı at index path: \(buttonRow) ")
         print("================================" )
-        Molocate.getPlace(theVideo.locationID) { (data, response, error) -> () in
+        MolocatePlace.getPlace(MoleGlobalVideo.locationID) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 thePlace = data
                 let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
@@ -153,13 +153,13 @@ class oneVideo: UIViewController,PlayerDelegate {
         let buttonRow = sender.tag
         pressedFollow = true
         print("followa basıldı at index path: \(buttonRow) ")
-        theVideo.isFollowing = 1
+        MoleGlobalVideo.isFollowing = 1
         var indexes = [NSIndexPath]()
         let index = NSIndexPath(forRow: buttonRow, inSection: 0)
         indexes.append(index)
         self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
-        Molocate.follow(theVideo.username){ (data, response, error) -> () in
+        MolocateAccount.follow(MoleGlobalVideo.username){ (data, response, error) -> () in
             //print(data)
         }
         pressedFollow = false
@@ -169,7 +169,7 @@ class oneVideo: UIViewController,PlayerDelegate {
     func pressedLikeCount(sender: UIButton) {
         player.stop()
         
-        video_id = theVideo.id
+        video_id = MoleGlobalVideo.id
         videoIndex = sender.tag
         let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
         controller.view.frame = self.view.bounds;
@@ -187,15 +187,15 @@ class oneVideo: UIViewController,PlayerDelegate {
         var indexes = [NSIndexPath]()
         indexes.append(indexpath)
         
-        if(theVideo.isLiked == 0){
+        if(MoleGlobalVideo.isLiked == 0){
             
-            theVideo.isLiked=1
-            theVideo.likeCount+=1
+            MoleGlobalVideo.isLiked=1
+            MoleGlobalVideo.likeCount+=1
             
             
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
-            Molocate.likeAVideo(theVideo.id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(MoleGlobalVideo.id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
                 }
@@ -203,12 +203,12 @@ class oneVideo: UIViewController,PlayerDelegate {
         }else{
             
             
-            theVideo.isLiked=0
-            theVideo.likeCount-=1
+            MoleGlobalVideo.isLiked=0
+            MoleGlobalVideo.likeCount-=1
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
             
-            Molocate.unLikeAVideo(theVideo.id){ (data, response, error) -> () in
+            MolocateVideo.unLikeAVideo(MoleGlobalVideo.id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
                 }
@@ -223,14 +223,14 @@ class oneVideo: UIViewController,PlayerDelegate {
         var indexes = [NSIndexPath]()
         indexes.append(indexpath)
         
-        if(theVideo.isLiked == 0){
+        if(MoleGlobalVideo.isLiked == 0){
             sender.highlighted = true
             
-            theVideo.isLiked=1
-            theVideo.likeCount+=1
+            MoleGlobalVideo.isLiked=1
+            MoleGlobalVideo.likeCount+=1
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
-            Molocate.likeAVideo(theVideo.id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(MoleGlobalVideo.id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
                 }
@@ -238,12 +238,12 @@ class oneVideo: UIViewController,PlayerDelegate {
         }else{
             sender.highlighted = false
             
-            theVideo.isLiked=0
-            theVideo.likeCount-=1
+            MoleGlobalVideo.isLiked=0
+            MoleGlobalVideo.likeCount-=1
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
             
             
-            Molocate.unLikeAVideo(theVideo.id){ (data, response, error) -> () in
+            MolocateVideo.unLikeAVideo(MoleGlobalVideo.id){ (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
                     print(data)
                 }
@@ -255,9 +255,9 @@ class oneVideo: UIViewController,PlayerDelegate {
         player.stop()
         
         videoIndex = buttonRow
-        video_id = theVideo.id
+        video_id = MoleGlobalVideo.id
         myViewController = "HomeController"
-        Molocate.getComments(theVideo.id) { (data, response, error, count, next, previous) -> () in
+        MolocateVideo.getComments(MoleGlobalVideo.id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 comments = data
                 let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
@@ -280,7 +280,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         let buttonRow = sender.tag
         player.stop()
         
-        Molocate.reportAVideo(theVideo.id) { (data, response, error) -> () in
+        MolocateVideo.reportAVideo(MoleGlobalVideo.id) { (data, response, error) -> () in
             print(data)
         }
         print("pressedReport at index path: \(buttonRow)")

@@ -9,13 +9,13 @@ class tagComment: UIViewController, UITextViewDelegate {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var textField: UITextView!
     @IBOutlet var toolBar: UIToolbar!
-    var users = [User]()
+    var users = [MoleUser]()
     //done da verileri yolla backde vazgeçsin yollama
     @IBAction func done(sender: AnyObject) {
         CaptionText = textField.text!
         let parent =  (self.parentViewController as! capturePreviewController)
        
-        for(var i = 0; i < numbers.count; i++ ){
+        for(var i = 0; i < numbers.count; i += 1 ){
             CaptionText = CaptionText + " @" + users[numbers[i]].username
             print(CaptionText)
             parent.taggedUsers.append(users[numbers[i]].username)
@@ -62,7 +62,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         textField.textColor = UIColor.lightGrayColor()
         textField.returnKeyType = .Done
         
-        Molocate.getFollowers(currentUser.username) { (data, response, error, count, next, previous) -> () in
+        MolocateAccount.getFollowers(MoleCurrentUser.username) { (data, response, error, count, next, previous) -> () in
              dispatch_async(dispatch_get_main_queue()){
                 self.users = data
                 self.tableView.reloadData()

@@ -189,7 +189,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     // This part is for the square shaped capture. Actually our capture is on all screen like normal camera but we are reducing that into square shaped with the two cover layer.
                     let newFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
                     self.previewLayer!.frame = newFrame
-                    let y = (self.view.frame.height+self.view.frame.width)/2
+                   // let y = (self.view.frame.height+self.view.frame.width)/2
                     let width = self.view.frame.width
                     let height = (self.view.frame.height-self.view.frame.width-2*self.toolbar.frame.height-self.toolbarYancı.frame.height)
                     let topRect = CGRect(x: 0, y: self.view.frame.width+self.toolbar.frame.height+self.toolbarYancı.frame.height, width: width, height: height)
@@ -363,7 +363,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                                 print("foto yok")
                             }
 
-                        var locationDictitem = [name:loc]
+                        let locationDictitem = [name:loc]
                             locationDict.append(locationDictitem)
                         
                         }
@@ -425,7 +425,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 CameraViewController.setFlashMode(AVCaptureFlashMode.On, forDevice: videoDevice!)
                 
                 
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "subjectAreaDidChange:",  name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: videoDevice)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraViewController.subjectAreaDidChange(_:)),  name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: videoDevice)
                 
                 self.captureSession!.addInput(videoDeviceInput)
                 self.videoDeviceInput = videoDeviceInput
@@ -789,7 +789,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
     func holdDown(){
         self.videoDone.enabled = false
-        self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+        self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: #selector(CameraViewController.updateProgress), userInfo: nil, repeats: true)
         self.cameraChange.enabled = false
         self.recordButton.enabled = false
        

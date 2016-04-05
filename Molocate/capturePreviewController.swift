@@ -58,12 +58,12 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         }
             //let videodata = NSData(contentsOfURL: videoURL!)
         let headers = [
-            "authorization": "Token \(userToken!)",
+            "authorization": "Token \(MoleUserToken!)",
             "content-type": "/*/",
             "content-disposition": "attachment;filename=deneme.mp4",
             "cache-control": "no-cache"
         ]
-        let request = NSMutableURLRequest(URL: NSURL(string: baseUrl + "video/upload/")!,
+        let request = NSMutableURLRequest(URL: NSURL(string: MolocateBaseUrl + "video/upload/")!,
             cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData,
             timeoutInterval: 10.0)
         request.HTTPMethod = "POST"
@@ -107,7 +107,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                         ]
                         
                         let newheaders = [
-                            "authorization": "Token \(userToken!)",
+                            "authorization": "Token \(MoleUserToken!)",
                             "content-type": "application/json",
                             "cache-control": "no-cache"
                         ]
@@ -119,7 +119,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                            // print(jsonData)
                            // create post request
                            
-                            let request = NSMutableURLRequest(URL: NSURL(string: baseUrl + "video/update/")!,
+                            let request = NSMutableURLRequest(URL: NSURL(string: MolocateBaseUrl + "video/update/")!,
                                 cachePolicy: .UseProtocolCachePolicy,
                                 timeoutInterval: 10.0)
                             request.HTTPMethod = "POST"
@@ -158,12 +158,12 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
                             
                             let headers2 = ["content-type": "/*/", "content-disposition":"attachment;filename=molocate.png" ]
                             
-                            let thumbnailRequest = NSMutableURLRequest(URL: NSURL(string: baseUrl + "/video/api/upload_thumbnail/?video_id="+videoId)!, cachePolicy:.UseProtocolCachePolicy, timeoutInterval: 10.0)
+                            let thumbnailRequest = NSMutableURLRequest(URL: NSURL(string: MolocateBaseUrl + "/video/api/upload_thumbnail/?video_id="+videoId)!, cachePolicy:.UseProtocolCachePolicy, timeoutInterval: 10.0)
                             
                             thumbnailRequest.HTTPMethod = "POST"
                             thumbnailRequest.allHTTPHeaderFields = headers2
                             let image = UIImageJPEGRepresentation(thumbnail, 0.5)
-                            thumbnailRequest.addValue("Token " + userToken!, forHTTPHeaderField: "Authorization")
+                            thumbnailRequest.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
                             thumbnailRequest.HTTPBody = image
                             let thumbnailTask = NSURLSession.sharedSession().dataTaskWithRequest(thumbnailRequest){data, response, error  in
                                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
@@ -377,7 +377,7 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
        
         //dispatch_async(dispatch_get_main_queue()) {
         
-        self.categ = categoryDict[self.categories[indexPath.row]]
+        self.categ = MoleCategoriesDictionary[self.categories[indexPath.row]]
         print(self.categories[indexPath.row])
         print(self.categ)
         self.isCategorySelected = true

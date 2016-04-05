@@ -20,9 +20,9 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     @IBOutlet var toolBar: UINavigationBar!
     
 
-    var classUser = User()
-    var users = [User]()
-    var followings = [following]()
+    var classUser = MoleUser()
+    var users = [MoleUser]()
+    var followings = [MoleUserFollowings]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var myTable: UITableView!
     var follower = true
@@ -48,7 +48,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             self.TitleLabel.text = "Takipçi"
             self.TitleLabel.textColor = UIColor.whiteColor()
             self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
-            Molocate.getFollowers(classUser.username) { (data, response, error, count, next, previous) -> () in
+            MolocateAccount.getFollowers(classUser.username) { (data, response, error, count, next, previous) -> () in
             
                 for thing in data{
                 self.users.append(thing)
@@ -62,7 +62,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                 self.TitleLabel.text = "Takip"
                 self.TitleLabel.textColor = UIColor.whiteColor()
                 self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
-            Molocate.getFollowings(classUser.username) { (data, response, error, count, next, previous) -> () in
+            MolocateAccount.getFollowings(classUser.username) { (data, response, error, count, next, previous) -> () in
                 
                 for thing in data{
                     self.followings.append(thing)
@@ -126,7 +126,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         cell.myLabel1.hidden = true
         cell.myLabel1.enabled = false
        
-        if(follewersclicked && user.username == currentUser.username && !users[indexPath.row].isFollowing){
+        if(follewersclicked && user.username == MoleCurrentUser.username && !users[indexPath.row].isFollowing){
          cell.myLabel1.hidden = false
          cell.myLabel1.enabled = true
          cell.myLabel1.tag = indexPath.row
@@ -142,14 +142,14 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     func pressedFollow(sender: UIButton) {
         let buttonRow = sender.tag
         //print("followa basıldı at index path: \(buttonRow) ")
-        currentUser.following_count += 1
+        MoleCurrentUser.following_count += 1
         self.users[buttonRow].isFollowing = true
         var indexes = [NSIndexPath]()
         let index = NSIndexPath(forRow: buttonRow, inSection: 0)
         indexes.append(index)
         self.myTable.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
-        Molocate.follow(users[buttonRow].username){ (data, response, error) -> () in
+        MolocateAccount.follow(users[buttonRow].username){ (data, response, error) -> () in
             //print(data)
         }
         
@@ -171,7 +171,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         } else {
             username = followings[buttonRow].username
         }
-        Molocate.getUser(username) { (data, response, error) -> () in
+        MolocateAccount.getUser(username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
         let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
@@ -198,7 +198,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        Molocate.getPlace(followings[buttonRow].place_id) { (data, response, error) -> () in
+        MolocatePlace.getPlace(followings[buttonRow].place_id) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 thePlace = data
                 let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation

@@ -12,7 +12,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
     @IBOutlet var toolBar: UIToolbar!
     let cellIdentifier = "cell5"
-    var users = [User]()
+    var users = [MoleUser]()
     
     
     @IBOutlet var tableView: UITableView!
@@ -46,7 +46,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         tableView.tableFooterView = UIView()
         
         print(video_id)
-        Molocate.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
+        MolocateVideo.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
             
             self.users.removeAll()
             dispatch_async(dispatch_get_main_queue()){
@@ -78,7 +78,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         cell.username.tag = indexPath.row
         cell.username.tintColor = swiftColor
-        if(!users[indexPath.row].isFollowing && users[indexPath.row].username != currentUser.username){
+        if(!users[indexPath.row].isFollowing && users[indexPath.row].username != MoleCurrentUser.username){
             
         }else{
             cell.followLike.hidden = true
@@ -94,7 +94,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
             cell.profileImage.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
                 UIControlState.Normal)
             print(users[indexPath.row].profilePic.absoluteString)
-            Molocate.getDataFromUrl(users[indexPath.row].profilePic, completion: { (data, response, error) -> Void in
+            MolocateAccount.getDataFromUrl(users[indexPath.row].profilePic, completion: { (data, response, error) -> Void in
                 dispatch_async(dispatch_get_main_queue()){
                     
                     cell.profileImage.setBackgroundImage(UIImage(data: data!)!, forState:
@@ -122,7 +122,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         let buttonRow = sender.tag
         print("pressed profile")
         
-        Molocate.getUser(users[buttonRow].username) { (data, response, error) -> () in
+        MolocateAccount.getUser(users[buttonRow].username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
                 let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther

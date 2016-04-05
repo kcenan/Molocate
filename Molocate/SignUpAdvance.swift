@@ -130,8 +130,8 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpAdvance.dismissKeyboard))
         view.addGestureRecognizer(tap)
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-        if(faceMail != "not_valid"){
-            email.text = faceMail
+        if(FaceMail != "not_valid"){
+            email.text = FaceMail
         } else {
             
         }
@@ -160,7 +160,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
             
             let uname = (username.text! as String).lowercaseString
             let mail = (email.text! as String).lowercaseString
-            let token = fbToken
+            let token = FbToken
             let json = ["access_token": token , "username": uname, "email": mail]
             
             
@@ -169,7 +169,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                 let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
                 
                 // create post request
-                let url = NSURL(string: baseUrl + "account/facebook_login/")!
+                let url = NSURL(string: MolocateBaseUrl + "account/facebook_login/")!
                 let request = NSMutableURLRequest(URL: url)
                 request.HTTPMethod = "POST"
                 
@@ -214,8 +214,8 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                                     }
                                 }
                             } else {
-                                userToken = result["access_token"] as? String
-                                Molocate.getCurrentUser({ (data, response, error) -> () in
+                                MoleUserToken = result["access_token"] as? String
+                                MolocateAccount.getCurrentUser({ (data, response, error) -> () in
                                     dispatch_async(dispatch_get_main_queue(), {
                                         self.performSegueWithIdentifier("usernameAfter", sender: self)
                                         

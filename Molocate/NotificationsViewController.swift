@@ -9,17 +9,18 @@ import CoreLocation
 class NotificationsViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate  {
     var locationManager: CLLocationManager!
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+   
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
     
-    var notificationArray = [notifications]()
+    var notificationArray = [MoleUserNotifications]()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
         tableView.separatorColor = UIColor.blackColor()
-        Molocate.getNotifications(NSURL()) { (data, response, error) -> () in
+        MolocateNotifications.getNotifications(NSURL()) { (data, response, error) -> () in
           
             dispatch_async(dispatch_get_main_queue()){
                  self.notificationArray.removeAll()
@@ -91,9 +92,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
             activityIndicator.startAnimating()
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
 
-            Molocate.getVideo(notificationArray[indexPath.row].target, completionHandler: { (data, response, error) in
+            MolocateVideo.getVideo(notificationArray[indexPath.row].target, completionHandler: { (data, response, error) in
                 dispatch_async(dispatch_get_main_queue()){
-                    theVideo = data
+                    MoleGlobalVideo = data
                     let controller:oneVideo = self.storyboard!.instantiateViewControllerWithIdentifier("oneVideo") as! oneVideo
                     controller.view.frame = self.view.bounds
                     controller.willMoveToParentViewController(self)
@@ -121,7 +122,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
 
-        Molocate.getUser(notificationArray[buttonRow].actor) { (data, response, error) -> () in
+        MolocateAccount.getUser(notificationArray[buttonRow].actor) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
         user = data
         let controller:profileOther = self.storyboard!.instantiateViewControllerWithIdentifier("profileOther") as! profileOther
