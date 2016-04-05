@@ -354,6 +354,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
                 }
             }
         }
+               pressedLike = false
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag

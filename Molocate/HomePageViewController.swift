@@ -678,6 +678,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 }
             }
         }
+               pressedLike = false
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag

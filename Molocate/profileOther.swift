@@ -151,8 +151,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         self.settings.layer.zPosition = 1
         settings.hidden = true
         settings.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.width, self.view.frame.width)
-        settings.layer.cornerRadius = 20
-        
+        settings.layer.cornerRadius = 0
+        settings.tintColor = UIColor.clearColor()
         classUser = user
         profilePhoto.layer.borderWidth = 0.5
         profilePhoto.layer.masksToBounds = false

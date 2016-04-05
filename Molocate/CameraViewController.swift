@@ -80,7 +80,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     var location:CLLocation!
     var locationManager:CLLocationManager!
-
+    var firstFront = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -434,7 +434,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             self.captureSession!.commitConfiguration()
             
             dispatch_async(dispatch_get_main_queue()) {
+                if !self.firstFront{
                 self.cameraChange.enabled = true
+                }
                 self.recordButton.enabled = true
                 
             }
@@ -449,6 +451,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             self.recordButton.enabled = true
             //self.recordButton.setTitle(NSLocalizedString("Stop", comment: "Recording button stop title"), forState: .Normal)
         }
+    }
+    
+    func subjectAreaDidChange(notification: NSNotification) {
+        let devicePoint = CGPointMake(0.5, 0.5)
+        self.focusWithMode(AVCaptureFocusMode.ContinuousAutoFocus, exposeWithMode: AVCaptureExposureMode.ContinuousAutoExposure, atDevicePoint: devicePoint, monitorSubjectAreaChange: false)
     }
     
     func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
@@ -476,6 +483,16 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 tempAssetURL = outputFileURL
                 fakeoutputFileURL = outputFileURL
                 self.videoDone.enabled = true
+                let currentVideoDevice = self.videoDeviceInput.device
+                let currentposition = currentVideoDevice.position
+                if currentposition == AVCaptureDevicePosition.Front {
+                    
+                }else {
+                    self.cameraChange.tintColor = UIColor.clearColor()
+                    self.cameraChange.enabled = false
+                    firstFront = true
+                }
+
             } else {
                 
                 firstAsset = AVAsset(URL: tempAssetURL)
@@ -563,7 +580,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
         dispatch_async( dispatch_get_main_queue()) {
             // Only enable the ability to change camera if the device has more than one camera.
+            if !self.firstFront{
             self.cameraChange.enabled = (AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo).count > 1)
+            }
             self.recordButton.enabled = true
             
             //self.recordButton.setTitle(NSLocalizedString("Record", comment: "Recording button record title"), forState: .Normal)

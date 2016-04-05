@@ -722,6 +722,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                     print(data)
                 }
             }
+
         }else{
             sender.highlighted = false
             
@@ -736,6 +737,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 }
             }
         }
+        pressedLike = false
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag

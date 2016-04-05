@@ -483,6 +483,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 }
             }
         }
+               pressedLike = false
     }
     func pressedComment(sender: UIButton) {
         let buttonRow = sender.tag

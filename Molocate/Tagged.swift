@@ -439,6 +439,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 }
             }
         }
+               pressedLike = false
     }
     
     
