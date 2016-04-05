@@ -5,7 +5,7 @@ import QuadratTouch
 import MapKit
 import SDWebImage
 import Haneke
-
+import AVFoundation
 
 //video caption ve süre eklenecek, report send edilecek
 var sideClicked = false
@@ -62,6 +62,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         session = Session.sharedSession()
         session.logger = ConsoleLogger()
         

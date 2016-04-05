@@ -184,6 +184,7 @@ public class Player: UIViewController {
 
     public convenience init() {
         self.init(nibName: nil, bundle: nil)
+      
         self.player = AVPlayer()
         self.player.actionAtItemEnd = .Pause
         self.player.addObserver(self, forKeyPath: PlayerRateKey, options: ([NSKeyValueObservingOptions.New, NSKeyValueObservingOptions.Old]) , context: &PlayerObserverContext)
@@ -239,6 +240,7 @@ public class Player: UIViewController {
     }
 
     public func playFromCurrentTime() {
+        
         self.playbackState = .Playing
         self.delegate?.playerPlaybackStateDidChange(self)
         self.player.play()

@@ -10,6 +10,7 @@ import QuadratTouch
 import MapKit
 import SDWebImage
 import Haneke
+import AVFoundation
 var dictionary = NSMutableDictionary()
 var myCache = Shared.dataCache
 class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
@@ -44,6 +45,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+          try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         self.nofollowings.hidden = true
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center

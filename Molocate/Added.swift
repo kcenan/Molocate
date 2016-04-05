@@ -5,7 +5,7 @@
 import UIKit
 import Haneke
 import SDWebImage
-
+import AVFoundation
 class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,PlayerDelegate {
     var lastOffset:CGPoint!
     var lastOffsetCapture:NSTimeInterval!
@@ -25,7 +25,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
     var on = true
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+          try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height-190)
         
         self.player1 = Player()

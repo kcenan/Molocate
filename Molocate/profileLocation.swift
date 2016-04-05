@@ -9,8 +9,7 @@
 import UIKit
 import SDWebImage
 import Haneke
-
-
+import AVFoundation
 class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSource , UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate {
     
     var lastOffset:CGPoint!
@@ -75,6 +74,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     
     override func viewDidLoad() {
         super.viewDidLoad()
+         try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         self.view.backgroundColor = swiftColor3
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
