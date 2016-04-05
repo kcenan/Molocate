@@ -74,10 +74,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             choosedIndex = 1
             if username.text == "" || password.text == "" {
                 displayAlert("Hata", message: "lütfen kullanıcı adı ve parola giriniz.")
-            }
-                //uyarı çıkıyor error varsa
-            else {
-                
+            }else {
                 activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
                 activityIndicator.center = self.view.center
                 activityIndicator.hidesWhenStopped = true
@@ -91,7 +88,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 
                 if loginActive {
                     
-                    MolocateAccount.login(uname, password: pwd, completionHandler: { (data, response, error) in
+                    MolocateAccount.Login(uname, password: pwd, completionHandler: { (data, response, error) in
                         dispatch_async(dispatch_get_main_queue(), {
                             if( data == "success" ){
                                 self.performSegueWithIdentifier("login", sender: self)
@@ -111,7 +108,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     
                     let mail: String = email.text!.lowercaseString
                     
-                    MolocateAccount.signUp(uname, password: pwd, email: mail, completionHandler: { (data, response, error) in
+                    MolocateAccount.SignUp(uname, password: pwd, email: mail, completionHandler: { (data, response, error) in
                         dispatch_async(dispatch_get_main_queue(), {
                             if(data == "success"){
                                 self.performSegueWithIdentifier("login", sender: self)
@@ -146,32 +143,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         //signup butonuna basınca login ve signup yer değiştirip işlevi yer değiştiriyor
         
         if loginActive == true{
-            
-            
             email.hidden = false
-            
             signupBut.setTitle("Giriş yap", forState: UIControlState.Normal)
-            
             registeredText.text = "Zaten üye misin?"
-            
             loginBut.setTitle("Üye ol", forState: UIControlState.Normal)
-            
             loginActive = false
-            
-            
-            
         } else {
-            
             email.hidden = true
-            
             signupBut.setTitle("Üye ol", forState: UIControlState.Normal)
-            
             registeredText.text = "Hala kayıtlı değil misin?"
-            
             loginBut.setTitle("Giriş yap", forState: UIControlState.Normal)
-            
             loginActive = true
-            
         }
     }
     
@@ -187,76 +169,35 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     func fbLoginInitiate() {
         
         let loginManager = FBSDKLoginManager()
+        
         loginManager.logInWithReadPermissions(["public_profile", "email","user_birthday", "user_friends"], handler: {(Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             
             if (error != nil) {
-                // Process error
                 self.removeFbData()
             } else if Result.isCancelled {
-                // User Cancellation
                 print("Error in fbLoginInitiate")
                 self.removeFbData()
             } else {
-                //Success
                 print("success")
-                let fbAccessToken: String = FBSDKAccessToken.currentAccessToken().tokenString
-                
-                let json = ["access_token":fbAccessToken]
-                FbToken = fbAccessToken
-                print(json)
-                do {
-                    
-                    let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-                    
-                    let url = NSURL(string: MolocateBaseUrl + "/account/facebook_login/")!
-                    let request = NSMutableURLRequest(URL: url)
-                    request.HTTPMethod = "POST"
-                    
-                    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                    request.HTTPBody = jsonData
-                    
-                    
-                    let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
-                        //  print(response)
-                        print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                        dispatch_async(dispatch_get_main_queue()) {
-                            
-                            
-                            let nsError = error
-                            
-                            do {
-                                let resultJson = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
-                                
-                                print("Result -> \(resultJson)")
-                                
-                                if (resultJson["logged_in"] as! Int == 1) {
-                                    
-                                    
-                                    MoleUserToken = resultJson["access_token"] as! String
-                                    MolocateAccount.getCurrentUser({ (data, response, error) in
-                                        
-                                    })
-                                    
-                                    self.performSegueWithIdentifier("login", sender: self)
-                                    
-                                } else {
-                                    
-                                    FaceMail = resultJson["email_validation"] as! String
-                                    FaceUsername = resultJson["suggested_username"] as! String
-                                    self.performSegueWithIdentifier("facebookLogin", sender: self)
-                                }
-                                
-                            } catch{
-                                print("Error:: in mole.follow()")
+                FbToken = FBSDKAccessToken.currentAccessToken().tokenString
+                let json = ["access_token":FbToken]
+
+                MolocateAccount.FacebookLogin(json, completionHandler: { (data, response, error) in
+                    if (data == "success") {
+                        MolocateAccount.getCurrentUser({ (data, response, error) in
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.performSegueWithIdentifier("login", sender: self)
                             }
-                            
-                        }}
-                    task.resume()
-                    
-                    
-                } catch {
-                    print(error)
-                }
+                        })
+                        
+                        
+                    } else if (data == "signup") {
+                        dispatch_async(dispatch_get_main_queue()) {
+                        self.performSegueWithIdentifier("facebookLogin", sender: self)
+                        }
+                    }
+
+                })
                 
                 
                 if Result.grantedPermissions.contains("email") {
@@ -269,17 +210,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     self.activityIndicator.hidesWhenStopped = true
                     self.activityIndicator.startAnimating()
                     UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-                    
                     self.fetchFacebookProfile()
                 } else {
                     //Handle error
-                    
                 }
+            
             }
         })
     }
     func removeFbData() {
-        //Remove FB Data
         let fbManager = FBSDKLoginManager()
         fbManager.logOut()
         FBSDKAccessToken.setCurrentAccessToken(nil)
@@ -304,91 +243,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             })
         }
     }
-    
-    //        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name,public_profile,email,user_birthday,user_location"])
-    //              graphRequest.startWithCompletionHandler( {
-    //
-    //                    (connection, result, error) -> Void in
-    //
-    //                    if error != nil {
-    //
-    //                        print(error)
-    //
-    //                    } else if let result = result {
-    //
-    //                        //  var myToken = FBSDKAccessToken.currentAccessToken().tokenString
-    //                        //                  print(myToken)
-    //
-    //
-    //
-    //            if let error = error {
-    //
-    //                print(error)
-    //
-    //            } else {
-    //                print("uservar")
-    //
-    //
-    //                        }
-    //
-    //                }
-    //
-    //                })
-    //    }
-    //
-    
-    //
-    //                if let user = user {
-    //
-    //                    var myToken = FBSDKAccessToken.currentAccessToken().tokenString
-    //                    print(myToken)
-    //                    // izinler burada belirleniyo, facebookda izin alabilceğin şeylerin listesi string olarak var
-    //                   let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name"])
-    //
-    //                    // Send request to Facebook
-    //                    graphRequest.startWithCompletionHandler {
-    //
-    //                        (connection, result, error) in
-    //
-    //                        if error != nil {
-    //                            // Some error checking here
-    //                        }
-    //                        else if let result = result as? [String:AnyObject] {
-    //
-    //                            // Access user data
-    //
-    //                            let userId = result["id"] as! String
-    //
-    //                            let PFUser.currentUser()?["name"] = result["name"]  as? String
-    //                            kc foto burdan facebookdan alınıyo linkin sonunu değiştirerek fotonun hangi boyutta olacağını ayarlayabiliriz
-    //                            let facebookProfilePictureUrl = "https://graph.facebook.com/" + userId + "/picture?type=large"
-    //
-    //                                        if let fbpicUrl = NSURL(string: facebookProfilePictureUrl) {
-    //
-    //                                               if let data = NSData(contentsOfURL: fbpicUrl) {
-    //
-    //
-    //
-    //                                            let imageFile:PFFile = PFFile(data: data)!
-    //
-    //                                               //parse a burdan atıyor
-    //                                                    PFUser.currentUser()?["image"] = imageFile
-    //
-    //
-    //                        }
-    //  }
-    
-    //      self.performSegueWithIdentifier("signUp", sender: self)
-    
-    
-    //  }
-    
+   
     
     
     override func viewDidAppear(animated: Bool) {
         if(MolocateDevice.isConnectedToNetwork()){
             if NSUserDefaults.standardUserDefaults().objectForKey("userToken") != nil {
-                MoleUserToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as! String
+                MoleUserToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as? String
                 self.view.hidden = true
                 MolocateAccount.getCurrentUser({ (data, response, error) in
                     dispatch_async(dispatch_get_main_queue()){
@@ -409,18 +270,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         super.viewDidLoad()
         let screenHeight = screenSize.height
         let screenWidth = screenSize.width
+        
         loginBut.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).CGColor
         loginBut.layer.shadowOffset = CGSizeMake(0.0, 0.7)
         loginBut.layer.shadowOpacity = 1.0
         loginBut.layer.shadowRadius = 1.0
         loginBut.layer.masksToBounds = false
         loginBut.layer.cornerRadius = 4.0
+       
         let imageName = "Logo.png"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
-        _ = (screenHeight * 80)
         imageView.frame = CGRectMake((screenWidth / 2 ) - (screenHeight * 80), 10, (screenHeight  / 9) , (screenHeight  / 9))
-        
         
         view.addSubview(imageView)
         username.delegate = self
@@ -450,11 +311,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         password.layer.borderColor = UIColor.whiteColor().CGColor
         email.layer.borderColor = UIColor.whiteColor().CGColor
         
-        
-        
-        
-        
-        //all frames
         loginBut.layer.cornerRadius = 5
         loginBut.layer.borderWidth = 1
         loginBut.layer.borderColor = swiftColor.CGColor
@@ -471,9 +327,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             
         }
         
-        
-        
-        
     }
     
     
@@ -481,7 +334,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
@@ -489,24 +341,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         scrollWidth = 3 * self.view.frame.size.width
         scrollHeight  = self.view.frame.size.height
         adjustViewLayout(UIScreen.mainScreen().bounds.size)
-        // Do any additional setup after loading the view, typically from a nib.
-        //print(scrollWidth)
-        
-        
     }
     
     
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
-        
-        
-        if error == nil
-        {
+        if error == nil{
             print("login completed...")
-            
-        }
-        else
-        {
-            
+        }else{
             print(error.localizedDescription)
         }
     }
@@ -515,7 +356,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            
         })))
         self.presentViewController(alert, animated: true, completion: nil)
     }
@@ -539,27 +379,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     func adjustViewLayout(size: CGSize) {
-        
-        
         switch(size.width, size.height) {
-        case (480, 320):
-            break                        // iPhone 4S in landscape
-            
-        case (320, 480):
-            is4s = true                    // iPhone 4s pportrait
-            break
-        case (414, 736):                        // iPhone 6 Plus in portrait
-            
-            break
-        case (736, 414):                        // iphone 6 Plus in landscape
-            
-            break
-        default:
-            break
+            case (480, 320):
+                break                        // iPhone 4S in landscape
+            case (320, 480):
+                is4s = true                    // iPhone 4s pportrait
+                break
+            case (414, 736):                        // iPhone 6 Plus in portrait
+                break
+            case (736, 414):                        // iphone 6 Plus in landscape
+                break
+            default:
+                break
         }
     }
-    
-    
 }
 
 extension UIColor {
