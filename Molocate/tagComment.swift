@@ -64,7 +64,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         
         MolocateAccount.getFollowers(MoleCurrentUser.username) { (data, response, error, count, next, previous) -> () in
              dispatch_async(dispatch_get_main_queue()){
-                self.users = data
+                self.users = data.follower
                 self.tableView.reloadData()
              }
             

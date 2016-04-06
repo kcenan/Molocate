@@ -16,6 +16,8 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     @IBOutlet weak var TitleLabel: UILabel!
     
+    var followerCount = 0
+    var followingCount = 0
     
     @IBOutlet var toolBar: UINavigationBar!
     
@@ -49,12 +51,14 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             self.TitleLabel.textColor = UIColor.whiteColor()
             self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
             MolocateAccount.getFollowers(classUser.username) { (data, response, error, count, next, previous) -> () in
-            
-                for thing in data{
+                
+                for thing in data.follower{
                 self.users.append(thing)
+
                 }
                 dispatch_async(dispatch_get_main_queue()){
                     self.myTable.reloadData()
+                    self.followerCount = data.totalCount
                 }
             
         }}else{
@@ -64,11 +68,12 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                 self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
             MolocateAccount.getFollowings(classUser.username) { (data, response, error, count, next, previous) -> () in
                 
-                for thing in data{
+                for thing in data.followings{
                     self.followings.append(thing)
                 }
                 dispatch_async(dispatch_get_main_queue()){
                     self.myTable.reloadData()
+                    self.followingCount = data.totalCount
                 }
                 
             }
@@ -221,9 +226,10 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             if let parentVC = self.parentViewController {
                 if let parentVC = parentVC as? profileOther{
                     if(follewersclicked){
-                        parentVC.followersCount.setTitle(  "\(self.users.count)", forState: .Normal)
+                        parentVC.followersCount.setTitle(  "\(self.followerCount)", forState: .Normal)
+                        print(self.users.count)
                     }else{
-                         parentVC.followingsCount.setTitle("\(self.followings.count)", forState: .Normal)
+                         parentVC.followingsCount.setTitle("\(self.followingCount)", forState: .Normal)
                     }
                 }
             }

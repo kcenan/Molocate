@@ -54,7 +54,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                             MolocateAccount.getFollowings(MoleCurrentUser.username, completionHandler: { (data, response, error, count, next, previous) in
                                 //print("Sucess")
                                 dispatch_async(dispatch_get_main_queue()) {
-                                    parentVC.followings = data
+                                    parentVC.followings = data.followings
                                     parentVC.myTable.reloadData()
                                 }
                                 

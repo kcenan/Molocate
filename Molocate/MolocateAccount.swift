@@ -14,6 +14,16 @@ struct MoleUserFollowings {
     var place_id:String = ""
 }
 
+struct MoleFollowingStruct{
+    var followings = [MoleUserFollowings]()
+    var totalCount = 0
+}
+
+struct MoleFollowerStruct{
+    var follower = [MoleUser]()
+    var totalCount = 0
+}
+
 var nextT:NSURL!
 
 var nextU:NSURL!
@@ -322,7 +332,7 @@ public class MolocateAccount {
     
  
     
-    class func getFollowers(username: String, completionHandler: (data: Array<MoleUser>, response: NSURLResponse!, error: NSError!, count: Int, next: String?, previous: String? ) -> ()) {
+    class func getFollowers(username: String, completionHandler: (data: MoleFollowerStruct, response: NSURLResponse!, error: NSError!, count: Int, next: String?, previous: String? ) -> ()) {
         
         let url = NSURL(string: MolocateBaseUrl + "relation/api/followers/?username=" + (username as String) )!
         let request = NSMutableURLRequest(URL: url)
@@ -341,11 +351,12 @@ public class MolocateAccount {
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
-                
+                var followers = MoleFollowerStruct()
+                followers.totalCount = count
                 var users: Array<MoleUser> = Array<MoleUser>()
                 
                 if(count != 0){
-                    print(result["results"] )
+                    //print(result["results"] )
                     for thing in result["results"] as! NSArray{
                         var user = MoleUser()
                         user.username = thing["username"] as! String
@@ -356,10 +367,11 @@ public class MolocateAccount {
                         users.append(user)
                     }
                 }
+                followers.follower = users
                 
-                completionHandler(data: users , response: response , error: nsError, count: count, next: next, previous: previous  )
+                completionHandler(data: followers , response: response , error: nsError, count: count, next: next, previous: previous  )
             } catch{
-                completionHandler(data:  Array<MoleUser>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                completionHandler(data:  MoleFollowerStruct() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
                 print("Error:: in mole.getFollowers()")
             }
             
@@ -368,7 +380,7 @@ public class MolocateAccount {
     }
     
     
-    class func getFollowings(username: String, completionHandler: (data: Array<MoleUserFollowings>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
+    class func getFollowings(username: String, completionHandler: (data: MoleFollowingStruct, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
         
         let url = NSURL(string: MolocateBaseUrl + "relation/api/followings/?username=" + (username as String));
         let request = NSMutableURLRequest(URL: url!)
@@ -387,7 +399,7 @@ public class MolocateAccount {
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
-                
+                var MoleFollowings = MoleFollowingStruct()
                 var followings: Array<MoleUserFollowings> = Array<MoleUserFollowings>()
                 
                 if(count != 0){
@@ -402,11 +414,13 @@ public class MolocateAccount {
                         followings.append(user)
                     }
                 }
+                MoleFollowings.followings = followings
+                MoleFollowings.totalCount = count
                 
                 
-                completionHandler(data: followings , response: response , error: nsError, count: count, next: next, previous: previous  )
+                completionHandler(data: MoleFollowings , response: response , error: nsError, count: count, next: next, previous: previous  )
             } catch{
-                completionHandler(data:  Array<MoleUserFollowings>() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                completionHandler(data:  MoleFollowingStruct() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
                 print("Error:: in mole.getFollowings()")
             }
             
