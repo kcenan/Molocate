@@ -6,9 +6,10 @@ import UIKit
 import Foundation
 import CoreLocation
 
-class NotificationsViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate  {
+class NotificationsViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate, CLLocationManagerDelegate  {
     var locationManager: CLLocationManager!
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    var location:CLLocation!
    
     @IBOutlet var tableView: UITableView!
     @IBOutlet var toolBar: UIToolbar!
@@ -37,6 +38,12 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         self.toolBar.translucent = false
         self.toolBar.barTintColor = swiftColor
         self.view.backgroundColor = swiftColor
+        
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        location = locationManager.location
         
     }
     
@@ -160,6 +167,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     
     @IBAction func openCamera(sender: AnyObject) {
+        if (location != nil) {
          if (isUploaded) {
             activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
             activityIndicator.center = self.view.center
@@ -170,10 +178,26 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         self.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
         }
+    } else {
+    let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
+    let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+    alertController.addAction(cancelAction)
+    // Provide quick access to Settings.
+    let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
+    UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+    
+    }
+    alertController.addAction(settingsAction)
+    self.presentViewController(alertController, animated: true, completion: nil)
+    
+    
+    }
+
     }
     override func viewWillAppear(animated: Bool) {
         
     }
-    
+
 }
 

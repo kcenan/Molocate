@@ -756,6 +756,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     @IBOutlet var cameraButton: UIBarButtonItem!
     
     @IBAction func openCamera(sender: AnyObject) {
+        if (location != nil) {
         player1.stop()
         player2.stop()
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
@@ -770,8 +771,24 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
             self.activityIndicator.removeFromSuperview()
         }
-    }
+    } else {
+    let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
+    let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+    alertController.addAction(cancelAction)
+    // Provide quick access to Settings.
+    let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
+    UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
     
+    }
+    alertController.addAction(settingsAction)
+    self.presentViewController(alertController, animated: true, completion: nil)
+    
+    
+    }
+
+    }
+
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return  CGSize.init(width: screenSize.width * 2 / 9, height: 44)
     }

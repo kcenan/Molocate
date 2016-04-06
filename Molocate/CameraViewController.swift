@@ -278,12 +278,17 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
         self.location = self.locationManager.location
+            
         }
 
         
         
     }
     
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    
+    }
 
     
     override func viewWillAppear(animated: Bool) {
@@ -312,8 +317,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 }
             case .SessionConfigurationFailed:
                 dispatch_async(dispatch_get_main_queue()) {
-                    let message = NSLocalizedString("Unable to capture media", comment: "Alert message when something goes wrong during capture session configuration")
-                    let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                    let message = NSLocalizedString("Çekim için uygun değil", comment: "Alert message when something goes wrong during capture session configuration")
+                    let alertController = UIAlertController(title: "Hata", message: message, preferredStyle: UIAlertControllerStyle.Alert)
                     let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
                     alertController.addAction(cancelAction)
                     self.presentViewController(alertController, animated: true, completion: nil)

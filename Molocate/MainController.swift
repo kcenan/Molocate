@@ -827,6 +827,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     @IBAction func openCamera(sender: AnyObject) {
         player1.stop()
         player2.stop()
+        if(location != nil){
+        
+        
 
         if (isUploaded) {
             CaptionText = ""
@@ -847,6 +850,22 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 self.searchText.resignFirstResponder()
             }
             self.activityIndicator.removeFromSuperview()
+        }
+            
+        } else {
+            let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
+            let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+            let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            // Provide quick access to Settings.
+            let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
+                UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                
+            }
+            alertController.addAction(settingsAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
+
+            
         }
     }
     
