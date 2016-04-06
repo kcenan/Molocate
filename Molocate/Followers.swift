@@ -23,8 +23,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
 
     var classUser = MoleUser()
-    var users = [MoleUser]()
-    var followings = [MoleUserFollowings]()
+    var userRelations = MoleUserRelations()
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var myTable: UITableView!
     var follower = true
@@ -51,11 +50,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             self.TitleLabel.textColor = UIColor.whiteColor()
             self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
             MolocateAccount.getFollowers(classUser.username) { (data, response, error, count, next, previous) -> () in
-                
-                for thing in data.follower{
-                self.users.append(thing)
-
-                }
+                self.userRelations = data
                 dispatch_async(dispatch_get_main_queue()){
                     self.myTable.reloadData()
                     self.followerCount = data.totalCount
@@ -68,9 +63,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                 self.TitleLabel.font = UIFont(name: "AvenirNext-Regular", size: (self.TitleLabel.font?.pointSize)!)
             MolocateAccount.getFollowings(classUser.username) { (data, response, error, count, next, previous) -> () in
                 
-                for thing in data.followings{
-                    self.followings.append(thing)
-                }
+                self.userRelations = data
                 dispatch_async(dispatch_get_main_queue()){
                     self.myTable.reloadData()
                     self.followingCount = data.totalCount
@@ -98,7 +91,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         return rowHeight
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count+followings.count
+        return userRelations.relations.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
@@ -106,18 +99,18 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         let cell = TableViewCellFollowerFollowing(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier2")
 
         if follower {
-            cell.myButton1.setTitle("\(users[indexPath.row].username)", forState: .Normal)
-            if(users[indexPath.row].profilePic.absoluteString != ""){
-                cell.fotoButton.sd_setImageWithURL(users[indexPath.row].profilePic, forState: UIControlState.Normal)
+            cell.myButton1.setTitle("\(userRelations.relations[indexPath.row].username)", forState: .Normal)
+            if(userRelations.relations[indexPath.row].picture_url.absoluteString != ""){
+                cell.fotoButton.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
             }
         cell.myButton1.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.fotoButton.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         } else {
-            cell.myButton1.setTitle("\(followings[indexPath.row].username)", forState: .Normal)
-            if(followings[indexPath.row].picture_url.absoluteString != ""){
-                cell.fotoButton.sd_setImageWithURL(followings[indexPath.row].picture_url, forState: UIControlState.Normal)
+            cell.myButton1.setTitle("\(userRelations.relations[indexPath.row].username)", forState: .Normal)
+            if(userRelations.relations[indexPath.row].picture_url.absoluteString != ""){
+                cell.fotoButton.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
             }
-            if followings[indexPath.row].type == "place" {
+            if userRelations.relations[indexPath.row].type == "place" {
                 cell.myButton1.addTarget(self, action: #selector(Followers.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.fotoButton.addTarget(self, action: #selector(Followers.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             } else {
@@ -131,7 +124,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         cell.myLabel1.hidden = true
         cell.myLabel1.enabled = false
        
-        if(follewersclicked && user.username == MoleCurrentUser.username && !users[indexPath.row].isFollowing){
+        if(follewersclicked && user.username == MoleCurrentUser.username && !userRelations.relations[indexPath.row].is_following){
          cell.myLabel1.hidden = false
          cell.myLabel1.enabled = true
          cell.myLabel1.tag = indexPath.row
@@ -148,13 +141,13 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         let buttonRow = sender.tag
         //print("followa basıldı at index path: \(buttonRow) ")
         MoleCurrentUser.following_count += 1
-        self.users[buttonRow].isFollowing = true
+        self.userRelations.relations[buttonRow].is_following = true
         var indexes = [NSIndexPath]()
         let index = NSIndexPath(forRow: buttonRow, inSection: 0)
         indexes.append(index)
         self.myTable.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
         
-        MolocateAccount.follow(users[buttonRow].username){ (data, response, error) -> () in
+        MolocateAccount.follow(userRelations.relations[buttonRow].username){ (data, response, error) -> () in
             //print(data)
         }
         
@@ -170,12 +163,8 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        var username = ""
-        if follower {
-            username = users[buttonRow].username
-        } else {
-            username = followings[buttonRow].username
-        }
+        var username =  userRelations.relations[buttonRow].username
+      
         MolocateAccount.getUser(username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 user = data
@@ -203,7 +192,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        MolocatePlace.getPlace(followings[buttonRow].place_id) { (data, response, error) -> () in
+        MolocatePlace.getPlace(userRelations.relations[buttonRow].place_id) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 thePlace = data
                 let controller:profileLocation = self.storyboard!.instantiateViewControllerWithIdentifier("profileLocation") as! profileLocation
@@ -227,7 +216,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                 if let parentVC = parentVC as? profileOther{
                     if(follewersclicked){
                         parentVC.followersCount.setTitle(  "\(self.followerCount)", forState: .Normal)
-                        print(self.users.count)
+                        print(self.userRelations.relations.count)
                     }else{
                          parentVC.followingsCount.setTitle("\(self.followingCount)", forState: .Normal)
                     }
@@ -242,8 +231,8 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     }
     
     override func viewDidDisappear(animated: Bool) {
-        users.removeAll()
-        followings.removeAll()
+        userRelations.relations.removeAll()
+        userRelations.relations.removeAll()
     }
     
     

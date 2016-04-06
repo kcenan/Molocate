@@ -34,7 +34,7 @@ public class MolocatePlace {
             
             let nsError = error
             do {
-                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
                 completionHandler(data: result["result"] as! String , response: response , error: nsError  )
             } catch{
                 completionHandler(data: "" , response: nil , error: nsError  )
@@ -57,7 +57,7 @@ public class MolocatePlace {
             
             let nsError = error
             do {
-                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
                 completionHandler(data: result["result"] as! String , response: response , error: nsError  )
             } catch{
                 completionHandler(data: "" , response: nil , error: nsError  )
@@ -83,9 +83,10 @@ public class MolocatePlace {
             
             do {
                 
-                let item = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                let item = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
                 var place = MolePlace()
-                if let notExist = item["result"]{
+                let exist = item.indexForKey("result")
+                if  exist != nil{
                     place.name = "notExist"
                 } else{
                     
@@ -100,35 +101,38 @@ public class MolocatePlace {
                     place.picture_url = item["picture_url"] is NSNull ? NSURL():NSURL(string: item["picture_url"] as! String)!
                     place.phone = item["phone"] as! String
                     place.web_site = item["web_site"] as! String
-                    let videos = item["place_videos"] as! NSArray
-                    if (item["next_place_videos"] != nil){
+                    
+                    if (item.indexForKey("next_place_videos") != nil){
                         if item["next_place_videos"] is NSNull {
                             print("next is null")
                             nextU = nil
                         }else {
                             let nextStr = item["next_place_videos"] as! String
-                            //print(nextStr)
                             nextU = NSURL(string: nextStr)!
                         }
                     }
-                
-                    for item in videos {
+                    
+                    let videos = item["place_videos"] as! NSArray
+                    
+                    for (var i = 0 ; i < videos.count ; i++) {
                         //print(item)
+                        let item = videos[i]
+                        let owner_user = item["owner_user"] as!  [String: AnyObject]
+                        let placeTaken = item["place_taken"] as! [String:String]
                         var videoStr = MoleVideoInformation()
                         //print(item)
                         videoStr.id = item["video_id"] as! String
                         videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
-                        videoStr.username = item["owner_user"]!!["username"] as! String
-                        videoStr.location = item["place_taken"]!!["name"] as! String
-                        videoStr.locationID = item["place_taken"]!!["place_id"] as! String
+                        videoStr.username = owner_user["username"] as! String
+                        videoStr.location = placeTaken["name"]!
+                        videoStr.locationID = placeTaken["place_id"]!
                         videoStr.caption = item["caption"] as! String
                         videoStr.likeCount = item["like_count"] as! Int
                         videoStr.commentCount = item["comment_count"] as! Int
                         videoStr.category = item["category"] as! String
                         videoStr.isLiked = item["is_liked"] as! Int
-                        let jsonObject = item["owner_user"]
-                        videoStr.isFollowing = jsonObject!!["is_following"] as! Int
-                        videoStr.userpic = jsonObject!!["picture_url"] is NSNull ? NSURL():NSURL(string: jsonObject!!["picture_url"] as! String)!
+                        videoStr.isFollowing = owner_user["is_following"] as! Int
+                        videoStr.userpic = owner_user["picture_url"] is NSNull ? NSURL():NSURL(string: owner_user["picture_url"] as! String)!
                         videoStr.dateStr = item["date_str"] as! String
                         videoStr.taggedUsers = item["tagged_users"] as! [String]
                         
@@ -149,6 +153,6 @@ public class MolocatePlace {
         
         task.resume()
     }
-
+    
     
 }

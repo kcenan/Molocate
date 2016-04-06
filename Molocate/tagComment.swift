@@ -9,16 +9,16 @@ class tagComment: UIViewController, UITextViewDelegate {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var textField: UITextView!
     @IBOutlet var toolBar: UIToolbar!
-    var users = [MoleUser]()
+    var userRelations = MoleUserRelations()
     //done da verileri yolla backde vazgeçsin yollama
     @IBAction func done(sender: AnyObject) {
         CaptionText = textField.text!
         let parent =  (self.parentViewController as! capturePreviewController)
        
         for(var i = 0; i < numbers.count; i += 1 ){
-            CaptionText = CaptionText + " @" + users[numbers[i]].username
+            CaptionText = CaptionText + " @" + userRelations.relations[numbers[i]].username
             print(CaptionText)
-            parent.taggedUsers.append(users[numbers[i]].username)
+            parent.taggedUsers.append(userRelations.relations[numbers[i]].username)
         }
         
        parent.caption.setTitle(CaptionText, forState: .Normal)
@@ -64,7 +64,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         
         MolocateAccount.getFollowers(MoleCurrentUser.username) { (data, response, error, count, next, previous) -> () in
              dispatch_async(dispatch_get_main_queue()){
-                self.users = data.follower
+                self.userRelations = data
                 self.tableView.reloadData()
              }
             
@@ -104,7 +104,7 @@ class tagComment: UIViewController, UITextViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return users.count
+        return userRelations.relations.count
     }
     
     
@@ -116,7 +116,7 @@ class tagComment: UIViewController, UITextViewDelegate {
        // cell.textLabel?.frame.origin.x = 200
         
         // Configure the cell...insert the special characters using edit > emoji on the menu
-        cell.textLabel?.text = "◻️         " + users[indexPath.row].username
+        cell.textLabel?.text = "◻️         " + userRelations.relations[indexPath.row].username
         return cell
     
     
@@ -168,7 +168,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         }
         
         // change the cell and text of the tapped row with the new "checkbox"
-        cell!.textLabel!.text = newChar + " " + users[indexPath.row].username
+        cell!.textLabel!.text = newChar + " " + userRelations.relations[indexPath.row].username
     }
 
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
