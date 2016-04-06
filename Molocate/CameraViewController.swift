@@ -9,8 +9,6 @@ import Photos
 import QuadratTouch
 import RecordButton
 
-
-
 var locationDict:[[String:locations]]!
 
 struct locations{
@@ -124,7 +122,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         previewLayer?.session = self.captureSession
         
         
-        
+       
 
         self.setupResult = AVCamSetupResult.Success
         
@@ -272,14 +270,14 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
     
     override func viewDidAppear(animated: Bool) {
-        dispatch_async(dispatch_get_main_queue()){
+      
         self.locationManager = CLLocationManager()
         self.locationManager.delegate = self
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
         self.location = self.locationManager.location
-            
-        }
+        self.locationManager.stopUpdatingLocation()
+        
 
         
         
@@ -287,7 +285,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-    
+        displayAlert("Hata", message: error.helpAnchor!)
     }
 
     
@@ -328,26 +326,34 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         let session = Session.sharedSession()
         
+        
         //var parameters = [Parameter.query:"moda sahil"]
         let parameters = location!.parameters()
+        
         let searchTask = session.venues.search(parameters) {
             (result) -> Void in
+            dispatch_async(dispatch_get_main_queue(), {
             if let response = result.response {
-                //print(response)
+               
                 let venues = response["venues"] as! [JSONParameters]?
-                for item in venues! {
-                    let distance = item["location"]!["distance"] as! NSInteger
+                for (var i = 0; i < venues?.count ; i+=1){
+                    let item = venues![i]
+                    let itemlocation = item["location"] as! [String:AnyObject]
+                    let itemstats = item["stats"] as! [String:AnyObject]
+                    
+                    
+                    let distance = itemlocation["distance"] as! NSInteger
                     let isVerified = item["verified"] as! Bool
-                    let checkinsCount = item["stats"]!["checkinsCount"] as! NSInteger
+                    let checkinsCount = itemstats["checkinsCount"] as! NSInteger
                     let enoughCheckin:Bool = (checkinsCount > 700)
                     if (distance < 400){
                         if(isVerified||enoughCheckin){
                          placesArray.append(item["name"] as! String)
                             let name = item["name"] as! String
                             let id = item["id"] as! String
-                            let lat = item["location"]!["lat"] as! Float
-                            let lon = item["location"]!["lng"] as! Float
-                            let address = item["location"]!["formattedAddress"] as! [String]
+                            let lat = itemlocation["lat"] as! Float
+                            let lon = itemlocation["lng"] as! Float
+                            let address = itemlocation["formattedAddress"] as! [String]
                             
                             var loc = locations()
                             loc.name = name
@@ -357,7 +363,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                             for item in address {
                                 loc.adress = loc.adress + item
                             }
-                            if let photo = item["photo"]{
+                            
+                            if item.indexForKey("photo") != nil {
                                 print("foto var")
                             } else {
                                 
@@ -372,13 +379,14 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 }
                
             }
+                
+         
+            })
         }
+
         searchTask.start()
-
-
+        
     }
-
-    
     @IBAction func focusTap(gestureRecognizer: UIGestureRecognizer) {
         let devicePoint = (self.previewLayer! as AVCaptureVideoPreviewLayer).captureDevicePointOfInterestForPoint(gestureRecognizer.locationInView(gestureRecognizer.view))
         self.focusWithMode(AVCaptureFocusMode.AutoFocus, exposeWithMode: AVCaptureExposureMode.AutoExpose, atDevicePoint: devicePoint, monitorSubjectAreaChange: true)
@@ -1034,22 +1042,24 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
+    override func viewDidDisappear(animated: Bool) {
     
+    }
 }
 
 extension CLLocation {
     func parameters() -> Parameters {
-        let ll      = "\(self.coordinate.latitude),\(self.coordinate.longitude)"
-        let llAcc   = "\(self.horizontalAccuracy)"
-        let alt     = "\(self.altitude)"
-        let altAcc  = "\(self.verticalAccuracy)"
-        let parameters = [
-            Parameter.ll:ll,
-            Parameter.llAcc:llAcc,
-            Parameter.alt:alt,
-            Parameter.altAcc:altAcc
-        ]
-        return parameters
+        let myll = Parameter.ll
+        let myllacc = Parameter.llAcc
+        let myalt = Parameter.alt
+        let myaltAcc = Parameter.altAcc
+        
+        let valuell = "\(self.coordinate.latitude),\(self.coordinate.longitude)"
+        let valuellacc = "\(self.horizontalAccuracy)"
+        let valuealt = "\(self.altitude)"
+        let valuealtacc = "\(self.verticalAccuracy)"
+        
+        return [ myll:valuell , myllacc:valuellacc , myalt:valuealt, myaltAcc:valuellacc]
     }
     
     
