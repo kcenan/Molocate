@@ -78,22 +78,41 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     
     func playTapped(sender: UITapGestureRecognizer) {
         let row = sender.view!.tag
-        print("like a basıldı at index path: \(row) ")
-        if (row) % 2 == 1{
-            
-            if self.player1.playbackState.description != "Playing" {
-                self.player2.stop()
-                self.player1.playFromCurrentTime()
+        //print("like a basıldı at index path: \(row) ")
+        if self.tableView.visibleCells.count < 3 {
+            if (row) % 2 == 1{
+                
+                if self.player1.playbackState.description != "Playing" {
+                    self.player2.stop()
+                    self.player1.playFromCurrentTime()
+                }else{
+                    self.player1.stop()
+                }
+                
             }else{
-                self.player1.stop()
+                if self.player2.playbackState.description != "Playing" {
+                    self.player1.stop()
+                    self.player2.playFromCurrentTime()
+                }else{
+                    self.player2.stop()
+                }
             }
-            
-        }else{
-            if self.player2.playbackState.description != "Playing" {
-                self.player1.stop()
-                self.player2.playFromCurrentTime()
-            }else{
-                self.player2.stop()
+        } else {
+            let midrow =  self.tableView.indexPathsForVisibleRows![1].row
+            if midrow % 2 == 1 {
+                if self.player1.playbackState.description != "Playing" {
+                    self.player2.stop()
+                    self.player1.playFromCurrentTime()
+                }else{
+                    self.player1.stop()
+                }
+            } else {
+                if self.player2.playbackState.description != "Playing" {
+                    self.player1.stop()
+                    self.player2.playFromCurrentTime()
+                }else{
+                    self.player2.stop()
+                }
             }
         }
     }
@@ -253,6 +272,11 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         if (scrollView.contentOffset.y > 10) && (scrollView.contentOffset.y+scrollView.frame.height < scrollView.contentSize.height
             ) && !isScrollingFast
         {
+            
+            if self.tableView.visibleCells.count > 2 {
+                (self.tableView.visibleCells[0] as! videoCell).hasPlayer = false
+                (self.tableView.visibleCells[2] as! videoCell).hasPlayer = false
+            }
             let longest = scrollView.contentOffset.y + scrollView.frame.height
             if direction == 1 {
                 ////print("down")
@@ -310,6 +334,20 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         
         
         
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        isScrollingFast = false
+        var ipArray = [NSIndexPath]()
+        for item in self.tableView.indexPathsForVisibleRows!{
+            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            if !cell.hasPlayer {
+                ipArray.append(item)
+            }
+        }
+        if ipArray.count != 0 {
+            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+        }
     }
 
     
