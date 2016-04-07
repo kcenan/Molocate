@@ -693,9 +693,18 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         let buttonRow = sender.view!.tag
         //print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
+        
+        
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        let cell = tableView.cellForRowAtIndexPath(indexpath) as! videoCell
+        var heart : UIImageView = cell.likeButton.imageView!
+        heart.image = UIImage(named: "LikeFilled.png")
+        MolocateUtility.animateLikeButton(&heart)
+        
         var indexes = [NSIndexPath]()
         indexes.append(indexpath)
+        
+        
         
         if(videoArray[buttonRow].isLiked == 0){
             
@@ -712,16 +721,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             }
         }else{
                 pressedLike = false
-//            self.videoArray[buttonRow].isLiked=0
-//            self.videoArray[buttonRow].likeCount-=1
-//            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
-//            
-//            
-//            Molocate.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
-//                dispatch_async(dispatch_get_main_queue()){
-//                    //print(data)
-//                }
-//            }
+
         }
     }
     

@@ -110,7 +110,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             if(userRelations.relations[indexPath.row].picture_url.absoluteString != ""){
                 cell.fotoButton.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
             }
-            if userRelations.relations[indexPath.row].type == "place" {
+            if userRelations.relations[indexPath.row].is_place {
                 cell.myButton1.addTarget(self, action: #selector(Followers.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.fotoButton.addTarget(self, action: #selector(Followers.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             } else {

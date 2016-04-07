@@ -116,6 +116,7 @@
 		E33DCC6F1CB3FD7F0081C0DF /* MolocateRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33DCC6E1CB3FD7F0081C0DF /* MolocateRecord.swift */; };
 		E33DCC711CB3FE5D0081C0DF /* MolocateDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33DCC701CB3FE5D0081C0DF /* MolocateDevice.swift */; };
 		E37D486D1C9B11DB00587406 /* profilepic.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D486C1C9B11DB00587406 /* profilepic.png */; };
+		E3FC416F1CB6B3EF00EE8995 /* MolocateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FC416E1CB6B3EF00EE8995 /* MolocateUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -253,6 +254,7 @@
 		E33DCC6E1CB3FD7F0081C0DF /* MolocateRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateRecord.swift; sourceTree = "<group>"; };
 		E33DCC701CB3FE5D0081C0DF /* MolocateDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateDevice.swift; sourceTree = "<group>"; };
 		E37D486C1C9B11DB00587406 /* profilepic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profilepic.png; sourceTree = "<group>"; };
+		E3FC416E1CB6B3EF00EE8995 /* MolocateUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateUtility.swift; sourceTree = "<group>"; };
 		E98CE71F35380A6A5DF16FFF /* Pods_Molocate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Molocate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -385,6 +387,7 @@
 				C6E86EAE1CB0E68D00203513 /* Launch Screen.storyboard */,
 				C63FBD121BF3E5B900DBB34C /* Info.plist */,
 				E33DCC701CB3FE5D0081C0DF /* MolocateDevice.swift */,
+				E3FC416E1CB6B3EF00EE8995 /* MolocateUtility.swift */,
 				E33DCC6E1CB3FD7F0081C0DF /* MolocateRecord.swift */,
 				C64B601D1C81D6A500E510DC /* MolocateAccount.swift */,
 				E33DCC681CB3F5250081C0DF /* MolocateVideo.swift */,
@@ -802,6 +805,7 @@
 				C61FDAAF1BFBD0BC007B940E /* ContainerViewController.swift in Sources */,
 				C609053A1C48143C00614C7F /* MainController.swift in Sources */,
 				E33DCC6F1CB3FD7F0081C0DF /* MolocateRecord.swift in Sources */,
+				E3FC416F1CB6B3EF00EE8995 /* MolocateUtility.swift in Sources */,
 				E33DCC711CB3FE5D0081C0DF /* MolocateDevice.swift in Sources */,
 				38E621061C90D9AB00FB1AD5 /* editProfile.swift in Sources */,
 				C6F7B2671C134FBF0062E408 /* Added.swift in Sources */,

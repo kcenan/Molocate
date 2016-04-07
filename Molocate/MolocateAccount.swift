@@ -9,7 +9,7 @@ var is4s = false
 struct MoleUserFriend {
     var is_following = false
     var picture_url = NSURL()
-    var type:String = ""
+    var is_place:Bool = false
     var username:String = ""
     var place_id:String = ""
 }
@@ -135,6 +135,7 @@ public class MolocateAccount {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject]
                 // print(result)
+                print(result)
                 let count: Int = result["count"] as! Int
                 let next =  result["next"] is NSNull ? nil:result["next"] as? String
                 let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
@@ -154,6 +155,9 @@ public class MolocateAccount {
                         if(username == MoleCurrentUser.username){
                             friend.is_following = isfollowing == 0 ? false:true
                         }
+                        
+                        let type = thing["type"] as! String
+                        friend.is_place = type == "userprofile" ? true: false
                         friends.append(friend)
                     }
                 }
