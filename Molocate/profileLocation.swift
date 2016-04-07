@@ -79,6 +79,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         self.followerCount.setTitle("\(thePlace.following_count)", forState: UIControlState.Normal)
         self.locationName.text = thePlace.name
         self.LocationTitle.text = thePlace.name
+        self.followerCount.setTitle("\(thePlace.video_count)", forState: .Normal)
         self.address.text = thePlace.address
         self.videoCount.text = "Videos(\(thePlace.video_count))"
         self.videoArray = thePlace.videoArray
@@ -94,6 +95,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl.addTarget(self, action: #selector(profileLocation.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
+        
         
         if(thePlace.is_following==0 ){
             
@@ -416,7 +418,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         player2.stop()
         videoIndex = buttonRow
         video_id = videoArray[videoIndex].id
-        myViewController = "HomeController"
+        myViewController = "profileLocation"
         MolocateVideo.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 comments = data

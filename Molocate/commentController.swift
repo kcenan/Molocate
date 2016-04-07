@@ -57,7 +57,11 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                     (self.parentViewController as! profileOther).BVc.videoArray[videoIndex].commentCount += 1
                     (self.parentViewController as! profileOther).BVc.tableView.reloadRowsAtIndexPaths(
                     [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
-                }
+                }else if myViewController == "profileLocation"{
+                    (self.parentViewController as! profileLocation).videoArray[videoIndex].commentCount += 1
+                    (self.parentViewController as! profileLocation).tableView.reloadRowsAtIndexPaths(
+                        [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            }
             }
         }
         }else{
