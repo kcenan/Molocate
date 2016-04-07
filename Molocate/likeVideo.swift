@@ -107,6 +107,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         //burda follow ediyosa buttonu hidden etmesi lazım
+        cell.followLike.tag = indexPath.row
         cell.followLike.addTarget(self, action: #selector(likeVideo.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         return cell
@@ -136,8 +137,16 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
     func pressedFollow(sender: UIButton) {
         print("pressedfollow")
-        
+        let buttonRow = sender.tag
+        users[buttonRow].isFollowing = true
+        let index : NSIndexPath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [NSIndexPath]()
+        indexes.append(index)
+        tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.Automatic)
+        MolocateAccount.follow(users[buttonRow].username, completionHandler: { (data, response, error) -> () in
+        })
     }
+    
     //
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.users.count

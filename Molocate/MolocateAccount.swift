@@ -157,7 +157,11 @@ public class MolocateAccount {
                         }
                         
                         let type = thing["type"] as! String
-                        friend.is_place = type == "userprofile" ? true: false
+                        friend.is_place = type == "userprofile" ? false: true
+                        
+                        if(friend.is_place){
+                            friend.place_id = thing["place_id"] as! String
+                        }
                         friends.append(friend)
                     }
                 }
