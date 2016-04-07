@@ -44,23 +44,41 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 (self.parentViewController as! MainController).videoArray[videoIndex].commentCount += 1
                 (self.parentViewController as! MainController).tableView.reloadRowsAtIndexPaths(
                     [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+               
+                
                 }else if myViewController == "HomeController"{
                     (self.parentViewController as! HomePageViewController).videoArray[videoIndex].commentCount += 1
                     (self.parentViewController as! HomePageViewController).tableView.reloadRowsAtIndexPaths(
                         [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+                (self.parentViewController as! HomePageViewController).player1.stop()
+                     (self.parentViewController as! HomePageViewController).player2.stop()
+                (self.parentViewController as! profileOther).AVc.player2.stop()
                 }else if myViewController == "Added"{
                     (self.parentViewController as! profileOther).AVc.videoArray[videoIndex].commentCount += 1
                   (self.parentViewController as! profileOther).AVc.tableView.reloadRowsAtIndexPaths(
                     [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
-                
+                (self.parentViewController as! profileOther).AVc.player1.stop()
+                (self.parentViewController as! profileOther).AVc.player2.stop()
                 }else if myViewController == "Tagged"{
                     (self.parentViewController as! profileOther).BVc.videoArray[videoIndex].commentCount += 1
                     (self.parentViewController as! profileOther).BVc.tableView.reloadRowsAtIndexPaths(
                     [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+                (self.parentViewController as! profileOther).BVc.player1.stop()
+                (self.parentViewController as! profileOther).BVc.player2.stop()
+                
+
+                
                 }else if myViewController == "profileLocation"{
                     (self.parentViewController as! profileLocation).videoArray[videoIndex].commentCount += 1
                     (self.parentViewController as! profileLocation).tableView.reloadRowsAtIndexPaths(
                         [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+                    (self.parentViewController as! profileLocation).player1.stop()
+                 (self.parentViewController as! profileLocation).player2.stop()
+               }else if myViewController == "oneVideo"{
+                 MoleGlobalVideo.commentCount += 1
+                (self.parentViewController as! oneVideo).tableView.reloadRowsAtIndexPaths(
+                    [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+                (self.parentViewController as! oneVideo).player.stop()
             }
             }
         }

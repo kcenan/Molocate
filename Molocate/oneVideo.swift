@@ -33,7 +33,7 @@ class oneVideo: UIViewController,PlayerDelegate {
     
     
     func playerReady(player: Player) {
-        self.player.playFromBeginning()
+            //self.player.playFromBeginning()
     }
     
     func playerPlaybackStateDidChange(player: Player) {
@@ -97,7 +97,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         
         cell.contentView.addSubview(self.player.view)
 
-
+        self.player.playFromBeginning()
         
         return cell
     }
@@ -252,7 +252,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         
         videoIndex = buttonRow
         video_id = MoleGlobalVideo.id
-        myViewController = "HomeController"
+        myViewController = "oneVideo"
         MolocateVideo.getComments(MoleGlobalVideo.id) { (data, response, error, count, next, previous) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 comments = data

@@ -110,7 +110,12 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
     }
     
-    
+    override func viewWillDisappear(animated: Bool) {
+        AVc.player1.stop()
+        AVc.player2.stop()
+        BVc.player1.stop()
+        BVc.player2.stop()
+    }
     
     @IBAction func addedButton(sender: AnyObject) {
         var a :CGRect = AVc.view.frame;
@@ -367,6 +372,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
     }
     
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return 3
