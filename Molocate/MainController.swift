@@ -642,6 +642,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         self.addChildViewController(controller)
         controller.didMoveToParentViewController(self)
     }
+    
     func playTapped(sender: UITapGestureRecognizer) {
         let row = sender.view!.tag
         //print("like a basıldı at index path: \(row) ")

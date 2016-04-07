@@ -175,6 +175,10 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     func playerPlaybackDidEnd(player: Player) {
     }
     
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+
+    }
+    
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         pointNow = scrollView.contentOffset.y
         lastOffsetCapture = NSDate().timeIntervalSinceReferenceDate
@@ -194,6 +198,21 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         }
 
     }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        isScrollingFast = false
+        var ipArray = [NSIndexPath]()
+        for item in self.tableView.indexPathsForVisibleRows!{
+            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            if !cell.hasPlayer {
+                ipArray.append(item)
+            }
+        }
+        if ipArray.count != 0 {
+            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+        }
+    }
+    
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if(!refreshing) {
@@ -299,11 +318,17 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             if (scrollView.contentOffset.y > 10) && (scrollView.contentOffset.y+scrollView.frame.height < scrollView.contentSize.height
             ) && !isScrollingFast
             {
+                
+                if self.tableView.visibleCells.count > 2 {
+                    (self.tableView.visibleCells[0] as! videoCell).hasPlayer = false
+                    (self.tableView.visibleCells[2] as! videoCell).hasPlayer = false
+                }
             let longest = scrollView.contentOffset.y + scrollView.frame.height
             if direction == 1 {
                 //////print("down")
             let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
                 //////print(cellap)
+
             let row = self.tableView.indexPathsForVisibleRows![1].row
             if cellap > 0 {
                 
@@ -511,6 +536,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     func playTapped(sender: UITapGestureRecognizer) {
         let row = sender.view!.tag
         //print("like a basıldı at index path: \(row) ")
+        if self.tableView.visibleCells.count < 3 {
         if (row) % 2 == 1{
             
             if self.player1.playbackState.description != "Playing" {
@@ -526,6 +552,24 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 self.player2.playFromCurrentTime()
             }else{
                 self.player2.stop()
+            }
+        }
+        } else {
+          let midrow =  self.tableView.indexPathsForVisibleRows![1].row
+            if midrow % 2 == 1 {
+                if self.player1.playbackState.description != "Playing" {
+                    self.player2.stop()
+                    self.player1.playFromCurrentTime()
+                }else{
+                    self.player1.stop()
+                }
+            } else {
+                if self.player2.playbackState.description != "Playing" {
+                    self.player1.stop()
+                    self.player2.playFromCurrentTime()
+                }else{
+                    self.player2.stop()
+                }
             }
         }
     }

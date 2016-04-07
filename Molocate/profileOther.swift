@@ -275,6 +275,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             taggedButton.backgroundColor = swiftColor3
             addedButton.titleLabel?.textColor = UIColor.whiteColor()
             taggedButton.titleLabel?.textColor = UIColor.blackColor()
+            print(classUser.post_count)
             if(classUser.post_count != 0 ) {
                 errorMessage.hidden = true
             }
@@ -294,10 +295,12 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         }
     }
     
+    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         //print(scrollView.contentOffset.x)
         
     }
+
     
     override func viewDidDisappear(animated: Bool) {
         
