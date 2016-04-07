@@ -112,7 +112,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         locationManager.startUpdatingLocation()
         location = locationManager.location
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-        
+        //self.tableView.scrollsToTop = true
         
     }
     
@@ -174,6 +174,25 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     func playerPlaybackDidEnd(player: Player) {
     }
+    
+
+    
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        isScrollingFast = false
+        var ipArray = [NSIndexPath]()
+        for item in self.tableView.indexPathsForVisibleRows!{
+            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            if !cell.hasPlayer {
+                ipArray.append(item)
+            }
+        }
+        if ipArray.count != 0 {
+            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+        }
+        
+        
+    }
+
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 

@@ -203,6 +203,22 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         })
     }
     
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        isScrollingFast = false
+        var ipArray = [NSIndexPath]()
+        for item in self.tableView.indexPathsForVisibleRows!{
+            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            if !cell.hasPlayer {
+                ipArray.append(item)
+            }
+        }
+        if ipArray.count != 0 {
+            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+        }
+        
+
+    }
+    
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         pointNow = scrollView.contentOffset.y
         lastOffsetCapture = NSDate().timeIntervalSinceReferenceDate
