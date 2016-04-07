@@ -54,12 +54,18 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             }
         })
         lastOffset = CGPoint(x: 0, y: 0)
-        
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.scrollToTop), name: "scrollToTop", object: nil)
         
         
         
         
     }
+    
+    
+    func scrollToTop() {
+        self.tableView.setContentOffset(CGPoint(x:0,y:0), animated: true)
+    }
+
     
     
     
@@ -118,6 +124,22 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 }
             }
         }
+    }
+    
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        isScrollingFast = false
+        var ipArray = [NSIndexPath]()
+        for item in self.tableView.indexPathsForVisibleRows!{
+            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            if !cell.hasPlayer {
+                ipArray.append(item)
+            }
+        }
+        if ipArray.count != 0 {
+            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+        }
+        
+        
     }
     
 

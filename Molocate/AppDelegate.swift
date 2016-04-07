@@ -76,6 +76,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesBegan(touches, withEvent: event)
+        
+        var location :CGPoint = (event?.allTouches()?.first?.locationInView(self.window))!
+        if (location.y > 0) && (location.y < 16) {
+            NSNotificationCenter.defaultCenter().postNotificationName("scrollToTop", object: nil)
+//            switch (choosedIndex){
+//                case 0:
+//                case 1:
+//                case 2:
+//                case 3:
+//                default:
+//            }
+        }
+        
+        
+    }
 
 
 }

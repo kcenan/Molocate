@@ -45,7 +45,13 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         locationManager.startUpdatingLocation()
         location = locationManager.location
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NotificationsViewController.scrollToTop), name: "scrollToTop", object: nil)
     }
+    
+    func scrollToTop() {
+        self.tableView.setContentOffset(CGPoint(x:0,y:0), animated: true)
+    }
+
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         

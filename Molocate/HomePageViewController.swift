@@ -113,7 +113,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         location = locationManager.location
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
         //self.tableView.scrollsToTop = true
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.scrollToTop), name: "scrollToTop", object: nil)
     }
     
     func refresh(sender:AnyObject){
@@ -192,7 +192,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         
         
     }
-
+    func scrollToTop() {
+        self.tableView.setContentOffset(CGPoint(x:0,y:0), animated: true)
+    }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 

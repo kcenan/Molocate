@@ -116,11 +116,15 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
         lastOffset = CGPoint(x: 0, y: 0)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(profileLocation.scrollToTop), name: "scrollToTop", object: nil)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    func scrollToTop() {
+        self.tableView.setContentOffset(CGPoint(x:0,y:0), animated: true)
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
@@ -269,6 +273,25 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         }
 
     }
+    
+    
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        isScrollingFast = false
+        var ipArray = [NSIndexPath]()
+        for item in self.tableView.indexPathsForVisibleRows!{
+            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            if !cell.hasPlayer {
+                ipArray.append(item)
+            }
+        }
+        if ipArray.count != 0 {
+            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+        }
+        
+        
+    }
+    
+    
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         isScrollingFast = false

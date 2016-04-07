@@ -147,6 +147,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         self.refreshControl.addTarget(self, action: #selector(MainController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
         searchText.layer.borderColor = UIColor.whiteColor().CGColor
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainController.scrollToTop), name: "scrollToTop", object: nil)
 
         
     }
@@ -166,6 +167,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     func playerPlaybackDidEnd(player: Player) {
     }
     
+    func scrollToTop() {
+        self.tableView.setContentOffset(CGPoint(x:0,y:0), animated: true)
+    }
     func refresh(sender:AnyObject){
         
         on = true
