@@ -74,16 +74,20 @@ class SideBarController: UITableViewController {
         self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedIndex = indexPath.row
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil )
         cell?.backgroundColor = swiftColor2
-        if indexPath.row == 3 {
+        switch (indexPath.row){
+        case 0:
+            (self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController as! HomePageViewController).tableView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
+        case 1:
+            (self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController as! MainController).tableView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
+        case 2:
+            (self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController as! NotificationsViewController).notificationArray.removeAll()
+            self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController?.viewDidLoad()
+        case 3:
             MolocateAccount.getCurrentUser({ (data, response, error) in
             })
             self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController?.viewDidLoad()
-        
-        } else {
-        if indexPath.row == 2 {
-            (self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController as! NotificationsViewController).notificationArray.removeAll()
-            self.parentViewController?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedViewController?.viewDidLoad()
-        }
+        default:
+            break;
         }
         
     }
