@@ -36,4 +36,9 @@ class notificationCell: UITableViewCell {
         myLabel = UILabel()
         
     }
+    
+    deinit{
+        fotoButton = nil
+        myButton = nil
+    }
 }

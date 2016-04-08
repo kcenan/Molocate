@@ -24,6 +24,7 @@ private enum AVCamSetupResult: Int {
     case CameraNotAuthorized
     case SessionConfigurationFailed
 }
+
 var videoPath: String? = ""
 var videoData: NSData?
 var fakeoutputFileURL: NSURL?
@@ -277,9 +278,6 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         self.locationManager.startUpdatingLocation()
         self.location = self.locationManager.location
         self.locationManager.stopUpdatingLocation()
-        
-
-        
         
     }
     
@@ -1059,7 +1057,7 @@ extension CLLocation {
         let valuealt = "\(self.altitude)"
         let valuealtacc = "\(self.verticalAccuracy)"
         
-        return [ myll:valuell , myllacc:valuellacc , myalt:valuealt, myaltAcc:valuellacc]
+        return [ myll:valuell , myllacc:valuellacc , myalt:valuealt, myaltAcc: valuealtacc]
     }
     
     

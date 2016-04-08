@@ -220,19 +220,19 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
 
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        isScrollingFast = false
-        var ipArray = [NSIndexPath]()
-        for item in self.tableView.indexPathsForVisibleRows!{
-            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
-            if !cell.hasPlayer {
-                ipArray.append(item)
-            }
-        }
-        if ipArray.count != 0 {
-            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
-        }
-    }
+//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        isScrollingFast = false
+//        var ipArray = [NSIndexPath]()
+//        for item in self.tableView.indexPathsForVisibleRows!{
+//            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+//            if !cell.hasPlayer {
+//                ipArray.append(item)
+//            }
+//        }
+//        if ipArray.count != 0 {
+//            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+//        }
+//    }
     
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -422,7 +422,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
-            
+      
             if((!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)&&(!IsExploreInProcess)){
                 
                 MolocateVideo.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in

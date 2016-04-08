@@ -58,7 +58,14 @@ class TableViewCellFollowerFollowing: UITableViewCell {
         
     }
   
+    deinit{
+      
+        
+        fotoButton = nil
+        myButton1 = nil
+       
+        
     }
-
+}
 
 

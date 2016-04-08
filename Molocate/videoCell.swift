@@ -48,6 +48,13 @@ class videoCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         //player = Videos()
+        initUI()
+        
+        
+    }
+    
+    func initUI(){
+        //player = Videos()
         screenSize = UIScreen.mainScreen().bounds
         
         profilePhoto = UIButton()
@@ -86,7 +93,7 @@ class videoCell: UITableViewCell {
         videoComment = UILabel()
         videoComment.frame = CGRectMake( 10 , 59 + screenSize.width , screenSize.width - 50 , 50)
         videoComment.textAlignment = .Left
-       // videoComment.textColor = UIColor.blackColor()
+        // videoComment.textColor = UIColor.blackColor()
         videoComment.numberOfLines = 2
         videoComment.lineBreakMode = .ByWordWrapping
         contentView.addSubview(videoComment)
@@ -110,7 +117,7 @@ class videoCell: UITableViewCell {
         //videoTime.sizeToFit()
         contentView.addSubview(videoTime)
         
-    
+        
         followButton = UIButton()
         followButton.frame = CGRectMake(screenSize.width - 41 , 9 , 36 , 36)
         followButton.setBackgroundImage(UIImage(named: "follow"), forState: UIControlState.Normal)
@@ -141,7 +148,7 @@ class videoCell: UITableViewCell {
         likeCount.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 14)
         contentView.addSubview(likeCount)
         
-       
+        
         
         commentButton = UIButton()
         commentButton.frame = CGRectMake( 93 , 110 + screenSize.width , 36 , 36)
@@ -173,18 +180,19 @@ class videoCell: UITableViewCell {
         
         
         if videoComment.text == "" {
-        
+            
         }
         else {
-        
+            
         }
         
         newRect = CGRectMake(0, 54, screenSize.width, screenSize.width)
         cellthumbnail = UIImageView(frame: newRect)
         contentView.layer.addSublayer(cellthumbnail.layer)
         
-        
+
     }
+    
     func getStringHeight(mytext: String, fontSize: CGFloat, width: CGFloat)->CGFloat {
         
         let font = UIFont.systemFontOfSize(fontSize)
@@ -253,8 +261,26 @@ class videoCell: UITableViewCell {
     
     
     deinit {
-      
         
+             Username = nil
+            followButton = nil
+             placeName = nil
+             reportButton = nil
+            commentButton = nil
+           likeButton = nil
+             profilePhoto = nil
+             likeCount = nil
+             commentCount = nil
+             videoComment = nil
+             videoTime = nil
+             label1 = nil
+             label2 = nil
+             label3 = nil
+              myLabel3 = nil
+             tableVideoURL = nil
+             y = nil
+            newRect = nil
+        print("deinit")
     }
     
     

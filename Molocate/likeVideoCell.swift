@@ -19,4 +19,10 @@ class likeVideoCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
        
     }
+    
+    deinit{
+        username = nil
+        profileImage = nil
+        followLike = nil
+    }
 }

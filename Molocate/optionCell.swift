@@ -50,6 +50,11 @@ class optionCell: UITableViewCell {
         
         
     }
-  
+   
+    deinit{
+        nameOption = nil
+        arrow = nil
+        cancelLabel = nil
+    }
     
 }
