@@ -10,7 +10,7 @@ import QuadratTouch
 import RecordButton
 
 var locationDict:[[String:locations]]!
-
+var placeOrder:NSMutableDictionary!
 struct locations{
     var id = ""
     var name = ""
@@ -82,6 +82,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         toolbar.translucent = false
         toolbar.clipsToBounds = true
         placesArray.removeAll()
+        
+        placeOrder = NSMutableDictionary()
+        placeOrder.removeAllObjects()
         
         bottomToolbar.barTintColor = swiftColor
         bottomToolbar.translucent = false
@@ -346,7 +349,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     let enoughCheckin:Bool = (checkinsCount > 700)
                     if (distance < 400){
                         if(isVerified||enoughCheckin){
-                         placesArray.append(item["name"] as! String)
+                            //let order = [(item["name"] as! String):placesArray.count]
+                            placeOrder.setObject(placesArray.count , forKey: (item["name"] as! String))
+                            placesArray.append(item["name"] as! String)
                             let name = item["name"] as! String
                             let id = item["id"] as! String
                             let lat = itemlocation["lat"] as! Float

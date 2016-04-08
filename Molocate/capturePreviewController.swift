@@ -463,8 +463,9 @@ class capturePreviewController: UIViewController, UITextFieldDelegate, UITableVi
         textField.text = selectedCell.textLabel!.text
         placeTable.hidden = true
         self.view.endEditing(true)
-        videoLocation = locationDict[indexPath.row][placesArray[indexPath.row]]
-        print(videoLocation.adress)
+        let correctedRow = placeOrder.objectForKey((selectedCell.textLabel?.text!)!) as! Int
+        videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
+        print(videoLocation.name)
         isLocationSelected = true
         if isCategorySelected {
             self.bottomToolbar.barTintColor = swiftColor

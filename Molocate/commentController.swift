@@ -52,7 +52,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                         [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
                 (self.parentViewController as! HomePageViewController).player1.stop()
                      (self.parentViewController as! HomePageViewController).player2.stop()
-                (self.parentViewController as! profileOther).AVc.player2.stop()
+                //(self.parentViewController as! profileOther).AVc.player2.stop()
                 }else if myViewController == "Added"{
                     (self.parentViewController as! profileOther).AVc.videoArray[videoIndex].commentCount += 1
                   (self.parentViewController as! profileOther).AVc.tableView.reloadRowsAtIndexPaths(
