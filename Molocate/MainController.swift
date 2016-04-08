@@ -148,6 +148,10 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         self.tableView.addSubview(refreshControl)
         searchText.layer.borderColor = UIColor.whiteColor().CGColor
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainController.scrollToTop), name: "scrollToTop", object: nil)
+        if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            
+        }
 
         
     }

@@ -115,6 +115,10 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
         //self.tableView.scrollsToTop = true
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.scrollToTop), name: "scrollToTop", object: nil)
+        if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            
+        }
     }
     
     func refresh(sender:AnyObject){
@@ -157,6 +161,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             
         })
+        self.view.addSubview(player1.view)
+        self.view.addSubview(player2.view)
         
     }
     
@@ -198,7 +204,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-         
+        
 
     }
     
