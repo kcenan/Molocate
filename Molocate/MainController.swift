@@ -371,9 +371,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         if atableView == tableView{
             
             if((!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)&&(!IsExploreInProcess)){
-                
+                IsExploreInProcess = true
                 MolocateVideo.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
-                    IsExploreInProcess = true
+                    
                     dispatch_async(dispatch_get_main_queue()){
                         
                         for item in data!{

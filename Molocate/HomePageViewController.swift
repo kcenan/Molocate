@@ -12,6 +12,7 @@ import AVFoundation
 var dictionary = NSMutableDictionary()
 var myCache = Shared.dataCache
 class HomePageViewController: UIViewController,UITableViewDelegate , UITableViewDataSource ,UIToolbarDelegate , UICollectionViewDelegate  ,CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate, UITextFieldDelegate {
+    var isRequested:NSMutableDictionary!
     var lastOffset:CGPoint!
     var lastOffsetCapture:NSTimeInterval!
     var isScrollingFast:Bool = false
@@ -78,7 +79,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         
         Ekran = self.view.frame.height - self.toolBar.frame.maxY
         
-       
+       isRequested = NSMutableDictionary()
         
         self.view.backgroundColor = swiftColor
         
@@ -197,6 +198,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+         
 
     }
     
@@ -418,15 +420,19 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
            // tableView.cellForRowAtIndexPath(indexPath)
         }
     }
+    
+    
 
     
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
-      
+
             if((!refreshing)&&(indexPath.row%8 == 0)&&(nextU != nil)&&(!IsExploreInProcess)){
-                
+                self.isRequested.setObject(false, forKey: nextU)
+                IsExploreInProcess = true
                 MolocateVideo.getExploreVideos(nextU, completionHandler: { (data, response, error) -> () in
-                    IsExploreInProcess = true
+                    
+                    
                     dispatch_async(dispatch_get_main_queue()){
                         
                         for item in data!{
