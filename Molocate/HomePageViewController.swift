@@ -161,9 +161,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             
         })
-        self.view.addSubview(player1.view)
-        self.view.addSubview(player2.view)
-        
+
     }
     
     func playerReady(player: Player) {
@@ -262,8 +260,10 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 let scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
                 
                 let scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
-                if (scrollSpeed > 0.5) {
+                if (scrollSpeed > 0.1
+                    ) {
                     isScrollingFast = true
+
                     //print("hızlı")
                     
                 } else {
@@ -509,35 +509,48 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
 
             
             if !isScrollingFast {
-                cell.hasPlayer = true
+                
                 var trueURL = NSURL()
             if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
                 trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
             } else {
+                
                 trueURL = self.videoArray[indexPath.row].urlSta
                 dispatch_async(dispatch_get_main_queue()) {
                 myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                   print("hop")
                     let url = self.videoArray[indexPath.row].urlSta.absoluteString
                     let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
                     let cached = DiskCache(path: path.absoluteString).pathForKey(url)
                     let file = NSURL(fileURLWithPath: cached)
+                    if #available(iOS 9.0, *) {
+                        print(file.dataRepresentation.bytes)
+                    } else {
+                        // Fallback on earlier versions
+                    }
                     dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
                 }
                 }
             }
-            
+                if !cell.hasPlayer {
+                
+                    
                     if indexPath.row % 2 == 1 {
                         
                         self.player1.setUrl(trueURL)
                         self.player1.view.frame = cell.newRect
                         cell.contentView.addSubview(self.player1.view)
+                        cell.hasPlayer = true
                         
                     }else{
                         
                         self.player2.setUrl(trueURL)
                         self.player2.view.frame = cell.newRect
                         cell.contentView.addSubview(self.player2.view)
+                        cell.hasPlayer = true
                     }
+                    
+                }
 
                 //}
             

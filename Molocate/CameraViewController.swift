@@ -91,15 +91,16 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         bottomToolbar.clipsToBounds = true
         
         locationDict = [[String:locations]]()
+        dispatch_async(dispatch_get_main_queue()) {
+        self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        self.locationManager.startUpdatingLocation()
         
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        locationManager.startUpdatingLocation()
-        
-        location = locationManager.location
-        deviceLat = locationManager.location?.coordinate.latitude
-        deviceLon = locationManager.location?.coordinate.longitude
+        self.location = self.locationManager.location
+        self.deviceLat = self.locationManager.location?.coordinate.latitude
+        self.deviceLon = self.locationManager.location?.coordinate.longitude
+        }
         let width = self.view.frame.width
         let height = (self.view.frame.height-self.view.frame.width-2*self.toolbar.frame.height-self.toolbarYancı.frame.height)
         let topRect = CGRect(x: 0, y: self.view.frame.width+self.toolbar.frame.height+self.toolbarYancı.frame.height, width: width, height: height)
@@ -331,11 +332,13 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         //var parameters = [Parameter.query:"moda sahil"]
         let parameters = location!.parameters()
+    
         
         let searchTask = session.venues.search(parameters) {
             (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), {
             if let response = result.response {
+                
                
                 let venues = response["venues"] as! [JSONParameters]?
                 for (var i = 0; i < venues?.count ; i+=1){
@@ -347,8 +350,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     let distance = itemlocation["distance"] as! NSInteger
                     let isVerified = item["verified"] as! Bool
                     let checkinsCount = itemstats["checkinsCount"] as! NSInteger
-                    let enoughCheckin:Bool = (checkinsCount > 700)
-                    if (distance < 400){
+                    let enoughCheckin:Bool = (checkinsCount > 500)
+                    if (distance < 200){
                         if(isVerified||enoughCheckin){
                             //let order = [(item["name"] as! String):placesArray.count]
                             placeOrder.setObject(placesArray.count , forKey: (item["name"] as! String))
@@ -367,12 +370,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                             for item in address {
                                 loc.adress = loc.adress + item
                             }
-                            
+                            print(venues?.count)
                             if item.indexForKey("photo") != nil {
-                                print("foto var")
+                                //print("foto var")
                             } else {
                                 
-                                print("foto yok")
+                                //print("foto yok")
                             }
 
                         let locationDictitem = [name:loc]
