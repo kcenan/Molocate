@@ -194,7 +194,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             
             var trueURL = NSURL()
             if !isScrollingFast {
-                cell.hasPlayer = true
+                
             if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
                 trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
             } else {
@@ -215,12 +215,14 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 self.player1.setUrl(trueURL)
                 self.player1.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player1.view)
+                cell.hasPlayer = true
                 
             }else{
                 
                 self.player2.setUrl(trueURL)
                 self.player2.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player2.view)
+                cell.hasPlayer = true
             }
             if indexPath.row == 0 && on {
                 self.player2.playFromBeginning()
@@ -275,7 +277,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 var scrollSpeedNotAbs = (distance * 10) / 1000 //in pixels per millisecond
                 
                 var scrollSpeed = fabsf(Float(scrollSpeedNotAbs));
-                if (scrollSpeed > 0.5) {
+                if (scrollSpeed > 0.1) {
                     isScrollingFast = true
                     print("hızlı")
                     
@@ -366,20 +368,20 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
         
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        isScrollingFast = false
-        var ipArray = [NSIndexPath]()
-        for item in self.tableView.indexPathsForVisibleRows!{
-            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
-            if !cell.hasPlayer {
-                ipArray.append(item)
-            }
-        }
-        if ipArray.count != 0 {
-            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
-        }
-    }
-    
+//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        isScrollingFast = false
+//        var ipArray = [NSIndexPath]()
+//        for item in self.tableView.indexPathsForVisibleRows!{
+//            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+//            if !cell.hasPlayer {
+//                ipArray.append(item)
+//            }
+//        }
+//        if ipArray.count != 0 {
+//            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+//        }
+//    }
+//    
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if atableView == tableView{
             

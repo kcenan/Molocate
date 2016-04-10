@@ -280,7 +280,7 @@ class videoCell: UITableViewCell {
              tableVideoURL = nil
              y = nil
             newRect = nil
-        print("deinit")
+        //print("deinit")
     }
     
     

@@ -100,6 +100,24 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         self.location = self.locationManager.location
         self.deviceLat = self.locationManager.location?.coordinate.latitude
         self.deviceLon = self.locationManager.location?.coordinate.longitude
+       
+                let cleanup: dispatch_block_t = {
+                    do {
+                        
+                        try NSFileManager.defaultManager().removeItemAtURL(fakeoutputFileURL!)
+                        //try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
+                        
+                    } catch _ {}
+                    
+                }
+                if(fakeoutputFileURL != nil){
+                    cleanup()
+                    print("siliniyor")
+                    
+                }
+
+            
+            
         }
         let width = self.view.frame.width
         let height = (self.view.frame.height-self.view.frame.width-2*self.toolbar.frame.height-self.toolbarYancı.frame.height)
@@ -276,14 +294,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     override func viewDidAppear(animated: Bool) {
       
-        self.locationManager = CLLocationManager()
-        self.locationManager.delegate = self
-        self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.startUpdatingLocation()
-        self.location = self.locationManager.location
-        self.locationManager.stopUpdatingLocation()
-        
-        
+
     }
     
     
@@ -326,6 +337,16 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 }
             }
         }
+        
+        self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+        self.location = self.locationManager.location
+        self.locationManager.stopUpdatingLocation()
+        self.location = self.locationManager.location
+        self.deviceLat = self.locationManager.location?.coordinate.latitude
+        self.deviceLon = self.locationManager.location?.coordinate.longitude
         
         let session = Session.sharedSession()
         

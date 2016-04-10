@@ -26,6 +26,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
     var refreshing: Bool = false
+    var player1Turn = false
     
     @IBOutlet var nofollowings: UILabel!
     var direction = 0 // 0 is down and 1 is up
@@ -165,7 +166,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func playerReady(player: Player) {
-        ////print("ready")
+        ////print("ready"
+       
     }
     
     func playerPlaybackStateDidChange(player: Player) {
@@ -202,6 +204,13 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if velocity.y < 0.5 {
+            if player1Turn {
+                player1.playFromBeginning()
+            } else {
+                player2.playFromBeginning()
+            }
+        }
         
 
     }
@@ -366,6 +375,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                     if self.player1.playbackState.description != "Playing" {
                        self.player2.stop()
                        self.player1.playFromBeginning()
+                        player1Turn = true
                         //print(self.tableView.indexPathsForVisibleRows![0].row)
                                                                 //////print("player1")
                                     }
@@ -373,6 +383,7 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                     if self.player2.playbackState.description != "Playing"{
                         self.player1.stop()
                         self.player2.playFromBeginning()
+                        player1Turn = false
                                                                 //////print("player2")
                                                             }
             }
@@ -523,12 +534,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                     let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
                     let cached = DiskCache(path: path.absoluteString).pathForKey(url)
                     let file = NSURL(fileURLWithPath: cached)
-                    if #available(iOS 9.0, *) {
-                        print(file.dataRepresentation.bytes)
-                    } else {
-                        // Fallback on earlier versions
-                    }
                     dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
+                    
                 }
                 }
             }
