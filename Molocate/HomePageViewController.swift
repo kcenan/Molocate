@@ -42,10 +42,13 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var Ekran : CGFloat = 0.0
     var categories = ["Hepsi","Eğlence","Yemek","Gezinti","Moda" , "Güzellik", "Spor","Etkinlik","Kampüs"]
-    
+    var likeHeart = UIImageView()
     override func viewDidLoad() {
         super.viewDidLoad()
-          try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+        likeHeart.image = UIImage(named: "favorite")
+        likeHeart.alpha = 1.0
+    
+        try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         self.nofollowings.hidden = true
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
         activityIndicator.center = self.view.center
@@ -510,6 +513,10 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
+            
+            playtap.requireGestureRecognizerToFail(tap)
+            
+            
             let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
                 cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
@@ -571,9 +578,9 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
                 
                 if(videoArray[indexPath.row].isLiked == 0) {
-                    cell.likeButton.setBackgroundImage(UIImage(named: "Like.png"), forState: UIControlState.Normal)
+                    cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), forState: UIControlState.Normal)
                 }else{
-                    cell.likeButton.setBackgroundImage(UIImage(named: "LikeFilled.png"), forState: UIControlState.Normal)
+                    cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), forState: UIControlState.Normal)
                     cell.likeButton.tintColor = UIColor.whiteColor()
                 }
             }else if pressedFollow{
@@ -726,7 +733,13 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
         var indexes = [NSIndexPath]()
         indexes.append(indexpath)
-        
+        let  cell = tableView.cellForRowAtIndexPath(indexpath)
+        likeHeart.center = (cell?.contentView.center)!
+        likeHeart.layer.zPosition = 100
+        let imageSize = likeHeart.image?.size.height
+        likeHeart.frame = CGRectMake(likeHeart.center.x-imageSize!/2 , likeHeart.center.y-imageSize!/2, imageSize!, imageSize!)
+        cell?.addSubview(likeHeart)
+        MolocateUtility.animateLikeButton(&likeHeart)
         if(videoArray[buttonRow].isLiked == 0){
             
             self.videoArray[buttonRow].isLiked=1
@@ -734,6 +747,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
             
             
             self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            
+      
             
             MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
                 dispatch_async(dispatch_get_main_queue()){
@@ -754,6 +769,27 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
 //                }
 //            }
         }
+    }
+    
+    
+    func animateLikeButton(){
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction, animations: {
+            self.likeHeart.transform = CGAffineTransformMakeScale(1.3, 1.3);
+            self.likeHeart.alpha = 1.0;
+        }) { (finished1) in
+            UIView.animateWithDuration(0.1, delay: 0, options: .AllowUserInteraction, animations: {
+                self.likeHeart.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                }, completion: { (finished2) in
+                    UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction, animations: {
+                        self.likeHeart.transform = CGAffineTransformMakeScale(1.3, 1.3);
+                        self.likeHeart.alpha = 0.0;
+                        }, completion: { (finished3) in
+                            self.likeHeart.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                    })
+            })
+        }
+        
     }
     func pressedLike(sender: UIButton) {
         let buttonRow = sender.tag
