@@ -59,13 +59,14 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
     
     var categories = ["HEPSİ","EĞLENCE","YEMEK","GEZİ","MODA" , "GÜZELLİK", "SPOR","ETKİNLİK","KAMPÜS"]
     var realCateg = ["HEPSİ":"Hepsi","EĞLENCE":"Eğlence","YEMEK":"Yemek","GEZİ":"Gezi","MODA":"Moda" , "GÜZELLİK":"Güzellik", "SPOR":"Spor","ETKİNLİK":"Etkinlik","KAMPÜS":"Kampüs"]
-    
+    var likeHeart = UIImageView()
     override func viewDidLoad() {
         super.viewDidLoad()
         try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         session = Session.sharedSession()
         session.logger = ConsoleLogger()
- 
+        likeHeart.image = UIImage(named: "favorite")
+        likeHeart.alpha = 1.0
         tableView.separatorColor = UIColor.clearColor()
         
         venueTable.hidden = true
@@ -502,9 +503,9 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                     cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
                     
                     if(videoArray[indexPath.row].isLiked == 0) {
-                        cell.likeButton.setBackgroundImage(UIImage(named: "Like.png"), forState: UIControlState.Normal)
+                        cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), forState: UIControlState.Normal)
                     }else{
-                        cell.likeButton.setBackgroundImage(UIImage(named: "LikeFilled.png"), forState: UIControlState.Normal)
+                        cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), forState: UIControlState.Normal)
                         cell.likeButton.tintColor = UIColor.whiteColor()
                     }
                 }else if pressedFollow{
@@ -722,10 +723,13 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
         
         
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-        let cell = tableView.cellForRowAtIndexPath(indexpath) as! videoCell
-        var heart : UIImageView = cell.likeButton.imageView!
-        heart.image = UIImage(named: "LikeFilled.png")
-        MolocateUtility.animateLikeButton(&heart)
+        let  cell = tableView.cellForRowAtIndexPath(indexpath)
+        likeHeart.center = (cell?.contentView.center)!
+        likeHeart.layer.zPosition = 100
+        let imageSize = likeHeart.image?.size.height
+        likeHeart.frame = CGRectMake(likeHeart.center.x-imageSize!/2 , likeHeart.center.y-imageSize!/2, imageSize!, imageSize!)
+        cell?.addSubview(likeHeart)
+        MolocateUtility.animateLikeButton(&likeHeart)
         
         var indexes = [NSIndexPath]()
         indexes.append(indexpath)

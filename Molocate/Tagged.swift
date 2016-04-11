@@ -22,11 +22,13 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     var username = ""
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var tableView = UITableView()
+    var likeHeart = UIImageView()
     override func viewDidLoad() {
         super.viewDidLoad()
           try!  AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height-190)
-        
+        likeHeart.image = UIImage(named: "favorite")
+        likeHeart.alpha = 1.0
         self.player1 = Player()
         self.player1.delegate = self
         self.player1.playbackLoops = true
@@ -527,6 +529,13 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        let  cell = tableView.cellForRowAtIndexPath(indexpath)
+        likeHeart.center = (cell?.contentView.center)!
+        likeHeart.layer.zPosition = 100
+        let imageSize = likeHeart.image?.size.height
+        likeHeart.frame = CGRectMake(likeHeart.center.x-imageSize!/2 , likeHeart.center.y-imageSize!/2, imageSize!, imageSize!)
+        cell?.addSubview(likeHeart)
+        MolocateUtility.animateLikeButton(&likeHeart)
         var indexes = [NSIndexPath]()
         indexes.append(indexpath)
         

@@ -17,8 +17,12 @@ class oneVideo: UIViewController,PlayerDelegate {
     }
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var tableView: UITableView!
+    var likeHeart = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        likeHeart.image = UIImage(named: "favorite")
+        likeHeart.alpha = 1.0
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
         self.toolBar.clipsToBounds = true
         self.toolBar.translucent = false
@@ -180,6 +184,14 @@ class oneVideo: UIViewController,PlayerDelegate {
         print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
         let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        let  cell = tableView.cellForRowAtIndexPath(indexpath)
+        likeHeart.center = (cell?.contentView.center)!
+        likeHeart.layer.zPosition = 100
+        let imageSize = likeHeart.image?.size.height
+        likeHeart.frame = CGRectMake(likeHeart.center.x-imageSize!/2 , likeHeart.center.y-imageSize!/2, imageSize!, imageSize!)
+        cell?.addSubview(likeHeart)
+        MolocateUtility.animateLikeButton(&likeHeart)
+        
         var indexes = [NSIndexPath]()
         indexes.append(indexpath)
         
