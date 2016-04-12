@@ -181,6 +181,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
+            playtap.requireGestureRecognizerToFail(tap)
+
             let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
                 cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
@@ -554,7 +556,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }
         }else{
             
-              pressedLike = false
+          
 //            self.videoArray[buttonRow].isLiked=0
 //            self.videoArray[buttonRow].likeCount-=1
 //            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
@@ -566,6 +568,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 //                }
 //            }
         }
+            pressedLike = false
     }
     
     func pressedComment(sender: UIButton) {

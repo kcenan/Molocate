@@ -168,6 +168,8 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
+            playtap.requireGestureRecognizerToFail(tap)
+
             let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
                 cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
@@ -691,7 +693,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
             }
         }else{
             
-              pressedLike = false
+            
 //            self.videoArray[buttonRow].isLiked=0
 //            self.videoArray[buttonRow].likeCount-=1
 //            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
@@ -703,6 +705,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
 //                }
 //            }
         }
+          pressedLike = false
     }
 
     func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

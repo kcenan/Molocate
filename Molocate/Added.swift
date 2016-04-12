@@ -186,6 +186,8 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
+            playtap.requireGestureRecognizerToFail(tap)
+
             let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
                 cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
@@ -455,7 +457,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
                 }
             }
         }else{
-              pressedLike = false
+            
             
 //            self.videoArray[buttonRow].isLiked=0
 //            self.videoArray[buttonRow].likeCount-=1
@@ -468,6 +470,7 @@ class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,Player
 //                }
 //            }
         }
+         pressedLike = false
     }
     
     func pressedPlace(sender: UIButton) {

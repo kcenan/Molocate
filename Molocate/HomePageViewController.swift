@@ -756,7 +756,6 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
                 }
             }
         }else{
-              pressedLike = false
             
 //            self.videoArray[buttonRow].isLiked=0
 //            self.videoArray[buttonRow].likeCount-=1
@@ -769,6 +768,8 @@ class HomePageViewController: UIViewController,UITableViewDelegate , UITableView
 //                }
 //            }
         }
+        
+        pressedLike = false
     }
     
     

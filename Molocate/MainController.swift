@@ -449,6 +449,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 playtap.numberOfTapsRequired = 1
                 cell.contentView.addGestureRecognizer(playtap)
                 
+                playtap.requireGestureRecognizerToFail(tap)
                 let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
                 if(thumbnailURL.absoluteString != ""){
                     cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
@@ -750,9 +751,10 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
                 }
             }
         }else{
-                pressedLike = false
+          
 
         }
+        pressedLike = false
     }
     
     
