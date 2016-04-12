@@ -94,13 +94,14 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         super.viewDidLoad()
      
         newComment.text = "Yorumunu buradan yazabilirsin"
+        
         newComment.textColor = UIColor.lightGrayColor()
         tableView.separatorColor = UIColor.clearColor()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(commentController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         self.sendImage.layer.zPosition = 3
         self.sendButton.layer.zPosition = 2
-
+        
        
         tableView.estimatedRowHeight = 68
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -245,6 +246,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         cell.profilePhoto.clipsToBounds = true
         cell.profilePhoto.tag = indexPath.row
         
+        cell.comment.numberOfLines = 0
+        cell.comment.lineBreakMode = NSLineBreakMode.ByWordWrapping
         if(comments[indexPath.row].photo.absoluteString != ""){
             cell.profilePhoto.setBackgroundImage(UIImage(named: "profilepic.png")!, forState:
                 UIControlState.Normal)
