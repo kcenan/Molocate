@@ -102,7 +102,7 @@ class MainController: UIViewController,UITableViewDelegate , UITableViewDataSour
             NSNotificationCenter.defaultCenter().postNotificationName("closeProfile", object: nil)
         }
         
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         tableView.tableFooterView = UIView()
         switch(choosedIndex){
         case 0:

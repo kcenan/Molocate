@@ -35,7 +35,6 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         comments.append(mycomment)
         tableView.reloadData()
         
-        tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
         MolocateVideo.commentAVideo(video_id, comment: newComment.text) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
@@ -124,8 +123,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
 //        self.newComment.layer.zPosition = 2
 //        self.tableView.layer.zPosition = 1
         self.newComment.returnKeyType = .Done
-        
-        tableView.allowsSelection = false
+    
+       // tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
         
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
@@ -261,6 +260,16 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         return cell
     }
     
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete{
+            comments.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            MolocateVideo.deleteAComment(comments[indexPath.row].id, completionHandler: { (data, response, error) in
+                print(data)
+            })
+        }
+    }
+    
     func pressedUsername(sender: UIButton) {
         let buttonRow = sender.tag
         print("username e basıldı at index path: \(buttonRow)")
@@ -282,6 +291,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         }
         
     }
+  
+
     
     override func viewWillDisappear(animated: Bool) {
         comments.removeAll()

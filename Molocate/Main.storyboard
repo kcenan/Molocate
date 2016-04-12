@@ -214,7 +214,7 @@
                                     <outlet property="delegate" destination="zZm-St-8ac" id="Wcr-ar-9fc"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YORUMLAR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cI9-hc-4yi">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yorumlar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cI9-hc-4yi">
                                 <rect key="frame" x="136" y="28" width="102" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="102" id="cRC-sW-Gdr"/>
@@ -471,7 +471,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ffv-GM-Hgr">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ffv-GM-Hgr">
                                 <rect key="frame" x="-4" y="199" width="328" height="369"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -2607,7 +2607,7 @@ bir video bulunmamaktadır :(</string>
         </scene>
     </scenes>
     <resources>
-        <image name="Camera" width="33" height="33"/>
+        <image name="Camera" width="32" height="32"/>
         <image name="FacebookButton.png" width="730" height="167"/>
         <image name="Sent-96.png" width="96" height="96"/>
         <image name="Untitled2" width="32" height="32"/>
@@ -2615,17 +2615,17 @@ bir video bulunmamaktadır :(</string>
         <image name="backButton.png" width="40" height="40"/>
         <image name="closedflash.png" width="44" height="44"/>
         <image name="elmander.jpg" width="360" height="240"/>
-        <image name="follow" width="42" height="42"/>
+        <image name="follow" width="45" height="45"/>
         <image name="leftArrow" width="33" height="33"/>
         <image name="pin" width="100" height="100"/>
         <image name="profilepic.png" width="256" height="256"/>
         <image name="shapes.png" width="32" height="32"/>
-        <image name="sideMenu" width="42" height="42"/>
+        <image name="sideMenu" width="33" height="24"/>
         <image name="switch" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="REJ-1c-sKv"/>
         <segue reference="Vlr-i7-pN8"/>
-        <segue reference="iX5-7U-zGl"/>
+        <segue reference="REJ-1c-sKv"/>
+        <segue reference="t1e-tq-FhG"/>
     </inferredMetricsTieBreakers>
 </document>
