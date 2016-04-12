@@ -185,9 +185,11 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         NSNotificationCenter.defaultCenter().removeObserver(self);
     }
     
-
+   
     
-
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         
@@ -262,11 +264,12 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete{
+     
+            MolocateVideo.deleteAComment(comments[indexPath.row].id, completionHandler: { (data, response, error) in
+              print(data)
+            })
             comments.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-            MolocateVideo.deleteAComment(comments[indexPath.row].id, completionHandler: { (data, response, error) in
-                print(data)
-            })
         }
     }
     
