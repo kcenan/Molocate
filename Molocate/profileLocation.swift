@@ -7,6 +7,8 @@ import UIKit
 import SDWebImage
 import Haneke
 import AVFoundation
+import MapKit
+
 class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSource , UICollectionViewDelegateFlowLayout,NSURLConnectionDataDelegate,PlayerDelegate {
     
     var lastOffset:CGPoint!
@@ -19,6 +21,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
     var refreshControl:UIRefreshControl!
     @IBOutlet var LocationTitle: UILabel!
 
+    @IBOutlet var map: MKMapView!
     @IBOutlet var videosTitle: UILabel!
     @IBOutlet var address: UILabel!
     @IBOutlet var locationName: UILabel!
@@ -32,6 +35,7 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         self.removeFromParentViewController()
     }
     @IBOutlet var followButton: UIBarButtonItem!
+   
    
     @IBOutlet var toolBar: UIToolbar!
     @IBAction func followButton(sender: AnyObject) {
@@ -49,6 +53,30 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
                 MoleCurrentUser.following_count -= 1
             }
         }
+        
+    }
+    @IBAction func launchMap(sender: AnyObject) {
+        
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { action -> Void in
+            //Just dismiss the action sheet
+        }
+        actionSheetController.addAction(cancelAction)
+        //Create and add first option action
+        let takePictureAction: UIAlertAction = UIAlertAction(title: "Haritaya Yönlendir", style: .Default)
+        { action -> Void in
+            
+            self.openMapForPlace()
+            
+        }
+        actionSheetController.addAction(takePictureAction)
+        //We need to provide a popover sourceView when using it on iPad
+        actionSheetController.popoverPresentationController?.sourceView = sender as? UIView
+        
+        //Present the AlertController
+        self.presentViewController(actionSheetController, animated: true, completion: nil)
         
     }
     @IBOutlet var followerCount: UIButton!
@@ -119,6 +147,35 @@ class profileLocation: UIViewController,UITableViewDelegate , UITableViewDataSou
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
         lastOffset = CGPoint(x: 0, y: 0)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(profileLocation.scrollToTop), name: "scrollToTop", object: nil)
+        //mekanın koordinatları eklenecek
+        let longitude :CLLocationDegrees = 28.984503
+        let latitude :CLLocationDegrees = 41.038488
+        let span = MKCoordinateSpanMake(0.005, 0.005)
+        var location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        var region:MKCoordinateRegion = MKCoordinateRegion(center: location, span: span)
+        map.setRegion(region, animated: false)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location
+        map.addAnnotation(annotation)
+    }
+   
+    func openMapForPlace() {
+        let regionDistance: CLLocationDistance = 10000
+        //mekanın koordinatları eklenecek
+        let coordinates = CLLocationCoordinate2DMake(41.038488 , 28.984503)
+        let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(MKCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(MKCoordinateSpan: regionSpan.span)
+        ]
+        
+        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        //mekanın adı eklenecek
+        mapItem.name = "mekanın adı"
+        
+        MKMapItem.openMapsWithItems([mapItem], launchOptions: options)
     }
 
     override func didReceiveMemoryWarning() {
