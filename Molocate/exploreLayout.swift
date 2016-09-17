@@ -7,7 +7,7 @@ protocol exploreLayoutDelegate {
   func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: NSIndexPath, withWidth width: CGFloat) -> CGFloat
   
 }
-
+var eventcount = 0
 class exploreLayoutAttributes:UICollectionViewLayoutAttributes {
   
   // 1. Custom attribute
@@ -35,10 +35,13 @@ class exploreLayoutAttributes:UICollectionViewLayoutAttributes {
 class exploreLayout: UICollectionViewLayout {
   //1. explore Layout Delegate
   var delegate:exploreLayoutDelegate!
-  var scalew3 = (9*MolocateDevice.size.width-38)/209
-  var scalew2 = (MolocateDevice.size.width-6)/8
+  var eventw = MolocateDevice.size.width
+  var eventl = 9*(MolocateDevice.size.width/16)
+  var scalew3 = (9*MolocateDevice.size.width-1)/209
+  var scalew2 = (MolocateDevice.size.width-1)/8
   //2. Configurable properties
   var numberOfColumns = 2
+    
   var cellPadding: CGFloat = 1.0
   var widths = [CGFloat]()
   var heights = [CGFloat]()
@@ -59,6 +62,10 @@ class exploreLayout: UICollectionViewLayout {
   override func prepareLayout() {
     // 1. Only calculate once
     if cache.isEmpty {
+        eventw = contentWidth
+        eventl = 9*(contentWidth/16)
+        scalew3 = ((9*contentWidth)-1)/209
+        scalew2 = (contentWidth-1)/8
       let columnWidth = contentWidth / CGFloat(numberOfColumns)
       var xOffset = [CGFloat]()
       var column = 0
@@ -74,63 +81,87 @@ class exploreLayout: UICollectionViewLayout {
 //        let photoHeight = delegate.collectionView(collectionView!, heightForPhotoAtIndexPath: indexPath , withWidth:width)
 //        let annotationHeight = delegate.collectionView(collectionView!, heightForAnnotationAtIndexPath: indexPath, withWidth: width)
         var height = cellPadding + width + cellPadding
-        let rest = indexPath.row % 10
-        let part = CGFloat(indexPath.row/10)
+        let rest = indexPath.row % (10+eventcount)
+        let part = CGFloat(indexPath.row/(10+eventcount))
+        if part == 1 {
+            eventcount = 0
+        }
         let contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
         var xoffset = CGFloat(0.0)
         var yoffset = CGFloat(0.0) + (contentLong+cellPadding)*part
         switch rest {
-        case 0:
+
+        case 0+eventcount:
             height = 16*scalew3
             width = 9*scalew3
-        case 1:
+            widths.append(width)
+            heights.append(height)
+        case 1+eventcount:
             height = 8*scalew3-1
             width = 16*height/9
             xoffset = widths[0] + cellPadding
-        case 2:
+            widths.append(width)
+            heights.append(height)
+        case 2+eventcount:
             height = 8*scalew3-1
             width = 16*height/9
             xoffset = widths[0] + cellPadding
             yoffset = heights[1] + cellPadding + (contentLong+cellPadding)*part
-        case 3:
+            widths.append(width)
+            heights.append(height)
+        case 3+eventcount:
             height = 3*scalew2
             width = 4*scalew2
             yoffset = heights[0] + cellPadding + (contentLong+cellPadding)*part
-        case 4:
+            widths.append(width)
+            heights.append(height)
+        case 4+eventcount:
             height = 3*scalew2
             width = 4*scalew2
             yoffset = heights[0] + cellPadding + (contentLong+cellPadding)*part
             xoffset = widths[3]+cellPadding
-        case 5:
+            widths.append(width)
+            heights.append(height)
+        case 5+eventcount:
             height = 8*scalew3-1
             width = 16*height/9
             yoffset = heights[0] + heights[3] + 2*cellPadding + (contentLong+cellPadding)*part
-        case 6:
+            widths.append(width)
+            heights.append(height)
+        case 6+eventcount:
             height = 8*scalew3-1
             width = 16*height/9
             yoffset = heights[0] + heights[3] + heights[5] + 3*cellPadding + (contentLong+cellPadding)*part
-        case 7:
+            widths.append(width)
+            heights.append(height)
+        case 7+eventcount:
             height = 16*scalew3
             width = 9*scalew3
             xoffset = widths[1]+cellPadding
             yoffset = heights[0] + heights[3] + 2*cellPadding + (contentLong+cellPadding)*part
-        case 8:
+            widths.append(width)
+            heights.append(height)
+        case 8+eventcount:
             height = 3*scalew2
             width = 4*scalew2
             yoffset = heights[0] + heights[3] + 4*cellPadding + heights[7] + (contentLong+cellPadding)*part
-        case 9:
+            widths.append(width)
+            heights.append(height)
+        case 9+eventcount:
             height = 3*scalew2
             width = 4*scalew2
             xoffset = widths[3]+cellPadding
             yoffset = heights[0] + heights[3] + 4*cellPadding + heights[7] + (contentLong+cellPadding)*part
-            
+            widths.append(width)
+            heights.append(height)
         default:
-          height = cellPadding + width + cellPadding
-            width = columnWidth - cellPadding*2
+            height = eventl
+            width = eventw
+            yoffset = yoffset - CGFloat(eventcount)*(eventl+cellPadding)
             
         }
-        widths.append(width)
-        heights.append(height)
+
+        yoffset = yoffset + CGFloat(eventcount)*(eventl+cellPadding)
         
         var frame = CGRect(x: xoffset, y: yoffset, width: width, height: height)
 
@@ -144,7 +175,7 @@ class exploreLayout: UICollectionViewLayout {
         
         // 6. Updates the collection view content height
         contentHeight = max(contentHeight, CGRectGetMaxY(frame))
-        yOffset[column] = yOffset[column] + height + 2*cellPadding
+        yOffset[column] = yOffset[column] + height + cellPadding
         
         column = column >= (numberOfColumns - 1) ? 0 : ++column
       }

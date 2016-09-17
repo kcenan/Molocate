@@ -177,6 +177,7 @@ public class MolocateVideo {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout + 2.0
+        eventcount = 0
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
             if error == nil{
                 let nsError = error
@@ -188,6 +189,9 @@ public class MolocateVideo {
                     for item in result {
                         var filt = filter()
                         filt.isevent = (item["is_event"] as! Int) == 0 ? false:true
+                        if (item["is_event"] as! Int) == 1 {
+                            eventcount += 1
+                        }
                         filt.name = item["name"] as! String
                         filt.raw_name = item["name_raw"] as! String
                         filt.thumbnail_url = NSURL(string: item["thumbnail_url"] as! String) == nil ? NSURL():NSURL(string: item["thumbnail_url"] as! String)!

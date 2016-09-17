@@ -194,17 +194,9 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         searchText.layer.borderColor = UIColor.whiteColor().CGColor
         
         let index = NSIndexPath(forRow: 0, inSection: 0)
-        
-//        self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
-//        collectionView.contentSize.width = 60 * 9
-//        collectionView.backgroundColor = UIColor.whiteColor()
-//        collectionView.layer.zPosition = 5
-//        collectionView.hidden = false
-//        if let layout = collectionView?.collectionViewLayout as? exploreLayout {
-//            layout.delegate = self
-//        }
+
         collectionView!.backgroundColor = UIColor.clearColor()
-        collectionView!.contentInset = UIEdgeInsets(top: 2, left: 2, bottom:2, right: 2)
+        collectionView!.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:0, right: 0)
        // print("anan")
         MolocateVideo.getFilters { (data, response, error) in
             dispatch_async(dispatch_get_main_queue()){

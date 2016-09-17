@@ -3621,8 +3621,8 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S2W-SU-W1a" userLabel="venueTable">
-                                <rect key="frame" x="0.0" y="44" width="375" height="579"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S2W-SU-W1a" userLabel="venueTable">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="nRD-f7-FQk">
@@ -3658,6 +3658,7 @@ These Services are operated and provided by Molocate. If you have any questions 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9X1-BS-kZi">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                 <constraints>
@@ -3679,6 +3680,10 @@ These Services are operated and provided by Molocate. If you have any questions 
 >>>>>>> e06854c... preview save okey
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
 >>>>>>> 90c43eb... part2
+=======
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9X1-BS-kZi">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+>>>>>>> 77397ea... explore improve
                                 <collectionViewLayout key="collectionViewLayout" id="SUP-VC-ViD" customClass="exploreLayout" customModule="Molocate" customModuleProvider="target"/>
 <<<<<<< HEAD
 >>>>>>> ccfbe20... part1
@@ -3719,15 +3724,15 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="S2W-SU-W1a" firstAttribute="bottom" secondItem="OSz-RY-fS1" secondAttribute="top" id="02G-tc-VNv"/>
-                            <constraint firstItem="9X1-BS-kZi" firstAttribute="top" secondItem="u20-0v-vV5" secondAttribute="bottom" id="0CK-xf-H69"/>
-                            <constraint firstItem="OSz-RY-fS1" firstAttribute="top" secondItem="9X1-BS-kZi" secondAttribute="bottom" id="2xo-oR-06s"/>
-                            <constraint firstItem="9X1-BS-kZi" firstAttribute="centerX" secondItem="5sS-Sg-M13" secondAttribute="centerX" id="57L-Rf-UDE"/>
-                            <constraint firstItem="hGD-DQ-gsG" firstAttribute="centerX" secondItem="9X1-BS-kZi" secondAttribute="centerX" id="KN3-fQ-qQZ"/>
+                            <constraint firstItem="9X1-BS-kZi" firstAttribute="centerX" secondItem="5sS-Sg-M13" secondAttribute="centerX" id="2Ro-Q9-OfX"/>
+                            <constraint firstItem="9X1-BS-kZi" firstAttribute="top" secondItem="5sS-Sg-M13" secondAttribute="topMargin" id="Ni6-I4-nPr"/>
+                            <constraint firstItem="9X1-BS-kZi" firstAttribute="height" secondItem="5sS-Sg-M13" secondAttribute="height" id="OkO-Zb-PEE"/>
+                            <constraint firstItem="S2W-SU-W1a" firstAttribute="leading" secondItem="9X1-BS-kZi" secondAttribute="leading" id="Rjo-cA-dSr"/>
                             <constraint firstItem="S2W-SU-W1a" firstAttribute="top" secondItem="u20-0v-vV5" secondAttribute="bottom" constant="44" id="Ryp-yv-lsz"/>
                             <constraint firstItem="hGD-DQ-gsG" firstAttribute="top" secondItem="5sS-Sg-M13" secondAttribute="topMargin" constant="60" id="X1u-TT-D9w"/>
+                            <constraint firstItem="S2W-SU-W1a" firstAttribute="trailing" secondItem="9X1-BS-kZi" secondAttribute="trailing" id="XIz-N6-BYb"/>
+                            <constraint firstItem="9X1-BS-kZi" firstAttribute="width" secondItem="5sS-Sg-M13" secondAttribute="width" id="aaz-fR-Fyg"/>
                             <constraint firstItem="hGD-DQ-gsG" firstAttribute="centerX" secondItem="S2W-SU-W1a" secondAttribute="centerX" id="ew3-oK-oC2"/>
-                            <constraint firstItem="S2W-SU-W1a" firstAttribute="leading" secondItem="9X1-BS-kZi" secondAttribute="leading" id="hRf-Gf-OCJ"/>
-                            <constraint firstItem="9X1-BS-kZi" firstAttribute="width" secondItem="5sS-Sg-M13" secondAttribute="width" id="rBY-Go-Wcg"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
