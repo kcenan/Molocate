@@ -33,7 +33,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     var locationManager: CLLocationManager!
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var session: Session!
-    var venues: [JSONParameters]!
+    var venues: [MolePlace]!
     var searchedUsers:[MoleUser]!
     let distanceFormatter = MKDistanceFormatter()
     var currentTask: Task?
@@ -310,19 +310,8 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 let cell = searchVenue(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
                 //            let cell = venueTable.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
                 let venue = venues[indexPath.row]
-                if let venueLocation = venue["location"] as? JSONParameters {
-                    var detailText = ""
-                    if let distance = venueLocation["distance"] as? CLLocationDistance {
-                        detailText = distanceFormatter.stringFromDistance(distance)
-                        cell.distanceLabel.text = detailText
-                    }
-                    if let address = venueLocation["address"] as? String {
-                        cell.addressNameLabel.text = address
-                    }
-                    
-                    
-                }
-                cell.nameLabel.text = venue["name"] as? String
+                cell.addressNameLabel.text = venue.address
+                cell.nameLabel.text = venue.name
                 return cell
             } else {
                 let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
@@ -366,24 +355,10 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 tableController.tableView.userInteractionEnabled = true
                 
                 self.navigationController?.pushViewController(controller, animated: true)
-                MolocatePlace.getPlace(self.venues[indexPath.row]["id"] as! String) { (data, response, error) -> () in
+                MolocatePlace.getPlace(self.venues[indexPath.row].id) { (data, response, error) -> () in
                     dispatch_async(dispatch_get_main_queue()){
                         thePlace = data
                         controller.classPlace = data
-                        
-                        if thePlace.name == "notExist"{
-                            thePlace.name = self.venues[indexPath.row]["name"] as! String
-                            let addressArr = self.venues[indexPath.row]["location"]!["formattedAddress"] as! [String]
-                            thePlace.lat = self.venues[indexPath.row]["location"]!["lat"] as! Double
-                            thePlace.lon = self.venues[indexPath.row]["location"]!["lng"] as! Double
-                            for item in addressArr{
-                                thePlace.address = thePlace.address + item
-                            }
-                            
-                            //v1.2 buna bak
-                            //controller..tintColor = UIColor.clearColor()
-                            
-                        }
                         controller.RefreshGuiWithData()
                     }
                 }
@@ -1002,30 +977,15 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 
                 return true
             }
-            currentTask?.cancel()
-            var parameters = [Parameter.query:strippedString]
-            parameters += self.bestEffortAtLocation.parameters(false)
-            currentTask = session.venues.search(parameters) {
-                (result) -> Void in
-                if let response = result.response {
-                    var tempVenues = [JSONParameters]()
-                    let venueItems = response["venues"] as? [JSONParameters]
-                    for item in venueItems! {
-                        let isVerified = item["verified"] as! Bool
-                        let checkinsCount = item["stats"]!["checkinsCount"] as! NSInteger
-                        let enoughCheckin:Bool = (checkinsCount > 300)
-                        if (isVerified||enoughCheckin){
-                            tempVenues.append(item)
-                            
-                        }
-                        
-                        
+            MolocatePlace.searchPlace(strippedString, completionHandler:
+                { (data, response, error) in
+                    dispatch_async(dispatch_get_main_queue()){
+                        self.venues = data
+                        self.venueTable.reloadData()
                     }
-                    self.venues = tempVenues
-                    self.venueTable.reloadData()
-                }
-            }
-            currentTask?.start()
+                
+            })
+
             
         } else {
             
