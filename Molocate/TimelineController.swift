@@ -1106,6 +1106,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 VideoUploadRequests[i].isFailed = true
                 if type == "HomePage"{
                     videoArray[i].isFailed = true
+                    videoArray[i].isUploading = false
                     if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i,inSection: 0)) as? videoCell{
                     dispatch_async(dispatch_get_main_queue(), {
                         print("prepareforRetry with id:\(video_id) row: \(i)")
