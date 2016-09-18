@@ -20,7 +20,7 @@ public class S3Upload {
     var uploadTask:AWSS3TransferUtilityTask?
     var completionHandler:AWSS3TransferUtilityUploadCompletionHandlerBlock?
     var key_id = 0
-    
+    var theRequest:VideoUploadRequest?
     
     func upload(retry:Bool = false, id:Int,uploadRequest: AWSS3TransferManagerUploadRequest, fileURL: String, fileID: String, json:  [String:AnyObject]) {
         
@@ -37,6 +37,7 @@ public class S3Upload {
                     let data = NSData(contentsOfURL: (VideoUploadRequests[id].thumbUrl))
                     let nimage = UIImage(data: data!)
                     image = UIImageJPEGRepresentation(nimage!, 0.5)
+
                 }
                 let outputFileName = "thumbnail.jpg"
         
@@ -51,9 +52,9 @@ public class S3Upload {
 
                 print("VideoUploadRequest created with id:\(id)")
                 
-           
+                theRequest = VideoUploadRequest(filePath: fileURL,thumbUrl: thumb, thumbnail: image!,JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false)
                 
-                VideoUploadRequests.insert(VideoUploadRequest(filePath: fileURL,thumbUrl: thumb, thumbnail: image!,JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false), atIndex:0)
+                VideoUploadRequests.insert(theRequest!, atIndex:0)
               
                 
                 MolocateVideo.encodeGlobalVideo()
@@ -95,13 +96,8 @@ public class S3Upload {
                     //print("Failed with error")
                    // print("Error: %@",error!);
                 }else{
-                    var image = UIImageJPEGRepresentation(thumbnail, 0.5)
-                    if image == nil {
-                        let data = NSData(contentsOfURL: (VideoUploadRequests[id].thumbUrl))
-                        let nimage = UIImage(data: data!)
-                        image = UIImageJPEGRepresentation(nimage!, 0.5)
-                    }
-                    self.sendThumbnailandData(image!, info: json, videoid:id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
+                    let image = self.theRequest!.thumbnail
+                    self.sendThumbnailandData(image, info: json, videoid:id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
                         if data == "success" {
                             self.isUp = true
                          dispatch_async(dispatch_get_main_queue(), {
@@ -162,7 +158,7 @@ public class S3Upload {
             if ((task.result) != nil) {
                 let uploadTask = task.result
                 // Do something with uploadTask.
-                let seconds = 100.0
+                let seconds = 1.0
                 let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                 let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
                 dispatch_after(dispatchTime, dispatch_get_main_queue(), {

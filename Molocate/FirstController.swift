@@ -55,15 +55,9 @@ class firstController: UIViewController , CLLocationManagerDelegate {
     
     
     func stuckedVideoConfiguration(){
-//        if NSUserDefaults.standardUserDefaults().boolForKey("isStuck"){
-//            //let nurl = NSURL(string:NSUserDefaults.standardUserDefaults().objectForKey("thumbnail") as! String )
-//            //let data = NSData(contentsOfURL: nurl!)
-//            
-//            if data != nil {
-//                S3Upload.decodeGlobalVideo()
-////                S3Upload.upload(false, uploadRequest: (GlobalVideoUploadRequest?.uploadRequest)!, fileURL: (GlobalVideoUploadRequest?.filePath)!, fileID: (GlobalVideoUploadRequest?.fileId)!, json: (GlobalVideoUploadRequest?.JsonData)!)
-//            }
-//        }
+        if NSUserDefaults.standardUserDefaults().boolForKey("isStuck"){
+            MolocateVideo.decodeGlobalVideo()
+        }
     }
     
     

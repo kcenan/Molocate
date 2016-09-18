@@ -71,13 +71,16 @@ public class MolocateVideo {
     
     class func encodeGlobalVideo(){
         let ud = NSUserDefaults.standardUserDefaults()
-        
-        ud.setBool(true, forKey: "isStuck")
-        let dataUploadRequests = VideoUploadRequests.map({
-            (value: VideoUploadRequest) -> Dictionary<String, AnyObject> in
-            return value.encode()
-        })
-        ud.setObject(dataUploadRequests, forKey: "videoRequests")
+        if VideoUploadRequests.count == 0 {
+            ud.setBool(false, forKey: "isStuck")
+        }else{
+            ud.setBool(true, forKey: "isStuck")
+            let dataUploadRequests = VideoUploadRequests.map({
+                (value: VideoUploadRequest) -> Dictionary<String, AnyObject> in
+                return value.encode()
+            })
+            ud.setObject(dataUploadRequests, forKey: "videoRequests")
+        }
         // print(fileURL)
         
         
@@ -88,7 +91,10 @@ public class MolocateVideo {
             let dataUploadRequests  = ud.objectForKey("videoRequests") as! [Dictionary<String, AnyObject>]
             VideoUploadRequests = dataUploadRequests.map({
                 (value:Dictionary<String, AnyObject> ) -> VideoUploadRequest in
+                print("decoding")
+                MyS3Uploads.append(S3Upload())
                 return self.decodeVideoUploadRequest(value)
+                
             })
         }
         
