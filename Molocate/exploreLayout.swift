@@ -80,15 +80,23 @@ class exploreLayout: UICollectionViewLayout {
         var width = columnWidth - cellPadding*2
 //        let photoHeight = delegate.collectionView(collectionView!, heightForPhotoAtIndexPath: indexPath , withWidth:width)
 //        let annotationHeight = delegate.collectionView(collectionView!, heightForAnnotationAtIndexPath: indexPath, withWidth: width)
+        
         var height = cellPadding + width + cellPadding
         let rest = indexPath.row % (10+eventcount)
         let part = CGFloat(indexPath.row/(10+eventcount))
-        if part == 1 {
+        var contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
+        if part == 1 && eventcount>0{
             eventcount = 0
+            contentLong = contentLong + contentWidth*9/16 + cellPadding
+        } else {
+           contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
         }
-        let contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
+
         var xoffset = CGFloat(0.0)
-        var yoffset = CGFloat(0.0) + (contentLong+cellPadding)*part
+        var yoffset = CGFloat(0.0) + (contentLong)*part
+
+        
+
         switch rest {
 
         case 0+eventcount:
