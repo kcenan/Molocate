@@ -304,6 +304,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 let venue = venues[indexPath.row]
                 cell.addressNameLabel.text = venue.address
                 cell.nameLabel.text = venue.name
+                cell.distanceLabel.text = venue.distance
                 return cell
             } else {
                 let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
@@ -969,14 +970,15 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 
                 return true
             }
-            MolocatePlace.searchPlace(strippedString, completionHandler:
-                { (data, response, error) in
-                    dispatch_async(dispatch_get_main_queue()){
-                        self.venues = data
-                        self.venueTable.reloadData()
-                    }
-                
+            let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
+            let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
+            MolocatePlace.searchPlace(strippedString, placeLat: lat, placeLon: lon, completionHandler: { (data, response, error) in
+                dispatch_async(dispatch_get_main_queue()){
+                    self.venues = data
+                    self.venueTable.reloadData()
+                }
             })
+
 
             
         } else {

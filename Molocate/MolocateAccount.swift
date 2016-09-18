@@ -3,7 +3,7 @@ import UIKit
 import RNCryptor
 //Globals
 let MolocateBaseUrl = "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/"
-let MolocateTestUrl = "http://molocate-test.eu-central-1.elasticbeanstalk.com/"
+let MolocateTestUrl = MolocateBaseUrl //"http://molocate-test.eu-central-1.elasticbeanstalk.com/"
 var IsExploreInProcess = false
 var MoleCurrentUser: MoleUser = MoleUser()
 var FaceUsername = ""

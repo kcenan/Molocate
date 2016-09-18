@@ -219,9 +219,9 @@ public class MolocatePlace {
     }
     
     
-    class func searchPlace(str:String, completionHandler: (data: [MolePlace], response: NSURLResponse!, error: NSError!) -> ()) {
+    class func searchPlace(str:String,placeLat: Float,placeLon: Float, completionHandler: (data: [MolePlace], response: NSURLResponse!, error: NSError!) -> ()) {
         
-        let url = NSURL(string: MolocateTestUrl + "/place/api/search_place/?name="+str)
+        let url = NSURL(string: MolocateTestUrl + "/place/api/search_place/?name="+str+"&lat=\(placeLat)&lon=\(placeLon)")
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
@@ -240,7 +240,7 @@ public class MolocatePlace {
                             var place = MolePlace()
                             place.id = item["place_id"] as! String
                             place.name = item["name"] as! String
-                            //place.distance = item["distance"] as! String
+                            place.distance = item["distance"] as! String
                             place.address = item["address"] as! String
                             lastPlaces.append(place)
                             
