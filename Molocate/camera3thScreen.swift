@@ -19,7 +19,7 @@ var isCategorySelected = false
 var isLocationSelected = false
 var videoLocation:locationss!
 
-class camera3thScreen: UIViewController,UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     
     @IBOutlet var captionView: UITextView!
@@ -50,9 +50,9 @@ class camera3thScreen: UIViewController,UICollectionViewDelegate, UICollectionVi
     @IBAction func postVideo(sender: AnyObject) {
         
         
-        if (!isLocationSelected || !isCategorySelected){
+        if (!isLocationSelected){
             //self.postO.enabled = false
-            displayAlert("Dikkat", message: "Lütfen Kategori ve Konum seçiniz.")
+            displayAlert("Dikkat", message: "Lütfen konum seçiniz.")
         }
         else {
             
@@ -69,7 +69,7 @@ class camera3thScreen: UIViewController,UICollectionViewDelegate, UICollectionVi
                 "video_id": fileName as String,
                 "video_url": "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName.stringByAppendingFormat(".mp4", fileName) as String),
                 "caption": CaptionText,
-                "category": self.categ,
+                "category": "molocate",
                 "tagged_users": self.mentionedUsers,
                 "location": [
                     [
@@ -167,11 +167,7 @@ class camera3thScreen: UIViewController,UICollectionViewDelegate, UICollectionVi
     
     
     
-    var categoryImagesWhite : [String]  = [ "fun", "food", "travel", "fashion", "beauty", "sport", "event", "campus"]
-    var categoryImagesBlack : [String]  = [ "funb", "foodb", "travelb", "fashionb", "beautyb", "sportb", "eventb", "campusb"]
-    var categories = ["EĞLENCE","YEMEK","GEZİ","MODA" , "GÜZELLİK", "SPOR","ETKİNLİK","KAMPÜS"]
-    let greyColor = UIColor(netHex: 0xCCCCCC)
-    @IBOutlet var collectionView: UICollectionView!
+    
     
     var CaptionText = ""
     
@@ -194,9 +190,7 @@ class camera3thScreen: UIViewController,UICollectionViewDelegate, UICollectionVi
         //let index = NSIndexPath(forRow: 0, inSection: 0)
         //self.collectionView.selectItemAtIndexPath(index, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
         
-        self.collectionView.contentSize.width = MolocateDevice.size.width
-        self.collectionView.backgroundColor = UIColor.whiteColor()
-        
+      
         captionView.delegate = self
         captionView.layer.borderColor = lineColor.CGColor
         captionView.layer.borderWidth = 0.5;
@@ -590,50 +584,7 @@ class camera3thScreen: UIViewController,UICollectionViewDelegate, UICollectionVi
     }
     
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categories.count
-    }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
-        let myCell : collection3thCameraCell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as! collection3thCameraCell
-        
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = swiftColor
-        
-        myCell.selectedBackgroundView = backgroundView
-        myCell.layer.borderWidth = 0.5
-        myCell.backgroundColor = UIColor.whiteColor()
-        myCell.layer.borderColor = greyColor.CGColor
-        myCell.myLabel?.text = categories[indexPath.row]
-        
-        if selectedCell == indexPath.row{
-            myCell.collectionImage?.image = UIImage(named: "filledCircleWhite.png")
-            myCell.backgroundColor = swiftColor
-            myCell.myLabel?.textColor = UIColor.whiteColor()
-            
-            
-        }
-        else{
-            myCell.collectionImage?.image = UIImage(named: "filledCircleGrey.png")
-            myCell.backgroundColor = UIColor.whiteColor()
-            myCell.myLabel?.textColor = greyColor
-        }
-        return myCell
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
-        
-        selectedCell = indexPath.row
-        self.collectionView.reloadData()
-        self.categ = MoleCategoriesDictionary[self.categories[indexPath.row]]
-        //print(self.categ)
-        isCategorySelected = true
-        
-    }
+
     
     
     

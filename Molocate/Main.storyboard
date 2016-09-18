@@ -3155,80 +3155,6 @@ These Services are operated and provided by Molocate. If you have any questions 
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KATEGORİ SEÇ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Kq-yu-MdX">
-                                <rect key="frame" x="26" y="190" width="120" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="Fzy-23-925"/>
-                                    <constraint firstAttribute="height" constant="21" id="yDh-BW-mOV"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
-                                <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lZt-uB-ikW">
-                                <rect key="frame" x="0.0" y="226" width="375" height="101"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="101" id="cg1-PV-ezB"/>
-                                </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="Guf-59-BBX">
-                                    <size key="itemSize" width="143" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="1" maxX="0.0" maxY="1"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="myCell" id="mpi-YR-RNR" customClass="collection3thCameraCell" customModule="Molocate" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1" width="143" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="143" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qGF-dF-zwG">
-                                                    <rect key="frame" x="6" y="18" width="15" height="15"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="15" id="H7t-ra-QWY"/>
-                                                        <constraint firstAttribute="height" constant="15" id="uGC-OH-6So"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EĞLENCE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dh3-aI-1pU">
-                                                    <rect key="frame" x="23" y="18" width="112" height="14"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="8VV-ps-eWL"/>
-                                                        <constraint firstAttribute="height" constant="21" id="kzw-5G-Mpv"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="10"/>
-                                                    <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="8VV-ps-eWL"/>
-                                                            <exclude reference="kzw-5G-Mpv"/>
-                                                        </mask>
-                                                    </variation>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                        <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
-                                        <constraints>
-                                            <constraint firstItem="qGF-dF-zwG" firstAttribute="leading" secondItem="mpi-YR-RNR" secondAttribute="leadingMargin" constant="-2" id="B5g-ww-O49"/>
-                                            <constraint firstItem="qGF-dF-zwG" firstAttribute="centerY" secondItem="mpi-YR-RNR" secondAttribute="centerY" id="ENN-tT-oZg"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="Dh3-aI-1pU" secondAttribute="trailing" id="GiD-QP-khh"/>
-                                            <constraint firstItem="Dh3-aI-1pU" firstAttribute="centerY" secondItem="mpi-YR-RNR" secondAttribute="centerY" id="Gwm-aY-dQV"/>
-                                            <constraint firstItem="Dh3-aI-1pU" firstAttribute="leading" secondItem="qGF-dF-zwG" secondAttribute="trailing" constant="2" id="vI4-u3-c76"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="collectionImage" destination="qGF-dF-zwG" id="3Ys-hm-z9U"/>
-                                            <outlet property="myLabel" destination="Dh3-aI-1pU" id="4mg-4R-F6k"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                </cells>
-                                <connections>
-                                    <outlet property="dataSource" destination="KJV-8O-3Zu" id="prm-RS-1me"/>
-                                    <outlet property="delegate" destination="KJV-8O-3Zu" id="UHX-2U-cbX"/>
-                                </connections>
-                            </collectionView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" text="Güzel yorum" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="G5R-7N-4H1">
                                 <rect key="frame" x="0.0" y="375" width="375" height="80"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3298,11 +3224,9 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="G5R-7N-4H1" firstAttribute="top" secondItem="W2u-eW-Zth" secondAttribute="bottom" id="1HR-g5-9yE"/>
-                            <constraint firstItem="lZt-uB-ikW" firstAttribute="width" secondItem="4Bb-WR-3Oa" secondAttribute="width" id="311-QJ-mkZ"/>
                             <constraint firstItem="W2u-eW-Zth" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="-20" id="5GT-Q1-5BZ"/>
                             <constraint firstItem="2jw-0r-CNC" firstAttribute="centerX" secondItem="4Bb-WR-3Oa" secondAttribute="centerX" id="5iz-6X-6K7"/>
                             <constraint firstItem="G5R-7N-4H1" firstAttribute="top" secondItem="8tu-lT-q0v" secondAttribute="bottom" constant="15" id="6kO-Tb-TJ7"/>
-                            <constraint firstItem="lZt-uB-ikW" firstAttribute="centerX" secondItem="4Bb-WR-3Oa" secondAttribute="centerX" id="AIx-la-gK3"/>
                             <constraint firstItem="iMx-Mt-aHJ" firstAttribute="centerY" secondItem="OZ5-mm-La3" secondAttribute="centerY" id="DG3-sV-Qef"/>
                             <constraint firstItem="G5R-7N-4H1" firstAttribute="width" secondItem="4Bb-WR-3Oa" secondAttribute="width" id="ERf-Yh-8zs"/>
                             <constraint firstItem="4xK-IH-O67" firstAttribute="top" secondItem="2jw-0r-CNC" secondAttribute="bottom" id="MH4-LJ-GLR"/>
@@ -3319,16 +3243,13 @@ These Services are operated and provided by Molocate. If you have any questions 
                             <constraint firstItem="iMx-Mt-aHJ" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="14" id="e4i-QQ-uVB"/>
                             <constraint firstItem="W2u-eW-Zth" firstAttribute="top" secondItem="fqw-ly-Me1" secondAttribute="bottom" id="eLD-og-wLg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="W2u-eW-Zth" secondAttribute="trailing" constant="-20" id="fxR-HN-KtT"/>
-                            <constraint firstItem="9Kq-yu-MdX" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="10" id="g6G-zN-sxP"/>
                             <constraint firstItem="oPY-ln-Gdh" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="10" id="jzX-zo-IHS"/>
                             <constraint firstItem="ONe-Gp-iLb" firstAttribute="centerY" secondItem="OZ5-mm-La3" secondAttribute="centerY" id="l3p-NJ-sFd"/>
                             <constraint firstItem="8tu-lT-q0v" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="10" id="lwY-e9-68R"/>
                             <constraint firstItem="fqw-ly-Me1" firstAttribute="top" secondItem="4g1-sZ-yum" secondAttribute="bottom" id="lwx-NG-UTV"/>
-                            <constraint firstItem="lZt-uB-ikW" firstAttribute="top" secondItem="9Kq-yu-MdX" secondAttribute="bottom" constant="15" id="m4f-Ew-WFl"/>
                             <constraint firstItem="oPY-ln-Gdh" firstAttribute="top" secondItem="4Bb-WR-3Oa" secondAttribute="topMargin" constant="76" id="nFl-oC-OHU"/>
                             <constraint firstItem="fqw-ly-Me1" firstAttribute="width" secondItem="4Bb-WR-3Oa" secondAttribute="width" id="oox-DD-7ns"/>
                             <constraint firstItem="8tu-lT-q0v" firstAttribute="centerY" secondItem="4Bb-WR-3Oa" secondAttribute="centerY" multiplier="0.6" constant="150" id="xjC-Vr-Rqm"/>
-                            <constraint firstItem="9Kq-yu-MdX" firstAttribute="centerY" secondItem="4Bb-WR-3Oa" secondAttribute="centerY" multiplier="0.6" id="zLj-hN-4zI"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -3337,7 +3258,6 @@ These Services are operated and provided by Molocate. If you have any questions 
                     <connections>
                         <outlet property="bottomToolbar" destination="2jw-0r-CNC" id="G9u-NB-B5n"/>
                         <outlet property="captionView" destination="G5R-7N-4H1" id="oAC-K0-mxa"/>
-                        <outlet property="collectionView" destination="lZt-uB-ikW" id="WvP-xU-wVY"/>
                         <outlet property="mentionTable" destination="W2u-eW-Zth" id="M7r-sE-vs7"/>
                         <outlet property="selectVenue" destination="OZ5-mm-La3" id="gSZ-YT-JnL"/>
                         <outlet property="toolBar" destination="fqw-ly-Me1" id="asa-Fr-NbZ"/>
