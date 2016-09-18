@@ -84,11 +84,11 @@ class camera3thScreen: UIViewController,UICollectionViewDelegate, UICollectionVi
             
             let video_id = Int(arc4random_uniform(UInt32.max))
             
-             let new_upload = S3Upload()
+          let new_upload = S3Upload()
             
              new_upload.upload(false, id: video_id, uploadRequest:uploadRequest,fileURL: "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName as String), fileID: fileName as String ,json: json as! [String : AnyObject])
            
-             MyS3Uploads.append(new_upload)
+             MyS3Uploads.insert(new_upload, atIndex: 0)
             
             
             self.performSegueWithIdentifier("finishUpdate", sender: self)

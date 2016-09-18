@@ -1186,6 +1186,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     }
     func retryRequest(sender: UIButton){
         let row = sender.tag
+    //app yeni acildiginda s3uploads bos olcak onlari tekrar dan olusturmak lazim
           if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: row,inSection: 0)) as? videoCell{
             
             MyS3Uploads[row].upload(true,id: VideoUploadRequests[row].id, uploadRequest: VideoUploadRequests[row].uploadRequest, fileURL:VideoUploadRequests[row].filePath, fileID:  VideoUploadRequests[row].fileId, json: VideoUploadRequests[row].JsonData)

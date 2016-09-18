@@ -51,14 +51,20 @@ public class S3Upload {
 
                 print("VideoUploadRequest created with id:\(id)")
                 
-                VideoUploadRequests.append(VideoUploadRequest(filePath: fileURL,thumbUrl: thumb, thumbnail: image!,JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false))
+           
                 
+                VideoUploadRequests.insert(VideoUploadRequest(filePath: fileURL,thumbUrl: thumb, thumbnail: image!,JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false), atIndex:0)
+              
                 
                 MolocateVideo.encodeGlobalVideo()
                 
             }catch{
                // print("uploadRequest cannot created")
             }
+        }
+        
+        if VideoUploadRequests.count != 0 {
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isStuck")
         }
         
         let expression = AWSS3TransferUtilityUploadExpression()
@@ -156,7 +162,7 @@ public class S3Upload {
             if ((task.result) != nil) {
                 let uploadTask = task.result
                 // Do something with uploadTask.
-                let seconds = 1.0
+                let seconds = 100.0
                 let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                 let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
                 dispatch_after(dispatchTime, dispatch_get_main_queue(), {
@@ -166,7 +172,7 @@ public class S3Upload {
                         uploadTask?.cancel()
                         let userinf = ["id":id]
                         NSNotificationCenter.defaultCenter().postNotificationName("prepareForRetry", object: nil, userInfo:userinf )
-                      
+                        MolocateVideo.encodeGlobalVideo()
                         
                     }
                     

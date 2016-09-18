@@ -107,7 +107,7 @@ public class MolocateVideo {
         uploadRequest.key = dictionary["uploadRequestKey"] as? String
         let fileId = dictionary["fileId"] as! String
         let id = dictionary["id"] as! Int
-        let isFailed = dictionary["isFailed"] as! Bool
+        let isFailed = true
         
         return VideoUploadRequest(filePath: filePath, thumbUrl: thumbUrl!, thumbnail: thumbnail, JsonData: JsonData, fileId: fileId, uploadRequest: uploadRequest, id: id, isFailed: isFailed )
         
