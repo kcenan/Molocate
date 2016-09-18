@@ -37,12 +37,12 @@ class exploreLayout: UICollectionViewLayout {
   var delegate:exploreLayoutDelegate!
   var eventw = MolocateDevice.size.width
   var eventl = 9*(MolocateDevice.size.width/16)
-  var scalew3 = (9*MolocateDevice.size.width-1)/209
-  var scalew2 = (MolocateDevice.size.width-1)/8
+  var scalew3 = (9*MolocateDevice.size.width-2)/209
+  var scalew2 = (MolocateDevice.size.width-2)/8
   //2. Configurable properties
   var numberOfColumns = 2
     
-  var cellPadding: CGFloat = 1.0
+  var cellPadding: CGFloat = 2.0
   var widths = [CGFloat]()
   var heights = [CGFloat]()
   //3. Array to keep a cache of attributes.
@@ -165,11 +165,11 @@ class exploreLayout: UICollectionViewLayout {
         
         var frame = CGRect(x: xoffset, y: yoffset, width: width, height: height)
 
-        let insetFrame = CGRectInset(frame, cellPadding, cellPadding)
+        let insetFrame = CGRectInset(frame, 0, 0)
         
         // 5. Creates an UICollectionViewLayoutItem with the frame and add it to the cache
         let attributes = exploreLayoutAttributes(forCellWithIndexPath: indexPath)
-        attributes.photoHeight = width
+        attributes.photoHeight = height
         attributes.frame = insetFrame
         cache.append(attributes)
         
