@@ -144,14 +144,14 @@ class exploreLayout: UICollectionViewLayout {
         case 8+eventcount:
             height = 3*scalew2
             width = 4*scalew2
-            yoffset = heights[0] + heights[3] + 4*cellPadding + heights[7] + (contentLong+cellPadding)*part
+            yoffset = heights[0] + heights[3] + 3*cellPadding + heights[7] + (contentLong+cellPadding)*part
             widths.append(width)
             heights.append(height)
         case 9+eventcount:
             height = 3*scalew2
             width = 4*scalew2
             xoffset = widths[3]+cellPadding
-            yoffset = heights[0] + heights[3] + 4*cellPadding + heights[7] + (contentLong+cellPadding)*part
+            yoffset = heights[0] + heights[3] + 3*cellPadding + heights[7] + (contentLong+cellPadding)*part
             widths.append(width)
             heights.append(height)
         default:
