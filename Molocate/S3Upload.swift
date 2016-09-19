@@ -17,6 +17,7 @@ var n = 0
 
 public class S3Upload {
     var isUp = false
+    var isFailed = false
     var uploadTask:AWSS3TransferUtilityTask?
     var completionHandler:AWSS3TransferUtilityUploadCompletionHandlerBlock?
     var key_id = 0
@@ -26,6 +27,7 @@ public class S3Upload {
         
         print("upload started with id:\(id)")
         isUp = false
+        isFailed = false
         key_id = id
        
         if !retry {
@@ -136,7 +138,8 @@ public class S3Upload {
                             }
                             
                          })
-                        }else{
+                        }else if !self.isFailed{
+                            self.isFailed = true
                             let userinf = ["id":videoid]
                             NSNotificationCenter.defaultCenter().postNotificationName("prepareForRetry", object: nil, userInfo:userinf )
                             MolocateVideo.encodeGlobalVideo()
@@ -162,12 +165,13 @@ public class S3Upload {
             if ((task.result) != nil) {
                 let uploadTask = task.result
                 // Do something with uploadTask.
+        
                 let seconds = 1.0
                 let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                 let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
                 dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                     //print("18s passed")
-                    if !self.isUp{
+                    if !self.isUp && !self.isFailed{
                         //print("cancel")
                         uploadTask?.cancel()
                         let userinf = ["id":id]
