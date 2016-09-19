@@ -334,6 +334,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
                 cleanup()
                 placesArray.removeAll()
                 placeOrder.removeAllObjects()
+                self.player.stop()
                 self.performSegueWithIdentifier("backToCamera", sender: self)
                 
                 
