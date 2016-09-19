@@ -16,6 +16,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
     var estRowH = 150.0 as! CGFloat
     var vidortag = false // videoysa false
     let names = ["AYARLAR","PROFİLİ DÜZENLE", "ÇIKIŞ YAP"]
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var myRefreshControl = UIRefreshControl()
     @IBOutlet var back: UIBarButtonItem!
     
@@ -51,7 +52,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         optionsTable.layer.cornerRadius = 0
         optionsTable.tintColor = UIColor.clearColor()
         
-        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(profileUser.adjustTable))
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(myProfile.adjustTable))
         gesture.delegate = self
         gesture.direction = .Down
         self.view.addGestureRecognizer(gesture)
@@ -319,7 +320,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 cell.profilePhoto.layer.borderColor = UIColor.whiteColor().CGColor
                 cell.profilePhoto.backgroundColor = profileBackgroundColor
                 cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
-                cell.profilePhotoPressed.addTarget(self, action: #selector(profileUser.photoPressed), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.profilePhotoPressed.addTarget(self, action: #selector(myProfile.photoPressed), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.profilePhoto.clipsToBounds = true
                 cell.profilePhoto.tag = indexPath.row
                 if(classUser.profilePic.absoluteString != ""){
@@ -347,10 +348,10 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 cell.numberFollowUser.text = "\(classUser.following_count)"
                 cell.numberFollowVenue.text = "\(classUser.place_following_count)"
                 cell.numberPostedVenue.text = "\(classUser.different_checkins)"
-                cell.followers.addTarget(self, action: #selector(profileUser.followersPressed), forControlEvents: UIControlEvents.TouchUpInside)
-                cell.followUser.addTarget(self, action: #selector(profileUser.followUserPressed), forControlEvents: UIControlEvents.TouchUpInside)
-                cell.followVenue.addTarget(self, action: #selector(profileUser.followVenuePressed), forControlEvents: UIControlEvents.TouchUpInside)
-                cell.postedVenue.addTarget(self, action: #selector(profileUser.postedVenuePressed), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.followers.addTarget(self, action: #selector(myProfile.followersPressed), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.followUser.addTarget(self, action: #selector(myProfile.followUserPressed), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.followVenue.addTarget(self, action: #selector(myProfile.followVenuePressed), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.postedVenue.addTarget(self, action: #selector(myProfile.postedVenuePressed), forControlEvents: UIControlEvents.TouchUpInside)
                 return cell
                 
             }
@@ -359,8 +360,8 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 let cell = tableView.dequeueReusableCellWithIdentifier("cell3", forIndexPath: indexPath) as! profile3thCell
                 cell.videosButton.setTitle("VİDEOLAR(\(classUser.post_count))", forState: .Normal)
                 cell.taggedButton.setTitle("ETİKET(\(classUser.tag_count))", forState: .Normal)
-                cell.videosButton.addTarget(self, action: #selector(profileUser.videosButtonTapped(_:)), forControlEvents: .TouchUpInside)
-                cell.taggedButton.addTarget(self, action: #selector(profileUser.taggedButtonTapped(_:)), forControlEvents: .TouchUpInside)
+                cell.videosButton.addTarget(self, action: #selector(myProfile.videosButtonTapped(_:)), forControlEvents: .TouchUpInside)
+                cell.taggedButton.addTarget(self, action: #selector(myProfile.taggedButtonTapped(_:)), forControlEvents: .TouchUpInside)
                 
                 if !vidortag {
                     cell.videosButton.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
@@ -449,6 +450,21 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         navigationController?.pushViewController(controller, animated: true)
     }
     func followVenuePressed(sender: UIButton){
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        let controller:findVenueController = self.storyboard!.instantiateViewControllerWithIdentifier("findVenueController") as! findVenueController
+        self.navigationController?.pushViewController(controller, animated: true)
+        MolocateAccount.getFollowingPlaces(classUser.username) { (data, response, error) in
+            dispatch_async(dispatch_get_main_queue()){
+                controller.venues = data
+                controller.tableView.reloadData()
+            }
+        }
+        self.activityIndicator.stopAnimating()
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        
+
         
     }
     func followersPressed(sender: UIButton){
@@ -462,6 +478,19 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         navigationController?.pushViewController(controller, animated: true)
     }
     func postedVenuePressed(sender: UIButton){
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        let controller:findVenueController = self.storyboard!.instantiateViewControllerWithIdentifier("findVenueController") as! findVenueController
+        self.navigationController?.pushViewController(controller, animated: true)
+        MolocateAccount.getCheckedInPlaces(classUser.username) { (data, response, error) in
+            dispatch_async(dispatch_get_main_queue()){
+                controller.venues = data
+                controller.tableView.reloadData()
+            }
+        }
+        self.activityIndicator.stopAnimating()
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
         
     }
     

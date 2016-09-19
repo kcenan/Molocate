@@ -427,7 +427,7 @@ public class MolocateAccount {
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                     let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSArray
-                    print(result)
+                
                     if(result.count != 0){
                         var places = [MolePlace]()
                         for item in result {

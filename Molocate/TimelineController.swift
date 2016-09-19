@@ -253,6 +253,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             }
             case "ProfileVenue":
                 getPlaceData(placeId)
+            case "filter":
+                getExploreData(requestUrl)
             default:
                 print("default")
         }

@@ -28,7 +28,7 @@ class FilterController: UIViewController,TimelineControllerDelegate  {
         self.addChildViewController(tableController);
         tableController.didMoveToParentViewController(self)
         tableController.delegate = self
-        self.navigationController?.title = self.filter_name
+        self.navigationItem.title = self.filter_name
 
 
         // Do any additional setup after loading the view.
