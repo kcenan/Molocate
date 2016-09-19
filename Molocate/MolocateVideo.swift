@@ -91,7 +91,7 @@ public class MolocateVideo {
             let dataUploadRequests  = ud.objectForKey("videoRequests") as! [Dictionary<String, AnyObject>]
             VideoUploadRequests = dataUploadRequests.map({
                 (value:Dictionary<String, AnyObject> ) -> VideoUploadRequest in
-                print("decoding")
+                //print("decoding")
                 MyS3Uploads.append(S3Upload())
                 return self.decodeVideoUploadRequest(value)
                 

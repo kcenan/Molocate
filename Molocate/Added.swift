@@ -436,7 +436,7 @@ import FBSDKShareKit
                     videoArray[i].isUploading = false
                     if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i,inSection: 0)) as? videoCell{
                         dispatch_async(dispatch_get_main_queue(), {
-                            print("prepareforRetry with id:\(video_id) row: \(i)")
+                            //print("prepareforRetry with id:\(video_id) row: \(i)")
                             
                             let rect = cell.newRect
                             cell.blackView.frame = rect
@@ -469,13 +469,13 @@ import FBSDKShareKit
     
     func updateProgress(notification:NSNotification){
         let userInfo = notification.userInfo
-        print("updateProgress Called")
+        //print("updateProgress Called")
         if let video_id = userInfo!["id"] as? Int{
-            print("with id: \(video_id)")
+            //print("with id: \(video_id)")
             if let i = VideoUploadRequests.indexOf({$0.id == video_id}) {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i,inSection: 0)) as? videoCell{
                     let progress = userInfo!["progress"] as! Float
-                    print("progressBar updated with: userInfo! \(progress)")
+                    //print("progressBar updated with: userInfo! \(progress)")
                     dispatch_async(dispatch_get_main_queue(), {
                         cell.progressBar.setProgress(progress, animated: true)
                     })
@@ -492,9 +492,9 @@ import FBSDKShareKit
     
     func uploadFinished(notification:NSNotification){
         let userInfo = notification.userInfo
-        print("upload finished")
+        //print("upload finished")
         if let id = userInfo!["id"] as? Int{
-            print("with row: \(id)")
+           // print("with row: \(id)")
             if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: id,inSection: 0)) as? videoCell{
                 dispatch_async(dispatch_get_main_queue(), {
                     cell.progressBar.hidden = true
@@ -559,7 +559,7 @@ import FBSDKShareKit
                 do {
                     try NSFileManager.defaultManager().removeItemAtURL(VideoUploadRequests[row].uploadRequest.body)
                 }catch{
-                    print("Video Silinemedi")
+                    //print("Video Silinemedi")
                 }
                 
                 VideoUploadRequests.removeAtIndex(row)
