@@ -273,7 +273,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     
     func textViewDidBeginEditing(textView: UITextView) {
         self.view.backgroundColor = UIColor.lightGrayColor()
-        
+        textView.text = ""
     }
     
     
@@ -378,7 +378,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         //        }
         
         //character limit
-        return text.characters.count+(text.characters.count-range.length) <= 140
+        return textView.text.characters.count+(text.characters.count-range.length) <= 140
     }
     
     func isTheRangeInMentionZone(range: NSRange, text: String) -> (Bool, Int){
