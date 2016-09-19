@@ -57,7 +57,6 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     var classLon = Float()
     var filter_raw = ""
     weak var delegate: TimelineControllerDelegate?
-
     var type = ""
     var placeId = ""
 
@@ -94,19 +93,15 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 requestUrl = NSURL(string: MolocateBaseUrl + "video/api/news_feed/?category=all")!
                 self.myRefreshControl.attributedTitle = NSAttributedString(string: "Haber kaynağı güncelleniyor...")
                 getExploreData(requestUrl)
-            case "MainController":
-                requestUrl = NSURL(string: MolocateBaseUrl + "video/api/explore/?category=all")!
-                self.myRefreshControl.attributedTitle = NSAttributedString(string: "Keşfet güncelleniyor...")
-                getExploreData(requestUrl)
-                //navigationController?.hidesBarsOnSwipe = false
             case "profileVenue":
-               // print("profileVenue")
-                //videoArray initially given by parentViewCont4\roller
                 getPlaceData(placeId)
             case "filter":
-                requestUrl = NSURL(string: MolocateTestUrl+"video/api/filtered_videos/?name="+filter_raw)!
-                getExploreData(requestUrl)
-            
+                if !isNearby {
+                    requestUrl = NSURL(string: MolocateTestUrl+"video/api/filtered_videos/?name="+filter_raw)!
+                    getExploreData(requestUrl)
+                } else {
+                    getNearbyData(classLat, lon: classLon)
+                }
             default:
                 requestUrl = NSURL(string: MolocateBaseUrl + "video/api/news_feed/?category=all")!
         }
@@ -221,7 +216,9 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func getNearbyData(lat:Float, lon:Float){
         MolocateVideo.getNearbyVideos(lat, placeLon: lon) { (data, response, error, next) in
             dispatch_async(dispatch_get_main_queue()){
+                if next != nil {
                 self.nextUrl = next!
+                }
                 self.videoArray = data!
                 self.tableView.reloadData()
                 if self.myRefreshControl.refreshing {
@@ -245,16 +242,14 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         switch type {
             case "HomePage":
                 getExploreData(requestUrl)
-            case "MainController":
-                if !isNearby {
-                getExploreData(requestUrl)
-                } else {
-                getNearbyData(classLat, lon: classLon)
-            }
             case "ProfileVenue":
                 getPlaceData(placeId)
             case "filter":
-                getExploreData(requestUrl)
+                if !isNearby {
+                    getExploreData(requestUrl)
+                } else {
+                    getNearbyData(classLat, lon: classLon)
+            }
             default:
                 print("default")
         }

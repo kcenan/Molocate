@@ -14,6 +14,8 @@ class FilterController: UIViewController,TimelineControllerDelegate  {
     var activityIndicator = UIActivityIndicatorView()
     var filter_name = ""
     var filter_raw = ""
+    var classLat = Float()
+    var classLon = Float()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,13 @@ class FilterController: UIViewController,TimelineControllerDelegate  {
         tableController = self.storyboard?.instantiateViewControllerWithIdentifier("timelineController") as! TimelineController
         tableController.filter_raw = self.filter_raw
         tableController.type = "filter"
+        if filter_raw == "nearby" {
+            tableController.isNearby = true
+            tableController.classLon = classLon
+            tableController.classLat = classLat
+        } else {
+            tableController.isNearby = false
+        }
         tableController.view.frame = self.view.frame
         tableController.view.layer.zPosition = 0
         self.view.addSubview(tableController.view)

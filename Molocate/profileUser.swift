@@ -496,41 +496,39 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
                         AVc.player2.stop()
                         AVc.player1.stop()
                     }
-            print(vidortag)
-                    //tableView.reloadData()
-                    //tableView.cellForRowAtIndexPath(indexPath)
-                    //tableView.scrollEnabled  = false
-            
+
                     tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             
         }
         
+        }
+        if scrollView == self.tableView {
+            
+            if (scrollView.contentSize.height-scrollView.contentOffset.y < MolocateDevice.size.height+70) {
+                
+                BVc.tableView.scrollEnabled = true
+                AVc.tableView.scrollEnabled = true
+                tableView.pagingEnabled = false
+                page = 2
+                
+            } else {
+                BVc.tableView.scrollEnabled = false
+                AVc.tableView.scrollEnabled = false
+                tableView.pagingEnabled = true
+                page = 1
+            }
         }
         
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         
+        
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         
-            if scrollView == self.tableView {
-                
-                if (scrollView.contentSize.height-scrollView.contentOffset.y < MolocateDevice.size.height+70) {
-                
-                    BVc.tableView.scrollEnabled = true
-                    AVc.tableView.scrollEnabled = true
-                    tableView.pagingEnabled = false
-                    page = 2
-                    
-                } else {
-                    BVc.tableView.scrollEnabled = false
-                    AVc.tableView.scrollEnabled = false
-                    tableView.pagingEnabled = true
-                    page = 1
-        }
-            }
+
 
         
     }

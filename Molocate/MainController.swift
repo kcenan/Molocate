@@ -785,6 +785,13 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         let controller:FilterController = self.storyboard!.instantiateViewControllerWithIdentifier("FilterController") as! FilterController
         controller.filter_raw = self.filters[indexPath.row].raw_name
         controller.filter_name = self.filters[indexPath.row].name
+       
+        if self.filters[indexPath.row].raw_name == "nearby" {
+            let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
+            let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
+            controller.classLat = lat
+            controller.classLon = lon
+        }
         self.navigationController?.pushViewController(controller, animated: true)
         self.activityIndicator.stopAnimating()
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
