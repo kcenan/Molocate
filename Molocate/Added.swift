@@ -68,6 +68,14 @@ import FBSDKShareKit
         self.view.addSubview(tableView)
         lastOffset = CGPoint(x: 0, y: 0)
         
+        if isItMyProfile {
+        
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.prepareForRetry), name: "prepareForRetry", object: nil)
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.updateProgress), name: "updateProgress", object: nil)
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.uploadFinished), name: "uploadFinished", object: nil)
+        }
    
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.scrollToTop), name: "scrollToTop", object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimelineController.prepareForRetry), name: "prepareForRetry", object: nil)
@@ -85,25 +93,34 @@ import FBSDKShareKit
                     self.videoArray = data!
                 }else if self.isItMyProfile{
                     self.videoArray.removeAll()
+                    
                     for i in 0..<VideoUploadRequests.count{
+                        
                         var queu = MoleVideoInformation()
                         let json = (VideoUploadRequests[i].JsonData)
                         let loc = json["location"] as! [[String:AnyObject]]
                         queu.dateStr = "0s"
                         queu.urlSta = (VideoUploadRequests[i].uploadRequest.body)!
+                        //print("url:" + queu.urlSta.absoluteString)
                         queu.username = MoleCurrentUser.username
                         queu.userpic = MoleCurrentUser.profilePic
                         queu.caption = json["caption"] as! String
+                        // print(queu.caption                                 )
                         queu.location = loc[0]["name"] as! String
                         queu.locationID = loc[0]["id"] as! String
                         queu.isFollowing = 1
                         queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)
-                        queu.isUploading = true
+                        queu.id = "\(VideoUploadRequests[i].id)"
+                        if VideoUploadRequests[i].isFailed {
+                            queu.isFailed = VideoUploadRequests[i].isFailed
+                            queu.isUploading = false
+                        }else{
+                            queu.isUploading = true
+                        }
+                        
                         self.videoArray.append(queu)
-                       
                     }
-                     self.videoArray += data!
-                    
+                    self.videoArray += data!
                 }else{
                     self.videoArray = data!
                 }
@@ -408,112 +425,158 @@ import FBSDKShareKit
         
     }
     
-    var resendButton = UIButton()
-    var deleteButton = UIButton()
-    var blackView = UIView()
-    var errorLabel = UILabel()
     
-    
-    func initGUIforRetry(){
-        blackView.backgroundColor = UIColor.blackColor()
-        blackView.layer.opacity = 0.8
-        resendButton = UIButton(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 80.0))
-        resendButton.setImage(UIImage(named: "retry"), forState: .Normal)
-        resendButton.tintColor = UIColor.whiteColor()
-        deleteButton = UIButton(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 80.0))
-        deleteButton.setImage(UIImage(named: "cross"), forState: .Normal)
-        deleteButton.tintColor = UIColor.whiteColor()
-        errorLabel.textAlignment = NSTextAlignment.Center
-        errorLabel.textColor = UIColor.whiteColor()
-        errorLabel.font = UIFont(name: "AvenirNext-Regular", size:17)
-        errorLabel.text = "Videonuz yüklenemedi."
-        resendButton.addTarget(self, action: #selector(TimelineController.retryRequest), forControlEvents: UIControlEvents.TouchUpInside)
-        deleteButton.addTarget(self, action: #selector(TimelineController.deleteVideo), forControlEvents: UIControlEvents.TouchUpInside)
-    }
-    func prepareForRetry(){
-        if isItMyProfile {
-            initGUIforRetry()
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0,inSection: 0)) as? videoCell{
-                let rect = cell.newRect
-                blackView.frame = rect
-                cell.superview?.addSubview(blackView)
-                let videoView = UIView(frame: cell.newRect)
-                resendButton.center = CGPoint(x: videoView.center.x-50, y: videoView.center.y)
-                deleteButton.center = CGPoint(x: videoView.center.x+50, y: videoView.center.y)
-                errorLabel.frame = CGRect(x: 0, y: resendButton.frame.maxY+10, width: blackView.frame.width, height: 40)
-                cell.superview!.addSubview(resendButton)
-                cell.superview!.addSubview(deleteButton)
-                cell.superview!.addSubview(errorLabel)
-                resendButton.enabled = true
-                deleteButton.enabled = true
+    func prepareForRetry(notification: NSNotification){
+        let userInfo = notification.userInfo
+        if let video_id = userInfo!["id"] as? Int{
+            if let i = VideoUploadRequests.indexOf({$0.id == video_id}) {
+                VideoUploadRequests[i].isFailed = true
+                if isItMyProfile{
+                    videoArray[i].isFailed = true
+                    videoArray[i].isUploading = false
+                    if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i,inSection: 0)) as? videoCell{
+                        dispatch_async(dispatch_get_main_queue(), {
+                            print("prepareforRetry with id:\(video_id) row: \(i)")
+                            
+                            let rect = cell.newRect
+                            cell.blackView.frame = rect
+                            let videoView = UIView(frame: cell.newRect)
+                            cell.resendButton.center = CGPoint(x: videoView.center.x-50, y: videoView.center.y)
+                            cell.deleteButton.center = CGPoint(x: videoView.center.x+50, y: videoView.center.y)
+                            cell.errorLabel.frame = CGRect(x: 0, y: cell.resendButton.frame.maxY+10, width: cell.blackView.frame.width, height: 40)
+                            
+                            cell.blackView.layer.zPosition = 9000
+                            cell.resendButton.layer.zPosition = 9999
+                            cell.deleteButton.layer.zPosition = 9999
+                            cell.errorLabel.layer.zPosition = 9999
+                            
+                            cell.contentView.addSubview(cell.blackView)
+                            cell.contentView.addSubview(cell.resendButton)
+                            cell.contentView.addSubview(cell.deleteButton)
+                            cell.contentView.addSubview(cell.errorLabel)
+                            cell.resendButton.tag = i
+                            cell.deleteButton.tag = i
+                            cell.resendButton.enabled = true
+                            cell.deleteButton.enabled = true
+                            cell.progressBar.hidden = true
+                        })
+                    }
+                }
             }
         }
-    }
-    func retryRequest(){
-        resendButton.enabled = false
-        deleteButton.enabled = false
-//        if GlobalVideoUploadRequest != nil {
-//            S3Upload.upload(false, uploadRequest: (GlobalVideoUploadRequest?.uploadRequest)!, fileURL:(GlobalVideoUploadRequest?.filePath)!, fileID: (GlobalVideoUploadRequest?.fileId)!, json: (GlobalVideoUploadRequest?.JsonData)!)
         
-//            if let _ = tabBarController?.viewControllers![1] as? MainController {
-//                let main = tabBarController?.viewControllers![1] as? MainController
-//                
-//                if  main?.tableController.videoArray.count != 0 {
-//                    
-//                    if main?.tableController.videoArray[0].urlSta.absoluteString[0] != "h"{
-//                        print("main siliniyor")
-//                        main?.tableController.resendButton.removeFromSuperview()
-//                        main?.tableController.blackView.removeFromSuperview()
-//                        main?.tableController.deleteButton.removeFromSuperview()
-//                        main?.tableController.errorLabel.removeFromSuperview()
-//                        main?.tableController.tableView.reloadData()
-//                        
-//                    }
-//                }
-//            }
-            progressBar?.progress =  0
-            progressBar?.hidden = false
-            self.resendButton.removeFromSuperview()
-            self.blackView.removeFromSuperview()
-            self.deleteButton.removeFromSuperview()
-            self.errorLabel.removeFromSuperview()
-            self.tableView.reloadData()
-//        }else{
-//            progressBar?.progress =  0
-//            progressBar?.hidden = true
-//            self.resendButton.removeFromSuperview()
-//            self.blackView.removeFromSuperview()
-//            self.deleteButton.removeFromSuperview()
-//            self.errorLabel.removeFromSuperview()
-//            self.tableView.reloadData()
-//        }
-//        
     }
-
     
-    func deleteVideo(){
-        resendButton.enabled = false
-        deleteButton.enabled = false
-        do {
-            self.videoArray.removeAtIndex(0)
-            //GlobalVideoUploadRequest = nil
-            CaptionText = ""
-            self.resendButton.removeFromSuperview()
-            self.blackView.removeFromSuperview()
-            self.deleteButton.removeFromSuperview()
-            self.errorLabel.removeFromSuperview()
-            self.tableView.reloadData()
-            progressBar?.hidden = true
-            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isStuck")
-            try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
-        } catch _ {
-            //print("error")
+    func updateProgress(notification:NSNotification){
+        let userInfo = notification.userInfo
+        print("updateProgress Called")
+        if let video_id = userInfo!["id"] as? Int{
+            print("with id: \(video_id)")
+            if let i = VideoUploadRequests.indexOf({$0.id == video_id}) {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i,inSection: 0)) as? videoCell{
+                    let progress = userInfo!["progress"] as! Float
+                    print("progressBar updated with: userInfo! \(progress)")
+                    dispatch_async(dispatch_get_main_queue(), {
+                        cell.progressBar.setProgress(progress, animated: true)
+                    })
+                    //                    likeorFollowClicked = true
+                    //                    tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: i,inSection: 0)], withRowAnimation: .None)
+                    //                    likeorFollowClicked = false
+                    
+                }
+            }
+            
         }
         
+    }
+    
+    func uploadFinished(notification:NSNotification){
+        let userInfo = notification.userInfo
+        print("upload finished")
+        if let id = userInfo!["id"] as? Int{
+            print("with row: \(id)")
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: id,inSection: 0)) as? videoCell{
+                dispatch_async(dispatch_get_main_queue(), {
+                    cell.progressBar.hidden = true
+                    cell.resendButton.enabled = false
+                    cell.deleteButton.enabled = false
+                    cell.progressBar.removeFromSuperview()
+                    cell.resendButton.removeFromSuperview()
+                    cell.blackView.removeFromSuperview()
+                    cell.deleteButton.removeFromSuperview()
+                })
+            }
+            
+            
+        }
         
     }
-
+    func retryRequest(sender: UIButton){
+        let row = sender.tag
+        //app yeni acildiginda s3uploads bos olcak onlari tekrar dan olusturmak lazim
+        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: row,inSection: 0)) as? videoCell{
+            
+            MyS3Uploads[row].upload(true,id: VideoUploadRequests[row].id, uploadRequest: VideoUploadRequests[row].uploadRequest, fileURL:VideoUploadRequests[row].filePath, fileID:  VideoUploadRequests[row].fileId, json: VideoUploadRequests[row].JsonData, thumbnail_image: VideoUploadRequests[row].thumbnail)
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                cell.resendButton.enabled = false
+                cell.deleteButton.enabled = false
+                self.videoArray[row].isFailed = false
+                self.videoArray[row].isUploading = true
+                VideoUploadRequests[row].isFailed = false
+                cell.progressBar.progress =  0
+                
+                cell.progressBar.removeFromSuperview()
+                cell.resendButton.removeFromSuperview()
+                cell.blackView.removeFromSuperview()
+                cell.deleteButton.removeFromSuperview()
+                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: .None)
+            })
+            
+            //        }else{ cell.t
+            //            progressBar?.progress =  0
+            //            progressBar?.hidden = true
+            //            self.resendButton.removeFromSuperview()
+            //            self.blackView.removeFromSuperview()
+            //            self.deleteButton.removeFromSuperview()
+            //            self.errorLabel.removeFromSuperview()
+            //            self.tableView.reloadData()
+            //        }
+        }
+        
+    }
     
+    
+    func deleteVideo(sender: UIButton){
+        let row = sender.tag
+        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: row,inSection: 0)) as? videoCell{
+            dispatch_async(dispatch_get_main_queue(), {
+                cell.resendButton.enabled = false
+                cell.deleteButton.enabled = false
+                
+                let fileUrl = VideoUploadRequests[row].uploadRequest.body
+                
+                do {
+                    try NSFileManager.defaultManager().removeItemAtURL(VideoUploadRequests[row].uploadRequest.body)
+                }catch{
+                    print("Video Silinemedi")
+                }
+                
+                VideoUploadRequests.removeAtIndex(row)
+                MyS3Uploads.removeAtIndex(row)
+                self.videoArray.removeAtIndex(row)
+                self.tableView.reloadData()
+                MolocateVideo.encodeGlobalVideo()
+                
+                if VideoUploadRequests.count == 0 {
+                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isStuck")
+                }
+            })
+            
+            
+        }
+        
+    }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let rowHeight = screenSize.width + 150
@@ -626,6 +689,39 @@ import FBSDKShareKit
                 self.player2.playFromBeginning()
                 }
             }
+            }
+            if videoArray[indexPath.row].isUploading {
+                let myprogress = cell.progressBar.progress
+                cell.progressBar =  UIProgressView(frame: cell.label3.frame)
+                cell.progressBar.progress = myprogress
+                cell.contentView.addSubview(cell.progressBar)
+            }else if videoArray[indexPath.row].isFailed {
+                
+                let rect = cell.newRect
+                cell.blackView.frame = rect
+                
+                let videoView = UIView(frame: cell.newRect)
+                cell.resendButton.center = CGPoint(x: videoView.center.x-50, y: videoView.center.y)
+                cell.deleteButton.center = CGPoint(x: videoView.center.x+50, y: videoView.center.y)
+                cell.errorLabel.frame = CGRect(x: 0, y: cell.resendButton.frame.maxY+10, width: cell.blackView.frame.width, height: 40)
+                
+                cell.blackView.layer.zPosition = 9000
+                cell.resendButton.layer.zPosition = 9999
+                cell.deleteButton.layer.zPosition = 9999
+                cell.errorLabel.layer.zPosition = 9999
+                cell.contentView.addSubview(cell.blackView)
+                cell.contentView.addSubview(cell.resendButton)
+                cell.contentView.addSubview(cell.deleteButton)
+                cell.contentView.addSubview(cell.errorLabel)
+                
+                
+                
+                
+                cell.resendButton.tag = indexPath.row
+                cell.deleteButton.tag = indexPath.row
+                cell.resendButton.enabled = true
+                cell.deleteButton.enabled = true
+                cell.progressBar.hidden = true
             }
 
             return cell
