@@ -396,9 +396,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         let i = plus ? 1:-1
         
         if(myViewController == "MainController"){
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! MainController).tableController.videoArray[videoIndex].commentCount += i
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! MainController).tableController.tableView.reloadRowsAtIndexPaths(
-                [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            
         }else if myViewController == "HomeController"{
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.videoArray[videoIndex].commentCount += i
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.tableView.reloadRowsAtIndexPaths(

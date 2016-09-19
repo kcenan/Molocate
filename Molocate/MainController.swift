@@ -45,7 +45,6 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     var redLabel: UILabel!
     var linee: UILabel!
     var on = true
-    var tableController: TimelineController!
     var findfriendsVenue: UIButton!
     var filters = [filter]()
     let lineColor = UIColor(netHex: 0xCCCCCC)
@@ -70,21 +69,11 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
 
         selectedCell = 0
 
-
-        tableController = self.storyboard?.instantiateViewControllerWithIdentifier("timelineController") as! TimelineController
-        tableController.type = "MainController"
-        tableController.delegate = self
-//        tableController.view.frame = CGRectMake(0, 50, MolocateDevice.size.width, MolocateDevice.size.height - 50)
-//        tableController.view.layer.zPosition = 0
-//        self.view.addSubview(tableController.view)
-//        self.addChildViewController(tableController);
-//        tableController.didMoveToParentViewController(self)
-        
         
         searchText.returnKeyType = UIReturnKeyType.Done
         //tableController.tableView.makeoN
         self.searchText.delegate = self
-        venueTable.layer.zPosition = 10
+        //venueTable.layer.zPosition = 10
         tabBarController?.tabBar.hidden = true
         searchText.frame = CGRect(x: 0, y: 0, width: MolocateDevice.size.width/2, height: 36)
         self.navigationItem.titleView = searchText
@@ -209,8 +198,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainController.changeView), name: "changeView", object: nil)
-        venueTable.addSubview(findfriendsVenue)
+        self.venueTable.addSubview(findfriendsVenue)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainController.showNavigationMain), name: "showNavigationMain", object: nil)
     }
    
@@ -233,9 +221,10 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         if self.venueTable.numberOfRowsInSection(0) > 0 {
             self.venueTable.reloadData()
         }
+        self.findfriendsVenue.removeTarget(self, action: #selector(MainController.pressedFindVenue(_:)), forControlEvents: .TouchUpInside)
         self.findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindFriend(_:)), forControlEvents: .TouchUpInside)
         
-        self.findfriendsVenue.removeTarget(self, action: #selector(MainController.pressedFindVenue(_:)), forControlEvents: .TouchUpInside)
+
         
         
         
@@ -344,9 +333,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 navigationController?.setNavigationBarHidden(false, animated: false)
                 
                 let controller:profileVenue = self.storyboard!.instantiateViewControllerWithIdentifier("profileVenue") as! profileVenue
-                tableController.tableView.scrollEnabled = true
-                tableController.tableView.userInteractionEnabled = true
-                
+
                 self.navigationController?.pushViewController(controller, animated: true)
                 MolocatePlace.getPlace(self.venues[indexPath.row].id) { (data, response, error) -> () in
                     dispatch_async(dispatch_get_main_queue()){
@@ -387,8 +374,6 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         controller.classUser.isFollowing = searchedUsers[sender.tag].isFollowing
         
         self.navigationController?.pushViewController(controller, animated: true)
-        tableController.tableView.scrollEnabled = true
-        tableController.tableView.userInteractionEnabled = true
         MolocateAccount.getUser(username) { (data, response, error) -> () in
             dispatch_async(dispatch_get_main_queue()){
                 //DBG: If it is mine profile?
@@ -446,17 +431,14 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     func changeView() {
-        if viewBool {
-            self.tableController.tableView.frame = self.view.frame
-        } else {
-            self.tableController.tableView.frame = CGRectMake(0, 50, MolocateDevice.size.width, MolocateDevice.size.height - 50)
-        }
+
     }
     
     func pressedFindVenue(sender: UIButton) {
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         let controller:findVenueController = self.storyboard!.instantiateViewControllerWithIdentifier("findVenueController") as! findVenueController
+        self.searchText.resignFirstResponder()
         self.navigationController?.pushViewController(controller, animated: true)
        // /rint(self.bestEffortAtLocation.coordinate.latitude)
         let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
@@ -479,8 +461,9 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         let controller:findFriendController = self.storyboard!.instantiateViewControllerWithIdentifier("findFriendController") as! findFriendController
+        self.searchText.resignFirstResponder()
         self.navigationController?.pushViewController(controller, animated: true)
-        
+       
 
         if MoleCurrentUser.isFaceUser {
             MolocateAccount.getFacebookFriends(completionHandler: { (data, response, error, count, next, previous) in
@@ -640,8 +623,6 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
         self.searchText.text = ""
         self.searchText.placeholder = "Ara"
-        self.tableController.tableView.scrollEnabled = true
-        self.tableController.tableView.userInteractionEnabled = true
         if venues != nil {
         self.venues.removeAll()
         }
@@ -701,9 +682,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 }
                 
             } else {
-                self.tableController.tableView.scrollEnabled = true
-                self.tableController.tableView.userInteractionEnabled = true
-                self.tableController.isOnView = true
+
                 self.cameraButton.image = UIImage(named: "newcamera")
                 self.cameraButton.title = nil
                 self.searchText.text = ""
@@ -809,28 +788,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         self.navigationController?.pushViewController(controller, animated: true)
         self.activityIndicator.stopAnimating()
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-    
-//        self.tableController.tableView.setContentOffset(CGPoint(x: 0,y:0), animated: false)
-//        on = true
-//        if indexPath.row != 9 {
-//        let url = NSURL(string: MolocateBaseUrl  + "video/api/explore/?category=" + MoleCategoriesDictionary [categories[indexPath.row]]!)
-//        tableController.requestUrl = url!
-//        tableController.isNearby = false
-//        //print(tableController.requestUrl.absoluteString)
-//        
-//        self.tableController.refresh(tableController.myRefreshControl, refreshUrl: refreshURL!)
-//        } else {
-//            let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
-//            let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
-//            tableController.classLat = lat
-//            tableController.classLon = lon
-//            tableController.refreshForNearby(tableController.myRefreshControl, lat: lat , lon: lon)
-//            tableController.isNearby = true
-//        }
-//        selectedCell = indexPath.row
-//        self.collectionView.reloadData()
-//        tableController.tableView.scrollEnabled = true
-//        tableController.tableView.userInteractionEnabled = true
+
         
     }
     
@@ -916,16 +874,14 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         
-        self.tableController.player1.stop()
-        self.tableController.player2.stop()
-        self.tableController.isOnView = false
-        tableController.tableView.scrollEnabled = false
-        tableController.tableView.userInteractionEnabled = false
+
         isSearching = true
         cameraButton.image = nil
         cameraButton.title = "Vazgeç"
         venueTable.hidden = false
         findfriendsVenue.hidden = false
+        self.pressedVenue(venueButton2)
+
         venueButton2.hidden = false
         self.lineLabel.hidden = false
         self.redLabel.hidden = false
