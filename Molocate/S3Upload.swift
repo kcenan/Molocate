@@ -22,7 +22,7 @@ public class S3Upload {
     var key_id = 0
     var theRequest:VideoUploadRequest?
     
-    func upload(retry:Bool = false, id:Int,uploadRequest: AWSS3TransferManagerUploadRequest, fileURL: String, fileID: String, json:  [String:AnyObject]) {
+    func upload(retry:Bool = false, id:Int,uploadRequest: AWSS3TransferManagerUploadRequest, fileURL: String, fileID: String, json:  [String:AnyObject], thumbnail_image: NSData) {
         
         print("upload started with id:\(id)")
         isUp = false
@@ -31,19 +31,19 @@ public class S3Upload {
         if !retry {
             do{
                 
-                var image = UIImageJPEGRepresentation(thumbnail, 0.5)
-                
-                if image == nil {
-                    let data = NSData(contentsOfURL: (VideoUploadRequests[id].thumbUrl))
-                    let nimage = UIImage(data: data!)
-                    image = UIImageJPEGRepresentation(nimage!, 0.5)
-
-                }
+                //var image = thumbnail_image
+//                
+//                if image == nil {
+//                    let data = NSData(contentsOfURL: (VideoUploadRequests[id].thumbUrl))
+//                    let nimage = UIImage(data: data!)
+//                    image = UIImageJPEGRepresentation(nimage!, 0.5)
+//
+//                }
                 let outputFileName = "thumbnail.jpg"
         
                 let outputFilePath: String = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(outputFileName)
                 
-                try image!.writeToFile(outputFilePath, options: .AtomicWrite )
+                try thumbnail_image.writeToFile(outputFilePath, options: .AtomicWrite )
                 
                 let thumb = NSURL(fileURLWithPath: outputFilePath)
                 
@@ -52,7 +52,7 @@ public class S3Upload {
 
                 print("VideoUploadRequest created with id:\(id)")
                 
-                theRequest = VideoUploadRequest(filePath: fileURL,thumbUrl: thumb, thumbnail: image!,JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false)
+                theRequest = VideoUploadRequest(filePath: fileURL,thumbUrl: thumb, thumbnail: thumbnail_image, JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false)
                 
                 VideoUploadRequests.insert(theRequest!, atIndex:0)
               
@@ -96,8 +96,8 @@ public class S3Upload {
                     //print("Failed with error")
                    // print("Error: %@",error!);
                 }else{
-                    let image = self.theRequest!.thumbnail
-                    self.sendThumbnailandData(image, info: json, videoid:id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
+                
+                    self.sendThumbnailandData(self.theRequest!.thumbnail, info: json, videoid:id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
                         if data == "success" {
                             self.isUp = true
                          dispatch_async(dispatch_get_main_queue(), {
@@ -136,6 +136,10 @@ public class S3Upload {
                             }
                             
                          })
+                        }else{
+                            let userinf = ["id":videoid]
+                            NSNotificationCenter.defaultCenter().postNotificationName("prepareForRetry", object: nil, userInfo:userinf )
+                            MolocateVideo.encodeGlobalVideo()
                         }
                     })
 

@@ -84,9 +84,14 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             
             let video_id = Int(arc4random_uniform(UInt32.max))
             
-          let new_upload = S3Upload()
+            let new_upload = S3Upload()
             
-             new_upload.upload(false, id: video_id, uploadRequest:uploadRequest,fileURL: "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName as String), fileID: fileName as String ,json: json as! [String : AnyObject])
+            let thumb = UIImageJPEGRepresentation(thumbnail, 0.5)
+            if thumb == nil {
+                    //default thumbnail ata
+            }
+            
+            new_upload.upload(false, id: video_id, uploadRequest:uploadRequest,fileURL: "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName as String), fileID: fileName as String ,json: json as! [String : AnyObject], thumbnail_image: thumb!)
            
              MyS3Uploads.insert(new_upload, atIndex: 0)
             
