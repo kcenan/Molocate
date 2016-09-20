@@ -50,6 +50,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     let lineColor = UIColor(netHex: 0xCCCCCC)
     @IBOutlet var venueTable: UITableView!
     @IBOutlet var collectionView: UICollectionView!
+    var currentOffset = CGPoint(x: 0, y: 0)
     var searchText = UISearchBar(frame: CGRectZero)
 
     var refreshURL = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/api/explore/?category=all")
@@ -844,7 +845,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             
         }
         self.collectionView.reloadData()
-        self.collectionView.setContentOffset(CGPoint(x: 0,y:0), animated: false)
+        //self.collectionView.setContentOffset(self.currentOffset, animated: false)
         if isBarOnView {
             
         } else {
@@ -869,7 +870,8 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             self.collectionView.hidden = false
             self.searchText.resignFirstResponder()
         }
-
+        
+        self.currentOffset =  self.collectionView.contentOffset
     }
     
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
