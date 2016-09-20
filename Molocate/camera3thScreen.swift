@@ -129,6 +129,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?){
         view.endEditing(true)
+        updateSearch("")
         super.touchesBegan(touches, withEvent: event)
     }
     
@@ -199,6 +200,8 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         captionView.delegate = self
         captionView.layer.borderColor = lineColor.CGColor
         captionView.layer.borderWidth = 0.5;
+    
+        
         mentionTable.hidden = true
         mentionTable.tableFooterView = UIView()
         self.view.backgroundColor = UIColor.whiteColor()
@@ -269,11 +272,17 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     
     func textViewDidEndEditing(textView: UITextView) {
         self.view.backgroundColor = UIColor.whiteColor()
+        if textView.attributedText.string == "" {
+            captionView.attributedText = NSAttributedString(string: "Yorumunuzu buraya yazabilirsiniz.", attributes: [NSFontAttributeName:UIFont(name: "AvenirNext-Regular", size:14)!, NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        }
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
+        if textView.attributedText.string == "Yorumunuzu buraya yazabilirsiniz." {
+            textView.attributedText = NSAttributedString(string: "")
+        }
         self.view.backgroundColor = UIColor.lightGrayColor()
-        textView.text = ""
+
     }
     
     
@@ -472,7 +481,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             }
             
             
-            captionView.attributedText = NSAttributedString(string: captiontext)
+            captionView.attributedText = NSAttributedString(string: captiontext, attributes: [NSFontAttributeName:UIFont(name: "AvenirNext-Regular", size:14)!])
             mentionAreas[mentionModeIndex].length = username.characters.count + 2
             mentionedUsers[mentionModeIndex] = username
             
