@@ -228,8 +228,6 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
         
         
-        
-        
     }
     
     deinit {
@@ -273,6 +271,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     func textViewDidEndEditing(textView: UITextView) {
         self.view.backgroundColor = UIColor.whiteColor()
         if textView.attributedText.string == "" {
+            CaptionText = ""
             captionView.attributedText = NSAttributedString(string: "Yorumunuzu buraya yazabilirsiniz.", attributes: [NSFontAttributeName:UIFont(name: "AvenirNext-Regular", size:14)!, NSForegroundColorAttributeName: UIColor.lightGrayColor()])
         }
     }
