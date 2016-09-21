@@ -696,6 +696,12 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
 
     self.navigationController?.navigationBarHidden = false
     self.tabBarController?.tabBar.hidden = true
+    MolocateAccount.getCurrentUser { (data, response, error) in
+        dispatch_async(dispatch_get_main_queue()) {
+            self.classUser = data
+            self.tableView.reloadData()
+        }
+        }
         
     }
     
