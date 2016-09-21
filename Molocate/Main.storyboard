@@ -3134,7 +3134,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZ5-mm-La3">
-                                <rect key="frame" x="0.0" y="109" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="105" width="375" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Oem-JW-8Hs"/>
                                 </constraints>
@@ -3143,7 +3143,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MEKAN SEÇ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oPY-ln-Gdh">
-                                <rect key="frame" x="6" y="76" width="110" height="21"/>
+                                <rect key="frame" x="11" y="76" width="110" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="110" id="DLe-RI-KR8"/>
                                     <constraint firstAttribute="height" constant="21" id="Dqr-Fn-VIj"/>
@@ -3153,21 +3153,21 @@ These Services are operated and provided by Molocate. If you have any questions 
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cross" translatesAutoresizingMaskIntoConstraints="NO" id="0qc-MO-83o">
-                                <rect key="frame" x="321" y="120" width="22" height="22"/>
+                                <rect key="frame" x="321" y="116" width="22" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="6LD-VL-tSF"/>
                                     <constraint firstAttribute="width" constant="22" id="p04-Ui-api"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder.png" translatesAutoresizingMaskIntoConstraints="NO" id="iMx-Mt-aHJ">
-                                <rect key="frame" x="30" y="115" width="30" height="32"/>
+                                <rect key="frame" x="17" y="111" width="30" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="21O-12-BVw"/>
                                     <constraint firstAttribute="height" constant="32" id="Ac8-BK-KNI"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Konum Seç" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ONe-Gp-iLb">
-                                <rect key="frame" x="72" y="119" width="241" height="24"/>
+                                <rect key="frame" x="59" y="115" width="254" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="PSU-dM-yGX"/>
                                 </constraints>
@@ -3196,7 +3196,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                                 </connections>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YORUM VE VİDEODAKİLERİ EKLE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8tu-lT-q0v">
-                                <rect key="frame" x="6" y="340" width="200" height="20"/>
+                                <rect key="frame" x="11" y="340" width="200" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="6sh-Ue-NVV"/>
                                     <constraint firstAttribute="width" constant="200" id="EVb-hZ-ljn"/>
@@ -3256,15 +3256,17 @@ These Services are operated and provided by Molocate. If you have any questions 
                             <constraint firstItem="2jw-0r-CNC" firstAttribute="centerX" secondItem="4Bb-WR-3Oa" secondAttribute="centerX" id="5iz-6X-6K7"/>
                             <constraint firstItem="G5R-7N-4H1" firstAttribute="top" secondItem="8tu-lT-q0v" secondAttribute="bottom" constant="15" id="6kO-Tb-TJ7"/>
                             <constraint firstItem="iMx-Mt-aHJ" firstAttribute="centerY" secondItem="OZ5-mm-La3" secondAttribute="centerY" id="DG3-sV-Qef"/>
-                            <constraint firstItem="8tu-lT-q0v" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="-10" id="DmC-xn-X6B"/>
+                            <constraint firstItem="8tu-lT-q0v" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="-5" id="DmC-xn-X6B"/>
                             <constraint firstItem="G5R-7N-4H1" firstAttribute="width" secondItem="4Bb-WR-3Oa" secondAttribute="width" id="ERf-Yh-8zs"/>
                             <constraint firstItem="4xK-IH-O67" firstAttribute="top" secondItem="2jw-0r-CNC" secondAttribute="bottom" id="MH4-LJ-GLR"/>
-                            <constraint firstItem="OZ5-mm-La3" firstAttribute="top" secondItem="oPY-ln-Gdh" secondAttribute="bottom" constant="12" id="NAy-eM-NG2"/>
+                            <constraint firstItem="OZ5-mm-La3" firstAttribute="top" secondItem="oPY-ln-Gdh" secondAttribute="bottom" constant="8" id="NAy-eM-NG2"/>
                             <constraint firstItem="2jw-0r-CNC" firstAttribute="width" secondItem="4Bb-WR-3Oa" secondAttribute="width" id="OON-om-X5W"/>
                             <constraint firstItem="fqw-ly-Me1" firstAttribute="centerX" secondItem="4Bb-WR-3Oa" secondAttribute="centerX" id="P70-Uo-ETx"/>
                             <constraint firstAttribute="trailingMargin" secondItem="0qc-MO-83o" secondAttribute="trailing" constant="16" id="R52-jb-67w"/>
+                            <constraint firstItem="iMx-Mt-aHJ" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="5" id="Roc-1d-PqX"/>
                             <constraint firstItem="0qc-MO-83o" firstAttribute="leading" secondItem="ONe-Gp-iLb" secondAttribute="trailing" constant="8" id="S1O-p8-vLC"/>
                             <constraint firstItem="8tu-lT-q0v" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="2" id="SL9-d1-nca"/>
+                            <constraint firstItem="iMx-Mt-aHJ" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="1" id="V54-8s-3LS"/>
                             <constraint firstItem="OZ5-mm-La3" firstAttribute="width" secondItem="4Bb-WR-3Oa" secondAttribute="width" id="VD5-hx-HP1"/>
                             <constraint firstItem="G5R-7N-4H1" firstAttribute="centerX" secondItem="4Bb-WR-3Oa" secondAttribute="centerX" id="VGt-DY-rNu"/>
                             <constraint firstItem="OZ5-mm-La3" firstAttribute="centerX" secondItem="4Bb-WR-3Oa" secondAttribute="centerX" id="Ykd-dq-Nqv"/>
@@ -3280,12 +3282,14 @@ These Services are operated and provided by Molocate. If you have any questions 
                             <constraint firstItem="fqw-ly-Me1" firstAttribute="top" secondItem="4g1-sZ-yum" secondAttribute="bottom" id="lwx-NG-UTV"/>
                             <constraint firstItem="oPY-ln-Gdh" firstAttribute="top" secondItem="4Bb-WR-3Oa" secondAttribute="topMargin" constant="76" id="nFl-oC-OHU"/>
                             <constraint firstItem="fqw-ly-Me1" firstAttribute="width" secondItem="4Bb-WR-3Oa" secondAttribute="width" id="oox-DD-7ns"/>
-                            <constraint firstItem="oPY-ln-Gdh" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="-10" id="pT6-Ai-lCW"/>
+                            <constraint firstItem="oPY-ln-Gdh" firstAttribute="leading" secondItem="4Bb-WR-3Oa" secondAttribute="leadingMargin" constant="-5" id="pT6-Ai-lCW"/>
                             <constraint firstItem="8tu-lT-q0v" firstAttribute="centerY" secondItem="4Bb-WR-3Oa" secondAttribute="centerY" multiplier="0.6" constant="150" id="xjC-Vr-Rqm"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="jzX-zo-IHS"/>
+                                <exclude reference="Roc-1d-PqX"/>
+                                <exclude reference="e4i-QQ-uVB"/>
                                 <exclude reference="SL9-d1-nca"/>
                                 <exclude reference="iiU-of-9lk"/>
                                 <exclude reference="lwY-e9-68R"/>
@@ -3345,7 +3349,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <color key="backgroundColor" red="0.92156862745098034" green="0.16862745098039217" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
                                 <items>
-                                    <barButtonItem title="Back" id="T5p-1B-yLy">
+                                    <barButtonItem image="leftArrow" id="T5p-1B-yLy">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="backButton:" destination="zUC-Ih-PbK" id="LQ1-12-4gn"/>
@@ -5051,12 +5055,12 @@ These Services are operated and provided by Molocate. If you have any questions 
         <image name="switch" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YGr-Oe-h7Z"/>
-        <segue reference="r8V-JF-m1L"/>
-        <segue reference="Dku-Wb-Giu"/>
-        <segue reference="Czt-sH-vGP"/>
         <segue reference="SZn-yz-fad"/>
+        <segue reference="zTj-B7-GEc"/>
+        <segue reference="Dku-Wb-Giu"/>
         <segue reference="iX5-7U-zGl"/>
+        <segue reference="r8V-JF-m1L"/>
+        <segue reference="YGr-Oe-h7Z"/>
         <segue reference="lO0-Mw-L1m"/>
         <segue reference="hbw-G4-OLI"/>
     </inferredMetricsTieBreakers>

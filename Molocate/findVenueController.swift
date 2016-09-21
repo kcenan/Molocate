@@ -33,7 +33,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 60
+        return 44
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
