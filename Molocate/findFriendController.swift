@@ -87,6 +87,7 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
             tableView.frame = self.view.frame
         }
         view.addSubview(tableView)
+        self.navigationItem.title = "Kişiler"
         // Do any additional setup after loading the view.
        
     }

@@ -528,7 +528,13 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         
-
+        if scrollView == tableView {
+            if scrollView.contentOffset.y == 0 {
+                if (self.navigationController?.navigationBar.hidden)! {
+                    self.navigationController?.setNavigationBarHidden(false, animated: true)
+                }
+            }
+        }
 
         
     }

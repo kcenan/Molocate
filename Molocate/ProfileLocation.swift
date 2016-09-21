@@ -348,4 +348,6 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
     }
     
     
+    
+    
 }

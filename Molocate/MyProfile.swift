@@ -48,7 +48,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         
         optionsTable.layer.zPosition = 1
         optionsTable.hidden = true
-        optionsTable.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.width, self.view.frame.width)
+        optionsTable.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.width, 210)
         optionsTable.layer.cornerRadius = 0
         optionsTable.tintColor = UIColor.clearColor()
         
@@ -142,6 +142,9 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 }
             })
         }
+        
+        
+        
     }
     
     
@@ -514,7 +517,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
             let sv = (tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as! profile4thCell).scrollView
             if scrollView == sv {
                 let indexPath = NSIndexPath(forRow: 2, inSection: 0)
-             //   let cell = tableView.cellForRowAtIndexPath(indexPath) as! profile3thCell
+                // let cell = tableView.cellForRowAtIndexPath(indexPath) as! profile3thCell
                 
                 redLabelOrigin  = scrollView.contentOffset.x / 2
                 if scrollView.contentOffset.x < MolocateDevice.size.width / 2{
@@ -528,49 +531,48 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                     AVc.player2.stop()
                     AVc.player1.stop()
                 }
-                //tableView.reloadData()
-                //tableView.cellForRowAtIndexPath(indexPath)
-                //tableView.scrollEnabled  = false
                 
                 tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
                 
             }
             
         }
-        
-    }
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        
         if scrollView == self.tableView {
             
             if (scrollView.contentSize.height-scrollView.contentOffset.y < MolocateDevice.size.height+70) {
-                if vidortag {
-                    BVc.tableView.scrollEnabled = true
-                } else {
-                    AVc.tableView.scrollEnabled = true
-                }
+                
+                BVc.tableView.scrollEnabled = true
+                AVc.tableView.scrollEnabled = true
                 tableView.pagingEnabled = false
                 page = 2
                 
             } else {
-                if vidortag {
-                    BVc.tableView.scrollEnabled = false
-                } else {
-                    AVc.tableView.scrollEnabled = false
-                }
+                BVc.tableView.scrollEnabled = false
+                AVc.tableView.scrollEnabled = false
                 tableView.pagingEnabled = true
                 page = 1
             }
         }
         
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        
         
     }
     
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        
+        if scrollView == tableView {
+            if scrollView.contentOffset.y == 0 {
+                if (self.navigationController?.navigationBar.hidden)! {
+                    self.navigationController?.setNavigationBarHidden(false, animated: true)
+                }
+            }
+        }
+        
+        
+    }
     
     func videosButtonTapped(sender: UIButton) {
         vidortag = false

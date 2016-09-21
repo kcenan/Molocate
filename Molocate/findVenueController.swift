@@ -22,6 +22,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
         tableView.delegate = self
         tableView.frame = self.view.frame
         view.addSubview(tableView)
+        self.navigationItem.title = "Mekanlar"
         // Do any additional setup after loading the view.
         
     }
@@ -33,7 +34,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 44
+        return 60
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
