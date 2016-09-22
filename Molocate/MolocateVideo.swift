@@ -197,6 +197,7 @@ public class MolocateVideo {
                         filt.isevent = (item["is_event"] as! Int) == 0 ? false:true
                         if (item["is_event"] as! Int) == 1 {
                             eventcount += 1
+                            iseventhere = true
                         }
                         filt.name = item["name"] as! String
                         filt.raw_name = item["name_raw"] as! String

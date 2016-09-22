@@ -25,6 +25,8 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
         tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.tableFooterView = UIView()
+        
         
         if MoleCurrentUser.isFaceUser {
             tableView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width, height: self.view.frame.height-60-(self.navigationController?.navigationBar.frame.height)!)

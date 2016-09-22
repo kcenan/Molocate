@@ -867,7 +867,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
 
 
-            }else if type == "MainController" {
+            }else if type == "filter" {
                                               if (scrollView.contentOffset.y<pointNow) {
 
                     direction = 0

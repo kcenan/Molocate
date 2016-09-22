@@ -851,6 +851,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         } else {
             self.navigationController?.setNavigationBarHidden(true, animated: false)
         }
+
         
     }
     override func viewDidDisappear(animated: Bool) {

@@ -38,7 +38,7 @@ class FilterController: UIViewController,TimelineControllerDelegate  {
         tableController.didMoveToParentViewController(self)
         tableController.delegate = self
         self.navigationItem.title = self.filter_name
-
+        self.navigationController?.hidesBarsOnSwipe = true
 
         // Do any additional setup after loading the view.
     }

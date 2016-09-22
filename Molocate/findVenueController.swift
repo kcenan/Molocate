@@ -21,6 +21,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
         tableView.dataSource = self
         tableView.delegate = self
         tableView.frame = self.view.frame
+        tableView.tableFooterView = UIView()
         view.addSubview(tableView)
         self.navigationItem.title = "Mekanlar"
         // Do any additional setup after loading the view.

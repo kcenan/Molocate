@@ -7,6 +7,7 @@ protocol exploreLayoutDelegate {
   func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: NSIndexPath, withWidth width: CGFloat) -> CGFloat
   
 }
+var iseventhere = false
 var eventcount = 0
 class exploreLayoutAttributes:UICollectionViewLayoutAttributes {
   
@@ -82,14 +83,17 @@ class exploreLayout: UICollectionViewLayout {
 //        let annotationHeight = delegate.collectionView(collectionView!, heightForAnnotationAtIndexPath: indexPath, withWidth: width)
         
         var height = cellPadding + width + cellPadding
-        let rest = indexPath.row % (10+eventcount)
+        var rest = indexPath.row % (10+eventcount)
         let part = CGFloat(indexPath.row/(10+eventcount))
         var contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
-        if part == 1 && eventcount>0{
+        if part == 1  {
+            if iseventhere {
             eventcount = 0
             contentLong = contentLong + contentWidth*9/16 + cellPadding
-        } else {
-           contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
+            rest = (indexPath.row-11) % 10
+            } else {
+            contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
+            }
         }
 
         var xoffset = CGFloat(0.0)
