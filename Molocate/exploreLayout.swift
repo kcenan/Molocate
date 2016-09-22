@@ -60,9 +60,10 @@ class exploreLayout: UICollectionViewLayout {
     return exploreLayoutAttributes.self
   }
   
+
   override func prepareLayout() {
     // 1. Only calculate once
-    if cache.isEmpty {
+   // if cache.isEmpty {
         eventw = contentWidth
         eventl = 9*(contentWidth/16)
         scalew3 = ((9*contentWidth)-1)/209
@@ -191,7 +192,7 @@ class exploreLayout: UICollectionViewLayout {
         
         column = column >= (numberOfColumns - 1) ? 0 : ++column
       }
-    }
+    //}
   }
   
   override func collectionViewContentSize() -> CGSize {

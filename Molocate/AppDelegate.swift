@@ -12,6 +12,7 @@ import AWSS3
 import Fabric
 import Crashlytics
 import AVFoundation
+import Haneke
 var DeviceToken:String?
 var isRegistered = false
 var MoleUserToken: String?
@@ -23,8 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    
-    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         // [Optional] Power your app with Local Datastore. For more info, go to
@@ -49,9 +48,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         registerForPushNotifications(application)
         
-        SDImageCache.sharedImageCache().clearMemory()
-        SDImageCache.sharedImageCache().clearDisk()
-        SDImageCache.sharedImageCache().maxMemoryCountLimit = 40
+ 
+        
+        //SDImageCache.sharedImageCache().clearMemory()
+        //SDImageCache.sharedImageCache().clearDisk()
+        SDImageCache.sharedImageCache().maxMemoryCountLimit = 100
+
+       
         let credentialProvider = AWSCognitoCredentialsProvider(
             regionType: CognitoRegionType,
             identityPoolId: CognitoIdentityPoolId)
@@ -70,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configuration.debugEnabled = false
         configuration.shouldControllNetworkActivityIndicator = true
         Session.setupSharedSessionWithConfiguration(configuration)
+        
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         
@@ -159,7 +163,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
+ 
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -188,6 +192,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
       
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+ 
         
         
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
@@ -225,6 +230,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // perhaps show an UIAlertView
         }
         
+    }
+    
+    func applicationDidReceiveMemoryWarning(application: UIApplication) {
+        SDImageCache.sharedImageCache().clearMemory()
+        if SDImageCache.sharedImageCache().getDiskCount() > 100 {
+            SDImageCache.sharedImageCache().cleanDisk()
+        }
+        myCache.removeAll()
+
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

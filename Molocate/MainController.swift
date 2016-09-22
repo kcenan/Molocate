@@ -25,6 +25,8 @@ var thePlace:MolePlace = MolePlace()
 var pressedFollow = false
 var selectedCell = 0
 var viewBool = false
+var isfiltersUp = false
+var filters = [filter]()
 
 class MainController: UIViewController, UITableViewDelegate , UITableViewDataSource, UICollectionViewDelegate,CLLocationManagerDelegate, UICollectionViewDataSource, UISearchBarDelegate, TimelineControllerDelegate, UITextFieldDelegate{
  
@@ -46,7 +48,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     var linee: UILabel!
     var on = true
     var findfriendsVenue: UIButton!
-    var filters = [filter]()
+    
     let lineColor = UIColor(netHex: 0xCCCCCC)
     @IBOutlet var venueTable: UITableView!
     @IBOutlet var collectionView: UICollectionView!
@@ -190,7 +192,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
        // print("anan")
         MolocateVideo.getFilters { (data, response, error) in
             dispatch_async(dispatch_get_main_queue()){
-                self.filters = data!
+                filters = data!
                 self.collectionView.reloadData()
             }
             
@@ -613,7 +615,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
     }
     
-    
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -723,7 +725,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let myCell : myCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as! myCollectionViewCell
-        myCell.categoryImage.setImageWithURL(filters[indexPath.row].thumbnail_url)
+        myCell.categoryImage.sd_setImageWithURL(filters[indexPath.row].thumbnail_url)
         let backgroundView = UIView()
         backgroundView.backgroundColor = swiftColor
         return myCell
@@ -784,10 +786,10 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         
         let controller:FilterController = self.storyboard!.instantiateViewControllerWithIdentifier("FilterController") as! FilterController
-        controller.filter_raw = self.filters[indexPath.row].raw_name
-        controller.filter_name = self.filters[indexPath.row].name
+        controller.filter_raw = filters[indexPath.row].raw_name
+        controller.filter_name = filters[indexPath.row].name
        
-        if self.filters[indexPath.row].raw_name == "nearby" {
+        if filters[indexPath.row].raw_name == "nearby" {
             let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
             let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
             controller.classLat = lat
@@ -851,6 +853,26 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         } else {
             self.navigationController?.setNavigationBarHidden(true, animated: false)
         }
+        MolocateVideo.getFilters { (data, response, error) in
+            dispatch_async(dispatch_get_main_queue()) {
+                var newFilters = data!
+                if filters.count == newFilters.count {
+                    for i in 0..<filters.count {
+                        if filters[i].name != newFilters[i].name {
+                            filters = newFilters
+                            self.collectionView.collectionViewLayout.invalidateLayout()
+                            self.collectionView.reloadData()
+                        }
+                    }
+                } else {
+                    filters = newFilters
+                    self.collectionView.collectionViewLayout.invalidateLayout()
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+
+
 
         
     }
