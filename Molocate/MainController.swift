@@ -438,22 +438,44 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     func pressedFindVenue(sender: UIButton) {
-        activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        let controller:findVenueController = self.storyboard!.instantiateViewControllerWithIdentifier("findVenueController") as! findVenueController
-        self.searchText.resignFirstResponder()
-        self.navigationController?.pushViewController(controller, animated: true)
-       // /rint(self.bestEffortAtLocation.coordinate.latitude)
-        let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
-        let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
-        MolocatePlace.getNearbyPlace(lat, placeLon: lon) { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue()){
-                controller.venues = data
-                controller.tableView.reloadData()
+        if CLLocationManager.locationServicesEnabled() {
+            switch(CLLocationManager.authorizationStatus()) {
+            case .NotDetermined, .Restricted, .Denied:
+                let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
+                let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
+                    UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                }
+                alertController.addAction(settingsAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
+            case .AuthorizedAlways, .AuthorizedWhenInUse:
+                activityIndicator.startAnimating()
+                UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+                let controller:findVenueController = self.storyboard!.instantiateViewControllerWithIdentifier("findVenueController") as! findVenueController
+                self.searchText.resignFirstResponder()
+                self.navigationController?.pushViewController(controller, animated: true)
+                // /rint(self.bestEffortAtLocation.coordinate.latitude)
+                let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
+                let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
+                MolocatePlace.getNearbyPlace(lat, placeLon: lon) { (data, response, error) in
+                    dispatch_async(dispatch_get_main_queue()){
+                        controller.venues = data
+                        controller.tableView.reloadData()
+                    }
+                }
+                self.activityIndicator.stopAnimating()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                
             }
+        } else {
+            displayAlert("Tamam", message: "Konum servisleriniz aktif değil.")
+            
+            
         }
-        self.activityIndicator.stopAnimating()
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+       
         
     }
     
@@ -729,54 +751,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         let backgroundView = UIView()
         backgroundView.backgroundColor = swiftColor
         return myCell
-        
-//        myCell.selectedBackgroundView = backgroundView
-//        //myCell.layer.borderWidth = 0
-//        myCell.backgroundColor = UIColor.whiteColor()
-//        
-//        if selectedCell == indexPath.row{
-//             myCell.categoryImage?.image = UIImage(named: categoryImagesWhite[indexPath.row])
-//            UIView.animateWithDuration(0.5, animations: {
-//               // myCell.bottomCon.constant = 2
-//                //myCell.topCon.constant = 0
-//                //self.view.layoutIfNeeded()
-//            })
-//            //myCell.myLabel.hidden = false
-//        myCell.myLabel.textColor = UIColor.whiteColor()
-//        myCell.backgroundColor = swiftColor2
-//              let screenSize = UIScreen.mainScreen().bounds
-//            var b = CGPoint(x: 60 * selectedCell, y: 0)
-//            
-//            if selectedCell < 2 {
-//                b.x = 0
-//            }
-//            else if selectedCell > 4 {
-//                let contentSize =  collectionView.contentSize.width
-//                b = CGPoint(x: contentSize - screenSize.width  , y: 0)
-//            }
-//            
-//            else{
-//                b = CGPoint(x: 60 * ( selectedCell - 2 ), y: 0)
-//            }
-//        self.collectionView.setContentOffset(b , animated: true)
-//        }
-//        else{
-//         myCell.categoryImage?.image = UIImage(named: categoryImagesBlack[indexPath.row])
-//       // myCell.myLabel.hidden = true
-//        UIView.animateWithDuration(0.5, animations: {
-//              //  myCell.bottomCon.constant = -5
-//               // myCell.topCon.constant = 5
-//                //self.view.layoutIfNeeded()
-//            })
-//        myCell.myLabel.textColor = UIColor.blackColor()
-//        myCell.backgroundColor = UIColor.whiteColor()
-//        }
-//        myCell.myLabel?.text = categories[indexPath.row]
-//        //myCell.frame.size.width = 75
-//        //myCell.myLabel.textAlignment = .Center
-//        //myCell.myLabel.font = UIFont(name: "AvenirNext-Regular", size: 12)
-//        return myCell
-        
+   
     }
     
    
