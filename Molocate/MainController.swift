@@ -120,7 +120,6 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         venueButton2.addTarget(self, action: #selector(MainController.pressedVenue(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(venueButton2)
-        //venueButton2.backgroundColor = swiftColor2
         venueButton2.hidden = true
         usernameButton2.hidden = true
         
@@ -136,24 +135,6 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         lineLabel.hidden = true
         redLabel.hidden = true
         
-//        let rectShape = CAShapeLayer()
-//        rectShape.bounds = self.usernameButton2.frame
-//        rectShape.position = self.usernameButton2.center
-//        rectShape.path = UIBezierPath(roundedRect: self.usernameButton2.bounds, byRoundingCorners: [.BottomRight , .TopRight] , cornerRadii: CGSize(width: 8, height: 8)).CGPath
-//        rectShape.borderWidth = 1.0
-//        rectShape.borderColor = swiftColor2.CGColor
-//        self.usernameButton2.layer.backgroundColor = swiftColor3.CGColor
-//        //Here I'm masking the textView's layer with rectShape layer
-//        self.usernameButton2.layer.mask = rectShape
-//        
-//        let rectShape2 = CAShapeLayer()
-//        rectShape2.bounds = self.venueButton2.frame
-//        rectShape2.position = self.venueButton2.center
-//        rectShape2.path = UIBezierPath(roundedRect: self.venueButton2.bounds, byRoundingCorners: [.BottomLeft , .TopLeft] , cornerRadii: CGSize(width: 8, height: 8)).CGPath
-//        rectShape2.borderWidth = 1.0
-//        rectShape2.borderColor = swiftColor2.CGColor
-//        self.venueButton2.layer.backgroundColor = swiftColor2.CGColor
-//        self.venueButton2.layer.mask = rectShape2
         searchText.backgroundColor = swiftColor
         let bartextField = searchText.valueForKey("searchField") as! UITextField
         bartextField.backgroundColor = swiftColor2
@@ -203,6 +184,8 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         }
         self.venueTable.addSubview(findfriendsVenue)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainController.showNavigationMain), name: "showNavigationMain", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainController.reloadMain), name:"reloadMain", object: nil)
+
     }
    
     func toggleNavigationBar(direction: Bool) {
@@ -765,10 +748,33 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         controller.filter_name = filters[indexPath.row].name
        
         if filters[indexPath.row].raw_name == "nearby" {
-            let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
-            let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
-            controller.classLat = lat
-            controller.classLon = lon
+            if CLLocationManager.locationServicesEnabled() {
+                switch(CLLocationManager.authorizationStatus()) {
+                case .NotDetermined, .Restricted, .Denied:
+                    let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
+                    let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                    alertController.addAction(cancelAction)
+                    let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
+                        UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                    }
+                    alertController.addAction(settingsAction)
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                    
+                case .AuthorizedAlways, .AuthorizedWhenInUse:
+                    
+                    let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
+                    let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
+                    controller.classLat = lat
+                    controller.classLon = lon
+                    
+                }
+            } else {
+                displayAlert("Tamam", message: "Konum servisleriniz aktif değil.")
+                
+                
+            }
+
         }
         self.navigationController?.pushViewController(controller, animated: true)
         self.activityIndicator.stopAnimating()
@@ -797,7 +803,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
     
     override func viewWillAppear(animated: Bool) {
-        
+
         (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = true
 
         dispatch_async(dispatch_get_main_queue()) {
@@ -848,6 +854,53 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         }
 
 
+
+        
+    }
+    
+
+    
+    func reloadMain() {
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            
+            
+            // The search bar is hidden when the view becomes visible the first time
+            
+            
+            self.locationManager = CLLocationManager()
+            self.locationManager.delegate = self
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+            self.locationManager.requestWhenInUseAuthorization()
+            self.locationManager.startUpdatingLocation()
+            let seconds = 5.0
+            let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                
+                self.locationManager.stopUpdatingLocation()
+                
+            })
+            
+        }
+        MolocateVideo.getFilters { (data, response, error) in
+            dispatch_async(dispatch_get_main_queue()) {
+                var newFilters = data!
+                if filters.count == newFilters.count {
+                    for i in 0..<filters.count {
+                        if filters[i].name != newFilters[i].name {
+                            filters = newFilters
+                            self.collectionView.collectionViewLayout.invalidateLayout()
+                            self.collectionView.reloadData()
+                        }
+                    }
+                } else {
+                    filters = newFilters
+                    self.collectionView.collectionViewLayout.invalidateLayout()
+                    self.collectionView.reloadData()
+                }
+            }
+        }
 
         
     }

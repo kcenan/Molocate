@@ -167,7 +167,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
-        
         if(NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")) {
             isRegistered = true
             DeviceToken = NSUserDefaults.standardUserDefaults().objectForKey("DeviceToken") as? String
@@ -193,7 +192,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
  
-        
+        NSNotificationCenter.defaultCenter().postNotificationName("reloadMain", object: nil)
         
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
