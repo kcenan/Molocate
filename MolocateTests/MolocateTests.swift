@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Molocate
+
 
 class MolocateTests: XCTestCase {
     

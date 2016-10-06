@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // [Optional] Power your app with Local Datastore. For more info, go to
         //setStatusBarBackgroundColor()
@@ -79,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let _ = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [String: AnyObject] {
             choosedIndex = 3
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
+            NotificationCenter.defaultCenter().post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
             UIApplication.shared.applicationIconBadgeNumber = 0
             
             
@@ -92,14 +92,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+    func application(application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         if notificationSettings.types != UIUserNotificationType() {
             application.registerForRemoteNotifications()
         }
 
     }
    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let tokenChars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
         var tokenString = ""
         
@@ -129,11 +129,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
        // print("Failed to register:", error)
     }
     
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    func application(application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
             return FBSDKApplicationDelegate.sharedInstance().application(application,
                 open: url,
                 sourceApplication: sourceApplication,
@@ -141,7 +141,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
            // return Session.sharedSession().handleURL(url)
     }
-    func application(_ application: UIApplication, willChangeStatusBarFrame newStatusBarFrame: CGRect) {
+    func application(application: UIApplication, willChangeStatusBarFrame newStatusBarFrame: CGRect) {
         let windows = UIApplication.shared.windows
         
         for window in windows {
@@ -155,18 +155,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    func applicationWillResignActive(_ application: UIApplication) {
+    func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
+    func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
  
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
+    func applicationWillEnterForeground(application: UIApplication) {
         if(UserDefaults.standard.bool(forKey: "isRegistered")) {
             isRegistered = true
             DeviceToken = UserDefaults.standard.object(forKey: "DeviceToken") as? String
@@ -192,33 +192,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
         UIApplication.shared.applicationIconBadgeNumber = 0
  
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "reloadMain"), object: nil)
+        NotificationCenter.defaultCenter().post(name: Notification.Name(rawValue: "reloadMain"), object: nil)
         
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(application: UIApplication) {
         
         FBSDKAppEvents.activateApp()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    func applicationWillTerminate(_ application: UIApplication) {
+    func applicationWillTerminate(application: UIApplication) {
     
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func registerForPushNotifications(_ application: UIApplication) {
+    func registerForPushNotifications(application: UIApplication) {
         let notificationSettings = UIUserNotificationSettings(
             types: [.badge, .sound, .alert], categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
             
             choosedIndex = 3
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
+            NotificationCenter.defaultCenter().post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
             UIApplication.shared.applicationIconBadgeNumber = 0
           
             
@@ -231,7 +231,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
-    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+    func applicationDidReceiveMemoryWarning(application: UIApplication) {
         SDImageCache.sharedImageCache().clearMemory()
         if SDImageCache.sharedImageCache().getDiskCount() > 100 {
             SDImageCache.sharedImageCache().cleanDisk()
@@ -240,12 +240,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
         let location :CGPoint = (event?.allTouches?.first?.location(in: self.window))!
         if (location.y > 0) && (location.y < 16) {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "scrollToTop"), object: nil)
+            NotificationCenter.defaultCenter().post(name: Notification.Name(rawValue: "scrollToTop"), object: nil)
 //            switch (choosedIndex){
 //                case 0:
 //                case 1:

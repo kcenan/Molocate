@@ -11,7 +11,7 @@ platform :ios, '8.0'
 
 pod 'AWSS3', '2.4.9'
 pod 'SDWebImage'
-
+pod "HanekeSwift", :git => 'https://github.com/Haneke/HanekeSwift.git', :branch => 'feature/swift-3'
 end
 
 target 'MolocateTests' do

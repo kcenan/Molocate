@@ -2,19 +2,32 @@ PODS:
   - AWSCore (2.4.9)
   - AWSS3 (2.4.9):
     - AWSCore (= 2.4.9)
+  - HanekeSwift (0.10.1)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
   - AWSS3 (= 2.4.9)
+  - HanekeSwift (from `https://github.com/Haneke/HanekeSwift.git`, branch `feature/swift-3`)
   - SDWebImage
+
+EXTERNAL SOURCES:
+  HanekeSwift:
+    :branch: feature/swift-3
+    :git: https://github.com/Haneke/HanekeSwift.git
+
+CHECKOUT OPTIONS:
+  HanekeSwift:
+    :commit: 3fb394f3769303685c9e0e692c9065e6a037b30a
+    :git: https://github.com/Haneke/HanekeSwift.git
 
 SPEC CHECKSUMS:
   AWSCore: 175208358b95492e0ebe0337df2ab415300bddac
   AWSS3: e4959b48db48d5f3dcd5cdf9e24a07f60a313611
+  HanekeSwift: 4113367892828e7700d24a384027de6ebc79aad1
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 3db0ddcce7673fcdf5907eab7645ac2d43d4afba
+PODFILE CHECKSUM: 5830b19076b0fd699c4f380cd882ed3951cd94fb
 
 COCOAPODS: 1.0.1

@@ -68,7 +68,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     var categ:String!
     var kbHeight: CGFloat!
     
-    @IBAction func postVideo(_ sender: AnyObject) {
+    @IBAction func postVideo(sender: AnyObject) {
         
         
         if (!isLocationSelected){
@@ -122,7 +122,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         
     }
     
-    @IBAction func selectVenue(_ sender: AnyObject) {
+    @IBAction func selectVenue(sender: AnyObject) {
         
         self.performSegue(withIdentifier: "goTo4th", sender: self)
         
@@ -148,13 +148,13 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         var adress = ""
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+    override func touchesBegan(touches: Set<UITouch>, with event: UIEvent?){
         view.endEditing(true)
         updateSearch("")
         super.touchesBegan(touches, with: event)
     }
     
-    @IBAction func backButton(_ sender: AnyObject) {
+    @IBAction func backButton(sender: AnyObject) {
         //        let alertController = UIAlertController(title: "Emin misiniz?", message: "Geriye giderseniz videonuz silinecektir.", preferredStyle: .Alert)
         //
         //        let cancelAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { (action) in
@@ -188,7 +188,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         
         
     }
-    @IBAction func buttonVenues(_ sender: AnyObject) {
+    @IBAction func buttonVenues(sender: AnyObject) {
         
     }
     
@@ -198,7 +198,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     
     var CaptionText = ""
     
-    override func viewWillAppear(_ animated:Bool) {
+    override func viewWillAppear(animated:Bool) {
         super.viewWillAppear(animated)
         
     
@@ -256,7 +256,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     
-    func keyboardNotification(_ notification: Notification) {
+    func keyboardNotification(notification: Notification) {
         if let userInfo = (notification as NSNotification).userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
@@ -279,7 +279,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
     }
     
-    func textViewDidChange(_ textView: UITextView) {
+    func textViewDidChange(textView: UITextView) {
         let attributed = NSMutableAttributedString(string: textView.text)
         
         for mention in mentionAreas {
@@ -289,7 +289,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     
-    func textViewDidEndEditing(_ textView: UITextView) {
+    func textViewDidEndEditing(textView: UITextView) {
         self.view.backgroundColor = UIColor.white
         if textView.attributedText.string == "" {
             CaptionText = ""
@@ -297,7 +297,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
     }
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
+    func textViewDidBeginEditing(textView: UITextView) {
         if textView.attributedText.string == "Yorumunuzu buraya yazabilirsiniz." {
             textView.attributedText = NSAttributedString(string: "")
         }
@@ -307,7 +307,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     
     
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
+    func textView(textView: UITextView, shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
         
         let new = (textView.attributedText.string as NSString).replacingCharacters(in: range, with: text)
@@ -410,7 +410,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         return textView.text.characters.count+(text.characters.count-range.length) <= 140
     }
     
-    func isTheRangeInMentionZone(_ range: NSRange, text: String) -> (Bool, Int){
+    func isTheRangeInMentionZone(range: NSRange, text: String) -> (Bool, Int){
         for i in 0..<mentionAreas.count{
             let mention = mentionAreas[i]
             if text != "" {
@@ -426,7 +426,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         return (false,0)
     }
     
-    func updateSearch(_ word: String){
+    func updateSearch(word: String){
         //print("word::",word)
         if word == ""{
             mentionTable.isHidden = true
@@ -447,15 +447,15 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count+1
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchUsername(style: .Default, reuseIdentifier: "mention")
         
         if (indexPath as NSIndexPath).row < searchResults.count {
@@ -489,7 +489,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
               if (indexPath as NSIndexPath).row<searchResults.count {
             
             let username = searchResults[(indexPath as NSIndexPath).row].username
@@ -521,7 +521,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     //        textView.resignFirstResponder()
     //        return true
     //    }
-    func randomStringWithLength (_ len : Int) -> NSString {
+    func randomStringWithLength (len : Int) -> NSString {
         
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         
@@ -542,7 +542,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    func keyboardWillShow(notification: Notification) {
         
         if let keyboardSize = ((notification as NSNotification).userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             self.view.frame.origin.y = 0 + (MolocateDevice.size.height - (MolocateDevice.size.height * 0.3 + 255 )) - keyboardSize.height
@@ -550,14 +550,14 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
         
     }
-    func keyboardWillHide(_ notification: Notification) {
+    func keyboardWillHide(notification: Notification) {
         if (((notification as NSNotification).userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
             self.view.frame.origin.y = 0
             self.toolBar.isHidden = false
             self.CaptionText = captionView.text
         }
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         
         let a : CGSize = CGSize.init(width: MolocateDevice.size.width / 4, height: 45)
         
@@ -606,7 +606,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     //
     //    }
     //
-    func displayAlert(_ title: String, message: String) {
+    func displayAlert(title: String, message: String) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
