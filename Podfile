@@ -12,6 +12,10 @@ platform :ios, '8.0'
 pod 'AWSS3', '2.4.9'
 pod 'SDWebImage'
 pod "HanekeSwift", :git => 'https://github.com/Haneke/HanekeSwift.git', :branch => 'feature/swift-3'
+pod 'XLActionController'
+pod 'Fabric'
+pod 'Crashlytics'
+pod 'RNCryptor', '~> 5.0.1'
 end
 
 target 'MolocateTests' do

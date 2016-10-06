@@ -87,11 +87,15 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AWSCore/AWSCore.framework"
   install_framework "$BUILT_PRODUCTS_DIR/AWSS3/AWSS3.framework"
   install_framework "$BUILT_PRODUCTS_DIR/HanekeSwift/Haneke.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/RNCryptor/RNCryptor.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/XLActionController/XLActionController.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AWSCore/AWSCore.framework"
   install_framework "$BUILT_PRODUCTS_DIR/AWSS3/AWSS3.framework"
   install_framework "$BUILT_PRODUCTS_DIR/HanekeSwift/Haneke.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/RNCryptor/RNCryptor.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/XLActionController/XLActionController.framework"
 fi

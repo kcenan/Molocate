@@ -6,13 +6,14 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import Bolts
-import QuadratTouch
 import SDWebImage
 import AWSS3
 import Fabric
 import Crashlytics
 import AVFoundation
 import Haneke
+import QuadratTouch
+
 var DeviceToken:String?
 var isRegistered = false
 var MoleUserToken: String?

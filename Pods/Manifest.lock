@@ -2,15 +2,26 @@ PODS:
   - AWSCore (2.4.9)
   - AWSS3 (2.4.9):
     - AWSCore (= 2.4.9)
+  - Crashlytics (3.8.2):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.9)
   - HanekeSwift (0.10.1)
+  - RNCryptor (5.0.1)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - XLActionController (3.0.0):
+    - XLActionController/Core (= 3.0.0)
+  - XLActionController/Core (3.0.0)
 
 DEPENDENCIES:
   - AWSS3 (= 2.4.9)
+  - Crashlytics
+  - Fabric
   - HanekeSwift (from `https://github.com/Haneke/HanekeSwift.git`, branch `feature/swift-3`)
+  - RNCryptor (~> 5.0.1)
   - SDWebImage
+  - XLActionController
 
 EXTERNAL SOURCES:
   HanekeSwift:
@@ -25,9 +36,13 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AWSCore: 175208358b95492e0ebe0337df2ab415300bddac
   AWSS3: e4959b48db48d5f3dcd5cdf9e24a07f60a313611
+  Crashlytics: 27acca95a01b042a8294291dd6dff27f8f6af6d7
+  Fabric: bc5bec42cef4bcf1ee3ce0e218fc518e4b44dfbb
   HanekeSwift: 4113367892828e7700d24a384027de6ebc79aad1
+  RNCryptor: 2e352a488779d1a9184ab629be22a7c5bc84acb5
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  XLActionController: 895174cab4a37c0eabf8a7d94b7430e4cb58d002
 
-PODFILE CHECKSUM: 5830b19076b0fd699c4f380cd882ed3951cd94fb
+PODFILE CHECKSUM: d42ea9d8834dc112ca8e47ff5c67e57641d4e30b
 
 COCOAPODS: 1.0.1

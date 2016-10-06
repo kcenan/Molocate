@@ -11,7 +11,8 @@ import AVFoundation
 import AVKit
 import AWSS3
 import Photos
-import QuadratTouch
+
+//import QuadratTouch
 
 //fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 //  switch (lhs, rhs) {

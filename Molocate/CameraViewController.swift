@@ -6,7 +6,7 @@ import UIKit
 import AssetsLibrary
 import AVFoundation
 import Photos
-import QuadratTouch
+//import QuadratTouch
 import RecordButton
 import CoreLocation
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
