@@ -6,8 +6,8 @@ class onePhoto: UIViewController {
 
     @IBOutlet var profilePhoto: UIImageView!
     
-    @IBAction func backButton(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func backButton(_ sender: AnyObject) {
+        navigationController?.popViewController(animated: true)
     }
   
     override func viewDidLoad() {
@@ -20,7 +20,7 @@ class onePhoto: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         profilePhoto.sd_setImageWithURL(classUser.profilePic)
     }
     

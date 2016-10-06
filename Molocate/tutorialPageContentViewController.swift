@@ -18,8 +18,8 @@ class tutorialPageContentViewController: UIViewController {
         super.viewDidLoad()
         
         imageView.image = UIImage(named: strPhotoName)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(tutorialPageContentViewController.fontBigger), name: "fontBigger", object: nil)
-         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(tutorialPageContentViewController.fontSmaller), name: "fontSmaller", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(tutorialPageContentViewController.fontBigger), name: NSNotification.Name(rawValue: "fontBigger"), object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(tutorialPageContentViewController.fontSmaller), name: NSNotification.Name(rawValue: "fontSmaller"), object: nil)
         
     }
    

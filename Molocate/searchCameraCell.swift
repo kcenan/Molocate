@@ -27,18 +27,18 @@ class searchCameraCell: UITableViewCell {
         let screenSize = MolocateDevice.size
         
         
-        nameLabel.frame = CGRectMake(10 , 4 , screenSize.width - 20, 20)
-        nameLabel.textColor = UIColor.blackColor()
-        nameLabel.textAlignment = .Left
+        nameLabel.frame = CGRect(x: 10 , y: 4 , width: screenSize.width - 20, height: 20)
+        nameLabel.textColor = UIColor.black
+        nameLabel.textAlignment = .left
         nameLabel.text = ""
         nameLabel.font = UIFont(name: "AvenirNext-Regular", size:15)
         contentView.addSubview(nameLabel)
         
         
         
-        addressNameLabel.frame = CGRectMake(10 , 23 , screenSize.width - 20, 14)
-        addressNameLabel.textColor = UIColor.grayColor()
-        addressNameLabel.textAlignment = .Left
+        addressNameLabel.frame = CGRect(x: 10 , y: 23 , width: screenSize.width - 20, height: 14)
+        addressNameLabel.textColor = UIColor.gray
+        addressNameLabel.textAlignment = .left
         addressNameLabel.text = "-"
         addressNameLabel.font = UIFont(name: "AvenirNext-Regular", size:12)
         contentView.addSubview(addressNameLabel)

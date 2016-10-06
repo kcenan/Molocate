@@ -7,7 +7,7 @@ import UIKit
 extension String {
     
     subscript (i: Int) -> Character {
-        return self[self.startIndex.advancedBy(i)]
+        return self[self.characters.index(self.startIndex, offsetBy: i)]
     }
     
     subscript (i: Int) -> String {
@@ -15,8 +15,8 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-        let start = startIndex.advancedBy(r.startIndex)
-        let end = start.advancedBy(r.endIndex - r.startIndex)
+        let start = characters.index(startIndex, offsetBy: r.lowerBound)
+        let end = <#T##String.CharacterView corresponding to `start`##String.CharacterView#>.index(start, offsetBy: r.upperBound - r.lowerBound)
         return self[Range(start ..< end)]
     }
 }
@@ -35,54 +35,54 @@ extension UIColor {
     }
 }
 
-public class MolocateUtility {
+open class MolocateUtility {
     
     
-    class func setStatusBarBackgroundColor(color: UIColor) {
+    class func setStatusBarBackgroundColor(_ color: UIColor) {
         
-        guard  let statusBar = UIApplication.sharedApplication().valueForKey("statusBarWindow")?.valueForKey("statusBar") as? UIView else {
+        guard  let statusBar = (UIApplication.shared.value(forKey: "statusBarWindow") as AnyObject).value(forKey: "statusBar") as? UIView else {
             return
         }
         
         statusBar.backgroundColor = color
     }
     
-    class func animateLikeButton(inout heart: UIImageView){
+    class func animateLikeButton(_ heart: inout UIImageView){
         
-        UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction, animations: { 
-            heart.transform = CGAffineTransformMakeScale(1.3, 1.3);
+        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
+            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
             heart.alpha = 0.8;
             }) { (finished1) in
-                UIView.animateWithDuration(0.1, delay: 0, options: .AllowUserInteraction, animations: { 
-                       heart.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                UIView.animate(withDuration: 0.1, delay: 0, options: .allowUserInteraction, animations: { 
+                       heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
                     }, completion: { (finished2) in
-                        UIView.animateWithDuration(0.3, delay: 0, options: .AllowUserInteraction, animations: { 
-                            heart.transform = CGAffineTransformMakeScale(1.3, 1.3);
+                        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
+                            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
                             heart.alpha = 0.0;
                             }, completion: { (finished3) in
-                                heart.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                                heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
                         })
                 })
         }
         
     }
     
-    class func isValidEmail(testStr:String) -> Bool {
+    class func isValidEmail(_ testStr:String) -> Bool {
         
         do {
-            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .CaseInsensitive)
-            return regex.firstMatchInString(testStr, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, testStr.characters.count)) != nil
+            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
+            return regex.firstMatch(in: testStr, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, testStr.characters.count)) != nil
         } catch {
             return false
         }
         
     }
     
-    class func RBSquareImageTo(image: UIImage, size: CGSize) -> UIImage {
+    class func RBSquareImageTo(_ image: UIImage, size: CGSize) -> UIImage {
         return RBResizeImage(RBSquareImage(image), targetSize: size)
     }
     
-    class func RBSquareImage(image: UIImage) -> UIImage {
+    class func RBSquareImage(_ image: UIImage) -> UIImage {
         let originalWidth  = image.size.width
         let originalHeight = image.size.height
         var x: CGFloat = 0.0
@@ -105,13 +105,13 @@ public class MolocateUtility {
             edge = originalWidth
         }
         
-        let cropSquare = CGRectMake(x, y, edge, edge)
-        let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
+        let cropSquare = CGRect(x: x, y: y, width: edge, height: edge)
+        let imageRef = image.cgImage?.cropping(to: cropSquare);
         
-        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
+        return UIImage(cgImage: imageRef!, scale: UIScreen.main.scale, orientation: image.imageOrientation)
     }
     
-    class func RBResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+    class func RBResizeImage(_ image: UIImage, targetSize: CGSize) -> UIImage {
         let size = image.size
         
         let widthRatio  = targetSize.width  / image.size.width
@@ -120,20 +120,20 @@ public class MolocateUtility {
         // Figure out what our orientation is, and use that to form the rectangle
         var newSize: CGSize
         if(widthRatio > heightRatio) {
-            newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
         } else {
-            newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
         }
         
         // This is the rect that we've calculated out and this is what is actually used below
-        let rect = CGRectMake(0, 0, newSize.width, newSize.height)
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
         
         // Actually do the resizing to the rect using the ImageContext stuff
         UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.drawInRect(rect)
+        image.draw(in: rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
     }
 }

@@ -34,11 +34,11 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
     }
     
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
@@ -51,12 +51,12 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
 
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = searchVenue(style: UITableViewCellStyle.Default, reuseIdentifier: "cellface")
-        cell.nameLabel.text = venues[indexPath.row].name
-        cell.addressNameLabel.text = venues[indexPath.row].address
-        cell.distanceLabel.text = venues[indexPath.row].distance
+        let cell = searchVenue(style: .Default, reuseIdentifier: "cellface")
+        cell.nameLabel.text = venues[(indexPath as NSIndexPath).row].name
+        cell.addressNameLabel.text = venues[(indexPath as NSIndexPath).row].address
+        cell.distanceLabel.text = venues[(indexPath as NSIndexPath).row].distance
 //        cell.profilePhoto.tag = indexPath.row
 //        cell.nameLabel.tag = indexPath.row
 //        cell.followButton.tag = indexPath.row
@@ -70,9 +70,9 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
         return cell
         
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let cell = tableView.cellForRowAtIndexPath(indexPath) as! searchUsername
-        pressedPlace(venues[indexPath.row].id)
+        pressedPlace(venues[(indexPath as NSIndexPath).row].id)
         
     }
     
@@ -81,17 +81,17 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        let controller:profileVenue = self.storyboard!.instantiateViewControllerWithIdentifier("profileVenue") as! profileVenue
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        let controller:profileVenue = self.storyboard!.instantiateViewController(withIdentifier: "profileVenue") as! profileVenue
         self.navigationController?.pushViewController(controller, animated: true)
         
         MolocatePlace.getPlace(placeId) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 thePlace = data
                 controller.classPlace = data
                 controller.RefreshGuiWithData()
                 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }

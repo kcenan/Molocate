@@ -6,6 +6,26 @@ import MapKit
 import SDWebImage
 import Haneke
 import AVFoundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 //video caption ve süre eklenecek, report send edilecek
 var sideClicked = false
@@ -53,9 +73,9 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     @IBOutlet var venueTable: UITableView!
     @IBOutlet var collectionView: UICollectionView!
 
-    var searchText = UISearchBar(frame: CGRectZero)
+    var searchText = UISearchBar(frame: CGRect.zero)
 
-    var refreshURL = NSURL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/api/explore/?category=all")
+    var refreshURL = URL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/api/explore/?category=all")
 
     
     var categories = ["HEPSİ","EĞLENCE","YEMEK","GEZİ","MODA" , "GÜZELLİK", "SPOR","ETKİNLİK","KAMPÜS","YAKINDA","TREND"]
@@ -68,147 +88,147 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         self.automaticallyAdjustsScrollViewInsets = true
         self.navigationController?.navigationBar.barTintColor = swiftColor
-        self.navigationController?.navigationBar.translucent = false
+        self.navigationController?.navigationBar.isTranslucent = false
 
         selectedCell = 0
 
         
-        searchText.returnKeyType = UIReturnKeyType.Done
+        searchText.returnKeyType = UIReturnKeyType.done
         //tableController.tableView.makeoN
         self.searchText.delegate = self
         //venueTable.layer.zPosition = 10
-        tabBarController?.tabBar.hidden = true
+        tabBarController?.tabBar.isHidden = true
         searchText.frame = CGRect(x: 0, y: 0, width: MolocateDevice.size.width/2, height: 36)
         self.navigationItem.titleView = searchText
-        venueTable.separatorColor = UIColor.lightGrayColor()
+        venueTable.separatorColor = UIColor.lightGray
         venueTable.tableFooterView = UIView()
 
         session = Session.sharedSession()
         session.logger = ConsoleLogger()
         
-        venueTable.hidden = true
+        venueTable.isHidden = true
         searchText.delegate = self
     
         findfriendsVenue = UIButton()
         findfriendsVenue.frame = CGRect(x: self.view.center.x-70, y: self.view.frame.height*0.2, width: 140, height: 40)
-        findfriendsVenue.backgroundColor = UIColor.blueColor()
-        findfriendsVenue.setTitle("Arkadaş bul", forState: .Normal)
+        findfriendsVenue.backgroundColor = UIColor.blue
+        findfriendsVenue.setTitle("Arkadaş bul", for: UIControlState())
         findfriendsVenue.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 14)
-        findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindFriend(_:)), forControlEvents: .TouchUpInside)
+        findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindFriend(_:)), for: .touchUpInside)
         
-        findfriendsVenue.hidden = true
+        findfriendsVenue.isHidden = true
         
 
   
         
         usernameButton2 = UIButton()
-        usernameButton2.frame = CGRectMake(MolocateDevice.size.width / 2  , 2 , MolocateDevice.size.width / 2 , 40)
-        usernameButton2.setTitleColor(lineColor, forState: .Normal)
-        usernameButton2.contentHorizontalAlignment = .Center
-        usernameButton2.setTitle("KONUMLAR", forState: .Normal)
+        usernameButton2.frame = CGRect(x: MolocateDevice.size.width / 2  , y: 2 , width: MolocateDevice.size.width / 2 , height: 40)
+        usernameButton2.setTitleColor(lineColor, for: UIControlState())
+        usernameButton2.contentHorizontalAlignment = .center
+        usernameButton2.setTitle("KONUMLAR", for: UIControlState())
         usernameButton2.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size:14)
-        usernameButton2.addTarget(self, action: #selector(MainController.pressedUsernameButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        usernameButton2.addTarget(self, action: #selector(MainController.pressedUsernameButton(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(usernameButton2)
         
         venueButton2 = UIButton()
-        venueButton2.frame = CGRectMake(0 ,2 , MolocateDevice.size
-            .width / 2, 40)
-        venueButton2.setTitleColor(swiftColor, forState: .Normal)
-        venueButton2.contentHorizontalAlignment = .Center
-        venueButton2.setTitle("KİŞİLER", forState: .Normal)
+        venueButton2.frame = CGRect(x: 0 ,y: 2 , width: MolocateDevice.size
+            .width / 2, height: 40)
+        venueButton2.setTitleColor(swiftColor, for: UIControlState())
+        venueButton2.contentHorizontalAlignment = .center
+        venueButton2.setTitle("KİŞİLER", for: UIControlState())
         venueButton2.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size:14)
         
-        venueButton2.addTarget(self, action: #selector(MainController.pressedVenue(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        venueButton2.addTarget(self, action: #selector(MainController.pressedVenue(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(venueButton2)
-        venueButton2.hidden = true
-        usernameButton2.hidden = true
+        venueButton2.isHidden = true
+        usernameButton2.isHidden = true
         
         lineLabel = UILabel()
-        lineLabel.frame = CGRectMake( 0 , 43.5 , MolocateDevice.size.width , 0.5)
+        lineLabel.frame = CGRect( x: 0 , y: 43.5 , width: MolocateDevice.size.width , height: 0.5)
         lineLabel.backgroundColor = lineColor
         view.addSubview(lineLabel)
         
         redLabel = UILabel()
-        redLabel.frame = CGRectMake( 0 , 43 , MolocateDevice.size.width / 2 , 1.5)
+        redLabel.frame = CGRect( x: 0 , y: 43 , width: MolocateDevice.size.width / 2 , height: 1.5)
         redLabel.backgroundColor = swiftColor
         view.addSubview(redLabel)
-        lineLabel.hidden = true
-        redLabel.hidden = true
+        lineLabel.isHidden = true
+        redLabel.isHidden = true
         
         searchText.backgroundColor = swiftColor
-        let bartextField = searchText.valueForKey("searchField") as! UITextField
+        let bartextField = searchText.value(forKey: "searchField") as! UITextField
         bartextField.backgroundColor = swiftColor2
         bartextField.font = UIFont(name: "AvenirNext-Regular", size: 14)
-        bartextField.textColor = UIColor.whiteColor()
-        bartextField.attributedPlaceholder =  NSAttributedString(string: "Ara", attributes: [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "AvenirNext-Regular", size: 14)! ])
+        bartextField.textColor = UIColor.white
+        bartextField.attributedPlaceholder =  NSAttributedString(string: "Ara", attributes: [NSForegroundColorAttributeName:UIColor.white, NSFontAttributeName: UIFont(name: "AvenirNext-Regular", size: 14)! ])
         
         let rectShape3 = CAShapeLayer()
         rectShape3.bounds = self.findfriendsVenue.frame
         rectShape3.position = self.findfriendsVenue.center
-        rectShape3.path = UIBezierPath(roundedRect: self.findfriendsVenue.bounds, byRoundingCorners: [.BottomRight , .TopRight , .BottomLeft , .TopLeft ] , cornerRadii: CGSize(width: 8, height: 8)).CGPath
+        rectShape3.path = UIBezierPath(roundedRect: self.findfriendsVenue.bounds, byRoundingCorners: [.bottomRight , .topRight , .bottomLeft , .topLeft ] , cornerRadii: CGSize(width: 8, height: 8)).cgPath
         rectShape3.borderWidth = 1.0
-        rectShape3.borderColor = swiftColor.CGColor
-        self.findfriendsVenue.layer.backgroundColor = swiftColor.CGColor
+        rectShape3.borderColor = swiftColor.cgColor
+        self.findfriendsVenue.layer.backgroundColor = swiftColor.cgColor
         //Here I'm masking the textView's layer with rectShape layer
         self.findfriendsVenue.layer.mask = rectShape3
 
         
         let magnifyingGlass = bartextField.leftView as! UIImageView
-        magnifyingGlass.image = magnifyingGlass.image?.imageWithRenderingMode(.AlwaysTemplate)
-        magnifyingGlass.tintColor = UIColor.whiteColor()
+        magnifyingGlass.image = magnifyingGlass.image?.withRenderingMode(.alwaysTemplate)
+        magnifyingGlass.tintColor = UIColor.white
         
         //searchText.barTintColor = UIColor.whiteColor()
-        let clearButton = bartextField.valueForKey("clearButton") as! UIButton
-        clearButton.setImage(clearButton.imageView?.image?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        clearButton.tintColor = UIColor.whiteColor()
+        let clearButton = bartextField.value(forKey: "clearButton") as! UIButton
+        clearButton.setImage(clearButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: UIControlState())
+        clearButton.tintColor = UIColor.white
 
         searchText.layer.borderWidth = 0
         searchText.layer.cornerRadius = 5
-        searchText.layer.borderColor = UIColor.whiteColor().CGColor
+        searchText.layer.borderColor = UIColor.white.cgColor
         
-        let index = NSIndexPath(forRow: 0, inSection: 0)
+        let index = IndexPath(row: 0, section: 0)
 
-        collectionView!.backgroundColor = UIColor.clearColor()
+        collectionView!.backgroundColor = UIColor.clear
         //collectionView!.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:0, right: 0)
        // print("anan")
         MolocateVideo.getFilters { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 filters = data!
                 self.collectionView.reloadData()
             }
             
         }
         
-        if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        if UIApplication.shared.isIgnoringInteractionEvents {
+            UIApplication.shared.endIgnoringInteractionEvents()
         }
         self.venueTable.addSubview(findfriendsVenue)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainController.showNavigationMain), name: "showNavigationMain", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainController.reloadMain), name:"reloadMain", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MainController.showNavigationMain), name: NSNotification.Name(rawValue: "showNavigationMain"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MainController.reloadMain), name:NSNotification.Name(rawValue: "reloadMain"), object: nil)
 
     }
    
-    func toggleNavigationBar(direction: Bool) {
+    func toggleNavigationBar(_ direction: Bool) {
         navigationController?.setNavigationBarHidden(direction, animated: true)
     }
 
     
-    func pressedVenue(sender: UIButton) {
+    func pressedVenue(_ sender: UIButton) {
         
         venueoruser = false
-        self.venueButton2.setTitleColor(swiftColor, forState: UIControlState.Normal)
-        self.usernameButton2.setTitleColor(lineColor, forState: UIControlState.Normal)
+        self.venueButton2.setTitleColor(swiftColor, for: UIControlState())
+        self.usernameButton2.setTitleColor(lineColor, for: UIControlState())
         self.redLabel.frame.origin.x = 0
         self.usernameButton2.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size:14)
         self.venueButton2.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size:14)
-        self.usernameButton2.setTitleColor(lineColor, forState: .Normal)
-        self.venueButton2.setTitleColor(swiftColor, forState: .Normal)
-        self.findfriendsVenue.setTitle("Arkadaşlarını Bul", forState: .Normal)
-        if self.venueTable.numberOfRowsInSection(0) > 0 {
+        self.usernameButton2.setTitleColor(lineColor, for: UIControlState())
+        self.venueButton2.setTitleColor(swiftColor, for: UIControlState())
+        self.findfriendsVenue.setTitle("Arkadaşlarını Bul", for: UIControlState())
+        if self.venueTable.numberOfRows(inSection: 0) > 0 {
             self.venueTable.reloadData()
         }
-        self.findfriendsVenue.removeTarget(self, action: #selector(MainController.pressedFindVenue(_:)), forControlEvents: .TouchUpInside)
-        self.findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindFriend(_:)), forControlEvents: .TouchUpInside)
+        self.findfriendsVenue.removeTarget(self, action: #selector(MainController.pressedFindVenue(_:)), for: .touchUpInside)
+        self.findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindFriend(_:)), for: .touchUpInside)
         
 
         
@@ -216,21 +236,21 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
     }
     
-    func pressedUsernameButton(sender: UIButton) {
+    func pressedUsernameButton(_ sender: UIButton) {
         venueoruser = true
-        self.venueButton2.setTitleColor(swiftColor, forState: UIControlState.Normal)
-        self.usernameButton2.setTitleColor(lineColor, forState: UIControlState.Normal)
+        self.venueButton2.setTitleColor(swiftColor, for: UIControlState())
+        self.usernameButton2.setTitleColor(lineColor, for: UIControlState())
         self.usernameButton2.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size:14)
         self.venueButton2.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size:14)
         self.redLabel.frame.origin.x = MolocateDevice.size.width / 2
-        self.usernameButton2.setTitleColor(swiftColor, forState: .Normal)
-        self.venueButton2.setTitleColor(lineColor, forState: .Normal)
-        self.findfriendsVenue.setTitle("Yakın Konumları Bul", forState: .Normal)
-        self.findfriendsVenue.removeTarget(self, action: #selector(MainController.pressedFindFriend(_:)), forControlEvents: .TouchUpInside)
+        self.usernameButton2.setTitleColor(swiftColor, for: UIControlState())
+        self.venueButton2.setTitleColor(lineColor, for: UIControlState())
+        self.findfriendsVenue.setTitle("Yakın Konumları Bul", for: UIControlState())
+        self.findfriendsVenue.removeTarget(self, action: #selector(MainController.pressedFindFriend(_:)), for: .touchUpInside)
         
-        self.findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindVenue(_:)), forControlEvents: .TouchUpInside)
+        self.findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindVenue(_:)), for: .touchUpInside)
         
-        if self.venueTable.numberOfRowsInSection(0) > 0 {
+        if self.venueTable.numberOfRows(inSection: 0) > 0 {
             self.venueTable.reloadData()  }
     }
 
@@ -238,12 +258,12 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         searchText.resignFirstResponder()
         //   Timelinecontrollerx da Main icin hide navigation bar farkli olmali
     }
     
-    func tableView(atableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ atableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
   
             if !venueoruser {
                 let rowHeight : CGFloat = 54
@@ -257,7 +277,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
 
     
-    func tableView(atableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ atableView: UITableView, numberOfRowsInSection section: Int) -> Int {
      
             if venueoruser {
                 if let venues = self.venues {
@@ -271,58 +291,58 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             return 0
     }
     
-    func tableView(atableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ atableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
             if venueoruser {
-                let cell = searchVenue(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
+                let cell = searchVenue(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
                 //            let cell = venueTable.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
-                let venue = venues[indexPath.row]
+                let venue = venues[(indexPath as NSIndexPath).row]
                 cell.addressNameLabel.text = venue.address
                 cell.nameLabel.text = venue.name
                 cell.distanceLabel.text = venue.distance
                 return cell
             } else {
-                let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
-                if searchedUsers[indexPath.row].isFollowing {
-                    cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), forState: UIControlState.Normal)
-                    cell.followButton.addTarget(self, action: #selector(MainController.pressedUnfollowSearch(_:)), forControlEvents: .TouchUpInside)
+                let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+                if searchedUsers[(indexPath as NSIndexPath).row].isFollowing {
+                    cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
+                    cell.followButton.addTarget(self, action: #selector(MainController.pressedUnfollowSearch(_:)), for: .touchUpInside)
                 } else {
-                    cell.followButton.setBackgroundImage(UIImage(named: "follow"), forState: UIControlState.Normal)
-                    cell.followButton.addTarget(self, action: #selector(MainController.pressedFollowSearch(_:)), forControlEvents: .TouchUpInside)
+                    cell.followButton.setBackgroundImage(UIImage(named: "follow"), for: UIControlState())
+                    cell.followButton.addTarget(self, action: #selector(MainController.pressedFollowSearch(_:)), for: .touchUpInside)
                 }
-                cell.usernameLabel.text = "@\(searchedUsers[indexPath.row].username)"
-                if searchedUsers[indexPath.row].first_name == "" {
-                    cell.nameLabel.text = "\(searchedUsers[indexPath.row].username)"
+                cell.usernameLabel.text = "@\(searchedUsers[(indexPath as NSIndexPath).row].username)"
+                if searchedUsers[(indexPath as NSIndexPath).row].first_name == "" {
+                    cell.nameLabel.text = "\(searchedUsers[(indexPath as NSIndexPath).row].username)"
                 }
                 else{
-                    cell.nameLabel.text = "\(searchedUsers[indexPath.row].first_name) \(searchedUsers[indexPath.row].last_name)"
+                    cell.nameLabel.text = "\(searchedUsers[(indexPath as NSIndexPath).row].first_name) \(searchedUsers[(indexPath as NSIndexPath).row].last_name)"
                 }
-                if(searchedUsers[indexPath.row].profilePic.absoluteString != ""){
+                if(searchedUsers[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
                     cell.profilePhoto.sd_setImageWithURL(searchedUsers[indexPath.row].profilePic, forState: UIControlState.Normal)
                 }else{
-                    cell.profilePhoto.setImage(UIImage(named: "profile"), forState: .Normal)
+                    cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
                 }
                 
-                cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), for: UIControlEvents.touchUpInside)
                 //cell.followButton.addTarget(self, action: Selector("pressedFollowSearch"), forControlEvents: .TouchUpInside)
-                cell.followButton.tag = indexPath.row
-                cell.profilePhoto.tag = indexPath.row
+                cell.followButton.tag = (indexPath as NSIndexPath).row
+                cell.profilePhoto.tag = (indexPath as NSIndexPath).row
                 
                 return cell
             }
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //DBG::Searchde push view controller yapmaliyiz
             if venueoruser {
                 activityIndicator.startAnimating()
-                UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+                UIApplication.shared.beginIgnoringInteractionEvents()
                 navigationController?.setNavigationBarHidden(false, animated: false)
                 
-                let controller:profileVenue = self.storyboard!.instantiateViewControllerWithIdentifier("profileVenue") as! profileVenue
+                let controller:profileVenue = self.storyboard!.instantiateViewController(withIdentifier: "profileVenue") as! profileVenue
 
                 self.navigationController?.pushViewController(controller, animated: true)
-                MolocatePlace.getPlace(self.venues[indexPath.row].id) { (data, response, error) -> () in
-                    dispatch_async(dispatch_get_main_queue()){
+                MolocatePlace.getPlace(self.venues[(indexPath as NSIndexPath).row].id) { (data, response, error) -> () in
+                    DispatchQueue.main.async{
                         thePlace = data
                         controller.classPlace = data
                         controller.RefreshGuiWithData()
@@ -333,7 +353,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 
                 self.searchText.resignFirstResponder()
             } else {
-                let cell = tableView.cellForRowAtIndexPath(indexPath) as! searchUsername
+                let cell = tableView.cellForRow(at: indexPath) as! searchUsername
                 pressedProfileSearch(cell.profilePhoto)
                 
             }
@@ -341,15 +361,15 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
 
     
-    func pressedProfileSearch(sender:UIButton){
+    func pressedProfileSearch(_ sender:UIButton){
         
         let username = searchedUsers[sender.tag].username
         
        
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         if username != MoleCurrentUser.username{
             controller.isItMyProfile = false
         }else{
@@ -361,29 +381,29 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
                 user = data
                 controller.classUser = data
                 controller.RefreshGuiWithData()
                 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }
       self.searchText.resignFirstResponder()
     }
 
-    func pressedFollowSearch(sender: UIButton) {
+    func pressedFollowSearch(_ sender: UIButton) {
         
         let buttonRow = sender.tag
         pressedFollow = true
         self.searchedUsers[buttonRow].isFollowing = true
-        var indexes = [NSIndexPath]()
-        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [IndexPath]()
+        let index = IndexPath(row: buttonRow, section: 0)
         indexes.append(index)
-        self.venueTable.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
+        self.venueTable.reloadRows(at: indexes, with: .none)
         
         MolocateAccount.follow(self.searchedUsers[buttonRow].username){ (data, response, error) -> () in
             MoleCurrentUser.following_count += 1
@@ -396,15 +416,15 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     
-    func pressedUnfollowSearch(sender: UIButton) {
+    func pressedUnfollowSearch(_ sender: UIButton) {
         
         let buttonRow = sender.tag
         pressedFollow = false
         self.searchedUsers[buttonRow].isFollowing = false
-        var indexes = [NSIndexPath]()
-        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [IndexPath]()
+        let index = IndexPath(row: buttonRow, section: 0)
         indexes.append(index)
-        self.venueTable.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
+        self.venueTable.reloadRows(at: indexes, with: .none)
         
         MolocateAccount.unfollow(self.searchedUsers[buttonRow].username){ (data, response, error) -> () in
             MoleCurrentUser.following_count -= 1
@@ -420,37 +440,37 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
 
     }
     
-    func pressedFindVenue(sender: UIButton) {
+    func pressedFindVenue(_ sender: UIButton) {
         if CLLocationManager.locationServicesEnabled() {
             switch(CLLocationManager.authorizationStatus()) {
-            case .NotDetermined, .Restricted, .Denied:
+            case .notDetermined, .restricted, .denied:
                 let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
-                let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.cancel, handler: nil)
                 alertController.addAction(cancelAction)
-                let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
-                    UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.default) {action in
+                    UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!)
                 }
                 alertController.addAction(settingsAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
                 
-            case .AuthorizedAlways, .AuthorizedWhenInUse:
+            case .authorizedAlways, .authorizedWhenInUse:
                 activityIndicator.startAnimating()
-                UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-                let controller:findVenueController = self.storyboard!.instantiateViewControllerWithIdentifier("findVenueController") as! findVenueController
+                UIApplication.shared.beginIgnoringInteractionEvents()
+                let controller:findVenueController = self.storyboard!.instantiateViewController(withIdentifier: "findVenueController") as! findVenueController
                 self.searchText.resignFirstResponder()
                 self.navigationController?.pushViewController(controller, animated: true)
                 // /rint(self.bestEffortAtLocation.coordinate.latitude)
                 let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
                 let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
                 MolocatePlace.getNearbyPlace(lat, placeLon: lon) { (data, response, error) in
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         controller.venues = data
                         controller.tableView.reloadData()
                     }
                 }
                 self.activityIndicator.stopAnimating()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 
             }
         } else {
@@ -463,19 +483,19 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     
-    func pressedFindFriend(sender: UIButton) {
+    func pressedFindFriend(_ sender: UIButton) {
         
 
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        let controller:findFriendController = self.storyboard!.instantiateViewControllerWithIdentifier("findFriendController") as! findFriendController
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        let controller:findFriendController = self.storyboard!.instantiateViewController(withIdentifier: "findFriendController") as! findFriendController
         self.searchText.resignFirstResponder()
         self.navigationController?.pushViewController(controller, animated: true)
        
 
         if MoleCurrentUser.isFaceUser {
             MolocateAccount.getFacebookFriends(completionHandler: { (data, response, error, count, next, previous) in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     controller.userRelations = data
                     controller.tableView.reloadData()
                     controller.userRelationsFace = data
@@ -484,7 +504,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 })
             })
             MolocateAccount.getSuggestedFriends { (data, response, error, count, next, previous) in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     controller.userRelationsRandom = data
                 })
             }
@@ -492,7 +512,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             
         } else {
             MolocateAccount.getSuggestedFriends { (data, response, error, count, next, previous) in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     controller.userRelations = data
                     controller.userRelationsRandom = data
                     controller.tableView.reloadData()
@@ -501,18 +521,18 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         }
         
         self.activityIndicator.stopAnimating()
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        UIApplication.shared.endIgnoringInteractionEvents()
 
         
     }
     
-    func pressedUsername(username: String, profilePic: NSURL, isFollowing: Bool) {
+    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool) {
         
   
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if username != MoleCurrentUser.username{
             controller.isItMyProfile = false
@@ -527,7 +547,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
                 if data.username != "" {
@@ -538,27 +558,27 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 
                 //choosedIndex = 0
                 self.activityIndicator.stopAnimating()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         
     }
 
     
-    func pressedPlace(placeId: String, Row: Int) {
+    func pressedPlace(_ placeId: String, Row: Int) {
     
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        let controller:profileVenue = self.storyboard!.instantiateViewControllerWithIdentifier("profileVenue") as! profileVenue
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        let controller:profileVenue = self.storyboard!.instantiateViewController(withIdentifier: "profileVenue") as! profileVenue
         self.navigationController?.pushViewController(controller, animated: true)
         
         MolocatePlace.getPlace(placeId) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 thePlace = data
                 controller.classPlace = data
                 controller.RefreshGuiWithData()
                 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }
@@ -568,24 +588,24 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
     }
     
-    func pressedComment(videoId: String, Row: Int) {
+    func pressedComment(_ videoId: String, Row: Int) {
         
   
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         video_id = videoId
         videoIndex = Row
         myViewController = "MainController"
 
         
-        let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+        let controller:commentController = self.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         
         comments.removeAll()
         MolocateVideo.getComments(videoId) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
         }
@@ -593,22 +613,22 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
     }
     
-    func pressedLikeCount(videoId: String, Row: Int) {
+    func pressedLikeCount(_ videoId: String, Row: Int) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         video_id = videoId
         videoIndex = Row
         
-        let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
+        let controller:likeVideo = self.storyboard!.instantiateViewController(withIdentifier: "likeVideo") as! likeVideo
         
         MolocateVideo.getLikes(videoId) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 controller.users = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
             
@@ -627,8 +647,8 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         SDImageCache.sharedImageCache().clearMemory()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
+    override func viewDidAppear(_ animated: Bool) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "closeSideBar"), object: nil)
         self.searchText.text = ""
         self.searchText.placeholder = "Ara"
         if venues != nil {
@@ -641,46 +661,46 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
 
     }
     
-    @IBAction func sideBar(sender: AnyObject) {
+    @IBAction func sideBar(_ sender: AnyObject) {
         if(sideClicked == false){
             sideClicked = true
-            NSNotificationCenter.defaultCenter().postNotificationName("openSideBar", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "openSideBar"), object: nil)
         } else {
             sideClicked = false
-            NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "closeSideBar"), object: nil)
         }
     }
     
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     
     
-    @IBAction func openCamera(sender: AnyObject) {
+    @IBAction func openCamera(_ sender: AnyObject) {
         
         if (isUploaded) {
             CaptionText = ""
             if isSearching != true {
                 if CLLocationManager.locationServicesEnabled() {
                     switch(CLLocationManager.authorizationStatus()) {
-                    case .NotDetermined, .Restricted, .Denied:
+                    case .notDetermined, .restricted, .denied:
                         let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
-                        let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                        let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                        let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                        let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.cancel, handler: nil)
                         alertController.addAction(cancelAction)
-                        let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
-                            UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                        let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.default) {action in
+                            UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!)
                         }
                         alertController.addAction(settingsAction)
-                        self.presentViewController(alertController, animated: true, completion: nil)
+                        self.present(alertController, animated: true, completion: nil)
                         
-                    case .AuthorizedAlways, .AuthorizedWhenInUse:
-                        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+                    case .authorizedAlways, .authorizedWhenInUse:
+                        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                         activityIndicator.center = self.view.center
                         activityIndicator.hidesWhenStopped = true
-                        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+                        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
                         view.addSubview(activityIndicator)
                         activityIndicator.startAnimating()
-                        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-                        self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
+                        UIApplication.shared.beginIgnoringInteractionEvents()
+                        self.parent!.parent!.performSegue(withIdentifier: "goToCamera", sender: self.parent)
                         
                     }
                 } else {
@@ -696,13 +716,13 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 self.searchText.text = ""
                 self.searchText.placeholder = "Ara"
                 self.isSearching = false
-                self.venueButton2.hidden = true
-                self.lineLabel.hidden = true
-                self.redLabel.hidden = true
-                self.usernameButton2.hidden = true
-                self.collectionView.hidden = false
-                self.venueTable.hidden = true
-                self.findfriendsVenue.hidden = true
+                self.venueButton2.isHidden = true
+                self.lineLabel.isHidden = true
+                self.redLabel.isHidden = true
+                self.usernameButton2.isHidden = true
+                self.collectionView.isHidden = false
+                self.venueTable.isHidden = true
+                self.findfriendsVenue.isHidden = true
                 self.searchText.resignFirstResponder()
                 if searchedUsers != nil {
                     searchedUsers.removeAll()
@@ -721,15 +741,15 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
 
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filters.count
     }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let myCell : myCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("myCell", forIndexPath: indexPath) as! myCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let myCell : myCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell", for: indexPath) as! myCollectionViewCell
         myCell.categoryImage.sd_setImageWithURL(filters[indexPath.row].thumbnail_url)
         let backgroundView = UIView()
         backgroundView.backgroundColor = swiftColor
@@ -738,30 +758,30 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:FilterController = self.storyboard!.instantiateViewControllerWithIdentifier("FilterController") as! FilterController
-        controller.filter_raw = filters[indexPath.row].raw_name
-        controller.filter_name = filters[indexPath.row].name
+        let controller:FilterController = self.storyboard!.instantiateViewController(withIdentifier: "FilterController") as! FilterController
+        controller.filter_raw = filters[(indexPath as NSIndexPath).row].raw_name
+        controller.filter_name = filters[(indexPath as NSIndexPath).row].name
        
-        if filters[indexPath.row].raw_name == "nearby" {
+        if filters[(indexPath as NSIndexPath).row].raw_name == "nearby" {
             if CLLocationManager.locationServicesEnabled() {
                 switch(CLLocationManager.authorizationStatus()) {
-                case .NotDetermined, .Restricted, .Denied:
+                case .notDetermined, .restricted, .denied:
                     let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
-                    let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                    let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.cancel, handler: nil)
                     alertController.addAction(cancelAction)
-                    let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
-                        UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                    let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.default) {action in
+                        UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!)
                     }
                     alertController.addAction(settingsAction)
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                    self.present(alertController, animated: true, completion: nil)
                     
-                case .AuthorizedAlways, .AuthorizedWhenInUse:
+                case .authorizedAlways, .authorizedWhenInUse:
                     
                     let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
                     let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
@@ -778,7 +798,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         }
         self.navigationController?.pushViewController(controller, animated: true)
         self.activityIndicator.stopAnimating()
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        UIApplication.shared.endIgnoringInteractionEvents()
 
         
     }
@@ -787,7 +807,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
     
     
-    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+    func locationManager(_ manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         let locationAge = newLocation.timestamp.timeIntervalSinceNow
         
         //print(locationAge)
@@ -802,11 +822,11 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
 
-        (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = true
+        (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = true
 
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             
         
                 // The search bar is hidden when the view becomes visible the first time
@@ -819,8 +839,8 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             self.locationManager.startUpdatingLocation()
             let seconds = 5.0
             let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
-            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-            dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+            let dispatchTime = DispatchTime.now() + Double(Int64(delay)) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                 
                 self.locationManager.stopUpdatingLocation()
                 
@@ -835,7 +855,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             self.navigationController?.setNavigationBarHidden(true, animated: false)
         }
         MolocateVideo.getFilters { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 var newFilters = data!
                 if filters.count == newFilters.count {
                     for i in 0..<filters.count {
@@ -862,7 +882,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
     func reloadMain() {
         
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             
             
             // The search bar is hidden when the view becomes visible the first time
@@ -875,8 +895,8 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             self.locationManager.startUpdatingLocation()
             let seconds = 5.0
             let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
-            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-            dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+            let dispatchTime = DispatchTime.now() + Double(Int64(delay)) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                 
                 self.locationManager.stopUpdatingLocation()
                 
@@ -884,7 +904,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             
         }
         MolocateVideo.getFilters { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 var newFilters = data!
                 if filters.count == newFilters.count {
                     for i in 0..<filters.count {
@@ -904,7 +924,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
 
         
     }
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         //self.tableView.removeFromSuperview()
         //SDImageCache.sharedImageCache().cleanDisk()
         //self.tableController.isOnView = false
@@ -912,41 +932,41 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             self.cameraButton.image = UIImage(named: "newcamera")
             self.cameraButton.title = nil
             self.isSearching = false
-            self.venueTable.hidden = true
-            self.findfriendsVenue.hidden = true
-            self.venueButton2.hidden = true
-            self.lineLabel.hidden = true
-            self.redLabel.hidden = true
-            self.usernameButton2.hidden = true
-            self.collectionView.hidden = false
+            self.venueTable.isHidden = true
+            self.findfriendsVenue.isHidden = true
+            self.venueButton2.isHidden = true
+            self.lineLabel.isHidden = true
+            self.redLabel.isHidden = true
+            self.usernameButton2.isHidden = true
+            self.collectionView.isHidden = false
             self.searchText.resignFirstResponder()
         }
         
    
     }
     
-    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         
 
         isSearching = true
         cameraButton.image = nil
         cameraButton.title = "Vazgeç"
-        venueTable.hidden = false
-        findfriendsVenue.hidden = false
+        venueTable.isHidden = false
+        findfriendsVenue.isHidden = false
         self.pressedVenue(venueButton2)
 
-        venueButton2.hidden = false
-        self.lineLabel.hidden = false
-        self.redLabel.hidden = false
-        usernameButton2.hidden = false
-        collectionView.hidden = true
+        venueButton2.isHidden = false
+        self.lineLabel.isHidden = false
+        self.redLabel.isHidden = false
+        usernameButton2.isHidden = false
+        collectionView.isHidden = true
         
         
         self.view.layer.addSublayer(venueTable.layer)
@@ -957,39 +977,39 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
   
     
-    func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        self.venueTable.hidden = false
-        findfriendsVenue.hidden = true
-        self.venueButton2.hidden = false
-        self.usernameButton2.hidden = false
-        self.lineLabel.hidden = false
-        self.redLabel.hidden = false
-        self.collectionView.hidden = true
-        let whitespaceCharacterSet = NSCharacterSet.symbolCharacterSet()
-        let strippedString = searchText.text!.stringByTrimmingCharactersInSet(whitespaceCharacterSet) + text
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        self.venueTable.isHidden = false
+        findfriendsVenue.isHidden = true
+        self.venueButton2.isHidden = false
+        self.usernameButton2.isHidden = false
+        self.lineLabel.isHidden = false
+        self.redLabel.isHidden = false
+        self.collectionView.isHidden = true
+        let whitespaceCharacterSet = CharacterSet.symbols
+        let strippedString = searchText.text!.trimmingCharacters(in: whitespaceCharacterSet) + text
         
        
         if venueoruser {
             locationManager.startUpdatingLocation()
             if self.bestEffortAtLocation == nil {
                 let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
-                let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.cancel, handler: nil)
                 alertController.addAction(cancelAction)
                 // Provide quick access to Settings.
-                let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
-                    UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.default) {action in
+                    UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!)
                     
                 }
                 alertController.addAction(settingsAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
                 
                 return true
             }
             let lat = Float(self.bestEffortAtLocation.coordinate.latitude)
             let lon = Float(self.bestEffortAtLocation.coordinate.longitude)
             MolocatePlace.searchPlace(strippedString, placeLat: lat, placeLon: lon, completionHandler: { (data, response, error) in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     self.venues = data
                     self.venueTable.reloadData()
                 }
@@ -1001,7 +1021,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             
             if searchText.text?.characters.count > 1 {
                 MolocateAccount.searchUser(strippedString, completionHandler: { (data, response, error) in
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         self.searchedUsers = data
                         self.venueTable.reloadData()
                     }
@@ -1012,7 +1032,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         return true
     }
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             textView.resignFirstResponder()
         }
@@ -1020,7 +1040,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
       
         textField.resignFirstResponder()
@@ -1028,13 +1048,13 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     
-    func displayAlert(title: String, message: String) {
+    func displayAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             //self.dismissViewControllerAnimated(true, completion: nil)
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
 

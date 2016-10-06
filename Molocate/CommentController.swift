@@ -22,12 +22,12 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         super.viewDidLoad()
 
         initGui()
-        if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        if UIApplication.shared.isIgnoringInteractionEvents {
+            UIApplication.shared.endIgnoringInteractionEvents()
         }
     }
    
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         //comments.removeAll()
     }
     
@@ -35,18 +35,18 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     
     func initGui(){
         self.automaticallyAdjustsScrollViewInsets = false
-        navigationController?.navigationBarHidden = false
+        navigationController?.isNavigationBarHidden = false
         navigationController?.hidesBarsOnSwipe = false
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.tintColor = UIColor.white
         newComment.text = "Yorumunu buradan yazabilirsin"
-        newComment.textColor = UIColor.lightGrayColor()
+        newComment.textColor = UIColor.lightGray
         newComment.layer.cornerRadius = 5
         newComment.layer.borderWidth = 1
-        newComment.layer.borderColor = UIColor.whiteColor().CGColor
-        newComment.returnKeyType = .Done
+        newComment.layer.borderColor = UIColor.white.cgColor
+        newComment.returnKeyType = .done
         newComment.delegate = self
         
-        tagView.hidden = true
+        tagView.isHidden = true
         tagView.tableFooterView = UIView()
         tagView.layer.zPosition = 10
         tagView.allowsSelection = true
@@ -58,24 +58,24 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         sendButton.layer.zPosition = 2
         sendButton.layer.cornerRadius = 5
         sendButton.layer.borderWidth = 1
-        sendButton.layer.borderColor = swiftColor.CGColor
+        sendButton.layer.borderColor = swiftColor.cgColor
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentController.keyboardNotification(_:)), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentController.keyboardNotification2(_:)), name:UIKeyboardWillHideNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(commentController.keyboardNotification(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(commentController.keyboardNotification2(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
         
         tableView.estimatedRowHeight = 68
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = UIColor.clearColor()
+        tableView.separatorColor = UIColor.clear
         tableView.layer.zPosition = 0
         
         
         self.refreshControl.attributedTitle = NSAttributedString(string: "Yorumlar güncelleniyor...")
-        self.refreshControl.addTarget(self, action: #selector(commentController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.addTarget(self, action: #selector(commentController.refresh(_:)), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refreshControl)
     }
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         let attributed = NSMutableAttributedString(string: textView.text)
         
         for mention in mentionAreas {
@@ -85,29 +85,29 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     }
     
     
-    func textViewDidEndEditing(textView: UITextView) {
-        self.view.backgroundColor = UIColor.whiteColor()
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.view.backgroundColor = UIColor.white
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         if self.newComment.text == "Yorumunu buradan yazabilirsin"{
             newComment.text = ""
         }
-        self.view.backgroundColor = UIColor.lightGrayColor()
+        self.view.backgroundColor = UIColor.lightGray
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if tagView.hidden {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if tagView.isHidden {
             self.view.endEditing(true)
         }
     }
     
     
     
-    func refresh(sender: AnyObject){
+    func refresh(_ sender: AnyObject){
         MolocateVideo.getComments(video_id) { (data, response, error, count, next, previous) in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 comments=data
                 self.tableView.reloadData()
                 self.refreshControl.endRefreshing()
@@ -115,103 +115,103 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == tagView{
-            let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "mentionCell")
+            let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "mentionCell")
             
-            if indexPath.row < searchResults.count {
-                cell.followButton.hidden = true
-                cell.usernameLabel.text = "@\(searchResults[indexPath.row].username)"
-                if searchResults[indexPath.row].first_name == "" {
-                    cell.nameLabel.text = "\(searchResults[indexPath.row].username)"
+            if (indexPath as NSIndexPath).row < searchResults.count {
+                cell.followButton.isHidden = true
+                cell.usernameLabel.text = "@\(searchResults[(indexPath as NSIndexPath).row].username)"
+                if searchResults[(indexPath as NSIndexPath).row].first_name == "" {
+                    cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].username)"
                 }
                 else{
-                    cell.nameLabel.text = "\(searchResults[indexPath.row].first_name) \(searchResults[indexPath.row].last_name)"
+                    cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
                 }
-                if(searchResults[indexPath.row].profilePic.absoluteString != ""){
+                if(searchResults[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
                     cell.profilePhoto.sd_setImageWithURL(searchResults[indexPath.row].profilePic, forState: UIControlState.Normal)
                 }else{
-                    cell.profilePhoto.setImage(UIImage(named: "profile"), forState: .Normal)
+                    cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
                 }
                 
-                cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), for: UIControlEvents.touchUpInside)
                 //cell.followButton.addTarget(self, action: Selector("pressedFollowSearch"), forControlEvents: .TouchUpInside)
-                cell.followButton.tag = indexPath.row
-                cell.profilePhoto.tag = indexPath.row
+                cell.followButton.tag = (indexPath as NSIndexPath).row
+                cell.profilePhoto.tag = (indexPath as NSIndexPath).row
                 
                 return cell
                 
             }else{
                 cell.usernameLabel.text = "Kullanicilar araniyor"
-                cell.followButton.hidden = true
-                cell.profilePhoto.hidden = true
+                cell.followButton.isHidden = true
+                cell.profilePhoto.isHidden = true
                 return cell
             }
             
 
         
         }else{
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! commentCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! commentCell
             
-            cell.username.setTitle(comments[indexPath.row].username, forState: .Normal)
+            cell.username.setTitle(comments[(indexPath as NSIndexPath).row].username, for: UIControlState())
             cell.username.tintColor = swiftColor
         
      
             
-            cell.username.contentHorizontalAlignment = .Left
-            cell.username.tag = indexPath.row
+            cell.username.contentHorizontalAlignment = .left
+            cell.username.tag = (indexPath as NSIndexPath).row
             
            // cell.videoComment.frame = CGRectMake( 55 , 28 , 292 , 26)
             
             cell.comment.customize { label in
-                label.textAlignment = .Left
+                label.textAlignment = .left
                 label.numberOfLines = 0
                 label.textColor = arkarenk
                 label.font = UIFont(name: "AvenirNext-Medium", size: 12.5)
-                label.lineBreakMode = .ByWordWrapping
+                label.lineBreakMode = .byWordWrapping
                 label.mentionColor = swiftColor
                 label.hashtagColor = UIColor(red: 90, green: 200, blue: 250)
                 
             }
             
-            cell.comment.handleMentionTap { userHandle in  self.pressedMention(userHandle, profilePic: NSURL(), isFollowing: false)}
+            cell.comment.handleMentionTap { userHandle in  self.pressedMention(userHandle, profilePic: URL(), isFollowing: false)}
 
-            cell.comment.text = comments[indexPath.row].text
+            cell.comment.text = comments[(indexPath as NSIndexPath).row].text
            
     
             
-            cell.deleteSupport.tag = indexPath.row
-            cell.deleteSupport.addTarget(self, action: #selector(commentController.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.deleteSupport.tag = (indexPath as NSIndexPath).row
+            cell.deleteSupport.addTarget(self, action: #selector(commentController.pressedReport(_:)), for: UIControlEvents.touchUpInside)
             
             cell.profilePhoto.layer.borderWidth = 0.1
             cell.profilePhoto.layer.masksToBounds = false
-            cell.profilePhoto.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.profilePhoto.layer.borderColor = UIColor.white.cgColor
             cell.profilePhoto.backgroundColor = profileBackgroundColor
             cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
             cell.profilePhoto.clipsToBounds = true
-            cell.profilePhoto.tag = indexPath.row
-            cell.profilePhoto.addTarget(self, action: #selector(commentController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside )
+            cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+            cell.profilePhoto.addTarget(self, action: #selector(commentController.pressedUsername(_:)), for: UIControlEvents.touchUpInside )
             
-            cell.username.addTarget(self, action: #selector(commentController.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.username.addTarget(self, action: #selector(commentController.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
             
    
             
-            if(comments[indexPath.row].photo.absoluteString != ""){
+            if(comments[(indexPath as NSIndexPath).row].photo.absoluteString != ""){
                 cell.profilePhoto.sd_setImageWithURL(comments[indexPath.row].photo, forState: UIControlState.Normal)
             }else{
-                cell.profilePhoto.setImage(UIImage(named: "profile")!, forState:
-                    UIControlState.Normal)
+                cell.profilePhoto.setImage(UIImage(named: "profile")!, for:
+                    UIControlState())
             }
             
             return cell
         }
     }
     
-    func pressedMention(username: String, profilePic: NSURL, isFollowing:Bool){
+    func pressedMention(_ username: String, profilePic: URL, isFollowing:Bool){
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if username != MoleCurrentUser.username{
             controller.isItMyProfile = false
@@ -226,7 +226,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
                 if data.username != "" {
@@ -237,21 +237,21 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 
                 //choosedIndex = 0
                 self.activityIndicator.stopAnimating()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         
 
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == tagView{
              return 60
         }else{
             return 68
         }
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == tagView {
             return searchResults.count+1
         }else{
@@ -260,14 +260,14 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
 
     }
     
-    @IBAction func sendButton(sender: AnyObject) {
-        if !tagView.hidden{
+    @IBAction func sendButton(_ sender: AnyObject) {
+        if !tagView.isHidden{
             updateSearch("")
         }
         
         if(newComment.text.characters.count >= 1 && newComment.text != "Yorumunu buradan yazabilirsin"){
             
-            sendButton.enabled = false
+            sendButton.isEnabled = false
             
             var mycomment = MoleVideoComment()
             mycomment.text = newComment.text
@@ -279,10 +279,10 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             comments.append(mycomment)
             tableView.reloadData()
             
-            sendButton.enabled = true
+            sendButton.isEnabled = true
 
             MolocateVideo.commentAVideo(video_id, comment: mycomment.text, mentioned_users:  mentionedUsers) { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     //self.updateParentController(true)
                     
                     if data != "fail" {
@@ -302,25 +302,25 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         }
     }
     
-    @IBAction func backButton(sender: AnyObject) {
-        self.willMoveToParentViewController(nil)
+    @IBAction func backButton(_ sender: AnyObject) {
+        self.willMove(toParentViewController: nil)
         self.view.removeFromSuperview()
         self.removeFromParentViewController()
     }
     
-    func pressedReport(sender: UIButton) {
+    func pressedReport(_ sender: UIButton) {
         
         let buttonRow = sender.tag
 
-        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     
         if( (buttonRow < comments.count) && comments[buttonRow].deletable){
             
-            let deleteVideo: UIAlertAction = UIAlertAction(title: "Yorumu Sil", style: .Default) { action -> Void in
-                let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+            let deleteVideo: UIAlertAction = UIAlertAction(title: "Yorumu Sil", style: .default) { action -> Void in
+                let index = IndexPath(row: buttonRow, section: 0)
                 
                 MolocateVideo.deleteAComment(comments[buttonRow].id, completionHandler: { (data, response, error) in
-                        dispatch_async(dispatch_get_main_queue()){
+                        DispatchQueue.main.async{
                            // self.updateParentController(false)
                         }
                     
@@ -328,8 +328,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 
                 
                 
-                comments.removeAtIndex(index.row)
-                self.tableView.deleteRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Automatic)
+                comments.remove(at: (index as NSIndexPath).row)
+                self.tableView.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
                 self.tableView.reloadData()
             }
             
@@ -337,34 +337,34 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         }
         
         
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
             
         }
         
         actionSheetController.addAction(cancelAction)
         
-        let reportVideo: UIAlertAction = UIAlertAction(title: "Rapor Et", style: .Default) { action -> Void in
+        let reportVideo: UIAlertAction = UIAlertAction(title: "Rapor Et", style: .default) { action -> Void in
         }
         
         actionSheetController.addAction(reportVideo)
         
-        self.presentViewController(actionSheetController, animated: true, completion: nil)
+        self.present(actionSheetController, animated: true, completion: nil)
         
     }
-    func pressedUsername(sender: UIButton) {
-        self.parentViewController!.navigationController?.setNavigationBarHidden(false, animated: false)
+    func pressedUsername(_ sender: UIButton) {
+        self.parent!.navigationController?.setNavigationBarHidden(false, animated: false)
         let buttonRow = sender.tag
         
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
      
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if comments[buttonRow].username != MoleCurrentUser.username{
              controller.isItMyProfile  = false
@@ -375,7 +375,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
        
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(comments[buttonRow].username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
                 user = data
@@ -383,7 +383,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 controller.RefreshGuiWithData()
                 
                 //choosedIndex = 0
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }
@@ -392,15 +392,15 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     
    
     
-    func updateParentController(plus: Bool){
+    func updateParentController(_ plus: Bool){
         let i = plus ? 1:-1
         
         if(myViewController == "MainController"){
             
         }else if myViewController == "HomeController"{
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.videoArray[videoIndex].commentCount += i
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.tableView.reloadRowsAtIndexPaths(
-                [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.tableView.reloadRows(
+                at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.player1.stop()
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.player2.stop()
             //(navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileOther).AVc.player2.stop()
@@ -419,27 +419,27 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
 //            
         }else if myViewController == "Added"{
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.videoArray[videoIndex].commentCount += i
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.tableView.reloadRowsAtIndexPaths(
-                [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.tableView.reloadRows(
+                at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.player1.stop()
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.player2.stop()
         }else if myViewController == "Tagged"{
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.videoArray[videoIndex].commentCount += i
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.tableView.reloadRowsAtIndexPaths(
-                [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.tableView.reloadRows(
+                at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.player1.stop()
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.player2.stop()
             
         }else if myViewController == "profileVenue"{
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.videoArray[videoIndex].commentCount += i
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.tableView.reloadRowsAtIndexPaths(
-                [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.tableView.reloadRows(
+                at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.player1.stop()
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.player2.stop()
         }else if myViewController == "oneVideo"{
             MoleGlobalVideo.commentCount += i
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! oneVideo).tableView.reloadRowsAtIndexPaths(
-                [NSIndexPath(forRow: videoIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! oneVideo).tableView.reloadRows(
+                at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! oneVideo).player.stop()
         }
         
@@ -465,20 +465,20 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
 //        return true
 //    }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if tableView == tagView {
             
          //   let cell = tableView.cellForRowAtIndexPath(indexPath) as! searchUsername
             
-            if indexPath.row<searchResults.count {
+            if (indexPath as NSIndexPath).row<searchResults.count {
                 
-                let username = searchResults[indexPath.row].username
+                let username = searchResults[(indexPath as NSIndexPath).row].username
                 var captiontext = newComment.attributedText.string
                 if mentionAreas[mentionModeIndex].location == 0 {
-                    captiontext = captiontext.substringToIndex(captiontext.startIndex.advancedBy(mentionAreas[mentionModeIndex].location+1)) + username + " "
+                    captiontext = captiontext.substring(to: captiontext.characters.index(captiontext.startIndex, offsetBy: mentionAreas[mentionModeIndex].location+1)) + username + " "
                 }else{
-                    captiontext = captiontext.substringToIndex(captiontext.startIndex.advancedBy(mentionAreas[mentionModeIndex].location+2)) + username + " "
+                    captiontext = captiontext.substring(to: captiontext.characters.index(captiontext.startIndex, offsetBy: mentionAreas[mentionModeIndex].location+2)) + username + " "
                 }
                 
                 
@@ -490,22 +490,22 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 
                 textViewDidChange(newComment)
                 isInTheMentionMode = false
-                tagView.hidden = true
+                tagView.isHidden = true
                 searchResults.removeAll()
                 
                 
             }
         }
     }
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
 
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange,
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
         
-        let new = (textView.attributedText.string as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        let new = (textView.attributedText.string as NSString).replacingCharacters(in: range, with: text)
         
         let textRange = NSRange(location: 0, length: new.characters.count )
         
@@ -521,7 +521,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 var word = new[mention.range.location+1...mention.range.location + mention.range.length-1]
                 
                 if word.hasPrefix("@") {
-                    word.removeAtIndex(word.startIndex)
+                    word.remove(at: word.startIndex)
                 }
                 
                 mentionedUsers.append(word)
@@ -532,7 +532,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 var word = new[mention.range.location...mention.range.location + mention.range.length-1]
                 
                 if word.hasPrefix("@") {
-                    word.removeAtIndex(word.startIndex)
+                    word.remove(at: word.startIndex)
                 }
                 
                 mentionedUsers.append(word)
@@ -611,7 +611,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         return text.characters.count+(text.characters.count-range.length) <= 140
     }
     
-    func isTheRangeInMentionZone(range: NSRange, text: String) -> (Bool, Int){
+    func isTheRangeInMentionZone(_ range: NSRange, text: String) -> (Bool, Int){
         for i in 0..<mentionAreas.count{
             let mention = mentionAreas[i]
             if text != "" {
@@ -627,35 +627,35 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         return (false,0)
     }
     
-    func updateSearch(word: String){
+    func updateSearch(_ word: String){
         //print("word::",word)
         if word == ""{
-            tagView.hidden = true
-            tagView.userInteractionEnabled = false
-            tableView.userInteractionEnabled = true
+            tagView.isHidden = true
+            tagView.isUserInteractionEnabled = false
+            tableView.isUserInteractionEnabled = true
             searchResults.removeAll()
         }else{
             
             
             MolocateAccount.searchUser(word, completionHandler: { (data, response, error) in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     if data.count > 0 {
                         self.searchResults = data
                         self.tagView.reloadData()
                     }
                 }
             })
-            tagView.hidden = false
-            tagView.userInteractionEnabled = true
-            tableView.userInteractionEnabled = false
+            tagView.isHidden = false
+            tagView.isUserInteractionEnabled = true
+            tableView.isUserInteractionEnabled = false
             
         }
     }
 
     
-    override func viewWillAppear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = false
-        (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = false
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+        (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -668,41 +668,41 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
 //        view.endEditing(true)
 //    }
     
-    func keyboardNotification(notification: NSNotification) {
+    func keyboardNotification(_ notification: Notification) {
         
-        let isShowing = notification.name == UIKeyboardWillShowNotification
+        let isShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
         
-        if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+        if let userInfo = (notification as NSNotification).userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             let endFrameHeight = endFrame?.size.height ?? 0.0
-            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             self.bottomConstraint?.constant = isShowing ? endFrameHeight : 0.0
             
-            UIView.animateWithDuration(duration,
-                                       delay: NSTimeInterval(0),
+            UIView.animate(withDuration: duration,
+                                       delay: TimeInterval(0),
                                        options: animationCurve,
                                        animations: { self.view.layoutIfNeeded() },
                                        completion: nil)
         }
     }
-    func keyboardNotification2(notification: NSNotification) {
+    func keyboardNotification2(_ notification: Notification) {
         
-        let isShowing = notification.name == UIKeyboardWillShowNotification
+        let isShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
         
-        if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+        if let userInfo = (notification as NSNotification).userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             let endFrameHeight = endFrame?.size.height ?? 0.0
-            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             self.bottomConstraint?.constant = isShowing ? endFrameHeight : 0
     
-            UIView.animateWithDuration(duration,
-                                       delay: NSTimeInterval(0),
+            UIView.animate(withDuration: duration,
+                                       delay: TimeInterval(0),
                                        options: animationCurve,
                                        animations: { self.view.layoutIfNeeded() },
                                        completion: nil)
@@ -710,7 +710,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self);
+        NotificationCenter.default.removeObserver(self);
     }
 
 

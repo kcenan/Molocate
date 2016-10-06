@@ -15,14 +15,14 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         initGui()
         //getData()
         
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        UIApplication.shared.endIgnoringInteractionEvents()
     }
     
     func initGui(){
         self.automaticallyAdjustsScrollViewInsets = false
-        navigationController?.navigationBarHidden = false
+        navigationController?.isNavigationBarHidden = false
         navigationController?.hidesBarsOnSwipe = false
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.tintColor = UIColor.white
         tableView.delegate      =   self
         tableView.dataSource    =   self
         
@@ -30,24 +30,24 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         tableView.tableFooterView = UIView()
         
         self.refreshControl.attributedTitle = NSAttributedString(string: "Beğeniler güncelleniyor...")
-        self.refreshControl.addTarget(self, action: #selector(likeVideo.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.addTarget(self, action: #selector(likeVideo.refresh(_:)), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refreshControl)
    
     }
     
     
-    func refresh(sender: AnyObject){
+    func refresh(_ sender: AnyObject){
        getData()
     }
     
     
     func getData(){
         MolocateVideo.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 self.users = data
                 self.tableView.reloadData()
                 
-                if self.refreshControl.refreshing {
+                if self.refreshControl.isRefreshing {
                     self.refreshControl.endRefreshing()
                 }
             }
@@ -57,80 +57,80 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     }
 
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
       
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! likeVideoCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! likeVideoCell
             
-            cell.username.setTitle("\(self.users[indexPath.row].username)", forState: .Normal)
-            cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-            cell.username.tag = indexPath.row
+            cell.username.setTitle("\(self.users[(indexPath as NSIndexPath).row].username)", for: UIControlState())
+            cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+            cell.username.tag = (indexPath as NSIndexPath).row
             cell.username.tintColor = swiftColor
-            cell.username.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.username.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
             
             //print("foloow:" + cell.followLike.hidden.description)
             //print("users" + users[indexPath.row].isFollowing.description)
         
       //  print(pressedFollow.description)
         if !pressedFollow {
-                if(!users[indexPath.row].isFollowing && users[indexPath.row].username != MoleCurrentUser.username){
-                    cell.followLike.hidden = false
+                if(!users[(indexPath as NSIndexPath).row].isFollowing && users[(indexPath as NSIndexPath).row].username != MoleCurrentUser.username){
+                    cell.followLike.isHidden = false
                 }else{
-                    cell.followLike.hidden = true
+                    cell.followLike.isHidden = true
                 }
         }else{
-            cell.followLike.hidden = false
+            cell.followLike.isHidden = false
             //cell.followLike.enabled = false
-            cell.followLike.setBackgroundImage(UIImage(named: "followTicked"), forState: .Normal)
+            cell.followLike.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
         }
             
             
             
-            cell.followLike.tag = indexPath.row
-            cell.followLike.addTarget(self, action: #selector(likeVideo.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.followLike.tag = (indexPath as NSIndexPath).row
+            cell.followLike.addTarget(self, action: #selector(likeVideo.pressedFollow(_:)), for: UIControlEvents.touchUpInside)
 
             cell.profileImage.layer.borderWidth = 0.1
             cell.profileImage.layer.masksToBounds = false
-            cell.profileImage.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.profileImage.layer.borderColor = UIColor.white.cgColor
             cell.profileImage.backgroundColor = profileBackgroundColor
             cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height/2
             cell.profileImage.clipsToBounds = true
-            cell.profileImage.tag = indexPath.row
-            cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.profileImage.tag = (indexPath as NSIndexPath).row
+            cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
             
 
-            if(users[indexPath.row].profilePic.absoluteString != ""){
+            if(users[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
                 cell.profileImage.sd_setBackgroundImageWithURL(users[indexPath.row].profilePic, forState: .Normal)
             }else{
-                cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, forState:
-                    UIControlState.Normal)
+                cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, for:
+                    UIControlState())
             }
             
             return cell
        
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.users.count
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
     
-    func pressedProfile(sender: UIButton) {
+    func pressedProfile(_ sender: UIButton) {
         
-        self.parentViewController!.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.parent!.navigationController?.setNavigationBarHidden(false, animated: false)
         let buttonRow = sender.tag
       
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         if users[buttonRow].username != MoleCurrentUser.username{
             mine = false
@@ -138,11 +138,11 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
             mine = true
         }
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(users[buttonRow].username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
                 user = data
@@ -156,16 +156,16 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     }
   
     
-    func pressedFollow(sender: UIButton) {
+    func pressedFollow(_ sender: UIButton) {
         //print("pressedfollow")
         pressedFollow = true
         let buttonRow = sender.tag
         
         users[buttonRow].isFollowing = true
         
-        let index : NSIndexPath = NSIndexPath(forRow: buttonRow, inSection: 0)
+        let index : IndexPath = IndexPath(row: buttonRow, section: 0)
         
-        tableView.reloadRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Automatic)
+        tableView.reloadRows(at: [index], with: UITableViewRowAnimation.automatic)
        
         MolocateAccount.follow(users[buttonRow].username, completionHandler: { (data, response, error) -> () in
             //DBG: Check if it is succeed
@@ -174,17 +174,17 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         pressedFollow = false
     }
     
-    override func viewWillAppear(animated: Bool) {
-        (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = false
+    override func viewWillAppear(_ animated: Bool) {
+        (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = false
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func backButton(sender: AnyObject) {
+    @IBAction func backButton(_ sender: AnyObject) {
         
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
 //        dispatch_async(dispatch_get_main_queue()) {
 //            
 //            self.willMoveToParentViewController(nil)

@@ -24,10 +24,10 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     func initGui(){
         
-        self.navigationController?.navigationBar.hidden = false
+        self.navigationController?.navigationBar.isHidden = false
         
         myTable =   UITableView()
-        myTable.frame =  CGRectMake(0, 0, MolocateDevice.size.width, MolocateDevice.size.height);
+        myTable.frame =  CGRect(x: 0, y: 0, width: MolocateDevice.size.width, height: MolocateDevice.size.height);
         myTable.tableFooterView = UIView()
         myTable.allowsSelection = true
         myTable.delegate      =   self
@@ -44,18 +44,18 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         }
         
    
-        self.refreshControl.addTarget(self, action: #selector(NotificationsViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.addTarget(self, action: #selector(NotificationsViewController.refresh(_:)), for: UIControlEvents.valueChanged)
         self.myTable.addSubview(refreshControl)
         
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        UIApplication.shared.endIgnoringInteractionEvents()
     }
     
     
     
-    func refresh(sender: AnyObject){
+    func refresh(_ sender: AnyObject){
          getData(followersclicked, userOrClass:  classPlace.name == "" ? true:false )
     }
-    func getData(followers:Bool, userOrClass: Bool){
+    func getData(_ followers:Bool, userOrClass: Bool){
         
         if followers {
             if userOrClass{
@@ -63,11 +63,11 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                     if next != nil {
                         self.relationNextUrl = next!
                     }
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         self.userRelations = data
                         self.myTable.reloadData()
                         self.classUser.follower_count = data.totalCount
-                        if self.refreshControl.refreshing{
+                        if self.refreshControl.isRefreshing{
                             self.refreshControl.endRefreshing()
                         }
                     }
@@ -78,11 +78,11 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                     if next != nil {
                         self.relationNextUrl = next!
                     }
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         self.userRelations = data
                         self.myTable.reloadData()
                         self.classPlace.follower_count = data.totalCount
-                        if self.refreshControl.refreshing{
+                        if self.refreshControl.isRefreshing{
                             self.refreshControl.endRefreshing()
                         }
                     }
@@ -95,11 +95,11 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                 if next != nil {
                     self.relationNextUrl = next!
                 }
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     self.userRelations = data
                     self.myTable.reloadData()
                     self.classUser.following_count = data.totalCount
-                    if self.refreshControl.refreshing{
+                    if self.refreshControl.isRefreshing{
                         self.refreshControl.endRefreshing()
                     }
                 }
@@ -110,34 +110,34 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         //let cell = TableViewCellFollowerFollowing(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier2")
-        let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
-        cell.profilePhoto.tag = indexPath.row
-        cell.nameLabel.tag = indexPath.row
-        cell.followButton.tag = indexPath.row
-        cell.usernameLabel.tag = indexPath.row
-        cell.usernameLabel.text = userRelations.relations[indexPath.row].username
-        cell.nameLabel.text = userRelations.relations[indexPath.row].name
+        let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+        cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+        cell.nameLabel.tag = (indexPath as NSIndexPath).row
+        cell.followButton.tag = (indexPath as NSIndexPath).row
+        cell.usernameLabel.tag = (indexPath as NSIndexPath).row
+        cell.usernameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].username
+        cell.nameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].name
         
        
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
        
-        if(userRelations.relations[indexPath.row].picture_url.absoluteString != ""){
+        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url.absoluteString != ""){
             cell.profilePhoto.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
         }else{
-            cell.profilePhoto.setImage(UIImage(named: "profile"), forState: .Normal)
+            cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
         }
         
-       cell.profilePhoto.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: .TouchUpInside)
+       cell.profilePhoto.addTarget(self, action: #selector(Followers.pressedProfile(_:)), for: .touchUpInside)
 
-        if(!userRelations.relations[indexPath.row].is_following){
-            cell.followButton.setBackgroundImage(UIImage(named: "follow"), forState: UIControlState.Normal)
+        if(!userRelations.relations[(indexPath as NSIndexPath).row].is_following){
+            cell.followButton.setBackgroundImage(UIImage(named: "follow"), for: UIControlState())
         } else {
-            cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), forState: UIControlState.Normal)
+            cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
         }
-        cell.followButton.addTarget(self, action: #selector(Followers.pressedFollow(_:)), forControlEvents: .TouchUpInside)
+        cell.followButton.addTarget(self, action: #selector(Followers.pressedFollow(_:)), for: .touchUpInside)
 
 //        if followersclicked {
 //        
@@ -184,40 +184,40 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         //                cell.myButton1.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         //                cell.fotoButton.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
       
-        if(userRelations.relations[indexPath.row].username == MoleCurrentUser.username){
-            cell.followButton.hidden = true
+        if(userRelations.relations[(indexPath as NSIndexPath).row].username == MoleCurrentUser.username){
+            cell.followButton.isHidden = true
         }
         
         
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
 
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            self.parentViewController!.navigationController?.setNavigationBarHidden(false, animated: false)
+            tableView.deselectRow(at: indexPath, animated: true)
+            self.parent!.navigationController?.setNavigationBarHidden(false, animated: false)
         
             activityIndicator.startAnimating()
             
-            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+            UIApplication.shared.beginIgnoringInteractionEvents()
             
             
-            let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+            let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
             
-            if userRelations.relations[indexPath.row].username  != MoleCurrentUser.username{
+            if userRelations.relations[(indexPath as NSIndexPath).row].username  != MoleCurrentUser.username{
                 controller.isItMyProfile = false
             }else{
                 controller.isItMyProfile = true
             }
         
-            controller.classUser.username =  userRelations.relations[indexPath.row].username
-            controller.classUser.profilePic = userRelations.relations[indexPath.row].picture_url
-            controller.classUser.isFollowing = userRelations.relations[indexPath.row].is_following
+            controller.classUser.username =  userRelations.relations[(indexPath as NSIndexPath).row].username
+            controller.classUser.profilePic = userRelations.relations[(indexPath as NSIndexPath).row].picture_url
+            controller.classUser.isFollowing = userRelations.relations[(indexPath as NSIndexPath).row].is_following
             
             self.navigationController?.pushViewController(controller, animated: true)
-            MolocateAccount.getUser(userRelations.relations[indexPath.row].username) { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+            MolocateAccount.getUser(userRelations.relations[(indexPath as NSIndexPath).row].username) { (data, response, error) -> () in
+                DispatchQueue.main.async{
                     //DBG: If it is mine profile?
                     if data.username != ""{
                         user = data
@@ -225,7 +225,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                         controller.RefreshGuiWithData()
                     }
                     
-                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    UIApplication.shared.endIgnoringInteractionEvents()
                         //choosedIndex = 0
                     self.activityIndicator.stopAnimating()
                 
@@ -238,9 +238,9 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
 
     
-    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if((indexPath.row%50 == 35)&&(relationNextUrl != "")){
+        if(((indexPath as NSIndexPath).row%50 == 35)&&(relationNextUrl != "")){
             
             if(followersclicked){
                 MolocateAccount.getFollowers(relationNextUrl, username: classUser.username, completionHandler: { (data, response, error, count, next, previous) in
@@ -249,11 +249,11 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                         self.relationNextUrl = next!
                     }
                     
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         for item in data.relations{
                             self.userRelations.relations.append(item)
-                            let newIndexPath = NSIndexPath(forRow: self.userRelations.relations.count-1, inSection: 0)
-                            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                            let newIndexPath = IndexPath(row: self.userRelations.relations.count-1, section: 0)
+                            tableView.insertRows(at: [newIndexPath], with: .bottom)
                             
                         }
                     }
@@ -263,12 +263,12 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                     if next != nil {
                         self.relationNextUrl = next!
                     }
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         
                         for item in data.relations{
                             self.userRelations.relations.append(item)
-                            let newIndexPath = NSIndexPath(forRow: self.userRelations.relations.count-1, inSection: 0)
-                            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                            let newIndexPath = IndexPath(row: self.userRelations.relations.count-1, section: 0)
+                            tableView.insertRows(at: [newIndexPath], with: .bottom)
                             
                         }
                         
@@ -283,7 +283,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     
     
-    func pressedFollow(sender: UIButton) {
+    func pressedFollow(_ sender: UIButton) {
         
         let buttonRow = sender.tag
         
@@ -302,16 +302,16 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             }
             
     }
-        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
-        self.myTable.reloadRowsAtIndexPaths([index], withRowAnimation: .None)
+        let index = IndexPath(row: buttonRow, section: 0)
+        self.myTable.reloadRows(at: [index], with: .none)
         
         
         
     }
     
-    func pressedProfile(sender: UIButton) {
+    func pressedProfile(_ sender: UIButton) {
         let row = sender.tag
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if userRelations.relations[row].username  != MoleCurrentUser.username{
             controller.isItMyProfile = false
@@ -325,7 +325,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(userRelations.relations[row].username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 if data.username != ""{
                     user = data
@@ -333,7 +333,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
                     controller.RefreshGuiWithData()
                 }
                 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 //choosedIndex = 0
                 self.activityIndicator.stopAnimating()
                 
@@ -342,25 +342,25 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     }
     
  
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
        // userRelations.relations.removeAll()
         //myTable.reloadData()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = false
+    override func viewWillAppear(_ animated: Bool) {
+        (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = false
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let rowHeight : CGFloat = 60
         return rowHeight
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userRelations.relations.count
     }
     

@@ -27,8 +27,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         initGui()
-        if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-             UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        if UIApplication.shared.isIgnoringInteractionEvents {
+             UIApplication.shared.endIgnoringInteractionEvents()
         }
        
     }
@@ -50,18 +50,18 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
 
         
         username.text = classUser.username
-        followingsCount.setTitle("\(classUser.following_count)", forState: .Normal)
-        followersCount.setTitle("\(classUser.follower_count)", forState: .Normal)
+        followingsCount.setTitle("\(classUser.following_count)", for: UIControlState())
+        followersCount.setTitle("\(classUser.follower_count)", for: UIControlState())
         
         
         settings.layer.zPosition = 1
-        settings.hidden = true
-        settings.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.width, self.view.frame.width)
+        settings.isHidden = true
+        settings.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.width)
         settings.layer.cornerRadius = 0
-        settings.tintColor = UIColor.clearColor()
+        settings.tintColor = UIColor.clear
         profilePhoto.layer.borderWidth = 0.5
         profilePhoto.layer.masksToBounds = false
-        profilePhoto.layer.borderColor = profileBackgroundColor.CGColor
+        profilePhoto.layer.borderColor = profileBackgroundColor.cgColor
         profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2
         profilePhoto.backgroundColor = profileBackgroundColor
         profilePhoto.clipsToBounds = true
@@ -70,19 +70,19 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
            
         }else{
             profilePhoto.image = UIImage(named: "profile")!
-            ProfileButton.enabled = false
+            ProfileButton.isEnabled = false
         }
         
         addedButton.backgroundColor = swiftColor
-        addedButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        addedButton.setTitle("▶︎GÖNDERİ(\(classUser.post_count))", forState: .Normal)
+        addedButton.setTitleColor(UIColor.white, for: UIControlState())
+        addedButton.setTitle("▶︎GÖNDERİ(\(classUser.post_count))", for: UIControlState())
         
-        taggedButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        taggedButton.setTitle("@ETİKET(\(classUser.tag_count))", forState: .Normal)
+        taggedButton.setTitleColor(UIColor.black, for: UIControlState())
+        taggedButton.setTitle("@ETİKET(\(classUser.tag_count))", for: UIControlState())
         taggedButton.backgroundColor = swiftColor3
         
     
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.white
         self.navigationController?.hidesBarsOnSwipe = false
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -98,7 +98,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         AVc.view.frame.size.width = MolocateDevice.size.width
         AVc.view.frame.size.height = scrollView.frame.height
         self.addChildViewController(AVc);
-        AVc.didMoveToParentViewController(self)
+        AVc.didMove(toParentViewController: self)
         
         var adminFrame :CGRect = AVc.view.frame;
         adminFrame.origin.x = MolocateDevice.size.width
@@ -109,7 +109,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         BVc.isItMyProfile = isItMyProfile
         BVc.view.frame = adminFrame;
         self.addChildViewController(BVc);
-        BVc.didMoveToParentViewController(self)
+        BVc.didMove(toParentViewController: self)
         
         scrollView.setContentOffset(deneme.origin, animated: true)
         scrollView.addSubview(AVc.view);
@@ -117,20 +117,20 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         scrollWidth = MolocateDevice.size.width*2
         scrollView.contentSize.width = scrollWidth
         scrollView.delegate = self
-        scrollView.scrollEnabled = true
+        scrollView.isScrollEnabled = true
     }
     
     func RefreshGuiWithData(){
-        addedButton.setTitle("▶︎GÖNDERİ(\(classUser.post_count))", forState: .Normal)
-        taggedButton.setTitle("@ETİKET(\(classUser.tag_count))", forState: .Normal)
+        addedButton.setTitle("▶︎GÖNDERİ(\(classUser.post_count))", for: UIControlState())
+        taggedButton.setTitle("@ETİKET(\(classUser.tag_count))", for: UIControlState())
        
         if(classUser.profilePic.absoluteString != ""){
             profilePhoto.sd_setImageWithURL(classUser.profilePic)
-            ProfileButton.enabled = true
+            ProfileButton.isEnabled = true
             
         }else{
             profilePhoto.image = UIImage(named: "profile")!
-            ProfileButton.enabled = false
+            ProfileButton.isEnabled = false
         }
         
   
@@ -144,8 +144,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
      
         username.text = classUser.username
         
-        followingsCount.setTitle("\(classUser.following_count)", forState: .Normal)
-        followersCount.setTitle("\(classUser.follower_count)", forState: .Normal)
+        followingsCount.setTitle("\(classUser.following_count)", for: UIControlState())
+        followersCount.setTitle("\(classUser.follower_count)", for: UIControlState())
         
         
         AVc.classUser = classUser
@@ -157,64 +157,64 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
 
     }
     
-    @IBAction func addedButton(sender: AnyObject) {
+    @IBAction func addedButton(_ sender: AnyObject) {
         var a :CGRect = AVc.view.frame;
         a.origin.x = 0
         scrollView.setContentOffset(a.origin, animated: true)
     }
     
-    @IBAction func taggedButton(sender: AnyObject) {
+    @IBAction func taggedButton(_ sender: AnyObject) {
         let b :CGRect = BVc.view.frame;
         scrollView.setContentOffset(b.origin, animated: true)
     }
-    @IBAction func followingsButton(sender: AnyObject) {
+    @IBAction func followingsButton(_ sender: AnyObject) {
         AVc.player2.stop()
         AVc.player1.stop()
         BVc.player2.stop()
         BVc.player1.stop()
         
-        let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
+        let controller:Followers = self.storyboard!.instantiateViewController(withIdentifier: "Followers") as! Followers
         controller.classUser = classUser
         controller.followersclicked = false
         navigationController?.pushViewController(controller, animated: true)
     }
     
     
-    @IBAction func FollowButton(sender: AnyObject) {
+    @IBAction func FollowButton(_ sender: AnyObject) {
       
         if(classUser.username == MoleCurrentUser.username){
             showTable() //Settings table
-            scrollView.userInteractionEnabled = false // can be apply for search in maincontroller
+            scrollView.isUserInteractionEnabled = false // can be apply for search in maincontroller
         }else {
             if !classUser.isFollowing{
                 FollowButton.image = UIImage(named: "unfollow")
                 classUser.isFollowing = true
                 classUser.follower_count+=1
                 MoleCurrentUser.following_count += 1
-                followersCount.setTitle("\(self.classUser.follower_count)", forState: .Normal)
+                followersCount.setTitle("\(self.classUser.follower_count)", for: UIControlState())
                 MolocateAccount.follow(classUser.username, completionHandler: { (data, response, error) -> () in
                     //IMP:if request is failed delete change
                 })
             }else {
-                let actionSheetController: UIAlertController = UIAlertController(title: "Takibi bırakmak istediğine emin misin?", message: nil, preferredStyle: .ActionSheet)
-                let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { action -> Void in}
+                let actionSheetController: UIAlertController = UIAlertController(title: "Takibi bırakmak istediğine emin misin?", message: nil, preferredStyle: .actionSheet)
+                let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .cancel) { action -> Void in}
                 actionSheetController.addAction(cancelAction)
                
-                let takePictureAction: UIAlertAction = UIAlertAction(title: "Takibi Bırak", style: .Default)
+                let takePictureAction: UIAlertAction = UIAlertAction(title: "Takibi Bırak", style: .default)
                 { action -> Void in
                     
                     self.FollowButton.image = UIImage(named: "follow")
                     self.classUser.isFollowing = false
                     self.classUser.follower_count -= 1
-                    self.followersCount.setTitle("\(self.classUser.follower_count)", forState: .Normal)
+                    self.followersCount.setTitle("\(self.classUser.follower_count)", for: UIControlState())
                     MoleCurrentUser.following_count -= 1
                     
                     MolocateAccount.unfollow(self.classUser.username, completionHandler: { (data, response, error) -> () in
                         //IMP:if request is failed delete change
-                        if let parentVC = self.parentViewController {
+                        if let parentVC = self.parent {
                             if let parentVC = parentVC as? Followers{
                                 MolocateAccount.getFollowings(username: MoleCurrentUser.username, completionHandler: { (data, response, error, count, next, previous) in
-                                    dispatch_async(dispatch_get_main_queue()) {
+                                    DispatchQueue.main.async {
                                         parentVC.userRelations = data
                                         parentVC.myTable.reloadData()
                                     }
@@ -226,7 +226,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
                 
                 actionSheetController.addAction(takePictureAction)
                 actionSheetController.popoverPresentationController?.sourceView = sender as? UIView
-                self.presentViewController(actionSheetController, animated: true, completion: nil)
+                self.present(actionSheetController, animated: true, completion: nil)
             }
             
         }
@@ -234,19 +234,19 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     
 
        
-    @IBAction func followersButton(sender: AnyObject) {
+    @IBAction func followersButton(_ sender: AnyObject) {
         AVc.player2.stop()
         AVc.player1.stop()
         BVc.player2.stop()
         BVc.player1.stop()
-        let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
+        let controller:Followers = self.storyboard!.instantiateViewController(withIdentifier: "Followers") as! Followers
         controller.classUser = classUser
         controller.followersclicked = true
         navigationController?.pushViewController(controller, animated: true)
     }
     
    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (scrollView.contentOffset.x < BVc.view.frame.origin.x/2){
             
             BVc.player1.stop()
@@ -258,8 +258,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             }
             addedButton.backgroundColor = swiftColor
             taggedButton.backgroundColor = swiftColor3
-            addedButton.titleLabel?.textColor = UIColor.whiteColor()
-            taggedButton.titleLabel?.textColor = UIColor.blackColor()
+            addedButton.titleLabel?.textColor = UIColor.white
+            taggedButton.titleLabel?.textColor = UIColor.black
         }
         else{
             BVc.player1.playFromBeginning()
@@ -271,13 +271,13 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             }
             addedButton.backgroundColor = swiftColor3
             taggedButton.backgroundColor = swiftColor
-            taggedButton.titleLabel?.textColor = UIColor.whiteColor()
-            addedButton.titleLabel?.textColor = UIColor.blackColor()
+            taggedButton.titleLabel?.textColor = UIColor.white
+            addedButton.titleLabel?.textColor = UIColor.black
             
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         
     }
     
@@ -285,34 +285,34 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         super.didReceiveMemoryWarning()
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
         
-        self.addedButton.enabled = true
-        self.taggedButton.enabled = true
-        self.scrollView.scrollEnabled = true
+        self.addedButton.isEnabled = true
+        self.taggedButton.isEnabled = true
+        self.scrollView.isScrollEnabled = true
         //???What is doing that animation
-        if(indexPath.row == 0){
-            UIView.animateWithDuration(0.75) { () -> Void in
-                self.scrollView.userInteractionEnabled = true
+        if((indexPath as NSIndexPath).row == 0){
+            UIView.animate(withDuration: 0.75, animations: { () -> Void in
+                self.scrollView.isUserInteractionEnabled = true
                 self.scrollView.alpha = 1
-                self.settings.hidden = true
+                self.settings.isHidden = true
              
-                self.navigationController?.navigationBarHidden = false
+                self.navigationController?.isNavigationBarHidden = false
 
 
-            }
+            }) 
         }
-        if indexPath.row == 1 {
-            self.scrollView.userInteractionEnabled = true
+        if (indexPath as NSIndexPath).row == 1 {
+            self.scrollView.isUserInteractionEnabled = true
             self.scrollView.alpha = 1
-            self.performSegueWithIdentifier("goEditProfile", sender: self)
-            self.settings.hidden = true
+            self.performSegue(withIdentifier: "goEditProfile", sender: self)
+            self.settings.isHidden = true
         }
-        if indexPath.row == 2 {
+        if (indexPath as NSIndexPath).row == 2 {
             MolocateAccount.unregisterDevice({ (data, response, error) in
             })
-            NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "userToken")
+            UserDefaults.standard.set(nil, forKey: "userToken")
             sideClicked = false
             profileOn = 0
             category = "All"
@@ -331,7 +331,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
            
             //navigationın düzelmesi sonrası bu böyle olucak
             //self.parentViewController!.parentViewController!.performSegueWithIdentifier("logOut", sender: self)
-            self.parentViewController!.parentViewController!.performSegueWithIdentifier("logout", sender: self)
+            self.parent!.parent!.performSegue(withIdentifier: "logout", sender: self)
         }
         
         
@@ -339,8 +339,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     
 
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == 0{
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath as NSIndexPath).row == 0{
             return 90
         }
         else{
@@ -350,55 +350,55 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     }
     
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = optionCell(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier")
+        let cell = optionCell(style: UITableViewCellStyle.default, reuseIdentifier: "myIdentifier")
         
-        if indexPath.row == 0 {
-            cell.nameOption.frame = CGRectMake(MolocateDevice.size.width / 2 - 50, 40 , 100, 30)
-            cell.nameOption.textAlignment = .Center
-            cell.nameOption.textColor = UIColor.blackColor()
-            cell.arrow.hidden = true
-            cell.cancelLabel.hidden = false
+        if (indexPath as NSIndexPath).row == 0 {
+            cell.nameOption.frame = CGRect(x: MolocateDevice.size.width / 2 - 50, y: 40 , width: 100, height: 30)
+            cell.nameOption.textAlignment = .center
+            cell.nameOption.textColor = UIColor.black
+            cell.arrow.isHidden = true
+            cell.cancelLabel.isHidden = false
         }else {
-            cell.cancelLabel.hidden = true
+            cell.cancelLabel.isHidden = true
         }
-        cell.nameOption.text = names[indexPath.row]
-        cell.backgroundColor = UIColor.whiteColor()
+        cell.nameOption.text = names[(indexPath as NSIndexPath).row]
+        cell.backgroundColor = UIColor.white
         
         return cell
         
     }
-    @IBAction func pressedPhoto(sender: AnyObject) {
-        let controller:onePhoto = self.storyboard!.instantiateViewControllerWithIdentifier("onePhoto") as! onePhoto
+    @IBAction func pressedPhoto(_ sender: AnyObject) {
+        let controller:onePhoto = self.storyboard!.instantiateViewController(withIdentifier: "onePhoto") as! onePhoto
         controller.classUser = classUser
         navigationController?.pushViewController(controller, animated: true)
         
     }
     
     func showTable(){
-        UIView.animateWithDuration(0.25) { () -> Void in
-            self.navigationController?.navigationBarHidden = true
-            self.addedButton.enabled = false
-            self.taggedButton.enabled = false
-            self.scrollView.scrollEnabled = false
-            self.settings.hidden = false
-            self.settings.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.width,self.view.frame.size.width)
+        UIView.animate(withDuration: 0.25, animations: { () -> Void in
+            self.navigationController?.isNavigationBarHidden = true
+            self.addedButton.isEnabled = false
+            self.taggedButton.isEnabled = false
+            self.scrollView.isScrollEnabled = false
+            self.settings.isHidden = false
+            self.settings.frame = CGRect(x: self.view.frame.origin.x,y: self.view.frame.origin.y,width: self.view.frame.width,height: self.view.frame.size.width)
             self.scrollView.alpha = 0.4
-        }
+        }) 
         
     }
   
-    override func viewWillAppear(animated: Bool) {
-            navigationController?.navigationBarHidden = false
-           (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = false
+    override func viewWillAppear(_ animated: Bool) {
+            navigationController?.isNavigationBarHidden = false
+           (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = false
        
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         AVc.player1.stop()
         AVc.player2.stop()
         BVc.player1.stop()

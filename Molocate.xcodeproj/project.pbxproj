@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2DFE36B66AA0CEA7089BFC5F /* Pods_Molocate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98CE71F35380A6A5DF16FFF /* Pods_Molocate.framework */; };
+		0AD74B4DA8C1B7289EEA73C6 /* Pods_MolocateTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29F820FF1A23A1E19E11D8C9 /* Pods_MolocateTests.framework */; };
+		33415F35FD04B3278C01E3CA /* Pods_MolocateUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8337B318B37A95A967D3E4EC /* Pods_MolocateUITests.framework */; };
 		3871AAA31C9488BA00DDD83E /* SideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3871AAA21C9488BA00DDD83E /* SideCell.swift */; };
 		388173F51C97AACB0064EBB5 /* CommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388173F41C97AACB0064EBB5 /* CommentController.swift */; };
 		388173F71C97ABE20064EBB5 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388173F61C97ABE20064EBB5 /* CommentCell.swift */; };
@@ -16,6 +17,7 @@
 		38EAEA601CF10A5C0053249F /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EAEA5F1CF10A5B0053249F /* EventCell.swift */; };
 		38EAEA621CF111870053249F /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EAEA611CF111870053249F /* EventController.swift */; };
 		38F771041C9505670079FACD /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F771031C9505670079FACD /* Player.swift */; };
+		8BC101C91F384746AEB93FA5 /* Pods_Molocate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E3ACAA31AF21EFA58757234 /* Pods_Molocate.framework */; };
 		C60905361C4812A100614C7F /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60905351C4812A100614C7F /* ContainerController.swift */; };
 		C609053A1C48143C00614C7F /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60905391C48143C00614C7F /* MainController.swift */; };
 		C609053C1C48145700614C7F /* SideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C609053B1C48145700614C7F /* SideBarController.swift */; };
@@ -171,7 +173,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		30E8D7C448993011BA2B8851 /* Pods-Molocate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Molocate.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Molocate/Pods-Molocate.debug.xcconfig"; sourceTree = "<group>"; };
+		043E3A00B111938B03410FE4 /* Pods-MolocateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MolocateUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MolocateUITests/Pods-MolocateUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		0F1984DC22A31906FB00ADAD /* Pods-Molocate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Molocate.release.xcconfig"; path = "Pods/Target Support Files/Pods-Molocate/Pods-Molocate.release.xcconfig"; sourceTree = "<group>"; };
+		29F820FF1A23A1E19E11D8C9 /* Pods_MolocateTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MolocateTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3862A5891CAA005D00D41791 /* Molocate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Molocate.entitlements; sourceTree = "<group>"; };
 		3871AAA21C9488BA00DDD83E /* SideCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideCell.swift; sourceTree = "<group>"; };
 		388173F41C97AACB0064EBB5 /* CommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentController.swift; sourceTree = "<group>"; };
@@ -181,7 +185,12 @@
 		38EAEA5F1CF10A5B0053249F /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		38EAEA611CF111870053249F /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		38F771031C9505670079FACD /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		85240C29B79988CE027A1541 /* Pods-Molocate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Molocate.release.xcconfig"; path = "Pods/Target Support Files/Pods-Molocate/Pods-Molocate.release.xcconfig"; sourceTree = "<group>"; };
+		4E52B282C1DEE6A1AF3F3D83 /* Pods-Molocate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Molocate.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Molocate/Pods-Molocate.debug.xcconfig"; sourceTree = "<group>"; };
+		60A00617FF184E1B1A599F1F /* Pods-MolocateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MolocateUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MolocateUITests/Pods-MolocateUITests.release.xcconfig"; sourceTree = "<group>"; };
+		6D2F67643E17DDA2F1E2F8D5 /* Pods-MolocateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MolocateTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MolocateTests/Pods-MolocateTests.release.xcconfig"; sourceTree = "<group>"; };
+		8337B318B37A95A967D3E4EC /* Pods_MolocateUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MolocateUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E3ACAA31AF21EFA58757234 /* Pods_Molocate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Molocate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB310EEDA3B847F6A602A851 /* Pods-MolocateTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MolocateTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MolocateTests/Pods-MolocateTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C60905351C4812A100614C7F /* ContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		C60905391C48143C00614C7F /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		C609053B1C48145700614C7F /* SideBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideBarController.swift; sourceTree = "<group>"; };
@@ -323,7 +332,6 @@
 		E3F57EE41CFF3BFD007C3DF7 /* ActiveType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveType.swift; sourceTree = "<group>"; };
 		E3F57EE61CFF3C31007C3DF7 /* RegexParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexParser.swift; sourceTree = "<group>"; };
 		E3FC416E1CB6B3EF00EE8995 /* MolocateUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolocateUtility.swift; sourceTree = "<group>"; };
-		E98CE71F35380A6A5DF16FFF /* Pods_Molocate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Molocate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,7 +356,7 @@
 				C6BA0A051BFA417B0091E088 /* AudioToolbox.framework in Frameworks */,
 				C65A45101C694AFC00E9DA6F /* FBSDKShareKit.framework in Frameworks */,
 				C65A450E1C694AFC00E9DA6F /* FBSDKCoreKit.framework in Frameworks */,
-				2DFE36B66AA0CEA7089BFC5F /* Pods_Molocate.framework in Frameworks */,
+				8BC101C91F384746AEB93FA5 /* Pods_Molocate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +364,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AD74B4DA8C1B7289EEA73C6 /* Pods_MolocateTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,17 +372,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33415F35FD04B3278C01E3CA /* Pods_MolocateUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00EBBAE21850994676634430 /* Pods */ = {
+		2B8FF1DB292D1BBF3696D5FA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				30E8D7C448993011BA2B8851 /* Pods-Molocate.debug.xcconfig */,
-				85240C29B79988CE027A1541 /* Pods-Molocate.release.xcconfig */,
+				4E52B282C1DEE6A1AF3F3D83 /* Pods-Molocate.debug.xcconfig */,
+				0F1984DC22A31906FB00ADAD /* Pods-Molocate.release.xcconfig */,
+				BB310EEDA3B847F6A602A851 /* Pods-MolocateTests.debug.xcconfig */,
+				6D2F67643E17DDA2F1E2F8D5 /* Pods-MolocateTests.release.xcconfig */,
+				043E3A00B111938B03410FE4 /* Pods-MolocateUITests.debug.xcconfig */,
+				60A00617FF184E1B1A599F1F /* Pods-MolocateUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -442,7 +456,7 @@
 				C63FBD1A1BF3E5B900DBB34C /* MolocateTests */,
 				C63FBD251BF3E5B900DBB34C /* MolocateUITests */,
 				C63FBD041BF3E5B800DBB34C /* Products */,
-				00EBBAE21850994676634430 /* Pods */,
+				2B8FF1DB292D1BBF3696D5FA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -573,7 +587,9 @@
 				C6BA0A091BFA42000091E088 /* CoreLocation.framework */,
 				C6BA0A061BFA41F20091E088 /* CFNetwork.framework */,
 				C6BA0A041BFA417B0091E088 /* AudioToolbox.framework */,
-				E98CE71F35380A6A5DF16FFF /* Pods_Molocate.framework */,
+				8E3ACAA31AF21EFA58757234 /* Pods_Molocate.framework */,
+				29F820FF1A23A1E19E11D8C9 /* Pods_MolocateTests.framework */,
+				8337B318B37A95A967D3E4EC /* Pods_MolocateUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -679,13 +695,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C63FBD2B1BF3E5B900DBB34C /* Build configuration list for PBXNativeTarget "Molocate" */;
 			buildPhases = (
-				41170F8E2BB6328F14567921 /* Check Pods Manifest.lock */,
+				3D2CF186E8206BE195C7625B /* [CP] Check Pods Manifest.lock */,
 				C63FBCFF1BF3E5B800DBB34C /* Sources */,
 				C63FBD001BF3E5B800DBB34C /* Frameworks */,
 				C63FBD011BF3E5B800DBB34C /* Resources */,
-				6478D27176E53AECFF80ABC8 /* Embed Pods Frameworks */,
-				3A5D761AB8388936CF8DF066 /* Copy Pods Resources */,
 				E35C437C1D1C578F00914C26 /* Run Script */,
+				241DDA07292A2B0F1CE722B8 /* [CP] Embed Pods Frameworks */,
+				4330BBCE41638C2EAE58830B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -700,9 +716,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C63FBD2E1BF3E5B900DBB34C /* Build configuration list for PBXNativeTarget "MolocateTests" */;
 			buildPhases = (
+				DAD0198749ABA6C90E3BA9DA /* [CP] Check Pods Manifest.lock */,
 				C63FBD131BF3E5B900DBB34C /* Sources */,
 				C63FBD141BF3E5B900DBB34C /* Frameworks */,
 				C63FBD151BF3E5B900DBB34C /* Resources */,
+				671C3DFB7C2C2B9A87E50A1D /* [CP] Embed Pods Frameworks */,
+				6C5A7002F0F36A99CF5D7B72 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -718,9 +737,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C63FBD311BF3E5B900DBB34C /* Build configuration list for PBXNativeTarget "MolocateUITests" */;
 			buildPhases = (
+				EFDF4EF6BA421AB77DBEBA8A /* [CP] Check Pods Manifest.lock */,
 				C63FBD1E1BF3E5B900DBB34C /* Sources */,
 				C63FBD1F1BF3E5B900DBB34C /* Frameworks */,
 				C63FBD201BF3E5B900DBB34C /* Resources */,
+				E81895B345B03D9CFEBE3598 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -745,6 +766,7 @@
 					C63FBD021BF3E5B800DBB34C = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 573682DC5D;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -765,10 +787,12 @@
 					};
 					C63FBD161BF3E5B900DBB34C = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = C63FBD021BF3E5B800DBB34C;
 					};
 					C63FBD211BF3E5B900DBB34C = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = C63FBD021BF3E5B800DBB34C;
 					};
 				};
@@ -863,29 +887,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3A5D761AB8388936CF8DF066 /* Copy Pods Resources */ = {
+		241DDA07292A2B0F1CE722B8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Molocate/Pods-Molocate-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Molocate/Pods-Molocate-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		41170F8E2BB6328F14567921 /* Check Pods Manifest.lock */ = {
+		3D2CF186E8206BE195C7625B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -893,19 +917,64 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6478D27176E53AECFF80ABC8 /* Embed Pods Frameworks */ = {
+		4330BBCE41638C2EAE58830B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Molocate/Pods-Molocate-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Molocate/Pods-Molocate-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		671C3DFB7C2C2B9A87E50A1D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MolocateTests/Pods-MolocateTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6C5A7002F0F36A99CF5D7B72 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MolocateTests/Pods-MolocateTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DAD0198749ABA6C90E3BA9DA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E35C437C1D1C578F00914C26 /* Run Script */ = {
@@ -921,6 +990,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" 6cb61046c52026aa64d53ae417492642254d8e3d c37c152224b05bc484c1666dd4e5921ebe31967a5eeae89d8e13639eb9105934";
+		};
+		E81895B345B03D9CFEBE3598 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MolocateUITests/Pods-MolocateUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EFDF4EF6BA421AB77DBEBA8A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1143,9 +1242,10 @@
 		};
 		C63FBD2C1BF3E5B900DBB34C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30E8D7C448993011BA2B8851 /* Pods-Molocate.debug.xcconfig */;
+			baseConfigurationReference = 4E52B282C1DEE6A1AF3F3D83 /* Pods-Molocate.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_ON_DEMAND_RESOURCES = NO;
@@ -1161,15 +1261,17 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		C63FBD2D1BF3E5B900DBB34C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 85240C29B79988CE027A1541 /* Pods-Molocate.release.xcconfig */;
+			baseConfigurationReference = 0F1984DC22A31906FB00ADAD /* Pods-Molocate.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_ON_DEMAND_RESOURCES = NO;
@@ -1185,12 +1287,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 		C63FBD2F1BF3E5B900DBB34C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB310EEDA3B847F6A602A851 /* Pods-MolocateTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				ENABLE_ON_DEMAND_RESOURCES = NO;
@@ -1202,12 +1306,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mellonapp.MolocateTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Molocate.app/Molocate";
 			};
 			name = Debug;
 		};
 		C63FBD301BF3E5B900DBB34C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D2F67643E17DDA2F1E2F8D5 /* Pods-MolocateTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				ENABLE_ON_DEMAND_RESOURCES = NO;
@@ -1219,12 +1325,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mellonapp.MolocateTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Molocate.app/Molocate";
 			};
 			name = Release;
 		};
 		C63FBD321BF3E5B900DBB34C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 043E3A00B111938B03410FE4 /* Pods-MolocateUITests.debug.xcconfig */;
 			buildSettings = {
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1235,6 +1343,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mellonapp.MolocateUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Molocate;
 				USES_XCTRUNNER = YES;
 			};
@@ -1242,6 +1351,7 @@
 		};
 		C63FBD331BF3E5B900DBB34C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 60A00617FF184E1B1A599F1F /* Pods-MolocateUITests.release.xcconfig */;
 			buildSettings = {
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1252,6 +1362,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mellonapp.MolocateUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Molocate;
 				USES_XCTRUNNER = YES;
 			};

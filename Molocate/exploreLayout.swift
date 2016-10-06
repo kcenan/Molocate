@@ -2,9 +2,9 @@
 import UIKit
 protocol exploreLayoutDelegate {
   // 1. Method to ask the delegate for the height of the image
-  func collectionView(collectionView:UICollectionView, heightForPhotoAtIndexPath indexPath:NSIndexPath , withWidth:CGFloat) -> CGFloat
+  func collectionView(_ collectionView:UICollectionView, heightForPhotoAtIndexPath indexPath:IndexPath , withWidth:CGFloat) -> CGFloat
   // 2. Method to ask the delegate for the height of the annotation text
-  func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: NSIndexPath, withWidth width: CGFloat) -> CGFloat
+  func collectionView(_ collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: IndexPath, withWidth width: CGFloat) -> CGFloat
   
 }
 var iseventhere = false
@@ -15,14 +15,14 @@ class exploreLayoutAttributes:UICollectionViewLayoutAttributes {
   var photoHeight: CGFloat = 0.0
   
   // 2. Override copyWithZone to conform to NSCopying protocol
-  override func copyWithZone(zone: NSZone) -> AnyObject {
-    let copy = super.copyWithZone(zone) as! exploreLayoutAttributes
+  override func copy(with zone: NSZone?) -> Any {
+    let copy = super.copy(with: zone) as! exploreLayoutAttributes
     copy.photoHeight = photoHeight
     return copy
   }
   
   // 3. Override isEqual
-  override func isEqual(object: AnyObject?) -> Bool {
+  override func isEqual(_ object: Any?) -> Bool {
     if let attributtes = object as? exploreLayoutAttributes {
       if( attributtes.photoHeight == photoHeight  ) {
         return super.isEqual(object)
@@ -47,21 +47,21 @@ class exploreLayout: UICollectionViewLayout {
   var widths = [CGFloat]()
   var heights = [CGFloat]()
   //3. Array to keep a cache of attributes.
-  private var cache = [exploreLayoutAttributes]()
+  fileprivate var cache = [exploreLayoutAttributes]()
   
   //4. Content height and size
-  private var contentHeight:CGFloat  = 0.0
-  private var contentWidth: CGFloat {
+  fileprivate var contentHeight:CGFloat  = 0.0
+  fileprivate var contentWidth: CGFloat {
     let insets = collectionView!.contentInset
-    return CGRectGetWidth(collectionView!.bounds) - (insets.left + insets.right)
+    return collectionView!.bounds.width - (insets.left + insets.right)
   }
   
-  override class func layoutAttributesClass() -> AnyClass {
+  override class var layoutAttributesClass : AnyClass {
     return exploreLayoutAttributes.self
   }
   
 
-  override func prepareLayout() {
+  override func prepare() {
     // 1. Only calculate once
    // if cache.isEmpty {
         eventw = contentWidth
@@ -71,12 +71,12 @@ class exploreLayout: UICollectionViewLayout {
       let columnWidth = contentWidth / CGFloat(numberOfColumns)
       var xOffset = [CGFloat]()
       var column = 0
-      var yOffset = [CGFloat](count: numberOfColumns, repeatedValue: 0)
+      var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
       
       // 3. Iterates through the list of items in the first section
-      for item in 0 ..< collectionView!.numberOfItemsInSection(0) {
+      for item in 0 ..< collectionView!.numberOfItems(inSection: 0) {
         
-        let indexPath = NSIndexPath(forItem: item, inSection: 0)
+        let indexPath = IndexPath(item: item, section: 0)
         
         // 4. Asks the delegate for the height of the picture and the annotation and calculates the cell frame.
         var width = columnWidth - cellPadding*2
@@ -84,14 +84,14 @@ class exploreLayout: UICollectionViewLayout {
 //        let annotationHeight = delegate.collectionView(collectionView!, heightForAnnotationAtIndexPath: indexPath, withWidth: width)
         
         var height = cellPadding + width + cellPadding
-        var rest = indexPath.row % (10+eventcount)
-        let part = CGFloat(indexPath.row/(10+eventcount))
+        var rest = (indexPath as NSIndexPath).row % (10+eventcount)
+        let part = CGFloat((indexPath as NSIndexPath).row/(10+eventcount))
         var contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
         if part == 1  {
             if iseventhere {
             eventcount = 0
             contentLong = contentLong + contentWidth*9/16 + cellPadding
-            rest = (indexPath.row-11) % 10
+            rest = ((indexPath as NSIndexPath).row-11) % 10
             } else {
             contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
             }
@@ -178,16 +178,16 @@ class exploreLayout: UICollectionViewLayout {
         
         var frame = CGRect(x: xoffset, y: yoffset, width: width, height: height)
 
-        let insetFrame = CGRectInset(frame, 0, 0)
+        let insetFrame = frame.insetBy(dx: 0, dy: 0)
         
         // 5. Creates an UICollectionViewLayoutItem with the frame and add it to the cache
-        let attributes = exploreLayoutAttributes(forCellWithIndexPath: indexPath)
+        let attributes = exploreLayoutAttributes(forCellWith: indexPath)
         attributes.photoHeight = height
         attributes.frame = insetFrame
         cache.append(attributes)
         
         // 6. Updates the collection view content height
-        contentHeight = max(contentHeight, CGRectGetMaxY(frame))
+        contentHeight = max(contentHeight, frame.maxY)
         yOffset[column] = yOffset[column] + height + cellPadding
         
         column = column >= (numberOfColumns - 1) ? 0 : ++column
@@ -195,17 +195,17 @@ class exploreLayout: UICollectionViewLayout {
     //}
   }
   
-  override func collectionViewContentSize() -> CGSize {
+  override var collectionViewContentSize : CGSize {
     return CGSize(width: contentWidth, height: contentHeight)
   }
   
-  override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+  override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
     
     var layoutAttributes = [UICollectionViewLayoutAttributes]()
     
     // Loop through the cache and look for items in the rect
     for attributes  in cache {
-      if CGRectIntersectsRect(attributes.frame, rect ) {
+      if attributes.frame.intersects(rect ) {
         layoutAttributes.append(attributes)
       }
     }

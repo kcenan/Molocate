@@ -9,6 +9,35 @@ import Photos
 import QuadratTouch
 import RecordButton
 import CoreLocation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
 
 var locationDict:[[String:locationss]]!
 var placeOrder:NSMutableDictionary!
@@ -23,52 +52,52 @@ struct locationss{
     var lon:Float!
     var adress = ""
 }
-private var SessionRunningContext = UnsafeMutablePointer<Void>.alloc(1)
+private var SessionRunningContext = UnsafeMutableRawPointer.allocate(capacity: 1)
 private enum AVCamSetupResult: Int {
-    case Success
-    case CameraNotAuthorized
-    case SessionConfigurationFailed
+    case success
+    case cameraNotAuthorized
+    case sessionConfigurationFailed
 }
 
 var videoPath: String? = ""
-var videoData: NSData?
-var fakeoutputFileURL: NSURL?
+var videoData: Data?
+var fakeoutputFileURL: URL?
 var fakebackgrounID: NSInteger?
 var placesArray = [String]()
 var videoId:String!
 var videoUrl:String!
-var tempAssetURL: NSURL!
+var tempAssetURL: URL!
 var audioAsset:AVAsset!
 var thumbnail = UIImage()
 typealias JSONParameters = [String: AnyObject]
 
 class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptureFileOutputRecordingDelegate{
-    private var recordButton : RecordButton!
-    private var progressTimer : NSTimer!
-    private var progress : CGFloat! = 0
-    private var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
-    private var rootLayer = CALayer()
-    private var camera = true
-    private var videoURL = NSURL()
-    private var sessionQueue: dispatch_queue_t?
-    private var vurl: NSURL?
-    private var topLayer = CALayer()
-    private var flashLayer = CALayer()
-    private var bottomLayer = CALayer()
-    private var firstAsset:AVAsset!
-    private var secondAsset:AVAsset!
-    private var isFlashMode = false
-    private var deviceLat: CLLocationDegrees?
-    private var deviceLon: CLLocationDegrees?
-    private var brightness:CGFloat = 0.0
+    fileprivate var recordButton : RecordButton!
+    fileprivate var progressTimer : Timer!
+    fileprivate var progress : CGFloat! = 0
+    fileprivate var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    fileprivate var rootLayer = CALayer()
+    fileprivate var camera = true
+    fileprivate var videoURL = URL()
+    fileprivate var sessionQueue: DispatchQueue?
+    fileprivate var vurl: URL?
+    fileprivate var topLayer = CALayer()
+    fileprivate var flashLayer = CALayer()
+    fileprivate var bottomLayer = CALayer()
+    fileprivate var firstAsset:AVAsset!
+    fileprivate var secondAsset:AVAsset!
+    fileprivate var isFlashMode = false
+    fileprivate var deviceLat: CLLocationDegrees?
+    fileprivate var deviceLon: CLLocationDegrees?
+    fileprivate var brightness:CGFloat = 0.0
     @IBOutlet var toolbarYancı: UILabel!
-    var videoClips:[NSURL] = [NSURL]()
+    var videoClips:[URL] = [URL]()
     @IBOutlet var bottomToolbar: UIToolbar!
     @IBOutlet var toolbar: UIToolbar!
-    private var setupResult: AVCamSetupResult = .Success
-    private var sessionRunning: Bool = false
-    private var backgroundRecordingID: UIBackgroundTaskIdentifier = 0
-    private var videoDeviceInput: AVCaptureDeviceInput!
+    fileprivate var setupResult: AVCamSetupResult = .success
+    fileprivate var sessionRunning: Bool = false
+    fileprivate var backgroundRecordingID: UIBackgroundTaskIdentifier = 0
+    fileprivate var videoDeviceInput: AVCaptureDeviceInput!
     
     
     var captureSession: AVCaptureSession?
@@ -96,7 +125,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         self.captureSession = AVCaptureSession()
         captureSession?.automaticallyConfiguresApplicationAudioSession = false
         
-        self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL)
+        self.sessionQueue = DispatchQueue(label: "session queue", attributes: [])
   
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.session = self.captureSession
@@ -109,40 +138,40 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
        
 
-        self.setupResult = AVCamSetupResult.Success
+        self.setupResult = AVCamSetupResult.success
         
         // Check video authorization status. Video access is required and audio access is optional.
         // If audio access is denied, audio is not recorded during movie recording.
-        switch AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) {
-        case .Authorized:
+        switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
+        case .authorized:
             // The user has previously granted access to the camera.
             break
-        case .NotDetermined:
+        case .notDetermined:
             // The user has not yet been presented with the option to grant video access.
             // We suspend the session queue to delay session setup until the access request has completed to avoid
             // asking the user for audio access if video access is denied.
             // Note that audio access will be implicitly requested when we create an AVCaptureDeviceInput for audio during session setup.
-            dispatch_suspend(self.sessionQueue!)
-            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo) {granted in
+            self.sessionQueue!.suspend()
+            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) {granted in
                 if !granted {
-                    self.setupResult = AVCamSetupResult.CameraNotAuthorized
+                    self.setupResult = AVCamSetupResult.cameraNotAuthorized
                 }
-                dispatch_resume(self.sessionQueue!)
+                self.sessionQueue!.resume()
             }
         default:
             // The user has previously denied access.
-            self.setupResult = AVCamSetupResult.CameraNotAuthorized
+            self.setupResult = AVCamSetupResult.cameraNotAuthorized
         }
 
         
-        dispatch_async(self.sessionQueue!) {
-            guard self.setupResult == AVCamSetupResult.Success else {
+        self.sessionQueue!.async {
+            guard self.setupResult == AVCamSetupResult.success else {
                 return
             }
 
             self.backgroundRecordingID = UIBackgroundTaskInvalid
             
-            let videoDevice = CameraViewController.deviceWithMediaType(AVMediaTypeVideo, preferringPosition: AVCaptureDevicePosition.Front)
+            let videoDevice = CameraViewController.deviceWithMediaType(AVMediaTypeVideo, preferringPosition: AVCaptureDevicePosition.front)
             let videoDeviceInput: AVCaptureDeviceInput!
             do {
                 videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
@@ -163,17 +192,17 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             if self.captureSession!.canAddInput(videoDeviceInput) {
                 self.captureSession!.addInput(videoDeviceInput)
                 self.videoDeviceInput = videoDeviceInput
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                 self.initGui()
                 self.previewLayer?.connection.videoOrientation
                     
                 }
             } else {
                 NSLog("Could not add video device input to the session")
-                self.setupResult = AVCamSetupResult.SessionConfigurationFailed
+                self.setupResult = AVCamSetupResult.sessionConfigurationFailed
             }
             
-            let audioDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
+            let audioDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeAudio)
             let audioDeviceInput: AVCaptureDeviceInput!
             do {
                 audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
@@ -198,9 +227,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             movieFileOutput.maxRecordedDuration = maxDuration
             if self.captureSession!.canAddOutput(movieFileOutput) {
                 self.captureSession!.addOutput(movieFileOutput)
-                let connection = movieFileOutput.connectionWithMediaType(AVMediaTypeVideo)
-                if connection?.supportsVideoStabilization ?? false {
-                    connection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.Auto
+                let connection = movieFileOutput.connection(withMediaType: AVMediaTypeVideo)
+                if connection?.isVideoStabilizationSupported ?? false {
+                    connection?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.auto
                 }
                 self.videoOutput = movieFileOutput
                 
@@ -211,8 +240,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             
             
             self.captureSession!.commitConfiguration()
-            if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            if UIApplication.shared.isIgnoringInteractionEvents {
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         
@@ -221,52 +250,52 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if (AVAudioSession.sharedInstance().category != AVAudioSessionCategoryPlayAndRecord) {
-            try! AVAudioSession.sharedInstance().setActive(false, withOptions: .NotifyOthersOnDeactivation )
-            try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, withOptions: [.AllowBluetooth, .DefaultToSpeaker, .MixWithOthers])
+            try! AVAudioSession.sharedInstance().setActive(false, with: .notifyOthersOnDeactivation )
+            try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetooth, .defaultToSpeaker, .mixWithOthers])
             try! AVAudioSession.sharedInstance().setActive(true)
             //try! AVAudioSession.sharedInstance().setActive(true)
         }
         
-        dispatch_async(self.sessionQueue!) {
+        self.sessionQueue!.async {
             switch self.setupResult {
-            case .Success:
+            case .success:
                 // Only setup observers and start the session running if setup succeeded.
                 self.addObservers()
                 self.captureSession!.startRunning()
-                self.sessionRunning = self.captureSession!.running
+                self.sessionRunning = self.captureSession!.isRunning
                 
-            case .CameraNotAuthorized:
-                dispatch_async(dispatch_get_main_queue()){
-                    if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            case .cameraNotAuthorized:
+                DispatchQueue.main.async{
+                    if UIApplication.shared.isIgnoringInteractionEvents {
+                        UIApplication.shared.endIgnoringInteractionEvents()
                     }
                     let message = NSLocalizedString("Molocate'in kamera kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
-                    let alertController = UIAlertController(title: "Molocate Kamera", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                    let alertController = UIAlertController(title: "Molocate Kamera", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.cancel, handler: nil)
                     alertController.addAction(cancelAction)
                     // Provide quick access to Settings.
-                    let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
-                        UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                    let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.default) {action in
+                        UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!)
                         
                     }
                     alertController.addAction(settingsAction)
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                    self.present(alertController, animated: true, completion: nil)
                 }
-            case .SessionConfigurationFailed:
-                dispatch_async(dispatch_get_main_queue()) {
+            case .sessionConfigurationFailed:
+                DispatchQueue.main.async {
                     let message = NSLocalizedString("Çekim için uygun değil", comment: "Alert message when something goes wrong during capture session configuration")
-                    let alertController = UIAlertController(title: "Hata", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                    let alertController = UIAlertController(title: "Hata", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                    let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.cancel, handler: nil)
                     alertController.addAction(cancelAction)
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                    self.present(alertController, animated: true, completion: nil)
                 }
             }
         }
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.locationManager = CLLocationManager()
             self.locationManager.delegate = self
             self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
@@ -274,9 +303,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             self.locationManager.startUpdatingLocation()
             let seconds = 5.0
             let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
-            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            let dispatchTime = DispatchTime.now() + Double(Int64(delay)) / Double(NSEC_PER_SEC)
             
-            dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+            DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                 
                 self.displayLocationInfo(self.bestEffortAtLocation)
                 
@@ -294,18 +323,18 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
  
     
     func initGui(){
-        videoDone.enabled = false
+        videoDone.isEnabled = false
         toolbar.barTintColor = swiftColor
-        toolbar.translucent = false
+        toolbar.isTranslucent = false
         toolbar.clipsToBounds = true
         let width = self.view.frame.width
         let height = (self.view.frame.height-self.view.frame.width-2*self.toolbar.frame.height-self.toolbarYancı.frame.height)
         let topRect = CGRect(x: 0, y: self.view.frame.width+self.toolbar.frame.height+self.toolbarYancı.frame.height, width: width, height: height)
         let nview = UIView(frame: topRect)
         bottomToolbar.barTintColor = swiftColor
-        bottomToolbar.translucent = false
+        bottomToolbar.isTranslucent = false
         bottomToolbar.clipsToBounds = true
-        recordButton = RecordButton(frame: CGRectMake(0,0,2*topRect.height/3,2*topRect.height/3))
+        recordButton = RecordButton(frame: CGRect(x: 0,y: 0,width: 2*topRect.height/3,height: 2*topRect.height/3))
         recordButton.center = nview.center
         recordButton.progressColor = .redColor()
         recordButton.closeWhenFinished = false
@@ -324,7 +353,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         //let bottomRect = CGRect(x: 0, y: 0, width: width , height: height)
         self.topLayer.frame = topRect
         //self.bottomLayer.frame = bottomRect
-        self.topLayer.backgroundColor = UIColor.whiteColor().CGColor
+        self.topLayer.backgroundColor = UIColor.white.cgColor
         //self.bottomLayer.backgroundColor = UIColor.whiteColor().CGColor
         self.topLayer.opacity = 1
         self.bottomLayer.opacity = 1
@@ -345,7 +374,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+    func locationManager(_ manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         let locationAge = newLocation.timestamp.timeIntervalSinceNow
         
         //print(locationAge)
@@ -375,13 +404,13 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         }
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
       displayAlert("Hata", message: "Konumunuza Erişilemedi")
 
     }
 
     
-    func displayLocationInfo(location: CLLocation) {
+    func displayLocationInfo(_ location: CLLocation) {
             //stop updating location to save battery life
         locationManager.stopUpdatingLocation()
         let session = Session.sharedSession()
@@ -393,7 +422,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         let searchTask = session.venues.search(parameters) {
             (result) -> Void in
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 ////print(result)
                 locationDict.removeAll()
                 placesArray.removeAll()
@@ -455,23 +484,23 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
 
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         
         // Note that the app delegate controls the device orientation notifications required to use the device orientation.
-        let deviceOrientation = UIDevice.currentDevice().orientation
+        let deviceOrientation = UIDevice.current.orientation
         if UIDeviceOrientationIsPortrait(deviceOrientation) || UIDeviceOrientationIsLandscape(deviceOrientation) {
             let previewLayer = self.previewLayer
             previewLayer!.connection.videoOrientation = AVCaptureVideoOrientation(rawValue: deviceOrientation.rawValue)!
         }
     }
-    @IBAction func focusTap(gestureRecognizer: UIGestureRecognizer) {
-        let devicePoint = (self.previewLayer! as AVCaptureVideoPreviewLayer).captureDevicePointOfInterestForPoint(gestureRecognizer.locationInView(gestureRecognizer.view))
-        self.focusWithMode(AVCaptureFocusMode.AutoFocus, exposeWithMode: AVCaptureExposureMode.AutoExpose, atDevicePoint: devicePoint, monitorSubjectAreaChange: true)
+    @IBAction func focusTap(_ gestureRecognizer: UIGestureRecognizer) {
+        let devicePoint = (self.previewLayer! as AVCaptureVideoPreviewLayer).captureDevicePointOfInterest(for: gestureRecognizer.location(in: gestureRecognizer.view))
+        self.focusWithMode(AVCaptureFocusMode.autoFocus, exposeWithMode: AVCaptureExposureMode.autoExpose, atDevicePoint: devicePoint, monitorSubjectAreaChange: true)
         
     }
     
@@ -481,9 +510,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     @IBOutlet var topView: UIView!
     @IBOutlet var bottomView: UIView!
     @IBOutlet var cameraChange: UIBarButtonItem!
-    @IBAction func cameraChange(sender: AnyObject) {
+    @IBAction func cameraChange(_ sender: AnyObject) {
         
-        self.cameraChange.enabled = false
+        self.cameraChange.isEnabled = false
         self.recordButton.enabled = false
         
         for item in captureSession!.inputs {
@@ -502,16 +531,16 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
 
         
-        dispatch_async(self.sessionQueue!) {
+        self.sessionQueue!.async {
             let currentVideoDevice = self.videoDeviceInput.device
-            var preferredPosition = AVCaptureDevicePosition.Unspecified
-            let currentPosition = currentVideoDevice.position
+            var preferredPosition = AVCaptureDevicePosition.unspecified
+            let currentPosition = currentVideoDevice?.position
             
             switch currentPosition {
-            case AVCaptureDevicePosition.Unspecified, AVCaptureDevicePosition.Front:
-                preferredPosition = AVCaptureDevicePosition.Back
-            case AVCaptureDevicePosition.Back:
-                preferredPosition = AVCaptureDevicePosition.Front
+            case AVCaptureDevicePosition.unspecified, AVCaptureDevicePosition.front:
+                preferredPosition = AVCaptureDevicePosition.back
+            case AVCaptureDevicePosition.back:
+                preferredPosition = AVCaptureDevicePosition.front
             }
             
             let videoDevice = CameraViewController.deviceWithMediaType(AVMediaTypeVideo,  preferringPosition: preferredPosition)
@@ -528,12 +557,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             self.captureSession!.removeInput(self.videoDeviceInput)
             
             if self.captureSession!.canAddInput(videoDeviceInput) {
-                NSNotificationCenter.defaultCenter().removeObserver(self, name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: currentVideoDevice)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVCaptureDeviceSubjectAreaDidChange, object: currentVideoDevice)
                 
-                CameraViewController.setFlashMode(AVCaptureFlashMode.On, forDevice: videoDevice!)
+                CameraViewController.setFlashMode(AVCaptureFlashMode.on, forDevice: videoDevice!)
                 
                 
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraViewController.subjectAreaDidChange(_:)),  name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: videoDevice)
+                NotificationCenter.default.addObserver(self, selector: #selector(CameraViewController.subjectAreaDidChange(_:)),  name: NSNotification.Name.AVCaptureDeviceSubjectAreaDidChange, object: videoDevice)
                 
                 self.captureSession!.addInput(videoDeviceInput)
                 self.videoDeviceInput = videoDeviceInput
@@ -541,17 +570,17 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 self.captureSession!.addInput(self.videoDeviceInput)
             }
             
-            let connection = self.videoOutput!.connectionWithMediaType(AVMediaTypeVideo)
-            connection.videoOrientation = self.previewLayer!.connection.videoOrientation
-            if connection.supportsVideoStabilization {
-                connection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.Auto
+            let connection = self.videoOutput!.connection(withMediaType: AVMediaTypeVideo)
+            connection?.videoOrientation = self.previewLayer!.connection.videoOrientation
+            if (connection?.isVideoStabilizationSupported)! {
+                connection?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.auto
             }
             
             self.captureSession!.commitConfiguration()
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 if !self.firstFront{
-                self.cameraChange.enabled = true
+                self.cameraChange.isEnabled = true
                 }
                 self.recordButton.enabled = true
                 
@@ -561,21 +590,21 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
     }
     
-    func captureOutput(captureOutput: AVCaptureFileOutput!, didStartRecordingToOutputFileAtURL fileURL: NSURL!, fromConnections connections: [AnyObject]!) {
+    func capture(_ captureOutput: AVCaptureFileOutput!, didStartRecordingToOutputFileAt fileURL: URL!, fromConnections connections: [Any]!) {
         // Enable the Record button to let the user stop the recording.
-        dispatch_async( dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.recordButton.enabled = true
             //self.recordButton.setTitle(NSLocalizedString("Stop", comment: "Recording button stop title"), forState: .Normal)
 
         }
     }
     
-    func subjectAreaDidChange(notification: NSNotification) {
-        let devicePoint = CGPointMake(0.5, 0.5)
-        self.focusWithMode(AVCaptureFocusMode.ContinuousAutoFocus, exposeWithMode: AVCaptureExposureMode.ContinuousAutoExposure, atDevicePoint: devicePoint, monitorSubjectAreaChange: false)
+    func subjectAreaDidChange(_ notification: Notification) {
+        let devicePoint = CGPoint(x: 0.5, y: 0.5)
+        self.focusWithMode(AVCaptureFocusMode.continuousAutoFocus, exposeWithMode: AVCaptureExposureMode.continuousAutoExposure, atDevicePoint: devicePoint, monitorSubjectAreaChange: false)
     }
     
-    func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
+    func capture(_ captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAt outputFileURL: URL!, fromConnections connections: [Any]!, error: Error!) {
         
         let currentBackgroundRecordingID = self.backgroundRecordingID
         self.backgroundRecordingID = UIBackgroundTaskInvalid
@@ -602,9 +631,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
 
     @IBOutlet var videoDone: UIBarButtonItem!
-    @IBAction func videoDone(sender: AnyObject) {
+    @IBAction func videoDone(_ sender: AnyObject) {
         self.holdRelease()
-        if (self.videoOutput!.recording) {
+        if (self.videoOutput!.isRecording) {
             self.videoOutput?.stopRecording()
         }
         if ((self.progress > 0.2)) {
@@ -615,10 +644,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         activityIndicator = UIActivityIndicatorView(frame: self.view.frame)
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         self.mergeVideoClips()
         } else {
             displayAlert("Dikkat!", message: "Videonuz en az 3 saniye olmalıdır.")
@@ -627,26 +656,26 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
     }
 
-    func focusWithMode(focusMode: AVCaptureFocusMode, exposeWithMode exposureMode: AVCaptureExposureMode, atDevicePoint point:CGPoint, monitorSubjectAreaChange: Bool) {
-        dispatch_async(self.sessionQueue!) {
+    func focusWithMode(_ focusMode: AVCaptureFocusMode, exposeWithMode exposureMode: AVCaptureExposureMode, atDevicePoint point:CGPoint, monitorSubjectAreaChange: Bool) {
+        self.sessionQueue!.async {
             let device = self.videoDeviceInput.device
             do {
-                try device.lockForConfiguration()
-                defer {device.unlockForConfiguration()}
+                try device?.lockForConfiguration()
+                defer {device?.unlockForConfiguration()}
                 // Setting (focus/exposure)PointOfInterest alone does not initiate a (focus/exposure) operation.
                 // Call -set(Focus/Exposure)Mode: to apply the new point of interest.
                 
-                if device.focusPointOfInterestSupported && device.isFocusModeSupported(focusMode) {
-                    device.focusPointOfInterest = point
-                    device.focusMode = focusMode
+                if (device?.isFocusPointOfInterestSupported)! && (device?.isFocusModeSupported(focusMode))! {
+                    device?.focusPointOfInterest = point
+                    device?.focusMode = focusMode
                 }
                 
-                if device.exposurePointOfInterestSupported && device.isExposureModeSupported(exposureMode) {
-                    device.exposurePointOfInterest = point
-                    device.exposureMode = exposureMode
+                if (device?.isExposurePointOfInterestSupported)! && (device?.isExposureModeSupported(exposureMode))! {
+                    device?.exposurePointOfInterest = point
+                    device?.exposureMode = exposureMode
                 }
                 
-                device.subjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange
+                device?.isSubjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange
             } catch let error as NSError {
                 NSLog("Could not lock device for configuration: %@", error)
             } catch _ {}
@@ -654,7 +683,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
     
     
-    class func setFlashMode(flashMode: AVCaptureFlashMode, forDevice device: AVCaptureDevice) {
+    class func setFlashMode(_ flashMode: AVCaptureFlashMode, forDevice device: AVCaptureDevice) {
         if device.hasFlash && device.isFlashModeSupported(flashMode) {
             do {
                 try device.lockForConfiguration()
@@ -666,9 +695,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         }
     }
     
-    class func deviceWithMediaType(mediaType: String, preferringPosition position: AVCaptureDevicePosition) -> AVCaptureDevice? {
-        let devices = AVCaptureDevice.devicesWithMediaType(mediaType)
-        var captureDevice = devices.first as! AVCaptureDevice?
+    class func deviceWithMediaType(_ mediaType: String, preferringPosition position: AVCaptureDevicePosition) -> AVCaptureDevice? {
+        let devices = AVCaptureDevice.devices(withMediaType: mediaType)
+        var captureDevice = devices?.first as! AVCaptureDevice?
         
         for device in devices as! [AVCaptureDevice] {
             if device.position == position {
@@ -681,32 +710,32 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         return captureDevice
     }
     
-    func cropVideoSquare(url: NSURL ){
+    func cropVideoSquare(_ url: URL ){
         
         //All explanations are in crop video square xcodeproject in https://www.one-dreamer.com/cropping-video-square-like-vine-instagram-xcode/
-        let tempasset = AVAsset(URL: url)
-        let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
+        let tempasset = AVAsset(url: url)
+        let clipVideoTrack = (tempasset.tracks(withMediaType: AVMediaTypeVideo)[0]) as AVAssetTrack
         let videoComposition = AVMutableVideoComposition()
         videoComposition.frameDuration = CMTimeMake(1,30)
-        videoComposition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.height, clipVideoTrack.naturalSize.height)
+        videoComposition.renderSize = CGSize(width: clipVideoTrack.naturalSize.height, height: clipVideoTrack.naturalSize.height)
         let instruction = AVMutableVideoCompositionInstruction()
         instruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(60, 30))
         let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
-        let t1 = CGAffineTransformMakeTranslation(clipVideoTrack.naturalSize.height, -(clipVideoTrack.naturalSize.width/self.view.frame.height))
-        let t2 = CGAffineTransformRotate(t1, 3.141593/2)
-        transformer.setTransform(t2, atTime: kCMTimeZero)
+        let t1 = CGAffineTransform(translationX: clipVideoTrack.naturalSize.height, y: -(clipVideoTrack.naturalSize.width/self.view.frame.height))
+        let t2 = t1.rotated(by: 3.141593/2)
+        transformer.setTransform(t2, at: kCMTimeZero)
         instruction.layerInstructions = NSArray(object: transformer) as! [AVVideoCompositionLayerInstruction]
         videoComposition.instructions = NSArray(object: instruction) as! [AVVideoCompositionInstructionProtocol]
         let documentsPath = (NSTemporaryDirectory() as NSString)
         let random = arc4random()
-        let exportPath = documentsPath.stringByAppendingFormat("/CroppedVideo\(random).mp4", documentsPath)
-        let exportURl = NSURL(fileURLWithPath: exportPath as String)
+        let exportPath = documentsPath.appendingFormat("/CroppedVideo\(random).mp4" as NSString, documentsPath)
+        let exportURl = URL(fileURLWithPath: exportPath as String)
         let exporter = AVAssetExportSession(asset: tempasset, presetName:AVAssetExportPresetMediumQuality)
         exporter?.videoComposition = videoComposition
         exporter?.outputURL = exportURl
         exporter?.outputFileType = AVFileTypeMPEG4
-        exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-        dispatch_async(dispatch_get_main_queue(), {
+        exporter?.exportAsynchronously(completionHandler: { () -> Void in
+        DispatchQueue.main.async(execute: {
                 self.handleExportCompletion(exporter!, turl: url)
             })
 
@@ -716,19 +745,19 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
     }
     
-    func handleExportCompletion(session: AVAssetExportSession,turl: NSURL) {
+    func handleExportCompletion(_ session: AVAssetExportSession,turl: URL) {
         
         videoClips.append(session.outputURL!)
         do {
          
-            try NSFileManager.defaultManager().removeItemAtURL(turl)
+            try FileManager.default.removeItem(at: turl)
 
             
         } catch _ {
         }
-        if !(self.videoOutput?.recording)! {
-        self.cameraChange.enabled = true
-        self.videoDone.enabled = true
+        if !(self.videoOutput?.isRecording)! {
+        self.cameraChange.isEnabled = true
+        self.videoDone.isEnabled = true
         self.recordButton.enabled = true
         }
         if ((self.progress > 0.9999)) {
@@ -739,10 +768,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             activityIndicator = UIActivityIndicatorView(frame: self.view.frame)
             activityIndicator.center = self.view.center
             activityIndicator.hidesWhenStopped = true
-            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
             view.addSubview(activityIndicator)
             activityIndicator.startAnimating()
-            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+            UIApplication.shared.beginIgnoringInteractionEvents()
             self.mergeVideoClips()
         }
         
@@ -753,22 +782,22 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         let composition = AVMutableComposition()
         
-        let videoTrack = composition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
+        let videoTrack = composition.addMutableTrack(withMediaType: AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
         
-        let audioTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
+        let audioTrack = composition.addMutableTrack(withMediaType: AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
         
         var time:Double = 0.0
         for video in self.videoClips {
             
-            let asset = AVAsset(URL: video)
-            let videoAssetTrack = asset.tracksWithMediaType(AVMediaTypeVideo)[0]
-            let audioAssetTrack = asset.tracksWithMediaType(AVMediaTypeAudio)[0]
+            let asset = AVAsset(url: video)
+            let videoAssetTrack = asset.tracks(withMediaType: AVMediaTypeVideo)[0]
+            let audioAssetTrack = asset.tracks(withMediaType: AVMediaTypeAudio)[0]
             let atTime = CMTimeMakeWithSeconds(time, 1000)
         
             do{
-                try videoTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, asset.duration) , ofTrack: videoAssetTrack, atTime: atTime)
+                try videoTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, asset.duration) , of: videoAssetTrack, at: atTime)
                 
-                try audioTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, asset.duration) , ofTrack: audioAssetTrack, atTime: atTime)
+                try audioTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, asset.duration) , of: audioAssetTrack, at: atTime)
                 
             }catch{
                 //print("something bad happend I don't want to talk about it")
@@ -782,12 +811,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         
         let directory = (NSTemporaryDirectory() as NSString)
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .LongStyle
-        dateFormatter.timeStyle = .LongStyle
-        let date = dateFormatter.stringFromDate(NSDate())
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .long
+        let date = dateFormatter.string(from: Date())
         let savePath = "\(directory)/mergedVideo-\(date).mp4"
-        let url = NSURL(fileURLWithPath: savePath)
+        let url = URL(fileURLWithPath: savePath)
         
         let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)
         exporter?.outputURL = url
@@ -795,9 +824,9 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         exporter?.outputFileType = AVFileTypeMPEG4
         
         
-        exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
+        exporter?.exportAsynchronously(completionHandler: { () -> Void in
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 self.finalExportCompletion(exporter!)
             })
             
@@ -806,15 +835,15 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
     }
     
-    func finalExportCompletion(session: AVAssetExportSession) {
+    func finalExportCompletion(_ session: AVAssetExportSession) {
         videoPath = session.outputURL?.path
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
            
                 for url in self.videoClips {
-                    let removalURL = url as NSURL
+                    let removalURL = url as URL
                     do {
                         
-                        try NSFileManager.defaultManager().removeItemAtURL(removalURL)
+                        try FileManager.default.removeItem(at: removalURL)
                         //print("siliniyor at finalexport")
                         //try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
                         
@@ -827,15 +856,15 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             
         }
 
-                    let contentURL = NSURL(fileURLWithPath: videoPath!)
-                    let asset = AVAsset(URL: contentURL)
+                    let contentURL = URL(fileURLWithPath: videoPath!)
+                    let asset = AVAsset(url: contentURL)
                     let imageGenerator = AVAssetImageGenerator(asset: asset)
                     let time = CMTime(seconds: 0, preferredTimescale: 1)
         
                     do {
-                        let imageRef = try imageGenerator.copyCGImageAtTime(time, actualTime: nil)
-                        thumbnail = UIImage(CGImage: imageRef)
-                        self.performSegueWithIdentifier("capturePreview", sender: self)
+                        let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
+                        thumbnail = UIImage(cgImage: imageRef)
+                        self.performSegue(withIdentifier: "capturePreview", sender: self)
                     } catch {
                         ////print(error)
                         
@@ -847,19 +876,19 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
 
     @IBOutlet var backtoCont: UIBarButtonItem!
-    @IBAction func backtoCont(sender: AnyObject) {
+    @IBAction func backtoCont(_ sender: AnyObject) {
        
             tempAssetURL = nil
             firstAsset = nil
             secondAsset = nil
        
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
         
                 for url in self.videoClips {
-                    let removalURL = url as NSURL
+                    let removalURL = url as URL
                 do {
                     
-                    try NSFileManager.defaultManager().removeItemAtURL(removalURL)
+                    try FileManager.default.removeItem(at: removalURL)
                     //print("siliniyor at back")
                     //try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
                     
@@ -874,10 +903,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 ////print("siliniyor")
 
         
-        let cleanuppath: dispatch_block_t = {
+        let cleanuppath: ()->() = {
             do {
 
-               try NSFileManager.defaultManager().removeItemAtPath(videoPath!)
+               try FileManager.default.removeItem(atPath: videoPath!)
                 
             } catch _ {}
             
@@ -889,7 +918,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         }
         placesArray.removeAll()
         placeOrder.removeAllObjects()
-        self.performSegueWithIdentifier("backToCont", sender: self)
+        self.performSegue(withIdentifier: "backToCont", sender: self)
         }
         
         }
@@ -898,31 +927,31 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
     func holdDown(){
         if self.progress<1 {
-        self.videoDone.enabled = false
-        self.progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: #selector(CameraViewController.updateProgress), userInfo: nil, repeats: true)
-        self.cameraChange.enabled = false
+        self.videoDone.isEnabled = false
+        self.progressTimer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(CameraViewController.updateProgress), userInfo: nil, repeats: true)
+        self.cameraChange.isEnabled = false
         self.recordButton.enabled = false
        
         
-        dispatch_async(self.sessionQueue!) {
+        self.sessionQueue!.async {
             if self.isFlashMode {
             let device = self.videoDeviceInput.device
             do {
-                try device.lockForConfiguration()
-                defer {device.unlockForConfiguration()}
+                try device?.lockForConfiguration()
+                defer {device?.unlockForConfiguration()}
                 ////print(device.description)
                 ////print(device.isFlashModeSupported(AVCaptureFlashMode.On))
                 
-                if (device.position == AVCaptureDevicePosition.Back){
-                    device.torchMode = .On
+                if (device?.position == AVCaptureDevicePosition.back){
+                    device?.torchMode = .on
                 }else {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                     let newFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
                     self.flashLayer.frame = newFrame
-                    self.flashLayer.backgroundColor = UIColor.whiteColor().CGColor
+                    self.flashLayer.backgroundColor = UIColor.white.cgColor
                     self.flashLayer.opacity = 0.9
-                    self.brightness = UIScreen.mainScreen().brightness
-                    UIScreen.mainScreen().brightness = 1.0
+                    self.brightness = UIScreen.main.brightness
+                    UIScreen.main.brightness = 1.0
                     self.view.layer.addSublayer(self.flashLayer)
                     }
                     
@@ -936,32 +965,32 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             }
             
             if self.progress < 1 {
-            if !self.videoOutput!.recording {
-                if UIDevice.currentDevice().multitaskingSupported {
+            if !self.videoOutput!.isRecording {
+                if UIDevice.current.isMultitaskingSupported {
                     // Setup background task. This is needed because the -[captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:]
                     // callback is not received until AVCam returns to the foreground unless you request background execution time.
                     // This also ensures that there will be time to write the file to the photo library when AVCam is backgrounded.
                     // To conclude this background execution, -endBackgroundTask is called in
                     // -[captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:] after the recorded file has been saved.
-                    self.backgroundRecordingID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler(nil)
+                    self.backgroundRecordingID = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
                 }
                 
                 // Update the orientation on the movie file output video connection before starting recording.
-                let connection = self.videoOutput!.connectionWithMediaType(AVMediaTypeVideo)
+                let connection = self.videoOutput!.connection(withMediaType: AVMediaTypeVideo)
                 
-                connection.videoOrientation = self.previewLayer!.connection.videoOrientation
+                connection?.videoOrientation = self.previewLayer!.connection.videoOrientation
                 
                 // Turn OFF flash for video recording.
                 
                 
                 
                 // Start recording to a temporary file.
-                let outputFileName = NSProcessInfo.processInfo().globallyUniqueString as NSString
+                let outputFileName = ProcessInfo.processInfo.globallyUniqueString as NSString
                 //////print(outputFileName)
 
-                let outputFilePath: String = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(outputFileName.stringByAppendingPathExtension("mov")!)
+                let outputFilePath: String = (NSTemporaryDirectory() as NSString).appendingPathComponent(outputFileName.appendingPathExtension("mov")!)
                 
-                self.videoOutput!.startRecordingToOutputFileURL(NSURL.fileURLWithPath(outputFilePath), recordingDelegate: self)
+                self.videoOutput!.startRecording(toOutputFileURL: URL(fileURLWithPath: outputFilePath), recordingDelegate: self)
                 
             } else {
                 self.videoOutput!.stopRecording()
@@ -1003,14 +1032,14 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             if self.isFlashMode {
                 let device = self.videoDeviceInput.device
                 do {
-                    try device.lockForConfiguration()
-                    defer {device.unlockForConfiguration()}
-                    if (device.position == AVCaptureDevicePosition.Back){
-                        device.torchMode = .Off
+                    try device?.lockForConfiguration()
+                    defer {device?.unlockForConfiguration()}
+                    if (device?.position == AVCaptureDevicePosition.back){
+                        device?.torchMode = .off
                     }else {
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             self.flashLayer.removeFromSuperlayer()
-                            UIScreen.mainScreen().brightness = self.brightness
+                            UIScreen.main.brightness = self.brightness
                         }
                         
                     }
@@ -1035,14 +1064,14 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         if self.isFlashMode {
         let device = self.videoDeviceInput.device
         do {
-            try device.lockForConfiguration()
-            defer {device.unlockForConfiguration()}
-            if (device.position == AVCaptureDevicePosition.Back){
-                device.torchMode = .Off
+            try device?.lockForConfiguration()
+            defer {device?.unlockForConfiguration()}
+            if (device?.position == AVCaptureDevicePosition.back){
+                device?.torchMode = .off
             }else {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.flashLayer.removeFromSuperlayer()
-                    UIScreen.mainScreen().brightness = self.brightness
+                    UIScreen.main.brightness = self.brightness
                 }
                 
             }
@@ -1054,7 +1083,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             
         }
     
-        if self.videoOutput!.recording {
+        if self.videoOutput!.isRecording {
         self.videoOutput?.stopRecording()
         }
         
@@ -1062,14 +1091,14 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
     
     
-    class func setFlashMode(flashMode: AVCaptureFlashMode, device: AVCaptureDevice){
+    class func setFlashMode(_ flashMode: AVCaptureFlashMode, device: AVCaptureDevice){
         
         if device.hasFlash && device.isFlashModeSupported(flashMode) {
            // var error: NSError? = nil
             do {
                 try device.lockForConfiguration()
                 device.flashMode = flashMode
-                device.torchMode = AVCaptureTorchMode.On
+                device.torchMode = AVCaptureTorchMode.on
                 ////print(device.torchLevel)
                 device.unlockForConfiguration()
                 
@@ -1083,39 +1112,39 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
       
     @IBOutlet var flashButton: UIButton!
 
-    @IBAction func flashButton(sender: AnyObject) {
+    @IBAction func flashButton(_ sender: AnyObject) {
         if isFlashMode == false {
             isFlashMode = true
-            flashButton.setBackgroundImage(UIImage(named: "openFlash"), forState: UIControlState.Normal)
+            flashButton.setBackgroundImage(UIImage(named: "openFlash"), for: UIControlState())
           
         } else {
             isFlashMode = false
-            flashButton.setBackgroundImage(UIImage(named: "closeFlash"), forState: UIControlState.Normal)
+            flashButton.setBackgroundImage(UIImage(named: "closeFlash"), for: UIControlState())
 
         }
     }
     
-    func displayAlert(title: String, message: String) {
+    func displayAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             //self.dismissViewControllerAnimated(true, completion: nil)
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
-    func displayRecordAlert(title: String, message: String) {
+    func displayRecordAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             self.backtoCont(self)
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        dispatch_async(self.sessionQueue!) {
-            if self.setupResult == AVCamSetupResult.Success {
+        self.sessionQueue!.async {
+            if self.setupResult == AVCamSetupResult.success {
                 self.captureSession!.stopRunning()
                 for item in (self.captureSession?.inputs)! {
                 self.captureSession?.removeInput((item as! AVCaptureInput))
@@ -1142,59 +1171,59 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     
     
-    private func addObservers() {
-        self.captureSession!.addObserver(self, forKeyPath: "running", options: NSKeyValueObservingOptions.New, context: SessionRunningContext)
+    fileprivate func addObservers() {
+        self.captureSession!.addObserver(self, forKeyPath: "running", options: NSKeyValueObservingOptions.new, context: SessionRunningContext)
  
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraViewController.subjectAreaDidChange(_:) as (CameraViewController) -> (NSNotification) -> ()), name: AVCaptureDeviceSubjectAreaDidChangeNotification, object: self.videoDeviceInput.device)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraViewController.sessionRuntimeError(_:)), name: AVCaptureSessionRuntimeErrorNotification, object: self.captureSession)
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraViewController.subjectAreaDidChange(_:) as (CameraViewController) -> (Notification) -> ()), name: NSNotification.Name.AVCaptureDeviceSubjectAreaDidChange, object: self.videoDeviceInput.device)
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraViewController.sessionRuntimeError(_:)), name: NSNotification.Name.AVCaptureSessionRuntimeError, object: self.captureSession)
         // A session can only run when the app is full screen. It will be interrupted in a multi-app layout, introduced in iOS 9,
         // see also the documentation of AVCaptureSessionInterruptionReason. Add observers to handle these session interruptions
         // and show a preview is paused message. See the documentation of AVCaptureSessionWasInterruptedNotification for other
         // interruption reasons.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraViewController.sessionWasInterrupted(_:)), name: AVCaptureSessionWasInterruptedNotification, object: self.captureSession)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CameraViewController.sessionInterruptionEnded(_:)), name: AVCaptureSessionInterruptionEndedNotification, object: self.captureSession)
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraViewController.sessionWasInterrupted(_:)), name: NSNotification.Name.AVCaptureSessionWasInterrupted, object: self.captureSession)
+        NotificationCenter.default.addObserver(self, selector: #selector(CameraViewController.sessionInterruptionEnded(_:)), name: NSNotification.Name.AVCaptureSessionInterruptionEnded, object: self.captureSession)
     }
     
-    private func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+    fileprivate func removeObservers() {
+        NotificationCenter.default.removeObserver(self)
         
         self.captureSession!.removeObserver(self, forKeyPath: "running", context: SessionRunningContext)
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         switch context {
 
         case SessionRunningContext:
-            let isSessionRunning = change![NSKeyValueChangeNewKey]! as! Bool
+            let isSessionRunning = change![NSKeyValueChangeKey.newKey]! as! Bool
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 // Only enable the ability to change camera if the device has more than one camera.
                 
-                self.cameraChange.enabled = isSessionRunning && (AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo).count > 1)
+                self.cameraChange.isEnabled = isSessionRunning && (AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo).count > 1)
                 self.recordButton.enabled = isSessionRunning
                 
             }
         default:
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
     
 
     
-    func sessionRuntimeError(notification: NSNotification) {
-        let error = notification.userInfo![AVCaptureSessionErrorKey]! as! NSError
+    func sessionRuntimeError(_ notification: Notification) {
+        let error = (notification as NSNotification).userInfo![AVCaptureSessionErrorKey]! as! NSError
         NSLog("Capture session runtime error: %@", error)
         
         // Automatically try to restart the session running if media services were reset and the last start running succeeded.
         // Otherwise, enable the user to try to resume the session running.
-        if error.code == AVError.MediaServicesWereReset.rawValue {
-            dispatch_async(self.sessionQueue!) {
+        if error.code == AVError.Code.mediaServicesWereReset.rawValue {
+            self.sessionQueue!.async {
                 if self.sessionRunning {
                     self.captureSession!.startRunning()
-                    self.sessionRunning = self.captureSession!.running
+                    self.sessionRunning = self.captureSession!.isRunning
                 } else {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         self.recordButton.hidden = false
                     }
                 }
@@ -1204,7 +1233,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         }
     }
     
-    func sessionWasInterrupted(notification: NSNotification) {
+    func sessionWasInterrupted(_ notification: Notification) {
         // In some scenarios we want to enable the user to resume the session running.
         // For example, if music playback is initiated via control center while using AVCam,
         // then the user can let AVCam resume the session running, which will stop music playback.
@@ -1214,19 +1243,19 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         // In iOS 9 and later, the userInfo dictionary contains information on why the session was interrupted.
         if #available(iOS 9.0, *) {
-            let reason = notification.userInfo![AVCaptureSessionInterruptionReasonKey]! as! Int
+            let reason = (notification as NSNotification).userInfo![AVCaptureSessionInterruptionReasonKey]! as! Int
             NSLog("Capture session was interrupted with reason %ld", reason)
             
-            if reason == AVCaptureSessionInterruptionReason.AudioDeviceInUseByAnotherClient.rawValue ||
-                reason == AVCaptureSessionInterruptionReason.VideoDeviceInUseByAnotherClient.rawValue {
+            if reason == AVCaptureSessionInterruptionReason.audioDeviceInUseByAnotherClient.rawValue ||
+                reason == AVCaptureSessionInterruptionReason.videoDeviceInUseByAnotherClient.rawValue {
                 showResumeButton = true
-            } else if reason == AVCaptureSessionInterruptionReason.VideoDeviceNotAvailableWithMultipleForegroundApps.rawValue {
+            } else if reason == AVCaptureSessionInterruptionReason.videoDeviceNotAvailableWithMultipleForegroundApps.rawValue {
                 // Simply fade-in a label to inform the user that the camera is unavailable.
                 
             }
         } else {
             NSLog("Capture session was interrupted")
-            showResumeButton = (UIApplication.sharedApplication().applicationState == UIApplicationState.Inactive)
+            showResumeButton = (UIApplication.shared.applicationState == UIApplicationState.inactive)
         }
         
         if showResumeButton {
@@ -1234,7 +1263,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
         }
     }
-    func sessionInterruptionEnded(notification: NSNotification) {
+    func sessionInterruptionEnded(_ notification: Notification) {
         NSLog("Capture session interruption ended")
         
     }
@@ -1245,7 +1274,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 }
 
 extension CLLocation {
-    func parameters(bool: Bool) -> Parameters {
+    func parameters(_ bool: Bool) -> Parameters {
         let myll = Parameter.ll
         let myllacc = Parameter.llAcc
         let myalt = Parameter.alt

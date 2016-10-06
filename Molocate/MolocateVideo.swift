@@ -3,8 +3,8 @@ import AWSS3
 
 let MoleCategoriesDictionary = ["EĞLENCE":"fun","YEMEK":"food","GEZİ":"travel","MODA":"fashion" , "GÜZELLİK":"makeup", "SPOR": "Sport","ETKİNLİK": "Event","KAMPÜS":"university", "HEPSİ":"all","TREND":"trend","YAKINDA":"nearby"]
 var MoleGlobalVideo:MoleVideoInformation!
-var AddedNextUserVideos: NSURL?
-var TaggedNextUserVideos: NSURL?
+var AddedNextUserVideos: URL?
+var TaggedNextUserVideos: URL?
 
 
 var VideoUploadRequests: [VideoUploadRequest] = [VideoUploadRequest]()
@@ -17,16 +17,16 @@ struct MoleVideoInformation{
     var location:String = ""
     var locationID:String = ""
     var caption:String = ""
-    var urlSta:NSURL = NSURL()
+    var urlSta:URL = URL()
     var likeCount = 0
     var commentCount = 0
     var comments = [String]()
     var isLiked: Int = 0
     var isFollowing: Int = 0
-    var userpic: NSURL = NSURL()
+    var userpic: URL = URL()
     var dateStr: String = ""
     var taggedUsers = [String]()
-    var thumbnailURL:NSURL = NSURL()
+    var thumbnailURL:URL = URL()
     var isUploading = false
     var isFailed = false
     var deletable = false
@@ -34,8 +34,8 @@ struct MoleVideoInformation{
 
 struct VideoUploadRequest{
     var filePath = ""
-    var thumbUrl = NSURL()
-    var thumbnail:NSData
+    var thumbUrl = URL()
+    var thumbnail:Data
     var JsonData: [String:AnyObject]
     var fileId = ""
     var uploadRequest: AWSS3TransferManagerUploadRequest
@@ -43,16 +43,16 @@ struct VideoUploadRequest{
     var isFailed = false
     func encode() -> Dictionary<String, AnyObject> {
         var dictionary : Dictionary = Dictionary<String, AnyObject>()
-        dictionary["filePath"] = filePath
+        dictionary["filePath"] = filePath as AnyObject?
         dictionary["thumbUrl"] = thumbUrl.absoluteString
-        dictionary["JsonData"] = JsonData
-        dictionary["thumbnail"] = thumbnail
+        dictionary["JsonData"] = JsonData as AnyObject?
+        dictionary["thumbnail"] = thumbnail as AnyObject?
         dictionary["uploadRequestBody"] = uploadRequest.body.absoluteString
         dictionary["uploadRequestBucket"] = uploadRequest.bucket
         dictionary["uploadRequestKey"] = uploadRequest.key
-        dictionary["fileId"] = fileId
-        dictionary["id"] = id
-        dictionary["isFailed"] = isFailed
+        dictionary["fileId"] = fileId as AnyObject?
+        dictionary["id"] = id as AnyObject?
+        dictionary["isFailed"] = isFailed as AnyObject?
         return dictionary
     }
 }
@@ -61,34 +61,34 @@ struct MoleVideoComment{
     var id: String = ""
     var text: String = ""
     var username: String = ""
-    var photo: NSURL = NSURL()
+    var photo: URL = URL()
     var deletable = false
 }
 
-public class MolocateVideo {
+open class MolocateVideo {
     
     static let timeout = 8.0
     
     class func encodeGlobalVideo(){
-        let ud = NSUserDefaults.standardUserDefaults()
+        let ud = UserDefaults.standard
         if VideoUploadRequests.count == 0 {
-            ud.setBool(false, forKey: "isStuck")
+            ud.set(false, forKey: "isStuck")
         }else{
-            ud.setBool(true, forKey: "isStuck")
+            ud.set(true, forKey: "isStuck")
             let dataUploadRequests = VideoUploadRequests.map({
                 (value: VideoUploadRequest) -> Dictionary<String, AnyObject> in
                 return value.encode()
             })
-            ud.setObject(dataUploadRequests, forKey: "videoRequests")
+            ud.set(dataUploadRequests, forKey: "videoRequests")
         }
         // print(fileURL)
         
         
     }
     class func decodeGlobalVideo(){
-        let ud = NSUserDefaults.standardUserDefaults()
-        if ud.objectForKey("videoRequests") != nil {
-            let dataUploadRequests  = ud.objectForKey("videoRequests") as! [Dictionary<String, AnyObject>]
+        let ud = UserDefaults.standard
+        if ud.object(forKey: "videoRequests") != nil {
+            let dataUploadRequests  = ud.object(forKey: "videoRequests") as! [Dictionary<String, AnyObject>]
             VideoUploadRequests = dataUploadRequests.map({
                 (value:Dictionary<String, AnyObject> ) -> VideoUploadRequest in
                 //print("decoding")
@@ -101,14 +101,14 @@ public class MolocateVideo {
         
     }
     
-    class func decodeVideoUploadRequest(dictionary: Dictionary<String, AnyObject>) -> VideoUploadRequest{
+    class func decodeVideoUploadRequest(_ dictionary: Dictionary<String, AnyObject>) -> VideoUploadRequest{
        
         let filePath = dictionary["filePath"] as! String
-        let thumbUrl = NSURL(string: dictionary["thumbUrl"] as! String)
+        let thumbUrl = URL(string: dictionary["thumbUrl"] as! String)
         let JsonData = dictionary["JsonData"] as! [String:AnyObject]
-        let thumbnail = dictionary["thumbnail"] as! NSData
+        let thumbnail = dictionary["thumbnail"] as! Data
         let uploadRequest = AWSS3TransferManagerUploadRequest()
-        uploadRequest.body = NSURL(string:  dictionary["uploadRequestBody"] as! String)
+        uploadRequest.body = URL(string:  dictionary["uploadRequestBody"] as! String)
         uploadRequest.bucket = dictionary["uploadRequestBucket"] as? String
         uploadRequest.key = dictionary["uploadRequestKey"] as? String
         let fileId = dictionary["fileId"] as! String
@@ -118,22 +118,22 @@ public class MolocateVideo {
         return VideoUploadRequest(filePath: filePath, thumbUrl: thumbUrl!, thumbnail: thumbnail, JsonData: JsonData, fileId: fileId, uploadRequest: uploadRequest, id: id, isFailed: isFailed )
         
     }
-    class func getComments(videoId: String, completionHandler: (data: Array<MoleVideoComment>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()) {
+    class func getComments(_ videoId: String, completionHandler: @escaping (_ data: Array<MoleVideoComment>, _ response: URLResponse?, _ error: NSError?, _ count: Int?, _ next: String?, _ previous: String?) -> ()) {
         
-        let url = NSURL(string: MolocateBaseUrl + "video/api/get_comments/?video_id=" + (videoId as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let url = URL(string: MolocateBaseUrl + "video/api/get_comments/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             
             if error == nil {
                 let nsError = error;
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("results") != nil {
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "results") != nil {
                         let commentdata = result["results"] as!  NSArray
                         let count: Int = result["count"] as! Int
                         let next =  result["next"] is NSNull ? nil:result["next"] as? String
@@ -147,7 +147,7 @@ public class MolocateVideo {
                             let thing = commentdata[i] as! [String:AnyObject]
                             //print(thing)
                             thecomment.username = thing["username"] as! String
-                            thecomment.photo = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                            thecomment.photo = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
                             thecomment.text = thing["comment"] as! String
                             thecomment.id = thing["comment_id"] as! String
                             thecomment.deletable = thing["is_deletable"] as! Bool
@@ -170,26 +170,26 @@ public class MolocateVideo {
                 if debug { print("RequestError:: in MolocateVideo.getComments()")}
             }
             
-        }
+        })
         
         task.resume()
     }
     
-    class func getFilters(completionHandler: (data: [filter]?, response: NSURLResponse!, error: NSError!) -> ()){
+    class func getFilters(_ completionHandler: @escaping (_ data: [filter]?, _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let request = NSMutableURLRequest(URL: NSURL(string: MolocateTestUrl+"video/api/video_filters/")!)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: URL(string: MolocateTestUrl+"video/api/video_filters/")!)
+        request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout + 2.0
         eventcount = 0
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             if error == nil{
                 let nsError = error
                 
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers ) as! [[String:AnyObject]]
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [[String:AnyObject]]
                    // print(result)
                     var filters = [filter]()
                     for item in result {
@@ -201,7 +201,7 @@ public class MolocateVideo {
                         }
                         filt.name = item["name"] as! String
                         filt.raw_name = item["name_raw"] as! String
-                        filt.thumbnail_url = NSURL(string: item["thumbnail_url"] as! String) == nil ? NSURL():NSURL(string: item["thumbnail_url"] as! String)!
+                        filt.thumbnail_url = URL(string: item["thumbnail_url"] as! String) == nil ? URL():URL(string: item["thumbnail_url"] as! String)!
                         filters.append(filt)
                     }
                     completionHandler(data: filters, response: response, error: nsError)
@@ -211,40 +211,40 @@ public class MolocateVideo {
         
     
     }
-        }
+        })
         task.resume()
     }
     
     
-    class func getExploreVideos(nextURL: NSURL?, completionHandler: (data: [MoleVideoInformation]?, response: NSURLResponse!, error: NSError!, next: NSURL?) -> ()){
+    class func getExploreVideos(_ nextURL: URL?, completionHandler: @escaping (_ data: [MoleVideoInformation]?, _ response: URLResponse?, _ error: NSError?, _ next: URL?) -> ()){
       
-        let request = NSMutableURLRequest(URL: nextURL!)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: nextURL!)
+        request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout + 2.0
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             if error == nil{
                 let nsError = error
                 
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers ) as! [String: AnyObject]
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [String: AnyObject]
                     
-                    if result.indexForKey("results") != nil {
+                    if result.index(forKey: "results") != nil {
                         
                         let videos = result["results"] as! NSArray
-                        var nexturl: NSURL?
+                        var nexturl: URL?
                         
                         if (result["next"] != nil){
                             if result["next"] is NSNull {
                                 nexturl = nil
                             }else {
                                 let nextStr = result["next"] as! String
-                                nexturl = NSURL(string: nextStr)!
+                                nexturl = URL(string: nextStr)!
                             }
                         }
                         
@@ -258,7 +258,7 @@ public class MolocateVideo {
                             var videoStr = MoleVideoInformation()
                             
                             videoStr.id = item["video_id"] as! String
-                            videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
+                            videoStr.urlSta = URL(string:  item["video_url"] as! String)!
                             videoStr.username = owner_user["username"] as! String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
@@ -268,10 +268,10 @@ public class MolocateVideo {
                             videoStr.category = item["category"] as! String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
-                            videoStr.userpic = owner_user["picture_url"] is NSNull ? NSURL():NSURL(string: owner_user["picture_url"] as! String)!
+                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as! String
                             videoStr.taggedUsers = item["tagged_users"] as! [String]
-                            videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
+                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                             videoStr.deletable = item["is_deletable"] as! Bool
                             videoArray.append(videoStr)
 //                            print(videoStr.username)
@@ -285,47 +285,47 @@ public class MolocateVideo {
                         
                     }
                 }catch{
-                    completionHandler(data: [MoleVideoInformation](), response: NSURLResponse(), error: nsError, next: nil)
+                    completionHandler(data: [MoleVideoInformation](), response: URLResponse(), error: nsError, next: nil)
                     if debug { print("JsonError: in MolocateVideo.getExploreVideos")}
                 }
             }else{
-                completionHandler(data: [MoleVideoInformation](), response: NSURLResponse(), error:error, next: nil)
+                completionHandler(data: [MoleVideoInformation](), response: URLResponse(), error:error, next: nil)
                 if debug { print("Request: in MolocateVideo.getExploreVideos")}
 
             }
-        }
+        })
         task.resume()
     }
     
-    class func getNearbyVideos(placeLat: Float,placeLon: Float, completionHandler: (data: [MoleVideoInformation]?, response: NSURLResponse!, error: NSError!, next: NSURL?) -> ()){
+    class func getNearbyVideos(_ placeLat: Float,placeLon: Float, completionHandler: @escaping (_ data: [MoleVideoInformation]?, _ response: URLResponse?, _ error: NSError?, _ next: URL?) -> ()){
         
         
-        let url = NSURL(string: MolocateTestUrl + "/place/api/nearby_videos/?lat=\(placeLat)&lon=\(placeLon)")
-        let request = NSMutableURLRequest(URL: url!)
-        request.HTTPMethod = "GET"
+        let url = URL(string: MolocateTestUrl + "/place/api/nearby_videos/?lat=\(placeLat)&lon=\(placeLon)")
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout + 2.0
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil{
                 let nsError = error
                 
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers ) as! [String: AnyObject]
-                    if result.indexForKey("results") != nil {
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [String: AnyObject]
+                    if result.index(forKey: "results") != nil {
                         
                         let videos = result["results"] as! NSArray
-                        var nexturl: NSURL?
+                        var nexturl: URL?
                         
                         if (result["next"] != nil){
                             if result["next"] is NSNull {
                                 nexturl = nil
                             }else {
                                 let nextStr = result["next"] as! String
-                                nexturl = NSURL(string: nextStr)!
+                                nexturl = URL(string: nextStr)!
                             }
                         }
                         
@@ -339,7 +339,7 @@ public class MolocateVideo {
                             var videoStr = MoleVideoInformation()
                             
                             videoStr.id = item["video_id"] as! String
-                            videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
+                            videoStr.urlSta = URL(string:  item["video_url"] as! String)!
                             videoStr.username = owner_user["username"] as! String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
@@ -349,10 +349,10 @@ public class MolocateVideo {
                             videoStr.category = item["category"] as! String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
-                            videoStr.userpic = owner_user["picture_url"] is NSNull ? NSURL():NSURL(string: owner_user["picture_url"] as! String)!
+                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as! String
                             videoStr.taggedUsers = item["tagged_users"] as! [String]
-                            videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
+                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                             videoStr.deletable = item["is_deletable"] as! Bool
                             videoArray.append(videoStr)
                             //                            print(videoStr.username)
@@ -366,36 +366,36 @@ public class MolocateVideo {
                         
                     }
                 }catch{
-                    completionHandler(data: [MoleVideoInformation](), response: NSURLResponse(), error: nsError, next: nil)
+                    completionHandler(data: [MoleVideoInformation](), response: URLResponse(), error: nsError, next: nil)
                     if debug { print("JsonError: in MolocateVideo.getExploreVideos")}
                 }
             }else{
-                completionHandler(data: [MoleVideoInformation](), response: NSURLResponse(), error:error, next: nil)
+                completionHandler(data: [MoleVideoInformation](), response: URLResponse(), error:error, next: nil)
                 if debug { print("Request: in MolocateVideo.getExploreVideos")}
                 
             }
-        }
+        })
         task.resume()
     }
 
-    class func getLikes(videoId: String, completionHandler: (data: Array<MoleUser>, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
+    class func getLikes(_ videoId: String, completionHandler: @escaping (_ data: Array<MoleUser>, _ response: URLResponse?, _ error: NSError?, _ count: Int?, _ next: String?, _ previous: String?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "video/api/video_likes/?video_id=" + (videoId as String));
+        let url = URL(string: MolocateBaseUrl + "video/api/video_likes/?video_id=" + (videoId as String));
         
-        let request = NSMutableURLRequest(URL: url!)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken! , forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             
             if error == nil {
                 let nsError = error;
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 do {
                     
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("results") != nil {
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "results") != nil {
                       
                         let count: Int = result["count"] as! Int
                         let next =  result["next"] is NSNull ? nil:result["next"] as? String
@@ -407,7 +407,7 @@ public class MolocateVideo {
                                 let thing = likers[i] as! [String:AnyObject]
                                 var user = MoleUser()
                                 user.username = thing["username"] as! String
-                                user.profilePic = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                                user.profilePic = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
                                 user.isFollowing = thing["is_following"] as! Int == 1 ? true:false
                                 users.append(user)
                             }
@@ -426,42 +426,42 @@ public class MolocateVideo {
                // print("RequestError:: in MolocateVideo.getLikes(()")
             }
             
-        }
+        })
         
         task.resume()
         
     }
     
     
-    class func getUserVideos(name: String,type:String , completionHandler: (data: [MoleVideoInformation]?, response: NSURLResponse!, error: NSError!) -> ()){
+    class func getUserVideos(_ name: String,type:String , completionHandler: @escaping (_ data: [MoleVideoInformation]?, _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let nextURL:NSURL
+        let nextURL:URL
         
         switch(type){
             case "user":
-                nextURL = NSURL(string: MolocateBaseUrl+"video/api/user_videos/?username="+name)!
+                nextURL = URL(string: MolocateBaseUrl+"video/api/user_videos/?username="+name)!
                 break
             case "tagged":
-                nextURL = NSURL(string: MolocateBaseUrl+"video/api/tagged_videos/?username="+name)!
+                nextURL = URL(string: MolocateBaseUrl+"video/api/tagged_videos/?username="+name)!
                 break
             default:
-                nextURL = NSURL()
+                nextURL = URL()
                 break
         }
         
-        let request = NSMutableURLRequest(URL: nextURL)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: nextURL)
+        request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout + 2.0
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             if error == nil {
                 let nsError = error
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! [String:AnyObject]
-                    if result.indexForKey("results") != nil{
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String:AnyObject]
+                    if result.index(forKey: "results") != nil{
                         
                         switch(type){
                         case "user":
@@ -470,7 +470,7 @@ public class MolocateVideo {
                                     AddedNextUserVideos = nil
                                 }else {
                                     let nextStr = result["next"] as! String
-                                    AddedNextUserVideos = NSURL(string: nextStr)!
+                                    AddedNextUserVideos = URL(string: nextStr)!
                                 }
                             }
                             break
@@ -480,7 +480,7 @@ public class MolocateVideo {
                                     TaggedNextUserVideos = nil
                                 }else {
                                     let nextStr = result["next"] as! String
-                                    TaggedNextUserVideos = NSURL(string: nextStr)!
+                                    TaggedNextUserVideos = URL(string: nextStr)!
                                 }
                             }
                             break
@@ -499,7 +499,7 @@ public class MolocateVideo {
                             
                             var videoStr = MoleVideoInformation()
                             videoStr.id = item["video_id"] as! String
-                            videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
+                            videoStr.urlSta = URL(string:  item["video_url"] as! String)!
                             videoStr.username = owner_user["username"] as! String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
@@ -509,11 +509,11 @@ public class MolocateVideo {
                             videoStr.category = item["category"] as! String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
-                            videoStr.userpic = owner_user["picture_url"] is NSNull ? NSURL():NSURL(string: owner_user["picture_url"] as! String)!
+                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as! String
                             videoStr.taggedUsers = item["tagged_users"] as! [String]
                             
-                            videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
+                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                             videoStr.deletable = item["is_deletable"] as! Bool
                             videoArray.append(videoStr)
                            
@@ -523,44 +523,44 @@ public class MolocateVideo {
                         }
                         completionHandler(data: videoArray, response: response, error: nsError)
                     }else{
-                        completionHandler(data: [MoleVideoInformation](), response: NSURLResponse(), error: nsError)
+                        completionHandler(data: [MoleVideoInformation](), response: URLResponse(), error: nsError)
                         if debug {print("ServerDataError: in MoleVideo.getUserVideos")}
                     }
                 }catch{
-                    completionHandler(data: [MoleVideoInformation](), response: NSURLResponse(), error: nsError)
+                    completionHandler(data: [MoleVideoInformation](), response: URLResponse(), error: nsError)
                     if debug {print("JsonError: in MoleVideo.getUserVideos")}
                 }
             }else{
-                completionHandler(data: [MoleVideoInformation](), response: NSURLResponse(), error: error)
+                completionHandler(data: [MoleVideoInformation](), response: URLResponse(), error: error)
                 if debug {print("RequestError:  in MoleVideo.getUserVideos")}
             }
-        }
+        })
         task.resume()
     }
     
     
-    class func getVideo(id: String?, completionHandler: (data: MoleVideoInformation?, response: NSURLResponse!, error: NSError!) -> ()){
+    class func getVideo(_ id: String?, completionHandler: @escaping (_ data: MoleVideoInformation?, _ response: URLResponse?, _ error: NSError?) -> ()){
        
-        let url = NSURL(string: MolocateBaseUrl+"video/get_video/?video_id="+id!)
-        let request = NSMutableURLRequest(URL: url!)
-        request.HTTPMethod = "GET"
+        let url = URL(string: MolocateBaseUrl+"video/get_video/?video_id="+id!)
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             
             if error == nil {
             let nsError = error
                 do {
-                    let item = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as![String: AnyObject]
-                    if item.indexForKey("owner_user") != nil {
+                    let item = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as![String: AnyObject]
+                    if item.index(forKey: "owner_user") != nil {
                         var videoStr = MoleVideoInformation()
                         let owner_user = item["owner_user"] as! [String:AnyObject]
                         let placeTaken = item["place_taken"] as! [String:String]
                         
                         videoStr.id = item["video_id"] as! String
-                        videoStr.urlSta = NSURL(string:  item["video_url"] as! String)!
+                        videoStr.urlSta = URL(string:  item["video_url"] as! String)!
                         videoStr.username = owner_user["username"] as! String
                         videoStr.location = placeTaken["name"]!
                         videoStr.locationID = placeTaken["place_id"]!
@@ -570,50 +570,50 @@ public class MolocateVideo {
                         videoStr.category = item["category"] as! String
                         videoStr.isLiked = item["is_liked"] as! Int
                         videoStr.isFollowing = owner_user["is_following"] as! Int
-                        videoStr.userpic = owner_user["picture_url"] is NSNull ? NSURL():NSURL(string: owner_user["picture_url"] as! String)!
+                        videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
                         videoStr.dateStr = item["date_str"] as! String
                         videoStr.taggedUsers = item["tagged_users"] as! [String]
                         videoStr.deletable = item["is_deletable"] as! Bool
-                        videoStr.thumbnailURL = NSURL(string:item["thumbnail"] as! String)!
+                        videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                         
 //                        print(videoStr.username)
 //                        print(videoStr.location)
 //                        print(videoStr.urlSta)
                         completionHandler(data: videoStr, response: response, error: nsError)
                     }else{
-                        completionHandler(data: MoleVideoInformation(), response: NSURLResponse(), error: nsError)
+                        completionHandler(data: MoleVideoInformation(), response: URLResponse(), error: nsError)
                         if debug {print("ServerDataError: in MolocateVideo.getVideo")}
                     }
                 }catch{
-                    completionHandler(data: MoleVideoInformation(), response: NSURLResponse(), error: nsError)
+                    completionHandler(data: MoleVideoInformation(), response: URLResponse(), error: nsError)
                     if debug {print("JsonError: in MolocateVideo.getVideo")}
                 }
             }else{
-                completionHandler(data: MoleVideoInformation(), response: NSURLResponse(), error: error)
+                completionHandler(data: MoleVideoInformation(), response: URLResponse(), error: error)
                 if debug { print("RequestError: in MolocateVideo.getVideo")}
             }
-        }
+        })
         task.resume()
     }
     
     
     
     
-    class func likeAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func likeAVideo(_ videoId: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "video/like/?video_id=" + (videoId as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let url = URL(string: MolocateBaseUrl + "video/like/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
         request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil{
                 let nsError = error
                 
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject]
-                    if result.indexForKey("result") != nil{
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
+                    if result.index(forKey: "result") != nil{
                         completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                     }else{
                         completionHandler(data: "fail" , response: nil , error: nsError  )
@@ -628,25 +628,25 @@ public class MolocateVideo {
                 if debug {print("JsonError:: in MolocateVideo.likeAVideo()")}
             }
             
-        }
+        })
         
         task.resume()
     }
-    class func reportAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func reportAVideo(_ videoId: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "video/report/?video_id=" + (videoId as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let url = URL(string: MolocateBaseUrl + "video/report/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil {
                 let nsError = error
                 
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("result") != nil{
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "result") != nil{
                         completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                     }else{
                         completionHandler(data: "fail" , response: nil , error: nsError  )
@@ -660,26 +660,26 @@ public class MolocateVideo {
                 completionHandler(data: "fail" , response: nil , error: error  )
                 if debug {print("RequestError:: in MolocateVideo.reportAvideo()")}
             }
-        }
+        })
         
         task.resume()
     }
     
-    class func unLikeAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func unLikeAVideo(_ videoId: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "video/unlike/?video_id=" + (videoId as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let url = URL(string: MolocateBaseUrl + "video/unlike/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
         request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil {
                 let nsError = error
                 
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("result") != nil{
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "result") != nil{
                         completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                     }else{
                         completionHandler(data: "fail" , response: nil , error: nsError  )
@@ -695,26 +695,26 @@ public class MolocateVideo {
 
             }
             
-        }
+        })
         
         task.resume()
     }
     
-    class func deleteAVideo(videoId: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func deleteAVideo(_ videoId: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "video/delete/?video_id=" + (videoId as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let url = URL(string: MolocateBaseUrl + "video/delete/?video_id=" + (videoId as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
         request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil {
                 let nsError = error
                 
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("result") != nil{
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "result") != nil{
                         completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                     }else{
                         completionHandler(data: "fail" , response: nil , error: nsError  )
@@ -730,28 +730,28 @@ public class MolocateVideo {
                 if debug {print("RequestError:: in MolocateVideo.deleteAVideo()")}
             }
                 
-        }
+        })
         
         task.resume()
     }
     
     
     
-    class func commentAVideo(videoId: String,comment: String, mentioned_users: [String], completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func commentAVideo(_ videoId: String,comment: String, mentioned_users: [String], completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         do{
             
-            let Body = ["video_id": videoId,"comment": comment, "mentioned_users": mentioned_users]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(Body, options: NSJSONWritingOptions())
+            let Body = ["video_id": videoId,"comment": comment, "mentioned_users": mentioned_users] as [String : Any]
+            let jsonData = try JSONSerialization.data(withJSONObject: Body, options: JSONSerialization.WritingOptions())
             
-            let url = NSURL(string: MolocateBaseUrl + "video/comment/")!
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let url = URL(string: MolocateBaseUrl + "video/comment/")!
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
-            request.HTTPBody = jsonData
+            request.httpBody = jsonData
             request.timeoutInterval = timeout
         
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                 // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 
                 if error == nil{
@@ -759,9 +759,9 @@ public class MolocateVideo {
                     
                     do {
                         
-                        let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
+                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                         //print(result)
-                        if result.indexForKey("result") != nil{
+                        if result.index(forKey: "result") != nil{
                             completionHandler(data: result["comment_id"] as! String , response: response , error: nsError  )
                         } else {
                             completionHandler(data: "fail" , response: nil , error: nsError  )
@@ -776,34 +776,34 @@ public class MolocateVideo {
                     if debug {print("JsonError:: in MolocateVideo.commentAVideo()")}
                 }
                 
-            }
+            })
             
             task.resume()
         }catch{
-            completionHandler(data: "fail" , response: nil , error: nil )
+            completionHandler("fail" , nil , nil )
             if debug {print("JsonError:: in MolocateVideo.commentAVideo() in start")}
         }
     }
     
-    class func increment_watch(videoIds: [String], completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func increment_watch(_ videoIds: [String], completionHandler: (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         do{
             
             let Body = ["videos": videoIds]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(Body, options: NSJSONWritingOptions())
+            let jsonData = try JSONSerialization.data(withJSONObject: Body, options: JSONSerialization.WritingOptions())
             
-            let url = NSURL(string: MolocateBaseUrl + "video/api/increment_watch/")!
+            let url = URL(string: MolocateBaseUrl + "video/api/increment_watch/")!
             
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
-            request.HTTPBody = jsonData
+            request.httpBody = jsonData
             request.timeoutInterval = timeout
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 
-            }
+            })
                   task.resume()
         }catch{
             //  print("error")
@@ -812,24 +812,24 @@ public class MolocateVideo {
        
     }
     
-    class func deleteAComment(id: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func deleteAComment(_ id: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
    
             
-            let url = NSURL(string: MolocateBaseUrl + "video/api/delete_comment/?comment_id=" + (id as String))!
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let url = URL(string: MolocateBaseUrl + "video/api/delete_comment/?comment_id=" + (id as String))!
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
             request.timeoutInterval = timeout
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 if error == nil {
                     let nsError = error
                     
                     do {
                         
-                        let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                        if result.indexForKey("result") != nil{
+                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                        if result.index(forKey: "result") != nil{
                            completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                         }else{
                             completionHandler(data: "fail" , response: nil , error: nsError  )
@@ -845,7 +845,7 @@ public class MolocateVideo {
                     if debug {print("RequestError:: in MolocateVideo.deleteComment()")}
                 }
                 
-            }
+            })
             
             task.resume()
     }

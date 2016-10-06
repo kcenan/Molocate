@@ -24,16 +24,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // [Optional] Power your app with Local Datastore. For more info, go to
         //setStatusBarBackgroundColor()
         
         Fabric.with([Crashlytics.self])
         Fabric.sharedSDK().debug = false
-        if(NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")) {
+        if(UserDefaults.standard.bool(forKey: "isRegistered")) {
             isRegistered = true
-            DeviceToken = NSUserDefaults.standardUserDefaults().objectForKey("DeviceToken") as? String
+            DeviceToken = UserDefaults.standard.object(forKey: "DeviceToken") as? String
         }
         
         if(!isRegistered && MoleUserToken != nil && DeviceToken  != nil){
@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
         }
         
-        if NSUserDefaults.standardUserDefaults().objectForKey("profile_picture") == nil && MoleCurrentUser.profilePic != NSURL(){
+        if UserDefaults.standard.object(forKey: "profile_picture") == nil && MoleCurrentUser.profilePic != URL(){
             MolocateAccount.setProfilePictures()
         }
         
@@ -74,13 +74,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configuration.shouldControllNetworkActivityIndicator = true
         Session.setupSharedSessionWithConfiguration(configuration)
         
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
-        if let _ = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? [String: AnyObject] {
+        if let _ = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [String: AnyObject] {
             choosedIndex = 3
-            NSNotificationCenter.defaultCenter().postNotificationName("pushNotification", object: nil)
-            UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
+            UIApplication.shared.applicationIconBadgeNumber = 0
             
             
         }
@@ -92,18 +92,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
-        if notificationSettings.types != .None {
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        if notificationSettings.types != UIUserNotificationType() {
             application.registerForRemoteNotifications()
         }
 
     }
    
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        let tokenChars = UnsafePointer<CChar>(deviceToken.bytes)
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let tokenChars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
         var tokenString = ""
         
-        for i in 0..<deviceToken.length {
+        for i in 0..<deviceToken.count {
             tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
         }
         
@@ -111,8 +111,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         DeviceToken = tokenString
         
-        if(NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")) {
-            if DeviceToken != NSUserDefaults.standardUserDefaults().objectForKey("DeviceToken") as? String{
+        if(UserDefaults.standard.bool(forKey: "isRegistered")) {
+            if DeviceToken != UserDefaults.standard.object(forKey: "DeviceToken") as? String{
                 isRegistered = false
                 MolocateAccount.unregisterDevice({ (data, response, error) in
                     MolocateAccount.registerDevice({ (data, response, error) in
@@ -129,20 +129,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
        // print("Failed to register:", error)
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
             return FBSDKApplicationDelegate.sharedInstance().application(application,
-                openURL: url,
+                open: url,
                 sourceApplication: sourceApplication,
                 annotation: annotation)
         
            // return Session.sharedSession().handleURL(url)
     }
-    func application(application: UIApplication, willChangeStatusBarFrame newStatusBarFrame: CGRect) {
-        let windows = UIApplication.sharedApplication().windows
+    func application(_ application: UIApplication, willChangeStatusBarFrame newStatusBarFrame: CGRect) {
+        let windows = UIApplication.shared.windows
         
         for window in windows {
             window.removeConstraints(window.constraints)
@@ -155,21 +155,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
  
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
-        if(NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        if(UserDefaults.standard.bool(forKey: "isRegistered")) {
             isRegistered = true
-            DeviceToken = NSUserDefaults.standardUserDefaults().objectForKey("DeviceToken") as? String
+            DeviceToken = UserDefaults.standard.object(forKey: "DeviceToken") as? String
         }
         
         
@@ -190,36 +190,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         }
       
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.applicationIconBadgeNumber = 0
  
-        NSNotificationCenter.defaultCenter().postNotificationName("reloadMain", object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "reloadMain"), object: nil)
         
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         
         FBSDKAppEvents.activateApp()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
     
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func registerForPushNotifications(application: UIApplication) {
+    func registerForPushNotifications(_ application: UIApplication) {
         let notificationSettings = UIUserNotificationSettings(
-            forTypes: [.Badge, .Sound, .Alert], categories: nil)
+            types: [.badge, .sound, .alert], categories: nil)
         application.registerUserNotificationSettings(notificationSettings)
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        if (UIApplication.sharedApplication().applicationState == UIApplicationState.Inactive || UIApplication.sharedApplication().applicationState == UIApplicationState.Background) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+        if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
             
             choosedIndex = 3
-            NSNotificationCenter.defaultCenter().postNotificationName("pushNotification", object: nil)
-            UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
+            UIApplication.shared.applicationIconBadgeNumber = 0
           
             
             // go to screen relevant to Notification content
@@ -231,7 +231,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
-    func applicationDidReceiveMemoryWarning(application: UIApplication) {
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
         SDImageCache.sharedImageCache().clearMemory()
         if SDImageCache.sharedImageCache().getDiskCount() > 100 {
             SDImageCache.sharedImageCache().cleanDisk()
@@ -240,12 +240,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         
-        let location :CGPoint = (event?.allTouches()?.first?.locationInView(self.window))!
+        let location :CGPoint = (event?.allTouches?.first?.location(in: self.window))!
         if (location.y > 0) && (location.y < 16) {
-            NSNotificationCenter.defaultCenter().postNotificationName("scrollToTop", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "scrollToTop"), object: nil)
 //            switch (choosedIndex){
 //                case 0:
 //                case 1:

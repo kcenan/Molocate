@@ -1,23 +1,16 @@
+
 # Uncomment this line to define a global platform for your project
 # platform :ios, '8.0'
 # Uncomment this line if you're using Swift
-# use_frameworks!
-
+use_frameworks!
+xcodeproj 'Molocate.xcodeproj'
 target 'Molocate' do
 
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
-use_frameworks!
 
-pod 'QuadratTouch', '>= 1.0'
-pod "RecordButton"
-pod 'SDWebImage'
-pod 'HanekeSwift'
-pod 'AWSS3'
-pod 'XLActionController'
-pod 'Fabric'
-pod 'Crashlytics'
-pod 'RNCryptor', '~> 4.0.0-beta'
+pod 'AWSS3', '2.4.9'
+
 end
 
 target 'MolocateTests' do
@@ -26,5 +19,10 @@ end
 
 target 'MolocateUITests' do
 
+end
+post_install do |installer|
+  installer.pods_project.build_configuration_list.build_configurations.each do |configuration|
+    configuration.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+  end
 end
 

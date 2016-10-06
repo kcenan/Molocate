@@ -26,7 +26,7 @@ import Foundation
 import XLActionController
 
 
-public class TwitterCell: ActionCell {
+open class TwitterCell: ActionCell {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +37,7 @@ public class TwitterCell: ActionCell {
         super.init(coder: aDecoder)
     }
     
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         initialize()
     }
@@ -52,7 +52,7 @@ public class TwitterCell: ActionCell {
     }
 }
 
-public class TwitterActionControllerHeader: UICollectionReusableView {
+open class TwitterActionControllerHeader: UICollectionReusableView {
     
     lazy var label: UILabel = {
         let label = UILabel()
@@ -87,9 +87,9 @@ public class TwitterActionControllerHeader: UICollectionReusableView {
 }
 
 
-public class TwitterActionController: ActionController<TwitterCell, ActionData, TwitterActionControllerHeader, String, UICollectionReusableView, Void> {
+open class TwitterActionController: ActionController<TwitterCell, ActionData, TwitterActionControllerHeader, String, UICollectionReusableView, Void> {
     
-    public override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: NSBundle? = nil) {
+    public override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         settings.animation.present.duration = 0.6
         settings.animation.dismiss.duration = 0.6
@@ -108,7 +108,7 @@ public class TwitterActionController: ActionController<TwitterCell, ActionData, 
         }
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView.clipsToBounds = false
@@ -122,7 +122,7 @@ public class TwitterActionController: ActionController<TwitterCell, ActionData, 
         collectionView.sendSubviewToBack(hideBottomSpaceView)
     }
     
-    override public func dismissView(presentedView: UIView, presentingView: UIView, animationDuration: Double, completion: ((completed: Bool) -> Void)?) {
+    override open func dismissView(_ presentedView: UIView, presentingView: UIView, animationDuration: Double, completion: ((_ completed: Bool) -> Void)?) {
         onWillDismissView()
         let animationSettings = settings.animation.dismiss
         let upTime = 0.1

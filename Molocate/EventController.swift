@@ -25,7 +25,7 @@ class eventController: UIViewController, UITableViewDelegate, UITableViewDataSou
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func tableView(atableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ atableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
       return screenHeight / 3
     }
     
@@ -33,14 +33,14 @@ class eventController: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     
     
-    func tableView(atableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ atableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        return 3
     }
     
-    func tableView(atableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ atableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
             let cellIdentifier = "cell"
-            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! eventCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! eventCell
             //mollet index = indexPath.row
 //            cell.eventButton1.layer.borderWidth = 0.1
 //            cell.eventButton1.layer.masksToBounds = false

@@ -13,7 +13,7 @@ class optionCell: UITableViewCell {
     let cancelLabel: UILabel = UILabel()
     
     
-    var screenSize = UIScreen.mainScreen().bounds
+    var screenSize = UIScreen.main.bounds
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:)")
@@ -24,8 +24,8 @@ class optionCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
        
-        nameOption.frame = CGRectMake( 10 , 15 , screenSize.width - 50 , 30 )
-        nameOption.textAlignment = .Left
+        nameOption.frame = CGRect( x: 10 , y: 15 , width: screenSize.width - 50 , height: 30 )
+        nameOption.textAlignment = .left
         nameOption.textColor = swiftColor
         nameOption.text = "deneme"
         self.contentView.addSubview(nameOption)
@@ -35,14 +35,14 @@ class optionCell: UITableViewCell {
 
         let image: UIImage = UIImage(named: "right-chevron.png")!
         arrow.image = image
-        arrow.frame = CGRectMake (screenSize.width - 40, 20 , 20 , 20)
+        arrow.frame = CGRect (x: screenSize.width - 40, y: 20 , width: 20 , height: 20)
         
         self.contentView.addSubview(arrow)
         
         
        
-        cancelLabel.frame = CGRectMake( screenSize.width - 70, 40 , 60 , 30 )
-        cancelLabel.textAlignment = .Left
+        cancelLabel.frame = CGRect( x: screenSize.width - 70, y: 40 , width: 60 , height: 30 )
+        cancelLabel.textAlignment = .left
         cancelLabel.textColor = swiftColor
         cancelLabel.text = "Cancel"
         self.contentView.addSubview(cancelLabel)

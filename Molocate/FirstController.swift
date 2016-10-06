@@ -22,7 +22,7 @@ class firstController: UIViewController , CLLocationManagerDelegate {
     var errorMessage = "Lütfen tekrar deneyiniz."
     
    
-    @IBAction func facebookButton(sender: AnyObject) {
+    @IBAction func facebookButton(_ sender: AnyObject) {
         if(MolocateDevice.isConnectedToNetwork()){
             fbLoginInitiate()
         }else{
@@ -33,11 +33,11 @@ class firstController: UIViewController , CLLocationManagerDelegate {
     
     
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         adjustViewLayout(size)
     }
     
-    func adjustViewLayout(size: CGSize) {
+    func adjustViewLayout(_ size: CGSize) {
         switch(size.width, size.height) {
         case (480, 320):
         break                        // iPhone 4S in landscape
@@ -55,30 +55,30 @@ class firstController: UIViewController , CLLocationManagerDelegate {
     
     
     func stuckedVideoConfiguration(){
-        if NSUserDefaults.standardUserDefaults().boolForKey("isStuck"){
+        if UserDefaults.standard.bool(forKey: "isStuck"){
             MolocateVideo.decodeGlobalVideo()
         }
     }
     
     
-    func displayAlert(title: String, message: String) {
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "Tamam", style: .Default, handler: { (action) -> Void in
+    func displayAlert(_ title: String, message: String) {
+        UIApplication.shared.endIgnoringInteractionEvents()
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "Tamam", style: .default, handler: { (action) -> Void in
             self.activityIndicator.stopAnimating()
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func removeFbData() {
         let fbManager = FBSDKLoginManager()
         fbManager.logOut()
-        FBSDKAccessToken.setCurrentAccessToken(nil)
+        FBSDKAccessToken.setCurrent(nil)
     }
     
     func fbLoginInitiate() {
         choosedIndex = 2
-        FBSDKLoginManager().logInWithReadPermissions(["public_profile", "email","user_birthday", "user_friends"],fromViewController:self,handler: { (Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+        FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email","user_birthday", "user_friends"],from:self,handler: { (Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             
             if (error != nil) {
                 self.removeFbData()
@@ -87,7 +87,7 @@ class firstController: UIViewController , CLLocationManagerDelegate {
                 self.removeFbData()
             } else {
                 //print("success")
-                FbToken = FBSDKAccessToken.currentAccessToken().tokenString
+                FbToken = FBSDKAccessToken.current().tokenString
                 let json = ["access_token":FbToken]
                 
               //  print(FbToken)
@@ -95,15 +95,15 @@ class firstController: UIViewController , CLLocationManagerDelegate {
                 MolocateAccount.FacebookLogin(json, completionHandler: { (data, response, error) in
                     if (data == "success") {
                         MolocateAccount.getCurrentUser({ (data, response, error) in
-                            dispatch_async(dispatch_get_main_queue()) {
-                                self.performSegueWithIdentifier("autoLogin", sender: self)
+                            DispatchQueue.main.async {
+                                self.performSegue(withIdentifier: "autoLogin", sender: self)
                             }
                         })
                         
                         
                     } else if (data == "signup") {
-                        dispatch_async(dispatch_get_main_queue()) {
-                             self.performSegueWithIdentifier("facebookSignUp", sender: self)
+                        DispatchQueue.main.async {
+                             self.performSegue(withIdentifier: "facebookSignUp", sender: self)
                          //   print("face de oldu")
                         }
                     }
@@ -113,14 +113,14 @@ class firstController: UIViewController , CLLocationManagerDelegate {
                 
                 if Result.grantedPermissions.contains("email") {
                     //Do work
-                    self.activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+                    self.activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                     self.activityIndicator.center = self.view.center
                     self.activityIndicator.hidesWhenStopped = true
-                    self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.White
+                    self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
                     self.view.addSubview(self.activityIndicator)
                     self.activityIndicator.hidesWhenStopped = true
                     self.activityIndicator.startAnimating()
-                    UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+                    UIApplication.shared.beginIgnoringInteractionEvents()
                     // self.fetchFacebookProfile()
                 } else {
                     //Handle error
@@ -134,17 +134,17 @@ class firstController: UIViewController , CLLocationManagerDelegate {
         
         logInButton.layer.cornerRadius = 5
         logInButton.layer.borderWidth = 1
-        logInButton.layer.borderColor = UIColor.clearColor().CGColor
+        logInButton.layer.borderColor = UIColor.clear.cgColor
         
         signUpButton.layer.cornerRadius = 5
         signUpButton.layer.borderWidth = 1
-        signUpButton.layer.borderColor = UIColor.clearColor().CGColor
+        signUpButton.layer.borderColor = UIColor.clear.cgColor
         
         facebookButton.layer.cornerRadius = 5
         facebookButton.layer.borderWidth = 1
-        facebookButton.layer.borderColor = UIColor.clearColor().CGColor
+        facebookButton.layer.borderColor = UIColor.clear.cgColor
         
-        navigationController?.navigationBar.hidden = true
+        navigationController?.navigationBar.isHidden = true
         
       
         //gerek var mı?
@@ -153,17 +153,17 @@ class firstController: UIViewController , CLLocationManagerDelegate {
         stuckedVideoConfiguration()
         //bunlara?
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
                 adjustViewLayout(MolocateDevice.size)
         
                 if(MolocateDevice.isConnectedToNetwork()){
-                    if NSUserDefaults.standardUserDefaults().objectForKey("userToken") != nil {
-                        MoleUserToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as? String
-                        self.view.hidden = true
+                    if UserDefaults.standard.object(forKey: "userToken") != nil {
+                        MoleUserToken = UserDefaults.standard.object(forKey: "userToken") as? String
+                        self.view.isHidden = true
                         MolocateAccount.getCurrentUser({ (data, response, error) in
-                            dispatch_async(dispatch_get_main_queue()){
-                                self.performSegueWithIdentifier("autoLogin", sender: self)
+                            DispatchQueue.main.async{
+                                self.performSegue(withIdentifier: "autoLogin", sender: self)
                                // print("üye var lan girdi")
                                 user = MoleCurrentUser
                             }

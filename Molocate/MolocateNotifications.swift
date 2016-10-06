@@ -10,28 +10,28 @@ struct MoleUserNotifications{
     var actor:String = ""
     var target:String = ""
     var sentence:String = ""
-    var picture_url: NSURL = NSURL()
+    var picture_url: URL = URL()
 }
 
-public class MolocateNotifications{
+open class MolocateNotifications{
     
     static let timeout = 8.0
-    class func getNotifications(nextURL: NSURL?, completionHandler: (data: [MoleUserNotifications]?, response: NSURLResponse!, error: NSError!) -> ()){
+    class func getNotifications(_ nextURL: URL?, completionHandler: @escaping (_ data: [MoleUserNotifications]?, _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let nURL = NSURL(string: MolocateBaseUrl+"activity/api/show_activities/")
-        let request = NSMutableURLRequest(URL: nURL!)
-        request.HTTPMethod = "GET"
+        let nURL = URL(string: MolocateBaseUrl+"activity/api/show_activities/")
+        let request = NSMutableURLRequest(url: nURL!)
+        request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ (data, response, error) -> Void in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil {
                 let nsError = error
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSArray
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! NSArray
         
                     var notificationArray = [MoleUserNotifications]()
                     
@@ -45,19 +45,19 @@ public class MolocateNotifications{
                         notification.date = item["date_str"] as! String
                         notification.sentence = item["sentence"] as! String
                         notification.target = item["target"] as! String
-                        notification.picture_url = item["picture_url"] is NSNull ? NSURL():NSURL(string: item["picture_url"] as! String)!
+                        notification.picture_url = item["picture_url"] is NSNull ? URL():URL(string: item["picture_url"] as! String)!
                         notificationArray.append(notification)
                     }
                     completionHandler(data: notificationArray, response: response, error: nsError)
                 }catch{
-                    completionHandler(data: [MoleUserNotifications](), response: NSURLResponse(), error: nsError)
+                    completionHandler(data: [MoleUserNotifications](), response: URLResponse(), error: nsError)
                     if debug {print("JsonError: in MolocateNotifications.getNotifications")}
                 }
             }else{
-                completionHandler(data: [MoleUserNotifications](), response: NSURLResponse(), error: error)
+                completionHandler(data: [MoleUserNotifications](), response: URLResponse(), error: error)
                 if debug {print("RequestError: in MolocateNotifications.getNotifications")}
             }
-        }
+        })
         task.resume()
     }
     

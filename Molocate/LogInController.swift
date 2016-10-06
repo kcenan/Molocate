@@ -22,44 +22,44 @@ class logInController: UIViewController, UITextFieldDelegate {
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var errorMessage = "Lütfen tekrar deneyiniz."
     
-    @IBAction func passwordForgotButton(sender: AnyObject) {
+    @IBAction func passwordForgotButton(_ sender: AnyObject) {
         
         //print("user şifreyi unutmuş")
     }
     
-    func displayAlert(title: String, message: String) {
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "Tamam", style: .Default, handler: { (action) -> Void in
+    func displayAlert(_ title: String, message: String) {
+        UIApplication.shared.endIgnoringInteractionEvents()
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "Tamam", style: .default, handler: { (action) -> Void in
             self.activityIndicator.stopAnimating()
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     
     
-    @IBAction func loginButton(sender: AnyObject) {
+    @IBAction func loginButton(_ sender: AnyObject) {
         
         
-        let uname: String = (username.text?.lowercaseString)!
+        let uname: String = (username.text?.lowercased())!
         let pwd: String = password.text!
         choosedIndex = 2
         if(MolocateDevice.isConnectedToNetwork()){
         MolocateAccount.Login(uname, password: pwd, completionHandler: { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if( data == "success" ){
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.performSegueWithIdentifier("logIn", sender: self)
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "logIn", sender: self)
                     }
-                    if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    if UIApplication.shared.isIgnoringInteractionEvents {
+                        UIApplication.shared.endIgnoringInteractionEvents()
                     }
                     self.activityIndicator.stopAnimating()
                 }else{
                     self.displayAlert("Hata", message: "Kullanıcı Adı ya da Parola Yanlış!")
                     self.activityIndicator.stopAnimating()
-                    if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    if UIApplication.shared.isIgnoringInteractionEvents {
+                        UIApplication.shared.endIgnoringInteractionEvents()
                     }
                 }
             })
@@ -72,7 +72,7 @@ class logInController: UIViewController, UITextFieldDelegate {
     
     }
     
-    func adjustViewLayout(size: CGSize) {
+    func adjustViewLayout(_ size: CGSize) {
         switch(size.width, size.height) {
         case (480, 320):
         break                        // iPhone 4S in landscape
@@ -106,13 +106,13 @@ class logInController: UIViewController, UITextFieldDelegate {
         password.delegate = self
         loginButton.layer.cornerRadius = 5
         loginButton.layer.borderWidth = 1
-        loginButton.layer.borderColor = UIColor.clearColor().CGColor
+        loginButton.layer.borderColor = UIColor.clear.cgColor
         
     
         
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        let screenSize: CGRect = UIScreen.main.bounds
         let imageView = UIImageView(image: UIImage(named: "Logo.png"))
-        imageView.frame = CGRectMake((screenSize.width / 2 ) - (screenSize.height * 80), 10, (screenSize.height  / 9) , (screenSize.height  / 9))
+        imageView.frame = CGRect(x: (screenSize.width / 2 ) - (screenSize.height * 80), y: 10, width: (screenSize.height  / 9) , height: (screenSize.height  / 9))
         self.view.addSubview(imageView)
         
         if is4s {
@@ -121,17 +121,17 @@ class logInController: UIViewController, UITextFieldDelegate {
            }
     
   
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
     }
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let _ = touches.first {
             self.view.endEditing(true)   // ...
         }
-        super.touchesBegan(touches, withEvent:event)
+        super.touchesBegan(touches, with:event)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         textField.resignFirstResponder()
         return true
     }
@@ -141,15 +141,15 @@ class logInController: UIViewController, UITextFieldDelegate {
     
     
     //okey
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if(textField==username){
             let maxLength = 20
-            let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq1234567890_-.").invertedSet
-            let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
-            let numberFiltered = compSepByCharInSet.joinWithSeparator("")
-            let currentString: NSString = textField.text!
-            let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
+            let aSet = CharacterSet(charactersIn:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq1234567890_-.").inverted
+            let compSepByCharInSet = string.components(separatedBy: aSet)
+            let numberFiltered = compSepByCharInSet.joined(separator: "")
+            let currentString: NSString = textField.text! as NSString
+            let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
             
             if(string == numberFiltered && newString.length <= maxLength){
                 return true

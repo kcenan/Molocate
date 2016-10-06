@@ -24,23 +24,23 @@ class FacebookFriends: UIViewController {
         
         MolocateUtility.setStatusBarBackgroundColor(swiftColor)
  
-        tableView.frame = CGRectMake(0, 60, MolocateDevice.size.width, MolocateDevice.size.height-60-(self.navigationController?.navigationBar.frame.height)!)
+        tableView.frame = CGRect(x: 0, y: 60, width: MolocateDevice.size.width, height: MolocateDevice.size.height-60-(self.navigationController?.navigationBar.frame.height)!)
         
-        facebookInfo.frame = CGRectMake(0, 16, MolocateDevice.size.width, 44)
-        facebookInfo.textAlignment = .Center
-        facebookInfo.textRectForBounds(CGRectMake(0, 20, MolocateDevice.size.width, 20), limitedToNumberOfLines: 1)
-        facebookInfo.textColor = UIColor.whiteColor()
+        facebookInfo.frame = CGRect(x: 0, y: 16, width: MolocateDevice.size.width, height: 44)
+        facebookInfo.textAlignment = .center
+        facebookInfo.textRect(forBounds: CGRect(x: 0, y: 20, width: MolocateDevice.size.width, height: 20), limitedToNumberOfLines: 1)
+        facebookInfo.textColor = UIColor.white
         facebookInfo.font = UIFont(name: "AvenirNext-DemiBold.ttf", size: 17)
         facebookInfo.backgroundColor = swiftColor
         facebookInfo.text = "Önerilen kişiler"
         self.view.addSubview(facebookInfo)
         
         
-        continueButton.frame = CGRectMake(0, MolocateDevice.size.height-44, MolocateDevice.size.width, 44)
-        continueButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        continueButton.frame = CGRect(x: 0, y: MolocateDevice.size.height-44, width: MolocateDevice.size.width, height: 44)
+        continueButton.setTitleColor(UIColor.white, for: UIControlState())
         continueButton.backgroundColor = arkarenk
-        continueButton.setTitle("Devam Et", forState: .Normal)
-        continueButton.addTarget(self, action: #selector(FacebookFriends.pressedContinue(_:)), forControlEvents: .TouchUpInside)
+        continueButton.setTitle("Devam Et", for: UIControlState())
+        continueButton.addTarget(self, action: #selector(FacebookFriends.pressedContinue(_:)), for: .touchUpInside)
         
         self.view.addSubview(continueButton)
         
@@ -63,55 +63,55 @@ class FacebookFriends: UIViewController {
     
     
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return userRelations.relations.count
     }
 
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
        
-        let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "cellface")
+        let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "cellface")
         
-        cell.profilePhoto.tag = indexPath.row
-        cell.nameLabel.tag = indexPath.row
-        cell.followButton.tag = indexPath.row
-        cell.usernameLabel.tag = indexPath.row
-        cell.usernameLabel.text = userRelations.relations[indexPath.row].username
-        cell.nameLabel.text = userRelations.relations[indexPath.row].name
+        cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+        cell.nameLabel.tag = (indexPath as NSIndexPath).row
+        cell.followButton.tag = (indexPath as NSIndexPath).row
+        cell.usernameLabel.tag = (indexPath as NSIndexPath).row
+        cell.usernameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].username
+        cell.nameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].name
         
         
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
         
-        if(userRelations.relations[indexPath.row].picture_url.absoluteString != ""){
+        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url.absoluteString != ""){
             cell.profilePhoto.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
         }else{
-            cell.profilePhoto.setImage(UIImage(named: "profile"), forState: .Normal)
+            cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
         }
         
         
         
-        if(!userRelations.relations[indexPath.row].is_following){
-            cell.followButton.setBackgroundImage(UIImage(named: "follow"), forState: UIControlState.Normal)
-            cell.followButton.addTarget(self, action: #selector(FacebookFriends.pressedFollow(_:)), forControlEvents: .TouchUpInside)
+        if(!userRelations.relations[(indexPath as NSIndexPath).row].is_following){
+            cell.followButton.setBackgroundImage(UIImage(named: "follow"), for: UIControlState())
+            cell.followButton.addTarget(self, action: #selector(FacebookFriends.pressedFollow(_:)), for: .touchUpInside)
         } else {
-            cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), forState: UIControlState.Normal)
+            cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
         }
 
         
         
         
-        if(userRelations.relations[indexPath.row].username == MoleCurrentUser.username){
-            cell.followButton.hidden = true
+        if(userRelations.relations[(indexPath as NSIndexPath).row].username == MoleCurrentUser.username){
+            cell.followButton.isHidden = true
         }
         
         
@@ -119,11 +119,11 @@ class FacebookFriends: UIViewController {
        
     }
  
-    func pressedContinue(sender: UIButton){
-        self.performSegueWithIdentifier("facebookAfter", sender: self)
+    func pressedContinue(_ sender: UIButton){
+        self.performSegue(withIdentifier: "facebookAfter", sender: self)
     }
     
-    func pressedFollow(sender: UIButton){
+    func pressedFollow(_ sender: UIButton){
         let Row=sender.tag
 
         MolocateAccount.follow(userRelations.relations[Row].username) { (data, response, error) in
@@ -132,7 +132,7 @@ class FacebookFriends: UIViewController {
 
         userRelations.relations[Row].is_following = true
   
-        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: Row, inSection: 0)], withRowAnimation: .None)
+        tableView.reloadRows(at: [IndexPath(row: Row, section: 0)], with: .none)
     }
 
     /*

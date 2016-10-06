@@ -9,10 +9,30 @@ import AVFoundation
 import XLActionController
 import Photos
 import FBSDKShareKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,PlayerDelegate, FBSDKSharingDelegate {
 
     var lastOffset:CGPoint!
-    var lastOffsetCapture:NSTimeInterval!
+    var lastOffsetCapture:TimeInterval!
     var isScrollingFast:Bool = false
     var pointNow:CGFloat!
     var isSearching = false
@@ -23,7 +43,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
     var videoArray = [MoleVideoInformation]()
-    let screenSize: CGRect = UIScreen.mainScreen().bounds
+    let screenSize: CGRect = UIScreen.main.bounds
     var tableView = UITableView()
     var on = true
     var likeHeart = UIImageView()
@@ -48,7 +68,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
     
     func initGui(){
-        view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height-190)
+        view.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-190)
         likeHeart.image = UIImage(named: "favorite")
         likeHeart.alpha = 1.0
 
@@ -61,21 +81,21 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         self.player2.delegate = self
         self.player2.playbackLoops = true
         // tableView.center = CGPointMake(screenSize.width/2,screenSize.height/2)
-        tableView.frame         =   CGRectMake(0, 0 , screenSize.width, screenSize.height-80);
+        tableView.frame         =   CGRect(x: 0, y: 0 , width: screenSize.width, height: screenSize.height-80);
         tableView.delegate      =   self
         tableView.dataSource    =   self
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
         self.view.addSubview(tableView)
         lastOffset = CGPoint(x: 0, y: 0)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Tagged.scrollToTop), name: "scrollToTop", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(Tagged.scrollToTop), name: NSNotification.Name(rawValue: "scrollToTop"), object: nil)
 
     }
     func getData(){
         MolocateVideo.getUserVideos(classUser.username, type: "tagged", completionHandler: { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.videoArray = data!
                 self.tableView.reloadData()
             }
@@ -88,33 +108,33 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     }
 
 
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isScrollingFast = false
-        var ipArray = [NSIndexPath]()
+        var ipArray = [IndexPath]()
         for item in self.tableView.indexPathsForVisibleRows!{
-            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            let cell = self.tableView.cellForRow(at: item) as! videoCell
             if !cell.hasPlayer {
                 ipArray.append(item)
             }
         }
         if ipArray.count != 0 {
-            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+            self.tableView.reloadRows(at: ipArray, with: .none)
         }
 
 
     }
 
 
-    func playerReady(player: Player) {
+    func playerReady(_ player: Player) {
     }
 
-    func playerPlaybackStateDidChange(player: Player) {
+    func playerPlaybackStateDidChange(_ player: Player) {
     }
 
-    func playerBufferingStateDidChange(player: Player) {
+    func playerBufferingStateDidChange(_ player: Player) {
     }
 
-    func playerPlaybackWillStartFromBeginning(player: Player) {
+    func playerPlaybackWillStartFromBeginning(_ player: Player) {
         if player == player1 {
             player2.stop()
         } else {
@@ -122,11 +142,11 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         }
     }
 
-    func playerPlaybackDidEnd(player: Player) {
+    func playerPlaybackDidEnd(_ player: Player) {
         watch_list.append(player.id)
         if watch_list.count == 10{
             MolocateVideo.increment_watch(watch_list, completionHandler: { (data, response, error) in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     watch_list.removeAll()
                     print("watch incremented")
                 }
@@ -134,7 +154,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         }
     }
 
-    func playTapped(sender: UITapGestureRecognizer) {
+    func playTapped(_ sender: UITapGestureRecognizer) {
         let row = sender.view!.tag
         ////print("like a basıldı at index path: \(row) ")
         if self.tableView.visibleCells.count < 3 {
@@ -156,7 +176,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 }
             }
         } else {
-            let midrow =  self.tableView.indexPathsForVisibleRows![1].row
+            let midrow =  (self.tableView.indexPathsForVisibleRows![1] as NSIndexPath).row
             if midrow % 2 == 1 {
                 if self.player1.playbackState.description != "Playing" {
                     self.player2.stop()
@@ -176,50 +196,50 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     }
 
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let rowHeight = screenSize.width + 150
         return rowHeight
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return videoArray.count
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if !pressedLike && !pressedFollow {
-            let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
+            let cell = videoCell(style: UITableViewCellStyle.value1, reuseIdentifier: "customCell")
 
-            cell.initialize(indexPath.row, videoInfo: videoArray[indexPath.row])
+            cell.initialize((indexPath as NSIndexPath).row, videoInfo: videoArray[(indexPath as NSIndexPath).row])
 
-            cell.Username.addTarget(self, action: #selector(Tagged.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.placeName.addTarget(self, action: #selector(Tagged.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.Username.addTarget(self, action: #selector(Tagged.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
+            cell.placeName.addTarget(self, action: #selector(Tagged.pressedPlace(_:)), for: UIControlEvents.touchUpInside)
             
-            cell.profilePhoto.addTarget(self, action: #selector(Tagged.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.profilePhoto.addTarget(self, action: #selector(Tagged.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
 
-            if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != MoleCurrentUser.username){
-                cell.followButton.addTarget(self, action: #selector(Tagged.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            if(videoArray[(indexPath as NSIndexPath).row].isFollowing==0 && videoArray[(indexPath as NSIndexPath).row].username != MoleCurrentUser.username){
+                cell.followButton.addTarget(self, action: #selector(Tagged.pressedFollow(_:)), for: UIControlEvents.touchUpInside)
             }else{
-                cell.followButton.hidden = true
+                cell.followButton.isHidden = true
             }
 
-            cell.likeButton.addTarget(self, action: #selector(Tagged.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.likeButton.addTarget(self, action: #selector(Tagged.pressedLike(_:)), for: UIControlEvents.touchUpInside)
 
-            cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
-            cell.commentCount.addTarget(self, action: #selector(Tagged.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", forState: .Normal)
-                        cell.commentButton.addTarget(self, action: #selector(Tagged.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.reportButton.addTarget(self, action: #selector(Tagged.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.likeCount.addTarget(self, action: #selector(Tagged.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.shareButton.addTarget(self, action: #selector(Tagged.pressedShare(_:)), forControlEvents: .TouchUpInside)
+            cell.likeCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].likeCount)", for: UIControlState())
+            cell.commentCount.addTarget(self, action: #selector(Tagged.pressedComment(_:)), for: UIControlEvents.touchUpInside)
+            cell.commentCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].commentCount)", for: UIControlState())
+                        cell.commentButton.addTarget(self, action: #selector(Tagged.pressedComment(_:)), for: UIControlEvents.touchUpInside)
+            cell.reportButton.addTarget(self, action: #selector(Tagged.pressedReport(_:)), for: UIControlEvents.touchUpInside)
+            cell.likeCount.addTarget(self, action: #selector(Tagged.pressedLikeCount(_:)), for: UIControlEvents.touchUpInside)
+            cell.shareButton.addTarget(self, action: #selector(Tagged.pressedShare(_:)), for: .touchUpInside)
             let tap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.doubleTapped(_:) ));
             tap.numberOfTapsRequired = 2
             cell.contentView.addGestureRecognizer(tap)
-            cell.contentView.tag = indexPath.row
+            cell.contentView.tag = (indexPath as NSIndexPath).row
             let playtap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.playTapped(_:) ));
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
 
-            playtap.requireGestureRecognizerToFail(tap)
+            playtap.require(toFail: tap)
 
-            let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
+            let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
                 cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
                 //print("burda")
@@ -227,14 +247,14 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 cell.cellthumbnail.image = UIImage(named: "Mole")!
             }
 
-            var trueURL = NSURL()
+            var trueURL = URL()
             if !isScrollingFast {
 
-            if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
-                trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
+            if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
+                trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as! URL
             } else {
-                trueURL = self.videoArray[indexPath.row].urlSta
-                dispatch_async(dispatch_get_main_queue()) {
+                trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
+                DispatchQueue.main.async {
                         myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                         let url = self.videoArray[indexPath.row].urlSta.absoluteString
 
@@ -248,10 +268,10 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }
 
                 if !cell.hasPlayer {
-            if indexPath.row % 2 == 1 {
+            if (indexPath as NSIndexPath).row % 2 == 1 {
 
                 self.player1.setUrl(trueURL)
-                self.player1.id = self.videoArray[indexPath.row].id
+                self.player1.id = self.videoArray[(indexPath as NSIndexPath).row].id
                 self.player1.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player1.view)
                 cell.hasPlayer = true
@@ -259,7 +279,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }else{
 
                 self.player2.setUrl(trueURL)
-                self.player2.id = self.videoArray[indexPath.row].id
+                self.player2.id = self.videoArray[(indexPath as NSIndexPath).row].id
                 self.player2.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player2.view)
                 cell.hasPlayer = true
@@ -268,23 +288,23 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }
             return cell
         }else{
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
+            let cell = tableView.cellForRow(at: indexPath) as! videoCell
             if pressedLike {
                 pressedLike = false
-                cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+                cell.likeCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].likeCount)", for: UIControlState())
 
-                if(videoArray[indexPath.row].isLiked == 0) {
-                    cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), forState: UIControlState.Normal)
+                if(videoArray[(indexPath as NSIndexPath).row].isLiked == 0) {
+                    cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), for: UIControlState())
                 }else{
-                    cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), forState: UIControlState.Normal)
-                    cell.likeButton.tintColor = UIColor.whiteColor()
+                    cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), for: UIControlState())
+                    cell.likeButton.tintColor = UIColor.white
                 }
             }else if pressedFollow{
                 pressedFollow = true
 
-                if !cell.followButton.hidden && videoArray[indexPath.row].isFollowing == 1{
+                if !cell.followButton.isHidden && videoArray[(indexPath as NSIndexPath).row].isFollowing == 1{
                     //add animation
-                    cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), forState: UIControlState.Normal)
+                    cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
                 }
 
             }
@@ -293,12 +313,12 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
     }
 
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         pointNow = scrollView.contentOffset.y
-        lastOffsetCapture = NSDate().timeIntervalSinceReferenceDate
+        lastOffsetCapture = Date().timeIntervalSinceReferenceDate
 
     }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
 
 
@@ -309,7 +329,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         }
 
         let currentOffset = scrollView.contentOffset
-        let currentTime = NSDate().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
+        let currentTime = Date().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
 
         let timeDiff = currentTime - lastOffsetCapture;
         if(timeDiff > 0.1) {
@@ -324,15 +344,15 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
             } else {
                 isScrollingFast = false
-                var ipArray = [NSIndexPath]()
+                var ipArray = [IndexPath]()
                 for item in self.tableView.indexPathsForVisibleRows!{
-                    let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+                    let cell = self.tableView.cellForRow(at: item) as! videoCell
                     if !cell.hasPlayer {
                         ipArray.append(item)
                     }
                 }
                 if ipArray.count != 0 {
-                    self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+                    self.tableView.reloadRows(at: ipArray, with: .none)
                 }
 
 
@@ -355,7 +375,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 //////print("down")
                 let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
                 //////print(cellap)
-                let row = self.tableView.indexPathsForVisibleRows![0].row+1
+                let row = (self.tableView.indexPathsForVisibleRows![0] as NSIndexPath).row+1
                 if cellap > 0 {
 
                     if (row) % 2 == 1{
@@ -388,7 +408,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
                 let cellap = longest - self.tableView.visibleCells[0].center.y-150-self.view.frame.width
                 ////print(cellap)
-                let row = self.tableView.indexPathsForVisibleRows![0].row
+                let row = (self.tableView.indexPathsForVisibleRows![0] as NSIndexPath).row
                 if cellap < 0 {
 
                     if (row) % 2 == 1{
@@ -423,36 +443,36 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
 
 
-    func pressedPlace(sender: UIButton) {
+    func pressedPlace(_ sender: UIButton) {
         let buttonRow = sender.tag
 
         player1.stop()
         player2.stop()
 
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
 
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        self.navigationController?.navigationBarHidden = false
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        self.navigationController?.isNavigationBarHidden = false
 
 
-        let controller:profileVenue = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("profileVenue") as! profileVenue
+        let controller:profileVenue = self.parent!.storyboard!.instantiateViewController(withIdentifier: "profileVenue") as! profileVenue
 
 
-        self.parentViewController!.navigationController?.pushViewController(controller, animated: true)
+        self.parent!.navigationController?.pushViewController(controller, animated: true)
 
 
         MolocatePlace.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 thePlace = data
                 controller.classPlace = data
                 controller.RefreshGuiWithData()
 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
         }
@@ -460,28 +480,28 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     }
 
 
-    func pressedLikeCount(sender: UIButton) {
-        navigationController?.navigationBarHidden = false
+    func pressedLikeCount(_ sender: UIButton) {
+        navigationController?.isNavigationBarHidden = false
         player1.stop()
         player2.stop()
         video_id = videoArray[sender.tag].id
         videoIndex = sender.tag
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
 
 
-        let controller:likeVideo = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
+        let controller:likeVideo = self.parent!.storyboard!.instantiateViewController(withIdentifier: "likeVideo") as! likeVideo
 
         MolocateVideo.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 controller.users = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
 
@@ -489,20 +509,20 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
         //DBG: Burda  likeları çağır,
         //Her gectigimiz ekranda activity indicatorı goster
-        self.parentViewController!.navigationController?.pushViewController(controller, animated: true)
+        self.parent!.navigationController?.pushViewController(controller, animated: true)
     }
     
-    func pressedShare(sender: UIButton){
+    func pressedShare(_ sender: UIButton){
         let Row = sender.tag
         player1.pause()
         player2.pause()
         let username = self.videoArray[Row].username
-        var shareURL = NSURL()
-        if dictionary.objectForKey(self.videoArray[Row].id) != nil {
-            shareURL = dictionary.objectForKey(self.videoArray[Row].id) as! NSURL
+        var shareURL = URL()
+        if dictionary.object(forKey: self.videoArray[Row].id) != nil {
+            shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
         } else {
             let url = self.videoArray[Row].urlSta.absoluteString
-            if(url[0] == "h") {
+            if(url?[0] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -667,8 +687,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         presentViewController(actionSheet, animated: true, completion: nil)
     }
 
-    func pressedComment(sender: UIButton) {
-        navigationController?.navigationBarHidden = false
+    func pressedComment(_ sender: UIButton) {
+        navigationController?.isNavigationBarHidden = false
         let buttonRow = sender.tag
 
         player1.stop()
@@ -686,41 +706,41 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         }
 
 
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
 
-        let controller:commentController = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+        let controller:commentController = self.parent!.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         comments.removeAll()
         MolocateVideo.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
         }
-        self.parentViewController!.navigationController?.pushViewController(controller, animated: true)
+        self.parent!.navigationController?.pushViewController(controller, animated: true)
 
     }
 
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             if self.player1.playbackState.description != "Playing" || self.player2.playbackState.description != "Playing" {
                 isScrollingFast = false
-                var ipArray = [NSIndexPath]()
+                var ipArray = [IndexPath]()
                 for item in self.tableView.indexPathsForVisibleRows!{
-                    let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+                    let cell = self.tableView.cellForRow(at: item) as! videoCell
                     if !cell.hasPlayer {
                         ipArray.append(item)
                     }
                 }
                 if ipArray.count != 0 {
-                    self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+                    self.tableView.reloadRows(at: ipArray, with: .none)
                 }
                 if player1Turn {
                     if self.player1.playbackState.description != "Playing" {
@@ -737,21 +757,21 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
 
 
-    func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ atableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if atableView == tableView{
 
 
-            if((indexPath.row%10 == 8)&&(TaggedNextUserVideos != nil)&&(!IsExploreInProcess)){
+            if(((indexPath as NSIndexPath).row%10 == 8)&&(TaggedNextUserVideos != nil)&&(!IsExploreInProcess)){
                 IsExploreInProcess = true
                 MolocateVideo.getExploreVideos(TaggedNextUserVideos, completionHandler: { (data, response, error,next) -> () in
                     TaggedNextUserVideos = next
 
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
 
                         for item in data!{
                             self.videoArray.append(item)
-                            let newIndexPath = NSIndexPath(forRow: self.videoArray.count-1, inSection: 0)
-                            atableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                            let newIndexPath = IndexPath(row: self.videoArray.count-1, section: 0)
+                            atableView.insertRows(at: [newIndexPath], with: .bottom)
 
                         }
 
@@ -777,18 +797,18 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         // Dispose of any resources that can be recreated.
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
     }
-       func pressedFollow(sender: UIButton) {
+       func pressedFollow(_ sender: UIButton) {
         let buttonRow = sender.tag
         pressedFollow = true
         //print("followa basıldı at index path: \(buttonRow) ")
         self.videoArray[buttonRow].isFollowing = 1
-        var indexes = [NSIndexPath]()
-        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [IndexPath]()
+        let index = IndexPath(row: buttonRow, section: 0)
         indexes.append(index)
-        self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
+        self.tableView.reloadRows(at: indexes, with: .none)
 
         MolocateAccount.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
             MoleCurrentUser.following_count += 1
@@ -796,38 +816,38 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         pressedFollow = false
     }
 
-    func pressedLike(sender: UIButton) {
+    func pressedLike(_ sender: UIButton) {
         let buttonRow = sender.tag
         //print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
-        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-        var indexes = [NSIndexPath]()
+        let indexpath = IndexPath(row: buttonRow, section: 0)
+        var indexes = [IndexPath]()
         indexes.append(indexpath)
 
         if(videoArray[buttonRow].isLiked == 0){
-            sender.highlighted = true
+            sender.isHighlighted = true
 
             self.videoArray[buttonRow].isLiked=1
             self.videoArray[buttonRow].likeCount+=1
 
 
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
 
             MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     //print(data)
                 }
             }
         }else{
-            sender.highlighted = false
+            sender.isHighlighted = false
 
             self.videoArray[buttonRow].isLiked=0
             self.videoArray[buttonRow].likeCount-=1
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
 
 
             MolocateVideo.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     //print(data)
                 }
             }
@@ -835,35 +855,35 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                pressedLike = false
     }
 
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         isScrollingFast = false
-        var ipArray = [NSIndexPath]()
+        var ipArray = [IndexPath]()
         for item in self.tableView.indexPathsForVisibleRows!{
-            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            let cell = self.tableView.cellForRow(at: item) as! videoCell
             if !cell.hasPlayer {
                 ipArray.append(item)
             }
         }
         if ipArray.count != 0 {
-            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+            self.tableView.reloadRows(at: ipArray, with: .none)
         }
 
     }
 
 
-    func doubleTapped(sender: UITapGestureRecognizer) {
+    func doubleTapped(_ sender: UITapGestureRecognizer) {
         let buttonRow = sender.view!.tag
         //print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
-        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-        let  cell = tableView.cellForRowAtIndexPath(indexpath)
+        let indexpath = IndexPath(row: buttonRow, section: 0)
+        let  cell = tableView.cellForRow(at: indexpath)
         likeHeart.center = (cell?.contentView.center)!
         likeHeart.layer.zPosition = 100
         let imageSize = likeHeart.image?.size.height
-        likeHeart.frame = CGRectMake(likeHeart.center.x-imageSize!/2 , likeHeart.center.y-imageSize!/2, imageSize!, imageSize!)
+        likeHeart.frame = CGRect(x: likeHeart.center.x-imageSize!/2 , y: likeHeart.center.y-imageSize!/2, width: imageSize!, height: imageSize!)
         cell?.addSubview(likeHeart)
         MolocateUtility.animateLikeButton(&likeHeart)
-        var indexes = [NSIndexPath]()
+        var indexes = [IndexPath]()
         indexes.append(indexpath)
 
         if(videoArray[buttonRow].isLiked == 0){
@@ -872,10 +892,10 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             self.videoArray[buttonRow].likeCount+=1
 
 
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
 
             MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     //print(data)
                 }
             }
@@ -897,7 +917,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     }
 
 
-    func pressedReport(sender: UIButton) {
+    func pressedReport(_ sender: UIButton) {
         let buttonRow = sender.tag
         player1.stop()
         player2.stop()
@@ -905,20 +925,20 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             //////print(data)
         }
         //////print("pressedReport at index path: \(buttonRow)")
-        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         if(videoArray[buttonRow].deletable){
 
-            let deleteVideo: UIAlertAction = UIAlertAction(title: "Videoyu Sil", style: .Default) { action -> Void in
-                let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+            let deleteVideo: UIAlertAction = UIAlertAction(title: "Videoyu Sil", style: .default) { action -> Void in
+                let index = IndexPath(row: buttonRow, section: 0)
 
 
                 MolocateVideo.deleteAVideo(self.videoArray[buttonRow].id, completionHandler: { (data, response, error) in
 
                 })
 
-                self.videoArray.removeAtIndex(index.row)
-                self.tableView.deleteRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Automatic)
+                self.videoArray.remove(at: (index as NSIndexPath).row)
+                self.tableView.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
                 self.tableView.reloadData()
             }
 
@@ -926,41 +946,41 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         }
 
 
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
 
         }
 
         actionSheetController.addAction(cancelAction)
 
-        let reportVideo: UIAlertAction = UIAlertAction(title: "Raporla", style: .Default) { action -> Void in
+        let reportVideo: UIAlertAction = UIAlertAction(title: "Raporla", style: .default) { action -> Void in
 
             //////print("reported")
         }
         actionSheetController.addAction(reportVideo)
 
-        self.presentViewController(actionSheetController, animated: true, completion: nil)
+        self.present(actionSheetController, animated: true, completion: nil)
 
     }
-    func pressedUsername(sender: UIButton) {
+    func pressedUsername(_ sender: UIButton) {
 
 
-        self.parentViewController!.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.parent!.navigationController?.setNavigationBarHidden(false, animated: false)
         let buttonRow = sender.tag
         //////////print("username e basıldı at index path: \(buttonRow)")
         player1.stop()
         player2.stop()
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
 
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
 
 
 
-        let controller:profileUser = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.parent!.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
 
         if videoArray[buttonRow].username != MoleCurrentUser.username{
             controller.isItMyProfile = false
@@ -970,7 +990,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
 
                 user = data
@@ -982,7 +1002,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }
         }
     }
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         SDImageCache.sharedImageCache().cleanDisk()
         SDImageCache.sharedImageCache().clearMemory()
         player1.stop()
@@ -991,13 +1011,13 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         player2.removeFromParentViewController()
     }
 
-    func sharer(sharer: FBSDKSharing!, didCompleteWithResults results: [NSObject : AnyObject]!) {
+    func sharer(_ sharer: FBSDKSharing!, didCompleteWithResults results: [AnyHashable: Any]!) {
        // print(results)
     }
-    func sharerDidCancel(sharer: FBSDKSharing!) {
+    func sharerDidCancel(_ sharer: FBSDKSharing!) {
         
     }
-    func sharer(sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+    func sharer(_ sharer: FBSDKSharing!, didFailWithError error: NSError!) {
         
     }
 

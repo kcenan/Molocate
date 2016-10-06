@@ -31,21 +31,21 @@ class tutorialViewController: UIPageViewController, UIPageViewControllerDataSour
         }
         self.dataSource = self
         
-        self.setViewControllers([getViewControllerAtIndex(0)] as [UIViewController], direction: UIPageViewControllerNavigationDirection.Forward,  animated: true, completion: nil)
+        self.setViewControllers([getViewControllerAtIndex(0)] as [UIViewController], direction: UIPageViewControllerNavigationDirection.forward,  animated: true, completion: nil)
         view.backgroundColor = swiftColor
     }
     
     
     
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController?
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
         let pageContent: tutorialPageContentViewController = viewController as! tutorialPageContentViewController
         
         var index = pageContent.pageIndex
        
         if index < 3 {
-            NSNotificationCenter.defaultCenter().postNotificationName("fontSmaller", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "fontSmaller"), object: nil)
             
         }
         if ((index == 0) || (index == NSNotFound))
@@ -60,22 +60,22 @@ class tutorialViewController: UIPageViewController, UIPageViewControllerDataSour
     }
     
     
-    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
+    func presentationCount(for pageViewController: UIPageViewController) -> Int {
         return 4
     }
     
-    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
+    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         return 0
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController?
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController?
     {
         let pageContent: tutorialPageContentViewController = viewController as! tutorialPageContentViewController
         
         var index = pageContent.pageIndex
         
         if index > 2 {
-            NSNotificationCenter.defaultCenter().postNotificationName("fontBigger", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "fontBigger"), object: nil)
             
         }
        
@@ -107,10 +107,10 @@ class tutorialViewController: UIPageViewController, UIPageViewControllerDataSour
     
     
     // MARK:- Other Methods
-    func getViewControllerAtIndex(index: NSInteger) -> tutorialPageContentViewController
+    func getViewControllerAtIndex(_ index: NSInteger) -> tutorialPageContentViewController
     {
         // Create a new view controller and pass suitable data.
-        let tutorialpageContentViewController = self.storyboard?.instantiateViewControllerWithIdentifier("tutorialPageContentViewController") as! tutorialPageContentViewController
+        let tutorialpageContentViewController = self.storyboard?.instantiateViewController(withIdentifier: "tutorialPageContentViewController") as! tutorialPageContentViewController
         
         
         tutorialpageContentViewController.strPhotoName = "\(arrPagePhoto[index])"

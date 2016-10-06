@@ -16,13 +16,13 @@ let profileBackgroundColor = UIColor(netHex: 0xDCDDDF)
     var name = ""
     var raw_name = ""
     var isevent = false
-    var thumbnail_url = NSURL()
+    var thumbnail_url = URL()
     
  }
 struct MoleUserFriend {
     var is_following = false
-    var picture_url = NSURL()
-    var thumbnail_url = NSURL()
+    var picture_url = URL()
+    var thumbnail_url = URL()
     var username:String = ""
     var name: String = "Deneme Deneme"
 }
@@ -35,8 +35,8 @@ struct MoleUserRelations{
 struct MoleUser{
     var username:String = ""
     var email : String = ""
-    var profilePic:NSURL = NSURL()
-    var thumbnailPic:NSURL = NSURL()
+    var profilePic:URL = URL()
+    var thumbnailPic:URL = URL()
     var token: String = ""
     var first_name = ""
     var last_name = ""
@@ -67,25 +67,25 @@ struct MoleUser{
 
 
 //MolocateAccount:
-public class MolocateAccount {
+open class MolocateAccount {
     
     static let timeOut = 8.0
     
-    class func getFollowers(nextUrl: String = "", username: String, completionHandler: (data: MoleUserRelations, response: NSURLResponse!, error: NSError!, count: Int, next: String?, previous: String? ) -> ()) {
+    class func getFollowers(_ nextUrl: String = "", username: String, completionHandler: @escaping (_ data: MoleUserRelations, _ response: URLResponse?, _ error: NSError?, _ count: Int, _ next: String?, _ previous: String? ) -> ()) {
         
-        let url: NSURL
+        let url: URL
         
         if(nextUrl == ""){
-            url = NSURL(string: MolocateBaseUrl + "relation/api/followers/?username=" + (username as String) )!
+            url = URL(string: MolocateBaseUrl + "relation/api/followers/?username=" + (username as String) )!
         }else{
-            url = NSURL(string:nextUrl)!
+            url = URL(string:nextUrl)!
         }
         
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
 
             if(error == nil){
@@ -93,8 +93,8 @@ public class MolocateAccount {
                 
                 do {
                    // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject]
-                    if(result.indexForKey("results") != nil){
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
+                    if(result.index(forKey: "results") != nil){
                         let count: Int = (result["count"] as? Int)!
                         let next =  result["next"] is NSNull ? "":result["next"] as? String
                         let previous =  result["previous"] is NSNull ? "":result["previous"] as? String
@@ -111,10 +111,10 @@ public class MolocateAccount {
                            
                                 friend.username = thing["username"] as! String
                                 friend.name =  thing["first_name"] as! String
-                                friend.picture_url = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                                friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
                                 let thumbnail = thing["thumbnail_url"] as! String
                    
-                                friend.thumbnail_url = thumbnail == "" ? friend.picture_url:NSURL(string: thumbnail)!
+                                friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
                                     let isfollowing = thing["is_following"] as! Int
                           
                                 friend.is_following = isfollowing == 0 ? false:true
@@ -139,36 +139,36 @@ public class MolocateAccount {
                     if debug {print("RequestError:: in mole.getFollowers()")}
             }
             
-        }
+        })
         task.resume()
     }
     
     
     
-   class func getFacebookFriends(nextUrl: String = "",completionHandler: (data: MoleUserRelations, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
-    let url: NSURL
+   class func getFacebookFriends(_ nextUrl: String = "",completionHandler: @escaping (_ data: MoleUserRelations, _ response: URLResponse?, _ error: NSError?, _ count: Int?, _ next: String?, _ previous: String?) -> ()){
+    let url: URL
     if(nextUrl == ""){
-        url = NSURL(string: MolocateBaseUrl + "account/api/facebook_friends/")!
+        url = URL(string: MolocateBaseUrl + "account/api/facebook_friends/")!
     }else{
-        url = NSURL(string:nextUrl)!
+        url = URL(string:nextUrl)!
     }
     
-    let request = NSMutableURLRequest(URL: url)
-    request.HTTPMethod = "GET"
+    let request = NSMutableURLRequest(url: url)
+    request.httpMethod = "GET"
     request.addValue("Token " + MoleUserToken! , forHTTPHeaderField: "Authorization")
     request.timeoutInterval = timeOut
     
-    let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+    let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
         
         if error == nil{
             let nsError = error
             do {
                 
-                let response = String(data: data!, encoding: NSUTF8StringEncoding)
+                let response = String(data: data!, encoding: String.Encoding.utf8)
                 
                 if response![0]=="[" {
                 
-                let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSArray
+                let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
                 
                 
                     var friends = MoleUserRelations()
@@ -178,10 +178,10 @@ public class MolocateAccount {
                         let thing = result[i] as! [String:AnyObject]
                         friend.username = thing["username"] as! String
                         friend.name =  thing["first_name"] as! String
-                        friend.picture_url = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                        friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
                         let thumbnail = thing["thumbnail_url"] as! String
                         
-                        friend.thumbnail_url = thumbnail == "" ? friend.picture_url:NSURL(string: thumbnail)!
+                        friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
                         let isfollowing = thing["is_following"] as! Int
                         
                         
@@ -210,7 +210,7 @@ public class MolocateAccount {
             completionHandler(data:  MoleUserRelations() , response: nil , error: error, count: 0, next: nil, previous: ""  )
             if debug {print("RequestError:: in mole.getFacebookFriends()")}
         }
-    }
+    })
     
     task.resume()
     
@@ -218,30 +218,30 @@ public class MolocateAccount {
     
     
     
-    class func getSuggestedFriends(nextUrl: String = "",completionHandler: (data: MoleUserRelations, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
-        let url: NSURL
+    class func getSuggestedFriends(_ nextUrl: String = "",completionHandler: @escaping (_ data: MoleUserRelations, _ response: URLResponse?, _ error: NSError?, _ count: Int?, _ next: String?, _ previous: String?) -> ()){
+        let url: URL
         if(nextUrl == ""){
-            url = NSURL(string: MolocateBaseUrl + "account/api/suggested_users/")!
+            url = URL(string: MolocateBaseUrl + "account/api/suggested_users/")!
         }else{
-            url = NSURL(string:nextUrl)!
+            url = URL(string:nextUrl)!
         }
         
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken! , forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             
             if error == nil{
                 let nsError = error
                 do {
                     
-                    let response = String(data: data!, encoding: NSUTF8StringEncoding)
+                    let response = String(data: data!, encoding: String.Encoding.utf8)
                     
                     if response![0]=="[" {
                         
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSArray
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
                     
                     var followings = MoleUserRelations()
             
@@ -250,10 +250,10 @@ public class MolocateAccount {
                             let thing = result[i] as! [String:AnyObject]
                             friend.username = thing["username"] as! String
                             friend.name =  thing["first_name"] as! String
-                            friend.picture_url = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                            friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
                             let thumbnail = thing["thumbnail_url"] as! String
                             
-                            friend.thumbnail_url = thumbnail == "" ? friend.picture_url:NSURL(string: thumbnail)!
+                            friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
                             let isfollowing = thing["is_following"] as! Int
                             
                             
@@ -278,7 +278,7 @@ public class MolocateAccount {
                 completionHandler(data:  MoleUserRelations() , response: nil , error: error, count: 0, next: nil, previous: ""  )
                 if debug {print("RequestError:: in mole.getFacebookFriends()")}
             }
-        }
+        })
         
         task.resume()
         
@@ -286,29 +286,29 @@ public class MolocateAccount {
     
 
 
-    class func getFollowings(nextUrl: String = "",username: String, completionHandler: (data: MoleUserRelations, response: NSURLResponse!, error: NSError!, count: Int!, next: String?, previous: String?) -> ()){
+    class func getFollowings(_ nextUrl: String = "",username: String, completionHandler: @escaping (_ data: MoleUserRelations, _ response: URLResponse?, _ error: NSError?, _ count: Int?, _ next: String?, _ previous: String?) -> ()){
         
-        let url: NSURL
+        let url: URL
         if(nextUrl == ""){
-            url = NSURL(string: MolocateBaseUrl + "relation/api/followings/?username=" + (username as String) )!
+            url = URL(string: MolocateBaseUrl + "relation/api/followings/?username=" + (username as String) )!
         }else{
-            url = NSURL(string:nextUrl)!
+            url = URL(string:nextUrl)!
         }
  
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken! , forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
         
             if error == nil{
                 let nsError = error
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                    
-                    if(result.indexForKey("results") != nil){
+                    if(result.index(forKey: "results") != nil){
                         let count: Int = result["count"] as! Int
                         let next =  result["next"] is NSNull ? "":result["next"] as? String
                         let previous =  result["previous"] is NSNull ? "":result["previous"] as? String
@@ -323,10 +323,10 @@ public class MolocateAccount {
                             let thing = results[i] as! [String:AnyObject]
                             friend.username = thing["username"] as! String
                             friend.name =  thing["first_name"] as! String
-                            friend.picture_url = thing["picture_url"] is NSNull ? NSURL():NSURL(string: thing["picture_url"] as! String)!
+                            friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
                             let thumbnail = thing["thumbnail_url"] as! String
                             
-                            friend.thumbnail_url = thumbnail == "" ? friend.picture_url:NSURL(string: thumbnail)!
+                            friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
                             let isfollowing = thing["is_following"] as! Int
                             
                            
@@ -353,23 +353,23 @@ public class MolocateAccount {
                    completionHandler(data:  MoleUserRelations() , response: nil , error: error, count: 0, next: nil, previous: ""  )
                     if debug {print("RequestError:: in mole.getFollowings()")}
             }
-        }
+        })
         
         task.resume()
         
     }
     
-    class func getFollowingPlaces(username: String, completionHandler: (data: [MolePlace], response: NSURLResponse!, error: NSError! ) -> ()) {
+    class func getFollowingPlaces(_ username: String, completionHandler: @escaping (_ data: [MolePlace], _ response: URLResponse?, _ error: NSError? ) -> ()) {
         
-        let url: NSURL
-        url = NSURL(string: MolocateTestUrl + "/account/api/following_places/?username=" + (username as String) )!
+        let url: URL
+        url = URL(string: MolocateTestUrl + "/account/api/following_places/?username=" + (username as String) )!
 
         
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             if(error == nil){
@@ -377,7 +377,7 @@ public class MolocateAccount {
                 
                 do {
                      //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSArray
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
                 //print(result.count)
                     if(result.count != 0){
                         var places = [MolePlace]()
@@ -404,21 +404,21 @@ public class MolocateAccount {
                 if debug {print("RequestError:: in mole.getFollowers()")}
             }
             
-        }
+        })
         task.resume()
     }
     
-    class func getCheckedInPlaces(username: String, completionHandler: (data: [MolePlace], response: NSURLResponse!, error: NSError! ) -> ()) {
+    class func getCheckedInPlaces(_ username: String, completionHandler: @escaping (_ data: [MolePlace], _ response: URLResponse?, _ error: NSError? ) -> ()) {
         
-        let url: NSURL
-        url = NSURL(string: MolocateTestUrl + "/account/api/checkedin_places/?username=" + (username as String) )!
+        let url: URL
+        url = URL(string: MolocateTestUrl + "/account/api/checkedin_places/?username=" + (username as String) )!
         
         
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             if(error == nil){
@@ -426,7 +426,7 @@ public class MolocateAccount {
                 
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! NSArray
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
                 
                     if(result.count != 0){
                         var places = [MolePlace]()
@@ -453,42 +453,42 @@ public class MolocateAccount {
                 if debug {print("RequestError:: in mole.getFollowers()")}
             }
             
-        }
+        })
         task.resume()
     }
 
 
     
-    class func Login(username: String, password: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func Login(_ username: String, password: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         let json = ["username": username, "password": password]
         
         do {
             
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
             
-            let url = NSURL(string: MolocateBaseUrl + "api-token-auth/")!
+            let url = URL(string: MolocateBaseUrl + "api-token-auth/")!
             
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.HTTPBody = jsonData
+            request.httpBody = jsonData
             request.timeoutInterval = timeOut
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
      
                 if error==nil{
                     let nsError = error
                     do {
                         
-                        let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
+                        let result = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                         
-                        if(result.indexForKey("token") != nil){
+                        if(result.index(forKey: "token") != nil){
                             MoleUserToken = result["token"] as? String
                             
-                            NSUserDefaults.standardUserDefaults().setObject(MoleUserToken, forKey: "userToken")
+                            UserDefaults.standard.set(MoleUserToken, forKey: "userToken")
 
-                            dispatch_async(dispatch_get_main_queue(), {
+                            DispatchQueue.main.async(execute: {
                                
                                 MolocateAccount.getCurrentUser({ (data, response, error) -> () in
                                     completionHandler(data:"success" , response: response , error: nsError  )
@@ -517,29 +517,29 @@ public class MolocateAccount {
                     completionHandler(data: "error" , response: response , error: error )
                     if debug { print("RequestError::in MolocateAccount.Login()") }
                 }
-            }
+            })
             
             task.resume()
             
         } catch {
-            completionHandler(data: "JsonError" , response: NSURLResponse() , error: nil )
+            completionHandler("JsonError" , URLResponse() , nil )
             if debug { print("JSONCastError::in MolocateAccount.Login()") }
         }
     }
     
-    class func FacebookLogin(json: JSONParameters,completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func FacebookLogin(_ json: JSONParameters,completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         do {
             
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-            let url = NSURL(string: MolocateBaseUrl + "/account/facebook_login/")!
+            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let url = URL(string: MolocateBaseUrl + "/account/facebook_login/")!
             
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.HTTPBody = jsonData
+            request.httpBody = jsonData
             request.timeoutInterval = timeOut
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
              
                 if error == nil {
                     let Nserror = error
@@ -547,16 +547,16 @@ public class MolocateAccount {
                         
                         //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                         
-                        let resultJson = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                        if(resultJson.indexForKey("logged_in") != nil){
+                        let resultJson = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                        if(resultJson.index(forKey: "logged_in") != nil){
                             let logging = resultJson["logged_in"] as! Int
                             let loggedIn = logging == 1
                             
                             if loggedIn {
                                 MoleUserToken = resultJson["access_token"] as? String
-                                NSUserDefaults.standardUserDefaults().setObject(MoleUserToken, forKey: "userToken")
+                                UserDefaults.standard.set(MoleUserToken, forKey: "userToken")
 
-                                dispatch_async(dispatch_get_main_queue(), {
+                                DispatchQueue.main.async(execute: {
                                     if(DeviceToken != nil && !isRegistered){
                                         MolocateAccount.registerDevice({ (data, response, error) in
                                             
@@ -587,33 +587,33 @@ public class MolocateAccount {
                     completionHandler(data: "error", response:  response, error: error)
                     if debug {print("RequestError:: in MolocateAccount.facebookLogin()")}
                 }
-            }
+            })
             task.resume()
         } catch {
-            completionHandler(data: "error", response: NSURLResponse(), error: nil)
+            completionHandler("error", URLResponse(), nil)
         }
     }
     
-    class func FacebookSignup(json: JSONParameters,completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func FacebookSignup(_ json: JSONParameters,completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
-            let url = NSURL(string: MolocateBaseUrl + "/account/facebook_login/")!
+            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let url = URL(string: MolocateBaseUrl + "/account/facebook_login/")!
             
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.HTTPBody = jsonData
+            request.httpBody = jsonData
             request.timeoutInterval = timeOut
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                 if error == nil{
                     let Nserror = error
                     do {
                         
-                        let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                        if(result.indexForKey("logged_in") != nil){
+                        let result = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                        if(result.index(forKey: "logged_in") != nil){
                             let logging = result["logged_in"] as! Int
                             let notloggedin = logging == 0
                             
@@ -635,9 +635,9 @@ public class MolocateAccount {
                                 }
                             }else {
                                 MoleUserToken = result["access_token"] as? String
-                                NSUserDefaults.standardUserDefaults().setObject(MoleUserToken, forKey: "userToken")
+                                UserDefaults.standard.set(MoleUserToken, forKey: "userToken")
 
-                                dispatch_async(dispatch_get_main_queue(), {
+                                DispatchQueue.main.async(execute: {
                                     if(DeviceToken != nil){
                                         MolocateAccount.registerDevice({ (data, response, error) in
                                             
@@ -660,47 +660,47 @@ public class MolocateAccount {
                     completionHandler(data: "error", response:  response, error: error)
                     if debug { print("RequestError:: in MolocateAccount.facebookSignup()")}
                 }
-            }
+            })
             task.resume()
         } catch {
-            completionHandler(data: "error", response: NSURLResponse(), error: nil)
+            completionHandler("error", URLResponse(), nil)
             if debug { print("JsonError:: in MolocateAccount.facebookSignup() in start")}
         }
     }
     
     
-    class func SignUp(username: String, password: String, email: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func SignUp(_ username: String, password: String, email: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         //let json = ["username": username, "password": password, "email": email]
         
         let pureString = username+"+/"+password+"+/"+email
         //print(pureString)
     
-            let pureData = pureString.dataUsingEncoding(NSUTF8StringEncoding)
+            let pureData = pureString.data(using: String.Encoding.utf8)
             let passwordEnc = "3+bHv9S_7Q+HZdW"
             let encriptedString = RNCryptor.encryptData(pureData!, password: passwordEnc)
             
-            let url = NSURL(string: MolocateBaseUrl + "account/regisnew/")!
+            let url = URL(string: MolocateBaseUrl + "account/regisnew/")!
             
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.setValue("/*/", forHTTPHeaderField: "Content-Type")
             request.setValue("attachment;filename=register", forHTTPHeaderField: "Content-Disposition")
             request.HTTPBody = encriptedString
             request.timeoutInterval = timeOut
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                 
            
                 if error == nil {
                     let nsError = error
                     do {
                         //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                        let result = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! [String: AnyObject]
-                        if(result.indexForKey("access_token") != nil){
+                        let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String: AnyObject]
+                        if(result.index(forKey: "access_token") != nil){
                             MoleUserToken = result["access_token"] as? String
-                            NSUserDefaults.standardUserDefaults().setObject(MoleUserToken, forKey: "userToken")
-                            dispatch_async(dispatch_get_main_queue(), {
+                            UserDefaults.standard.set(MoleUserToken, forKey: "userToken")
+                            DispatchQueue.main.async(execute: {
                                 if(DeviceToken != nil && !isRegistered){
                                     MolocateAccount.registerDevice({ (data, response, error) in
                                         
@@ -709,7 +709,7 @@ public class MolocateAccount {
                             })
                             completionHandler(data: "success" , response: response , error: nsError  )
                             
-                        } else if result.indexForKey("result") != nil{
+                        } else if result.index(forKey: "result") != nil{
                             let servererror = result["result"] as! String
                            // print(error)
                             switch (servererror){
@@ -740,7 +740,7 @@ public class MolocateAccount {
                     completionHandler(data: "RequestError check your internet connection" , response: response , error:error  )
                     if debug {print("RequestError: in MolocateAccount.signup()")}
                 }
-            }
+            })
             
             task.resume()
             
@@ -748,23 +748,23 @@ public class MolocateAccount {
     }
     
     
-    class func follow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func follow(_ username: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "/relation/api/follow/?username=" + (username as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let url = URL(string: MolocateBaseUrl + "/relation/api/follow/?username=" + (username as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
            // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
         
             if error == nil {
                 
                 let nsError = error
                 do {
-                   let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("result") != nil{
+                   let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "result") != nil{
                         completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                     }else{
                         completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
@@ -779,21 +779,21 @@ public class MolocateAccount {
                 completionHandler(data: "RequestError" , response: nil , error: error  )
                 if debug{print("RequestError:: in MolocateAccount.follow()")}
             }
-        }
+        })
         
         task.resume()
         
     }
     
     
-    class func registerDevice (completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func registerDevice (_ completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "/activity/api/register_device/?device_token=" + (DeviceToken! as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let url = URL(string: MolocateBaseUrl + "/activity/api/register_device/?device_token=" + (DeviceToken! as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
             if error == nil {
@@ -801,12 +801,12 @@ public class MolocateAccount {
                 let nsError = error
                 
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     
-                    if result.indexForKey("result") != nil {
+                    if result.index(forKey: "result") != nil {
                         isRegistered = true
-                        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isRegistered")
-                        NSUserDefaults.standardUserDefaults().setObject(DeviceToken, forKey: "DeviceToken")
+                        UserDefaults.standard.set(true, forKey: "isRegistered")
+                        UserDefaults.standard.set(DeviceToken, forKey: "DeviceToken")
                         completionHandler(data: result["result"] as! String , response: response , error: nsError)
                         
                     }else{
@@ -823,27 +823,27 @@ public class MolocateAccount {
                 if debug {print("RequestError:: in MolcateAccount.registerDevice()")}
             }
             
-        }
+        })
         
         task.resume()
         
     }
     
-    class func resetBadge (completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func resetBadge (_ completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "/activity/api/zero_badge/")
-        let request = NSMutableURLRequest(URL: url!)
-        request.HTTPMethod = "POST"
+        let url = URL(string: MolocateBaseUrl + "/activity/api/zero_badge/")
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
         
             if error == nil {
                 let nsError = error
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("result") != nil{
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "result") != nil{
                         completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                     }else{
                         completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
@@ -860,32 +860,32 @@ public class MolocateAccount {
                 if debug {print("RequestError:: in MolocateAccount.resetBadge()")}
             }
             
-        }
+        })
         
         task.resume()
         
     }
     
-    class func unregisterDevice (completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func unregisterDevice (_ completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let url = NSURL(string: MolocateBaseUrl + "/activity/api/unregister_device/")
+        let url = URL(string: MolocateBaseUrl + "/activity/api/unregister_device/")
         
-        let request = NSMutableURLRequest(URL: url!)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
        
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil {
                 let nsError = error
               
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("result") != nil {
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "result") != nil {
                         completionHandler(data: result["result"] as! String , response: response , error: nsError  )
-                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isRegistered")
-                        NSUserDefaults.standardUserDefaults().setObject("", forKey: "DeviceToken")
+                        UserDefaults.standard.set(false, forKey: "isRegistered")
+                        UserDefaults.standard.set("", forKey: "DeviceToken")
                         isRegistered = false
                     }else{
                         completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
@@ -900,23 +900,23 @@ public class MolocateAccount {
                 //print("RequestError:: in MolocateAccount.unregisterDevice()")
             }
             
-        }
+        })
         task.resume()
     }
     
-    class func unfollow(username: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
-        let url = NSURL(string: MolocateBaseUrl + "relation/api/unfollow/?username=" + (username as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+    class func unfollow(_ username: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
+        let url = URL(string: MolocateBaseUrl + "relation/api/unfollow/?username=" + (username as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
         request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil {
                 let nsError = error
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                    if result.indexForKey("result") != nil {
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    if result.index(forKey: "result") != nil {
                         completionHandler(data: result["result"] as! String , response: response , error: nsError  )
                     }else{
                         completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
@@ -931,33 +931,33 @@ public class MolocateAccount {
                 if debug { print("RequestError:: in MolocateAccount.unfollow()")}
             }
             
-        }
+        })
         
         task.resume()
     }
     
-    class func searchUser(username: String, completionHandler: (data: [MoleUser], response: NSURLResponse!, error: NSError!) -> ()) {
+    class func searchUser(_ username: String, completionHandler: @escaping (_ data: [MoleUser], _ response: URLResponse?, _ error: NSError?) -> ()) {
 
-        let url = NSURLComponents(string: MolocateBaseUrl + "/account/api/search_user/")
-        url?.queryItems = [NSURLQueryItem(name: "username", value: username)]
-        let request = NSMutableURLRequest(URL: (url?.URL)!)
-        request.HTTPMethod = "GET"
+        var url = URLComponents(string: MolocateBaseUrl + "/account/api/search_user/")
+        url?.queryItems = [URLQueryItem(name: "username", value: username)]
+        let request = NSMutableURLRequest(url: (url?.url)!)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             if error == nil {
                 let nsError = error;
                 
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [[String:AnyObject]]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [[String:AnyObject]]
                     
                     var userArray = [MoleUser]()
                     for item in result {
                         //print(item)
                         var user = MoleUser()
                         user.username = item["username"] as! String
-                        user.profilePic = item["thumbnail_url"] is NSNull ? NSURL():NSURL(string: item["thumbnail_url"] as! String)!
+                        user.profilePic = item["thumbnail_url"] is NSNull ? URL():URL(string: item["thumbnail_url"] as! String)!
                         user.first_name = item["first_name"] as! String
                         user.last_name = item["last_name"] as! String
                         user.isFollowing = item["is_following"] as! Int == 1 ? true:false
@@ -974,31 +974,31 @@ public class MolocateAccount {
                 completionHandler(data: [MoleUser]() , response: nil , error:error )
                 if debug { print("RequestError:: in MolocateAccount.searchUser()")}
             }
-        }
+        })
         task.resume()
     }
-    class func getUser(username: String, completionHandler: (data: MoleUser, response: NSURLResponse!, error: NSError!) -> ()) {
+    class func getUser(_ username: String, completionHandler: @escaping (_ data: MoleUser, _ response: URLResponse?, _ error: NSError?) -> ()) {
         
-        let url = NSURL(string: MolocateBaseUrl + "account/api/get_user/?username=" + (username as String))!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let url = URL(string: MolocateBaseUrl + "account/api/get_user/?username=" + (username as String))!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             if error == nil {
             let nsError = error;
             
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                     //print(result)
-                    if result.indexForKey("email") != nil {
+                    if result.index(forKey: "email") != nil {
                         var user = MoleUser()
                         user.email = result["email"] as! String
                         user.username = result["username"] as! String
                         user.first_name = result["first_name"] as! String
                         user.last_name = result["last_name"] as! String
-                        user.profilePic = result["picture_url"] is NSNull ? NSURL():NSURL(string: result["picture_url"] as! String)!
+                        user.profilePic = result["picture_url"] is NSNull ? URL():URL(string: result["picture_url"] as! String)!
                         user.bio = result["caption"] is NSNull ? String() : result["caption"] as! String
                         user.follower_count = result["follower_count"] as! Int
                         user.following_count = result["following_count"] as! Int
@@ -1020,36 +1020,36 @@ public class MolocateAccount {
                 completionHandler(data: MoleUser() , response: nil , error:error )
                 if debug {print("RequestError:: in MolocateAccount.getUser()")}
             }
-        }
+        })
         
         task.resume()
     }
     
     
-    class func changePassword(old_password:String,new_password: String, completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func changePassword(_ old_password:String,new_password: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         do{
             
             let Body = ["old_password": old_password,
                         "new_password": new_password]
             
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(Body, options: NSJSONWritingOptions())
-            let url = NSURL(string: MolocateBaseUrl + "account/api/change_password/")!
+            let jsonData = try JSONSerialization.data(withJSONObject: Body, options: JSONSerialization.WritingOptions())
+            let url = URL(string: MolocateBaseUrl + "account/api/change_password/")!
             
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
-            request.HTTPBody = jsonData
+            request.httpBody = jsonData
             request.timeoutInterval = timeOut
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 if error == nil {
                 let nsError = error
                     do {
                         //check result if it is succed
-                        let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
-                        if result.indexForKey("result") != nil {
+                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                        if result.index(forKey: "result") != nil {
                             let answer = result["result"] as! String
                             completionHandler(data: answer  , response: response , error: nsError  )
                         }else{
@@ -1065,17 +1065,17 @@ public class MolocateAccount {
                     if debug {print("RequestError:: in MolocateAccount.changePassword()")}
                 }
                 
-            }
+            })
             
             task.resume()
         }catch{
-            completionHandler(data: "JsonError" , response: nil , error: nil )
+            completionHandler("JsonError" , nil , nil )
             if debug { print("JsonError:: in Molocate.changePassword() in start")}
         }
     }
     
     
-    class func EditUser(completionHandler: (data: String! , response: NSURLResponse!, error: NSError!) -> ()){
+    class func EditUser(_ completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         do{
             
@@ -1087,24 +1087,24 @@ public class MolocateAccount {
                         "caption":MoleCurrentUser.bio
             ]
             
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(Body, options: NSJSONWritingOptions())
-            let url = NSURL(string: MolocateBaseUrl + "account/api/edit_user/")!
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+            let jsonData = try JSONSerialization.data(withJSONObject: Body, options: JSONSerialization.WritingOptions())
+            let url = URL(string: MolocateBaseUrl + "account/api/edit_user/")!
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
-            request.HTTPBody = jsonData
+            request.httpBody = jsonData
             request.timeoutInterval = timeOut
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                 
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 if error == nil {
                 let nsError = error
                     do {
                         //check result if it is succed
-                        let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String:AnyObject]
+                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     
-                        if result.indexForKey("following_count") != nil {
+                        if result.index(forKey: "following_count") != nil {
                             
                             completionHandler(data:"success"  , response: response , error: nsError  )
                             
@@ -1122,16 +1122,16 @@ public class MolocateAccount {
                     completionHandler(data: "RequestError" , response: nil , error: error  )
                     if debug {print("RequestError:: in MolocateAccount.EditUser()")}
                 }
-            }
+            })
             
             task.resume()
         }catch{
-            completionHandler(data: "JsonError" , response: nil , error: nil )
+            completionHandler("JsonError" , nil , nil )
             if debug {print("JsonError:: in MolocateAccount.EditUser()")}
         }
     }
     
-    class func sendProfilePhotoandThumbnail(image: NSData, thumbnail: NSData, completionHandler: (data: String!, pictureUrl: String, thumbnailUrl: String, response: NSURLResponse!, error: NSError!) -> ()){
+    class func sendProfilePhotoandThumbnail(_ image: Data, thumbnail: Data, completionHandler: @escaping (_ data: String?, _ pictureUrl: String, _ thumbnailUrl: String, _ response: URLResponse?, _ error: NSError?) -> ()){
       
         let headers = [
             "content-type": "multipart/form-data; boundary=---011000010111000001101001",
@@ -1170,26 +1170,26 @@ public class MolocateAccount {
     
             body += "; filename=\"\(filename)\"\r\n"
             body += "Content-Type: \(contentType)\r\n\r\n"
-            postData.appendData(body.dataUsingEncoding(NSUTF8StringEncoding)!)
+            postData.append(body.data(using: String.Encoding.utf8)!)
               
             
             if paramName as! String == "picture"{
-                postData.appendData(image)
+                postData.append(image)
             }else{
-                postData.appendData(thumbnail)
+                postData.append(thumbnail)
             }
         
         }
         
-        postData.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        postData.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
         
-        let request = NSMutableURLRequest(URL: NSURL(string: MolocateBaseUrl + "account/api/upload_both/")!,cachePolicy: .UseProtocolCachePolicy, timeoutInterval: 5.0)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: URL(string: MolocateBaseUrl + "account/api/upload_both/")!,cachePolicy: .useProtocolCachePolicy, timeoutInterval: 5.0)
+        request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
-        request.HTTPBody = postData
+        request.httpBody = postData as Data
         
-        let session = NSURLSession.sharedSession()
-        let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             do{
                
                 
@@ -1197,8 +1197,8 @@ public class MolocateAccount {
                     completionHandler(data:"error" , pictureUrl: "", thumbnailUrl: "",response: response , error: error  )
                 } else {
                     
-                     let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: String]
-                    if result.indexForKey("thumbnail_url") != nil  {
+                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: String]
+                    if result.index(forKey: "thumbnail_url") != nil  {
                     
                     completionHandler(data: "success", pictureUrl: result["picture_url"]!, thumbnailUrl: result["thumbnail_url"]!,response: response , error: error  )
                         
@@ -1215,25 +1215,25 @@ public class MolocateAccount {
     }
     
     
-    class func uploadProfilePhoto(image: NSData, completionHandler: (data: String!, response: NSURLResponse!, error: NSError!) -> ()){
+    class func uploadProfilePhoto(_ image: Data, completionHandler: @escaping (_ data: String?, _ response: URLResponse?, _ error: NSError?) -> ()){
         
         let headers = ["content-type": "/*/", "content-disposition":"attachment;filename=molocate.png" ]
         
-        let request = NSMutableURLRequest(URL: NSURL(string: MolocateBaseUrl + "/account/api/upload_picture/")!, cachePolicy:.UseProtocolCachePolicy, timeoutInterval: 10.0)
+        let request = NSMutableURLRequest(url: URL(string: MolocateBaseUrl + "/account/api/upload_picture/")!, cachePolicy:.useProtocolCachePolicy, timeoutInterval: 10.0)
         
-        request.HTTPMethod = "POST"
+        request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
-        request.HTTPBody = image
+        request.httpBody = image
         request.timeoutInterval = timeOut
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){data, response, error  in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: {data, response, error  in
             //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if error == nil {
                 let nsError = error;
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: String]
-                    if result.indexForKey("result") != nil{
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: String]
+                    if result.index(forKey: "result") != nil{
                         var urlString = ""
                         let message = result["result"]
                         if(message == "success"){
@@ -1256,7 +1256,7 @@ public class MolocateAccount {
                 if debug {print("RequestError:: in MolocateAccount.uploadProfilePhoto()")}
             }
             
-        }
+        })
         
         task.resume();
         
@@ -1264,58 +1264,58 @@ public class MolocateAccount {
     
     class func setProfilePictures(){
         getDataFromUrl(MoleCurrentUser.profilePic) { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if data != nil{
-                    NSUserDefaults.standardUserDefaults().setObject(data, forKey: "profile_picture")
+                    UserDefaults.standard.set(data, forKey: "profile_picture")
                 }
             })
         }
         getDataFromUrl(MoleCurrentUser.thumbnailPic ) { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if data != nil{
-                    NSUserDefaults.standardUserDefaults().setObject(data, forKey: "thumbnail_picture")
+                    UserDefaults.standard.set(data, forKey: "thumbnail_picture")
                 }
             })
         }
     }
     
     
-    class func getDataFromUrl(url: NSURL, completionHandler: (data: NSData?, response: NSURLResponse?, error: NSError? ) -> ()) {
+    class func getDataFromUrl(_ url: URL, completionHandler: @escaping (_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> ()) {
         
-        let task =  NSURLSession.sharedSession().dataTaskWithURL(url) {
+        let task =  URLSession.shared.dataTask(with: url, completionHandler: {
             (data, response, error) in
-            completionHandler(data: data, response: response, error: error)
-        }
+            completionHandler(data, response, error)
+        }) 
         
         task.resume()
     }
     
-    class func getCurrentUser(completionHandler: (data: MoleUser, response: NSURLResponse!, error: NSError!) -> ()) {
+    class func getCurrentUser(_ completionHandler: @escaping (_ data: MoleUser, _ response: URLResponse?, _ error: NSError?) -> ()) {
         
-        let url = NSURL(string: MolocateBaseUrl +  "/account/api/current/")!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let url = URL(string: MolocateBaseUrl +  "/account/api/current/")!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){data, response, error  in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: {data, response, error  in
             if error == nil {
                 let nsError = error;
             
                 do {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                     
-                    if result.indexForKey("email") != nil{
+                    if result.index(forKey: "email") != nil{
                         MoleCurrentUser.email = result["email"] as! String
                         MoleCurrentUser.username = result["username"] as! String
                         MoleCurrentUser.first_name = result["first_name"] as! String
                         MoleCurrentUser.last_name = result["last_name"] as! String
                         
-                        let profile_picture = result["picture_url"] is NSNull ? NSURL():NSURL(string: result["picture_url"] as! String)!
+                        let profile_picture = result["picture_url"] is NSNull ? URL():URL(string: result["picture_url"] as! String)!
                         
                         if profile_picture.absoluteString != MoleCurrentUser.profilePic.absoluteString{
-                            MoleCurrentUser.profilePic = result["picture_url"] is NSNull ? NSURL():NSURL(string: result["picture_url"] as! String)!
-                            MoleCurrentUser.thumbnailPic = result["thumbnail_url"] is NSNull ? MoleCurrentUser.profilePic :NSURL(string: result["picture_url"] as! String)!
+                            MoleCurrentUser.profilePic = result["picture_url"] is NSNull ? URL():URL(string: result["picture_url"] as! String)!
+                            MoleCurrentUser.thumbnailPic = result["thumbnail_url"] is NSNull ? MoleCurrentUser.profilePic :URL(string: result["picture_url"] as! String)!
                             setProfilePictures()
                         }
                         MoleCurrentUser.bio = result["caption"] is NSNull ? String() : result["caption"] as! String
@@ -1349,7 +1349,7 @@ public class MolocateAccount {
                 if debug {print("RequestError:: in MolocateAccount.getCurrentUser()")}
             }
             
-        }
+        })
         
         task.resume();
         

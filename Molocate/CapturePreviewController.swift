@@ -12,7 +12,7 @@ var CaptionText = ""
 
 class capturePreviewController: UIViewController, PlayerDelegate {
     
-    private var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    fileprivate var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     @IBOutlet var toolBar: UIToolbar!
     @IBOutlet var bottomToolbar: UIToolbar!
@@ -35,23 +35,23 @@ class capturePreviewController: UIViewController, PlayerDelegate {
         var selectedCell = 0
     }
     
-    let screenSize: CGRect = UIScreen.mainScreen().bounds
+    let screenSize: CGRect = UIScreen.main.bounds
 
-    @IBAction func save(sender: AnyObject) {
+    @IBAction func save(_ sender: AnyObject) {
                     self.player.stop()
                     self.player = Player()
                     activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0.0, y: 0.0, width: 50.0, height: 50.0))
                     activityIndicator.center = self.view.center
                     activityIndicator.hidesWhenStopped = true
-                    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.White
+                    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
                     view.addSubview(activityIndicator)
                     activityIndicator.startAnimating()
-                    PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+                    PHPhotoLibrary.shared().performChanges({
                         // In iOS 9 and later, it's possible to move the file into the photo library without duplicating the file data.
                         // This avoids using double the disk space during save, which can make a difference on devices with limited free disk space.
-                        let newURL = NSURL(fileURLWithPath: videoPath!)
+                        let newURL = URL(fileURLWithPath: videoPath!)
                        // print(videoPath)
-                        PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(newURL)
+                        PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: newURL)
                         }, completionHandler: {success, error in
                             if !success {
                                 NSLog("Could not save movie to photo library: %@", error!)
@@ -66,14 +66,14 @@ class capturePreviewController: UIViewController, PlayerDelegate {
     }
     
     var autocompleteUrls = [String]()
-    var videoURL: NSURL?
+    var videoURL: URL?
 
     var videoLocation:locationss!
     
     var taggedUsers = [String]()
     var numbers = [Int]()
     @IBOutlet var postO: UIButton!
-    @IBAction func post(sender: AnyObject) {
+    @IBAction func post(_ sender: AnyObject) {
 
 
     
@@ -81,7 +81,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
         isLocationSelected = false
         videoLocation = locationss()
         
-        self.performSegueWithIdentifier("goTo3th", sender: self)
+        self.performSegue(withIdentifier: "goTo3th", sender: self)
         
 //        navigationController?.setNavigationBarHidden(false, animated: false)
 //        activityIndicator.startAnimating()
@@ -212,7 +212,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
 //        
 //    }
     
-    func randomStringWithLength (len : Int) -> NSString {
+    func randomStringWithLength (_ len : Int) -> NSString {
         
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         
@@ -221,7 +221,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
         for _ in 0..<len{
             let length = UInt32 (letters.length)
             let rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+            randomString.appendFormat("%C", letters.character(at: Int(rand)))
         }
         return randomString
     }
@@ -229,9 +229,9 @@ class capturePreviewController: UIViewController, PlayerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
    
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        UIApplication.shared.endIgnoringInteractionEvents()
         toolBar.barTintColor = swiftColor
-        toolBar.translucent = false
+        toolBar.isTranslucent = false
         toolBar.clipsToBounds = true
         self.player = Player()
         player.delegate = self
@@ -242,23 +242,23 @@ class capturePreviewController: UIViewController, PlayerDelegate {
   
     }
     
-    func playerReady(player: Player) {
+    func playerReady(_ player: Player) {
     }
     
-    func playerPlaybackStateDidChange(player: Player) {
+    func playerPlaybackStateDidChange(_ player: Player) {
     }
     
-    func playerBufferingStateDidChange(player: Player) {
+    func playerBufferingStateDidChange(_ player: Player) {
     }
     
-    func playerPlaybackWillStartFromBeginning(player: Player) {
+    func playerPlaybackWillStartFromBeginning(_ player: Player) {
     }
     
-    func playerPlaybackDidEnd(player: Player) {
+    func playerPlaybackDidEnd(_ player: Player) {
     }
     
     func buttonEnable(){
-        self.postO.enabled = true
+        self.postO.isEnabled = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -267,11 +267,11 @@ class capturePreviewController: UIViewController, PlayerDelegate {
     }
     
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         removeDatas()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
 
     }
  
@@ -314,19 +314,19 @@ class capturePreviewController: UIViewController, PlayerDelegate {
 //    }
 
     
-    @IBAction func backToCamera(sender: AnyObject) {
-        let alertController = UIAlertController(title: "Emin misiniz?", message: "Geriye giderseniz videonuz silinecektir.", preferredStyle: .Alert)
+    @IBAction func backToCamera(_ sender: AnyObject) {
+        let alertController = UIAlertController(title: "Emin misiniz?", message: "Geriye giderseniz videonuz silinecektir.", preferredStyle: .alert)
   
-        let cancelAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { (action) in
+        let cancelAction = UIAlertAction(title: "Vazgeç", style: .cancel) { (action) in
             // ...
         }
         alertController.addAction(cancelAction)
         
-        let OKAction = UIAlertAction(title: "Evet", style: .Default) { (action) in
-            dispatch_async(dispatch_get_main_queue()) {
-                let cleanup: dispatch_block_t = {
+        let OKAction = UIAlertAction(title: "Evet", style: .default) { (action) in
+            DispatchQueue.main.async {
+                let cleanup: ()->() = {
                     do {
-                        try NSFileManager.defaultManager().removeItemAtURL(self.videoURL!)
+                        try FileManager.default.removeItem(at: self.videoURL!)
                         
                     } catch _ {}
                     
@@ -335,7 +335,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
                 placesArray.removeAll()
                 placeOrder.removeAllObjects()
                 self.player.stop()
-                self.performSegueWithIdentifier("backToCamera", sender: self)
+                self.performSegue(withIdentifier: "backToCamera", sender: self)
                 
                 
                 
@@ -343,7 +343,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
         }
         alertController.addAction(OKAction)
         
-        self.presentViewController(alertController, animated: true) {
+        self.present(alertController, animated: true) {
             // ...
         }
         
@@ -351,7 +351,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
     
     func putVideo() {
         //dispatch_async(dispatch_get_main_queue())
-        videoURL = NSURL(fileURLWithPath: videoPath!, isDirectory: false)
+        videoURL = URL(fileURLWithPath: videoPath!, isDirectory: false)
         newRect = CGRect(x: 0, y: 150, width: self.view.frame.width, height: self.view.frame.width)
         self.player.setUrl(videoURL!)
         self.player.view.frame = newRect
@@ -360,27 +360,27 @@ class capturePreviewController: UIViewController, PlayerDelegate {
 
     }
     
-    func displayAlert(title: String, message: String) {
+    func displayAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             //self.dismissViewControllerAnimated(true, completion: nil)
-            if !self.postO.enabled {
-                self.postO.enabled = true
+            if !self.postO.isEnabled {
+                self.postO.isEnabled = true
             }
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         adjustViewLayout(size)
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        adjustViewLayout(UIScreen.mainScreen().bounds.size)
+        adjustViewLayout(UIScreen.main.bounds.size)
             }
-    func adjustViewLayout(size: CGSize) {
+    func adjustViewLayout(_ size: CGSize) {
         
         
         switch(size.width, size.height) {
@@ -402,7 +402,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
     }
     
     func removeDatas(){
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
 //            let cleanup: dispatch_block_t = {
 //                do {
 //                    try NSFileManager.defaultManager().removeItemAtURL(self.videoURL!)
@@ -411,7 +411,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
 //                
 //            }
 //            cleanup()
-            self.performSegueWithIdentifier("backToCamera", sender: self)
+            self.performSegue(withIdentifier: "backToCamera", sender: self)
             
             
         }

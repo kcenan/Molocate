@@ -21,15 +21,15 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
         }
         
         //broadcasting functions. They may called from any viewcontroller.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.closeSideBar), name: "closeSideBar", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.closeSideBarFast), name: "closeSideBarFast", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.openSideBar), name: "openSideBar", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerController.pushNotification), name: "pushNotification", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContainerController.closeSideBar), name: NSNotification.Name(rawValue: "closeSideBar"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContainerController.closeSideBarFast), name: NSNotification.Name(rawValue: "closeSideBarFast"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContainerController.openSideBar), name: NSNotification.Name(rawValue: "openSideBar"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContainerController.pushNotification), name: NSNotification.Name(rawValue: "pushNotification"), object: nil)
     }
     
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
   
     func pushNotification(){
@@ -60,25 +60,25 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
     
     }
     
-    override func viewWillAppear(animated: Bool) {
-        adjustViewLayout(UIScreen.mainScreen().bounds.size)
+    override func viewWillAppear(_ animated: Bool) {
+        adjustViewLayout(UIScreen.main.bounds.size)
         
        // setStatusBarBackgroundColor(swiftColor)
     }
     
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        scrollView.pagingEnabled = true
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollView.isPagingEnabled = true
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        scrollView.pagingEnabled = false
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollView.isPagingEnabled = false
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if(scrollView.contentOffset.x == 0) {
             sideClicked = true
          
@@ -87,7 +87,7 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
         }
         if(scrollView.contentOffset.x < self.view.frame.width*0.2){
             
-            MolocateUtility.setStatusBarBackgroundColor(UIColor.blackColor())
+            MolocateUtility.setStatusBarBackgroundColor(UIColor.black)
         
 
         
@@ -98,14 +98,14 @@ class ContainerController: UIViewController,UIScrollViewDelegate {
         }
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         adjustViewLayout(size)
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
-    func adjustViewLayout(size: CGSize) {
+    func adjustViewLayout(_ size: CGSize) {
         
         
         switch(size.width, size.height) {

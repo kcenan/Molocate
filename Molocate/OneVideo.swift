@@ -11,24 +11,24 @@ class oneVideo: UIViewController,PlayerDelegate {
     var pressedFollow: Bool = false
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var likeHeart = UIImageView()
-    let screenSize: CGRect = UIScreen.mainScreen().bounds
+    let screenSize: CGRect = UIScreen.main.bounds
 
     @IBOutlet var tableView: UITableView!
-    @IBAction func backButton(sender: AnyObject) {
+    @IBAction func backButton(_ sender: AnyObject) {
         
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if UIApplication.sharedApplication().isIgnoringInteractionEvents(){
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        if UIApplication.shared.isIgnoringInteractionEvents{
+        UIApplication.shared.endIgnoringInteractionEvents()
         }
         initGui()
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         
     }
     
@@ -43,33 +43,33 @@ class oneVideo: UIViewController,PlayerDelegate {
         player.playbackLoops = true
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         if (MoleGlobalVideo == nil){
             MoleGlobalVideo = MoleVideoInformation()
         }
         if !pressedLike && !pressedFollow {
             
-            let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "cell")
+            let cell = videoCell(style: UITableViewCellStyle.value1, reuseIdentifier: "cell")
             
-            cell.initialize(indexPath.row, videoInfo:  MoleGlobalVideo)
+            cell.initialize((indexPath as NSIndexPath).row, videoInfo:  MoleGlobalVideo)
             
-            cell.Username.addTarget(self, action: #selector(oneVideo.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.placeName.addTarget(self, action: #selector(oneVideo.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.profilePhoto.addTarget(self, action: #selector(oneVideo.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.commentCount.addTarget(self, action: #selector(oneVideo.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.Username.addTarget(self, action: #selector(oneVideo.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
+            cell.placeName.addTarget(self, action: #selector(oneVideo.pressedPlace(_:)), for: UIControlEvents.touchUpInside)
+            cell.profilePhoto.addTarget(self, action: #selector(oneVideo.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
+            cell.commentCount.addTarget(self, action: #selector(oneVideo.pressedComment(_:)), for: UIControlEvents.touchUpInside)
             if(MoleGlobalVideo.isFollowing==0 && MoleGlobalVideo.username != MoleCurrentUser.username){
-                cell.followButton.addTarget(self, action: #selector(oneVideo.pressedFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.followButton.addTarget(self, action: #selector(oneVideo.pressedFollow(_:)), for: UIControlEvents.touchUpInside)
             }else{
-                cell.followButton.hidden = true
+                cell.followButton.isHidden = true
             }
             
-            cell.likeButton.addTarget(self, action: #selector(oneVideo.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.likeButton.addTarget(self, action: #selector(oneVideo.pressedLike(_:)), for: UIControlEvents.touchUpInside)
             
-            cell.likeCount.setTitle("\(MoleGlobalVideo.likeCount)", forState: .Normal)
-            cell.commentCount.setTitle("\(MoleGlobalVideo.commentCount)", forState: .Normal)
-            cell.commentButton.addTarget(self, action: #selector(oneVideo.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.reportButton.addTarget(self, action: #selector(oneVideo.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.likeCount.addTarget(self, action: #selector(oneVideo.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.likeCount.setTitle("\(MoleGlobalVideo.likeCount)", for: UIControlState())
+            cell.commentCount.setTitle("\(MoleGlobalVideo.commentCount)", for: UIControlState())
+            cell.commentButton.addTarget(self, action: #selector(oneVideo.pressedComment(_:)), for: UIControlEvents.touchUpInside)
+            cell.reportButton.addTarget(self, action: #selector(oneVideo.pressedReport(_:)), for: UIControlEvents.touchUpInside)
+            cell.likeCount.addTarget(self, action: #selector(oneVideo.pressedLikeCount(_:)), for: UIControlEvents.touchUpInside)
             
             let tap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.doubleTapped(_:) ));
             tap.numberOfTapsRequired = 2
@@ -78,7 +78,7 @@ class oneVideo: UIViewController,PlayerDelegate {
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
-            playtap.requireGestureRecognizerToFail(tap)
+            playtap.require(toFail: tap)
             
             if(MoleGlobalVideo.urlSta.absoluteString != ""){
                 self.player.setUrl(MoleGlobalVideo.urlSta)
@@ -93,21 +93,21 @@ class oneVideo: UIViewController,PlayerDelegate {
             
             return cell
         }else{
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
+            let cell = tableView.cellForRow(at: indexPath) as! videoCell
             if pressedLike {
                 pressedLike = false
-                cell.likeCount.setTitle("\(MoleGlobalVideo.likeCount)", forState: .Normal)
+                cell.likeCount.setTitle("\(MoleGlobalVideo.likeCount)", for: UIControlState())
                 
                 if(MoleGlobalVideo.isLiked == 0) {
-                    cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), forState: UIControlState.Normal)
+                    cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), for: UIControlState())
                 }else{
-                    cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), forState: UIControlState.Normal)
-                    cell.likeButton.tintColor = UIColor.whiteColor()
+                    cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), for: UIControlState())
+                    cell.likeButton.tintColor = UIColor.white
                 }
             }else if pressedFollow{
                 pressedFollow = true
                 
-                cell.followButton.hidden = MoleGlobalVideo.isFollowing == 1 ? true:false
+                cell.followButton.isHidden = MoleGlobalVideo.isFollowing == 1 ? true:false
                 
             }
             return cell
@@ -116,31 +116,31 @@ class oneVideo: UIViewController,PlayerDelegate {
     }
     
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
         
         return screenSize.width + 150
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    func pressedUsername(sender: UIButton) {
-        navigationController?.navigationBarHidden = false
+    func pressedUsername(_ sender: UIButton) {
+        navigationController?.isNavigationBarHidden = false
     
         //////////print("username e basıldı at index path: \(buttonRow)")
         player.stop()
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         if MoleGlobalVideo.username != MoleCurrentUser.username{
             controller.isItMyProfile = false
         }else{
@@ -148,7 +148,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         }
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(MoleGlobalVideo.username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
                 user = data
@@ -161,7 +161,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         }
     }
 
-        func playTapped(sender: UITapGestureRecognizer) {
+        func playTapped(_ sender: UITapGestureRecognizer) {
         if player.playbackState.description == "Playing"{
             player.stop()
         }else if player.playbackState.description == "Stopped"{
@@ -170,36 +170,36 @@ class oneVideo: UIViewController,PlayerDelegate {
         
     }
     
-    override func viewWillAppear(animated: Bool) {
-        (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = false
+    override func viewWillAppear(_ animated: Bool) {
+        (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = false
     }
-    func pressedPlace(sender: UIButton) {
+    func pressedPlace(_ sender: UIButton) {
        
         
         player.stop()
         
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        self.navigationController?.navigationBarHidden = false
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        self.navigationController?.isNavigationBarHidden = false
         
         
-        let controller:profileVenue = self.storyboard!.instantiateViewControllerWithIdentifier("profileVenue") as! profileVenue
+        let controller:profileVenue = self.storyboard!.instantiateViewController(withIdentifier: "profileVenue") as! profileVenue
         self.navigationController?.pushViewController(controller, animated: true)
         
         
         MolocatePlace.getPlace(MoleGlobalVideo.locationID) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 thePlace = data
                 controller.classPlace = data
                 controller.RefreshGuiWithData()
                 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
         }
@@ -207,27 +207,27 @@ class oneVideo: UIViewController,PlayerDelegate {
     }
     
     
-    func pressedLikeCount(sender: UIButton) {
-        navigationController?.navigationBarHidden = false
+    func pressedLikeCount(_ sender: UIButton) {
+        navigationController?.isNavigationBarHidden = false
         player.stop()
         video_id = MoleGlobalVideo.id
   
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         
-        let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
+        let controller:likeVideo = self.storyboard!.instantiateViewController(withIdentifier: "likeVideo") as! likeVideo
         
         MolocateVideo.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 controller.users = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
             
@@ -239,8 +239,8 @@ class oneVideo: UIViewController,PlayerDelegate {
     }
     
     
-    func pressedComment(sender: UIButton) {
-        navigationController?.navigationBarHidden = false
+    func pressedComment(_ sender: UIButton) {
+        navigationController?.isNavigationBarHidden = false
       
         
         player.stop()
@@ -251,21 +251,21 @@ class oneVideo: UIViewController,PlayerDelegate {
         myViewController = "HomeController"
         
         
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+        let controller:commentController = self.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         comments.removeAll()
         MolocateVideo.getComments(MoleGlobalVideo.id) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
         }
@@ -273,15 +273,15 @@ class oneVideo: UIViewController,PlayerDelegate {
         
     }
 
-    func pressedFollow(sender: UIButton) {
+    func pressedFollow(_ sender: UIButton) {
         let buttonRow = sender.tag
         pressedFollow = true
         //print("followa basıldı at index path: \(buttonRow) ")
         MoleGlobalVideo.isFollowing = 1
-        var indexes = [NSIndexPath]()
-        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [IndexPath]()
+        let index = IndexPath(row: buttonRow, section: 0)
         indexes.append(index)
-        self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
+        self.tableView.reloadRows(at: indexes, with: .none)
         
         MolocateAccount.follow(MoleGlobalVideo.username){ (data, response, error) -> () in
             //print(data)
@@ -290,20 +290,20 @@ class oneVideo: UIViewController,PlayerDelegate {
     }
     
     
-        func doubleTapped(sender: UITapGestureRecognizer) {
+        func doubleTapped(_ sender: UITapGestureRecognizer) {
         let buttonRow = sender.view!.tag
         // print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
-        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-        let  cell = tableView.cellForRowAtIndexPath(indexpath)
+        let indexpath = IndexPath(row: buttonRow, section: 0)
+        let  cell = tableView.cellForRow(at: indexpath)
         likeHeart.center = (cell?.contentView.center)!
         likeHeart.layer.zPosition = 100
         let imageSize = likeHeart.image?.size.height
-        likeHeart.frame = CGRectMake(likeHeart.center.x-imageSize!/2 , likeHeart.center.y-imageSize!/2, imageSize!, imageSize!)
+        likeHeart.frame = CGRect(x: likeHeart.center.x-imageSize!/2 , y: likeHeart.center.y-imageSize!/2, width: imageSize!, height: imageSize!)
         cell?.addSubview(likeHeart)
         MolocateUtility.animateLikeButton(&likeHeart)
         
-        var indexes = [NSIndexPath]()
+        var indexes = [IndexPath]()
         indexes.append(indexpath)
         
         if(MoleGlobalVideo.isLiked == 0){
@@ -312,10 +312,10 @@ class oneVideo: UIViewController,PlayerDelegate {
             MoleGlobalVideo.likeCount+=1
             
             
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
             MolocateVideo.likeAVideo(MoleGlobalVideo.id) { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                    // print(data)
                 }
             }
@@ -324,47 +324,47 @@ class oneVideo: UIViewController,PlayerDelegate {
             
             MoleGlobalVideo.isLiked=0
             MoleGlobalVideo.likeCount-=1
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
             
             MolocateVideo.unLikeAVideo(MoleGlobalVideo.id){ (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     //print(data)
                 }
             }
         }
         pressedLike = false
     }
-    func pressedLike(sender: UIButton) {
+    func pressedLike(_ sender: UIButton) {
         let buttonRow = sender.tag
         //print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
-        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-        var indexes = [NSIndexPath]()
+        let indexpath = IndexPath(row: buttonRow, section: 0)
+        var indexes = [IndexPath]()
         indexes.append(indexpath)
         
         if(MoleGlobalVideo.isLiked == 0){
-            sender.highlighted = true
+            sender.isHighlighted = true
             
             MoleGlobalVideo.isLiked=1
             MoleGlobalVideo.likeCount+=1
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
             MolocateVideo.likeAVideo(MoleGlobalVideo.id) { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                  //   print(data)
                 }
             }
         }else{
-            sender.highlighted = false
+            sender.isHighlighted = false
             
             MoleGlobalVideo.isLiked=0
             MoleGlobalVideo.likeCount-=1
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
             
             MolocateVideo.unLikeAVideo(MoleGlobalVideo.id){ (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                   //  print(data)
                 }
             }
@@ -372,7 +372,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         pressedLike = false
     }
     
-    func pressedReport(sender: UIButton) {
+    func pressedReport(_ sender: UIButton) {
         let buttonRow = sender.tag
         player.stop()
         
@@ -380,38 +380,38 @@ class oneVideo: UIViewController,PlayerDelegate {
            // print(data)
         }
         //print("pressedReport at index path: \(buttonRow)")
-        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
             
         }
         
         actionSheetController.addAction(cancelAction)
         
-        let reportVideo: UIAlertAction = UIAlertAction(title: "Report the Video", style: .Default) { action -> Void in
+        let reportVideo: UIAlertAction = UIAlertAction(title: "Report the Video", style: .default) { action -> Void in
             
             //print("reported")
         }
         actionSheetController.addAction(reportVideo)
         
-        self.presentViewController(actionSheetController, animated: true, completion: nil)
+        self.present(actionSheetController, animated: true, completion: nil)
         
     }
     
-    func playerReady(player: Player) {
+    func playerReady(_ player: Player) {
         //self.player.playFromBeginning()
     }
     
-    func playerPlaybackStateDidChange(player: Player) {
+    func playerPlaybackStateDidChange(_ player: Player) {
     }
     
-    func playerBufferingStateDidChange(player: Player) {
+    func playerBufferingStateDidChange(_ player: Player) {
     }
     
-    func playerPlaybackWillStartFromBeginning(player: Player) {
+    func playerPlaybackWillStartFromBeginning(_ player: Player) {
     }
     
-    func playerPlaybackDidEnd(player: Player) {
+    func playerPlaybackDidEnd(_ player: Player) {
     }
     
     override func didReceiveMemoryWarning() {

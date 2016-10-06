@@ -9,11 +9,31 @@ import AVFoundation
 import XLActionController
 import Photos
 import FBSDKShareKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
  class Added: UIViewController, UITableViewDelegate, UITableViewDataSource,PlayerDelegate, FBSDKSharingDelegate {
     
     var lastOffset:CGPoint!
-    var lastOffsetCapture:NSTimeInterval!
+    var lastOffsetCapture:TimeInterval!
     var isScrollingFast:Bool = false
     var pointNow:CGFloat!
     var isSearching = false
@@ -24,7 +44,7 @@ import FBSDKShareKit
     var pressedLike: Bool = false
     var pressedFollow: Bool = false
     var videoArray = [MoleVideoInformation]()
-    let screenSize: CGRect = UIScreen.mainScreen().bounds
+    let screenSize: CGRect = UIScreen.main.bounds
     var tableView = UITableView()
     var on = true
     var likeHeart = UIImageView()
@@ -45,7 +65,7 @@ import FBSDKShareKit
     }
     
     func initGui(){
-        view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height-190)
+        view.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-190)
         likeHeart.image = UIImage(named: "favorite")
         likeHeart.alpha = 1.0
         
@@ -58,11 +78,11 @@ import FBSDKShareKit
         self.player2.delegate = self
         self.player2.playbackLoops = true
         // tableView.center = CGPointMake(screenSize.width/2,screenSize.height/2)
-        tableView.frame         =   CGRectMake(0, 0 , screenSize.width, screenSize.height-80);
+        tableView.frame         =   CGRect(x: 0, y: 0 , width: screenSize.width, height: screenSize.height-80);
         tableView.delegate      =   self
         tableView.dataSource    =   self
         
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView()
         self.view.addSubview(tableView)
@@ -70,11 +90,11 @@ import FBSDKShareKit
         
         if isItMyProfile {
         
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.prepareForRetry), name: "prepareForRetry", object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(Added.prepareForRetry), name: NSNotification.Name(rawValue: "prepareForRetry"), object: nil)
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.updateProgress), name: "updateProgress", object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(Added.updateProgress), name: NSNotification.Name(rawValue: "updateProgress"), object: nil)
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.uploadFinished), name: "uploadFinished", object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(Added.uploadFinished), name: NSNotification.Name(rawValue: "uploadFinished"), object: nil)
         }
    
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.scrollToTop), name: "scrollToTop", object: nil)
@@ -88,7 +108,7 @@ import FBSDKShareKit
     
     func getData(){
         MolocateVideo.getUserVideos(classUser.username, type: "user", completionHandler: { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 if VideoUploadRequests.count == 0{
                     self.videoArray = data!
                 }else if self.isItMyProfile{
@@ -159,16 +179,16 @@ import FBSDKShareKit
     
     
     
-    func playerReady(player: Player) {
+    func playerReady(_ player: Player) {
     }
     
-    func playerPlaybackStateDidChange(player: Player) {
+    func playerPlaybackStateDidChange(_ player: Player) {
     }
     
-    func playerBufferingStateDidChange(player: Player) {
+    func playerBufferingStateDidChange(_ player: Player) {
     }
     
-    func playerPlaybackWillStartFromBeginning(player: Player) {
+    func playerPlaybackWillStartFromBeginning(_ player: Player) {
         if player == player1 {
             player2.stop()
         } else {
@@ -176,13 +196,13 @@ import FBSDKShareKit
         }
     }
     
-    func playerPlaybackDidEnd(player: Player) {
+    func playerPlaybackDidEnd(_ player: Player) {
         
         if classUser.username != MoleCurrentUser.username{
                 watch_list.append(player.id)
                 if watch_list.count == 10{
                     MolocateVideo.increment_watch(watch_list, completionHandler: { (data, response, error) in
-                        dispatch_async(dispatch_get_main_queue()){
+                        DispatchQueue.main.async{
                             watch_list.removeAll()
                             //print("watch incremented")
                         }
@@ -191,17 +211,17 @@ import FBSDKShareKit
         }
     }
     
-    func pressedShare(sender: UIButton){
+    func pressedShare(_ sender: UIButton){
         let Row = sender.tag
         player1.pause()
         player2.pause()
         let username = self.videoArray[Row].username
-        var shareURL = NSURL()
-        if dictionary.objectForKey(self.videoArray[Row].id) != nil {
-            shareURL = dictionary.objectForKey(self.videoArray[Row].id) as! NSURL
+        var shareURL = URL()
+        if dictionary.object(forKey: self.videoArray[Row].id) != nil {
+            shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
         } else {
             let url = self.videoArray[Row].urlSta.absoluteString
-            if(url[0] == "h") {
+            if(url?[0] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -368,7 +388,7 @@ import FBSDKShareKit
 
 
     
-    func playTapped(sender: UITapGestureRecognizer) {
+    func playTapped(_ sender: UITapGestureRecognizer) {
         let row = sender.view!.tag
         //print("like a basıldı at index path: \(row) ")
         if self.tableView.visibleCells.count < 3 {
@@ -390,7 +410,7 @@ import FBSDKShareKit
                 }
             }
         } else {
-            let midrow =  self.tableView.indexPathsForVisibleRows![1].row
+            let midrow =  (self.tableView.indexPathsForVisibleRows![1] as NSIndexPath).row
             if midrow % 2 == 1 {
                 if self.player1.playbackState.description != "Playing" {
                     self.player2.stop()
@@ -409,37 +429,37 @@ import FBSDKShareKit
         }
     }
     
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isScrollingFast = false
-        var ipArray = [NSIndexPath]()
+        var ipArray = [IndexPath]()
         for item in self.tableView.indexPathsForVisibleRows!{
-            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            let cell = self.tableView.cellForRow(at: item) as! videoCell
             if !cell.hasPlayer {
                 ipArray.append(item)
             }
         }
         if ipArray.count != 0 {
-            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+            self.tableView.reloadRows(at: ipArray, with: .none)
         }
         
         
     }
     
     
-    func prepareForRetry(notification: NSNotification){
-        let userInfo = notification.userInfo
+    func prepareForRetry(_ notification: Notification){
+        let userInfo = (notification as NSNotification).userInfo
         if let video_id = userInfo!["id"] as? Int{
-            if let i = VideoUploadRequests.indexOf({$0.id == video_id}) {
+            if let i = VideoUploadRequests.index(where: {$0.id == video_id}) {
                 VideoUploadRequests[i].isFailed = true
                 if isItMyProfile{
                     videoArray[i].isFailed = true
                     videoArray[i].isUploading = false
-                    if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i,inSection: 0)) as? videoCell{
-                        dispatch_async(dispatch_get_main_queue(), {
+                    if let cell = tableView.cellForRow(at: IndexPath(row: i,section: 0)) as? videoCell{
+                        DispatchQueue.main.async(execute: {
                             //print("prepareforRetry with id:\(video_id) row: \(i)")
                             
                             let rect = cell.newRect
-                            cell.blackView.frame = rect
+                            cell.blackView.frame = rect!
                             let videoView = UIView(frame: cell.newRect)
                             cell.resendButton.center = CGPoint(x: videoView.center.x-50, y: videoView.center.y)
                             cell.deleteButton.center = CGPoint(x: videoView.center.x+50, y: videoView.center.y)
@@ -456,9 +476,9 @@ import FBSDKShareKit
                             cell.contentView.addSubview(cell.errorLabel)
                             cell.resendButton.tag = i
                             cell.deleteButton.tag = i
-                            cell.resendButton.enabled = true
-                            cell.deleteButton.enabled = true
-                            cell.progressBar.hidden = true
+                            cell.resendButton.isEnabled = true
+                            cell.deleteButton.isEnabled = true
+                            cell.progressBar.isHidden = true
                         })
                     }
                 }
@@ -467,16 +487,16 @@ import FBSDKShareKit
         
     }
     
-    func updateProgress(notification:NSNotification){
-        let userInfo = notification.userInfo
+    func updateProgress(_ notification:Notification){
+        let userInfo = (notification as NSNotification).userInfo
         //print("updateProgress Called")
         if let video_id = userInfo!["id"] as? Int{
             //print("with id: \(video_id)")
-            if let i = VideoUploadRequests.indexOf({$0.id == video_id}) {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i,inSection: 0)) as? videoCell{
+            if let i = VideoUploadRequests.index(where: {$0.id == video_id}) {
+                if let cell = tableView.cellForRow(at: IndexPath(row: i,section: 0)) as? videoCell{
                     let progress = userInfo!["progress"] as! Float
                     //print("progressBar updated with: userInfo! \(progress)")
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         cell.progressBar.setProgress(progress, animated: true)
                     })
                     //                    likeorFollowClicked = true
@@ -490,16 +510,16 @@ import FBSDKShareKit
         
     }
     
-    func uploadFinished(notification:NSNotification){
-        let userInfo = notification.userInfo
+    func uploadFinished(_ notification:Notification){
+        let userInfo = (notification as NSNotification).userInfo
         //print("upload finished")
         if let id = userInfo!["id"] as? Int{
            // print("with row: \(id)")
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: id,inSection: 0)) as? videoCell{
-                dispatch_async(dispatch_get_main_queue(), {
-                    cell.progressBar.hidden = true
-                    cell.resendButton.enabled = false
-                    cell.deleteButton.enabled = false
+            if let cell = tableView.cellForRow(at: IndexPath(row: id,section: 0)) as? videoCell{
+                DispatchQueue.main.async(execute: {
+                    cell.progressBar.isHidden = true
+                    cell.resendButton.isEnabled = false
+                    cell.deleteButton.isEnabled = false
                     cell.progressBar.removeFromSuperview()
                     cell.resendButton.removeFromSuperview()
                     cell.blackView.removeFromSuperview()
@@ -511,16 +531,16 @@ import FBSDKShareKit
         }
         
     }
-    func retryRequest(sender: UIButton){
+    func retryRequest(_ sender: UIButton){
         let row = sender.tag
         //app yeni acildiginda s3uploads bos olcak onlari tekrar dan olusturmak lazim
-        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: row,inSection: 0)) as? videoCell{
+        if let cell = tableView.cellForRow(at: IndexPath(row: row,section: 0)) as? videoCell{
             
             MyS3Uploads[row].upload(true,id: VideoUploadRequests[row].id, uploadRequest: VideoUploadRequests[row].uploadRequest, fileURL:VideoUploadRequests[row].filePath, fileID:  VideoUploadRequests[row].fileId, json: VideoUploadRequests[row].JsonData, thumbnail_image: VideoUploadRequests[row].thumbnail)
             
-            dispatch_async(dispatch_get_main_queue(), {
-                cell.resendButton.enabled = false
-                cell.deleteButton.enabled = false
+            DispatchQueue.main.async(execute: {
+                cell.resendButton.isEnabled = false
+                cell.deleteButton.isEnabled = false
                 self.videoArray[row].isFailed = false
                 self.videoArray[row].isUploading = true
                 VideoUploadRequests[row].isFailed = false
@@ -530,7 +550,7 @@ import FBSDKShareKit
                 cell.resendButton.removeFromSuperview()
                 cell.blackView.removeFromSuperview()
                 cell.deleteButton.removeFromSuperview()
-                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: .None)
+                self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
             })
             
             //        }else{ cell.t
@@ -547,29 +567,29 @@ import FBSDKShareKit
     }
     
     
-    func deleteVideo(sender: UIButton){
+    func deleteVideo(_ sender: UIButton){
         let row = sender.tag
-        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: row,inSection: 0)) as? videoCell{
-            dispatch_async(dispatch_get_main_queue(), {
-                cell.resendButton.enabled = false
-                cell.deleteButton.enabled = false
+        if let cell = tableView.cellForRow(at: IndexPath(row: row,section: 0)) as? videoCell{
+            DispatchQueue.main.async(execute: {
+                cell.resendButton.isEnabled = false
+                cell.deleteButton.isEnabled = false
                 
                 let fileUrl = VideoUploadRequests[row].uploadRequest.body
                 
                 do {
-                    try NSFileManager.defaultManager().removeItemAtURL(VideoUploadRequests[row].uploadRequest.body)
+                    try FileManager.default.removeItemAtURL(VideoUploadRequests[row].uploadRequest.body)
                 }catch{
                     //print("Video Silinemedi")
                 }
                 
-                VideoUploadRequests.removeAtIndex(row)
-                MyS3Uploads.removeAtIndex(row)
-                self.videoArray.removeAtIndex(row)
+                VideoUploadRequests.remove(at: row)
+                MyS3Uploads.remove(at: row)
+                self.videoArray.remove(at: row)
                 self.tableView.reloadData()
                 MolocateVideo.encodeGlobalVideo()
                 
                 if VideoUploadRequests.count == 0 {
-                    NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isStuck")
+                    UserDefaults.standard.set(false, forKey: "isStuck")
                 }
             })
             
@@ -578,53 +598,53 @@ import FBSDKShareKit
         
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let rowHeight = screenSize.width + 150
         return rowHeight
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return videoArray.count
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if !pressedLike && !pressedFollow {
-            let cell = videoCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "customCell")
+            let cell = videoCell(style: UITableViewCellStyle.value1, reuseIdentifier: "customCell")
             
             
-            cell.initialize(indexPath.row, videoInfo: videoArray[indexPath.row])
+            cell.initialize((indexPath as NSIndexPath).row, videoInfo: videoArray[(indexPath as NSIndexPath).row])
             
-            cell.shareButton.addTarget(self, action: #selector(Added.pressedShare(_:)), forControlEvents: .TouchUpInside)
+            cell.shareButton.addTarget(self, action: #selector(Added.pressedShare(_:)), for: .touchUpInside)
             
-            cell.placeName.addTarget(self, action: #selector(Added.pressedPlace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.placeName.addTarget(self, action: #selector(Added.pressedPlace(_:)), for: UIControlEvents.touchUpInside)
             
            
             if !isItMyProfile{
-            cell.Username.addTarget(self, action: #selector(Added.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.profilePhoto.addTarget(self, action: #selector(Added.pressedUsername(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.Username.addTarget(self, action: #selector(Added.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
+            cell.profilePhoto.addTarget(self, action: #selector(Added.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
             }
-            cell.commentCount.addTarget(self, action: #selector(Added.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", forState: .Normal)
+            cell.commentCount.addTarget(self, action: #selector(Added.pressedComment(_:)), for: UIControlEvents.touchUpInside)
+            cell.commentCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].commentCount)", for: UIControlState())
          
-            cell.followButton.hidden = true
-            cell.followButton.enabled = false
+            cell.followButton.isHidden = true
+            cell.followButton.isEnabled = false
             
-            cell.likeButton.addTarget(self, action: #selector(Added.pressedLike(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.likeButton.addTarget(self, action: #selector(Added.pressedLike(_:)), for: UIControlEvents.touchUpInside)
             
-            cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+            cell.likeCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].likeCount)", for: UIControlState())
             
-            cell.commentButton.addTarget(self, action: #selector(Added.pressedComment(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.reportButton.addTarget(self, action: #selector(Added.pressedReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.likeCount.addTarget(self, action: #selector(Added.pressedLikeCount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.commentButton.addTarget(self, action: #selector(Added.pressedComment(_:)), for: UIControlEvents.touchUpInside)
+            cell.reportButton.addTarget(self, action: #selector(Added.pressedReport(_:)), for: UIControlEvents.touchUpInside)
+            cell.likeCount.addTarget(self, action: #selector(Added.pressedLikeCount(_:)), for: UIControlEvents.touchUpInside)
             let tap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.doubleTapped(_:) ));
             tap.numberOfTapsRequired = 2
             cell.contentView.addGestureRecognizer(tap)
-            cell.contentView.tag = indexPath.row
+            cell.contentView.tag = (indexPath as NSIndexPath).row
             let playtap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.playTapped(_:) ));
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
-            playtap.requireGestureRecognizerToFail(tap)
+            playtap.require(toFail: tap)
 
-            let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
+            let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
                 cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
                 //print("burda")
@@ -633,23 +653,23 @@ import FBSDKShareKit
             }
             
             
-            if videoArray[indexPath.row].isUploading {
+            if videoArray[(indexPath as NSIndexPath).row].isUploading {
                 let myprogress = progressBar==nil ? 0.0:(progressBar?.progress)!
                 progressBar = UIProgressView(frame: cell.label3.frame)
                 progressBar?.progress = myprogress
                 cell.contentView.addSubview(progressBar!)
             }
             
-            var trueURL = NSURL()
+            var trueURL = URL()
             if !isScrollingFast {
                 
-            if dictionary.objectForKey(self.videoArray[indexPath.row].id) != nil {
-                trueURL = dictionary.objectForKey(self.videoArray[indexPath.row].id) as! NSURL
+            if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
+                trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as! URL
             } else {
-                let url = self.videoArray[indexPath.row].urlSta.absoluteString
-                if(url[0] == "h") {
-                    trueURL = self.videoArray[indexPath.row].urlSta
-                    dispatch_async(dispatch_get_main_queue()) {
+                let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta.absoluteString
+                if(url?[0] == "h") {
+                    trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
+                    DispatchQueue.main.async {
                         myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                             ////print("hop")
                             let url = self.videoArray[indexPath.row].urlSta.absoluteString
@@ -661,16 +681,16 @@ import FBSDKShareKit
                         }
                     }
                 }else{
-                    trueURL = self.videoArray[indexPath.row].urlSta
+                    trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
                 }
             }
                 
                 if !cell.hasPlayer {
             
-            if indexPath.row % 2 == 1 {
+            if (indexPath as NSIndexPath).row % 2 == 1 {
                 
                 self.player1.setUrl(trueURL)
-                self.player1.id = self.videoArray[indexPath.row].id
+                self.player1.id = self.videoArray[(indexPath as NSIndexPath).row].id
                 self.player1.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player1.view)
                 cell.hasPlayer = true
@@ -678,27 +698,27 @@ import FBSDKShareKit
             }else{
                 
                 self.player2.setUrl(trueURL)
-                self.player2.id = self.videoArray[indexPath.row].id
+                self.player2.id = self.videoArray[(indexPath as NSIndexPath).row].id
                 self.player2.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player2.view)
                 cell.hasPlayer = true
             }
                 }
-            if indexPath.row == 0 && on {
+            if (indexPath as NSIndexPath).row == 0 && on {
                 if self.player2.playbackState.description != "Playing" {
                 self.player2.playFromBeginning()
                 }
             }
             }
-            if videoArray[indexPath.row].isUploading {
+            if videoArray[(indexPath as NSIndexPath).row].isUploading {
                 let myprogress = cell.progressBar.progress
                 cell.progressBar =  UIProgressView(frame: cell.label3.frame)
                 cell.progressBar.progress = myprogress
                 cell.contentView.addSubview(cell.progressBar)
-            }else if videoArray[indexPath.row].isFailed {
+            }else if videoArray[(indexPath as NSIndexPath).row].isFailed {
                 
                 let rect = cell.newRect
-                cell.blackView.frame = rect
+                cell.blackView.frame = rect!
                 
                 let videoView = UIView(frame: cell.newRect)
                 cell.resendButton.center = CGPoint(x: videoView.center.x-50, y: videoView.center.y)
@@ -717,37 +737,37 @@ import FBSDKShareKit
                 
                 
                 
-                cell.resendButton.tag = indexPath.row
-                cell.deleteButton.tag = indexPath.row
-                cell.resendButton.enabled = true
-                cell.deleteButton.enabled = true
-                cell.progressBar.hidden = true
+                cell.resendButton.tag = (indexPath as NSIndexPath).row
+                cell.deleteButton.tag = (indexPath as NSIndexPath).row
+                cell.resendButton.isEnabled = true
+                cell.deleteButton.isEnabled = true
+                cell.progressBar.isHidden = true
             }
 
             return cell
         } else {
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! videoCell
+            let cell = tableView.cellForRow(at: indexPath) as! videoCell
             if pressedLike {
                 pressedLike = false
-                cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", forState: .Normal)
+                cell.likeCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].likeCount)", for: UIControlState())
                 
-                if(videoArray[indexPath.row].isLiked == 0) {
-                    cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), forState: UIControlState.Normal)
+                if(videoArray[(indexPath as NSIndexPath).row].isLiked == 0) {
+                    cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), for: UIControlState())
                 }else{
-                    cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), forState: UIControlState.Normal)
-                    cell.likeButton.tintColor = UIColor.whiteColor()
+                    cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), for: UIControlState())
+                    cell.likeButton.tintColor = UIColor.white
                 }
             }
             return cell
         }
         
     }
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         pointNow = scrollView.contentOffset.y
-        lastOffsetCapture = NSDate().timeIntervalSinceReferenceDate
+        lastOffsetCapture = Date().timeIntervalSinceReferenceDate
      
     }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         
             
@@ -758,7 +778,7 @@ import FBSDKShareKit
             }
             
             let currentOffset = scrollView.contentOffset
-            let currentTime = NSDate().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
+            let currentTime = Date().timeIntervalSinceReferenceDate   // [NSDate timeIntervalSinceReferenceDate];
             
             let timeDiff = currentTime - lastOffsetCapture;
             if(timeDiff > 0.1) {
@@ -773,15 +793,15 @@ import FBSDKShareKit
                     
                 } else {
                     isScrollingFast = false
-                    var ipArray = [NSIndexPath]()
+                    var ipArray = [IndexPath]()
                     for item in self.tableView.indexPathsForVisibleRows!{
-                        let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+                        let cell = self.tableView.cellForRow(at: item) as! videoCell
                         if !cell.hasPlayer {
                             ipArray.append(item)
                         }
                     }
                     if ipArray.count != 0 {
-                        self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+                        self.tableView.reloadRows(at: ipArray, with: .none)
                     }
 
                     
@@ -804,7 +824,7 @@ import FBSDKShareKit
                     //////print("down")
                     let cellap = scrollView.contentOffset.y - self.tableView.visibleCells[0].center.y
                     //////print(cellap)
-                    let row = self.tableView.indexPathsForVisibleRows![0].row+1
+                    let row = (self.tableView.indexPathsForVisibleRows![0] as NSIndexPath).row+1
                     if cellap > 0 {
                         
                         if (row) % 2 == 1{
@@ -837,7 +857,7 @@ import FBSDKShareKit
                     
                     let cellap = longest - self.tableView.visibleCells[0].center.y-150-self.view.frame.width
                     ////print(cellap)
-                    let row = self.tableView.indexPathsForVisibleRows![0].row
+                    let row = (self.tableView.indexPathsForVisibleRows![0] as NSIndexPath).row
                     if cellap < 0 {
                         
                         if (row) % 2 == 1{
@@ -870,19 +890,19 @@ import FBSDKShareKit
         
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             if self.player1.playbackState.description != "Playing" || self.player2.playbackState.description != "Playing" {
                 isScrollingFast = false
-                var ipArray = [NSIndexPath]()
+                var ipArray = [IndexPath]()
                 for item in self.tableView.indexPathsForVisibleRows!{
-                    let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+                    let cell = self.tableView.cellForRow(at: item) as! videoCell
                     if !cell.hasPlayer {
                         ipArray.append(item)
                     }
                 }
                 if ipArray.count != 0 {
-                    self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+                    self.tableView.reloadRows(at: ipArray, with: .none)
                 }
                 if player1Turn {
                     if self.player1.playbackState.description != "Playing" {
@@ -899,22 +919,22 @@ import FBSDKShareKit
     
 
 
-    func tableView(atableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ atableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if atableView == tableView{
             
-            if((indexPath.row%10 == 7)&&(AddedNextUserVideos != nil)&&(!IsExploreInProcess)){
+            if(((indexPath as NSIndexPath).row%10 == 7)&&(AddedNextUserVideos != nil)&&(!IsExploreInProcess)){
                 IsExploreInProcess = true
                 MolocateVideo.getExploreVideos(AddedNextUserVideos, completionHandler: { (data, response, error,next) -> () in
                     AddedNextUserVideos = next
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         
                         for item in data!{
                             self.videoArray.append(item)
-                            let newIndexPath = NSIndexPath(forRow: self.videoArray.count-1, inSection: 0)
-                            atableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                            let newIndexPath = IndexPath(row: self.videoArray.count-1, section: 0)
+                            atableView.insertRows(at: [newIndexPath], with: .bottom)
                             
                         }
-                        NSNotificationCenter.defaultCenter().postNotificationName("changeHeightofScrollView", object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "changeHeightofScrollView"), object: nil)
                         IsExploreInProcess = false
                     }
                     
@@ -936,24 +956,24 @@ import FBSDKShareKit
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     
-    func doubleTapped(sender: UITapGestureRecognizer) {
+    func doubleTapped(_ sender: UITapGestureRecognizer) {
         let buttonRow = sender.view!.tag
         //print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
-        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-        let  cell = tableView.cellForRowAtIndexPath(indexpath)
+        let indexpath = IndexPath(row: buttonRow, section: 0)
+        let  cell = tableView.cellForRow(at: indexpath)
         likeHeart.center = (cell?.contentView.center)!
         likeHeart.layer.zPosition = 100
         let imageSize = likeHeart.image?.size.height
-        likeHeart.frame = CGRectMake(likeHeart.center.x-imageSize!/2 , likeHeart.center.y-imageSize!/2, imageSize!, imageSize!)
+        likeHeart.frame = CGRect(x: likeHeart.center.x-imageSize!/2 , y: likeHeart.center.y-imageSize!/2, width: imageSize!, height: imageSize!)
         cell?.addSubview(likeHeart)
         MolocateUtility.animateLikeButton(&likeHeart)
-        var indexes = [NSIndexPath]()
+        var indexes = [IndexPath]()
         indexes.append(indexpath)
         
         if(videoArray[buttonRow].isLiked == 0){
@@ -962,10 +982,10 @@ import FBSDKShareKit
             self.videoArray[buttonRow].likeCount+=1
             
             
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
             MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     //print(data)
                 }
             }
@@ -987,15 +1007,15 @@ import FBSDKShareKit
     }
     
 
-    func pressedFollow(sender: UIButton) {
+    func pressedFollow(_ sender: UIButton) {
         let buttonRow = sender.tag
         pressedFollow = true
         //print("followa basıldı at index path: \(buttonRow) ")
         self.videoArray[buttonRow].isFollowing = 1
-        var indexes = [NSIndexPath]()
-        let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+        var indexes = [IndexPath]()
+        let index = IndexPath(row: buttonRow, section: 0)
         indexes.append(index)
-        self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: .None)
+        self.tableView.reloadRows(at: indexes, with: .none)
         
         MolocateAccount.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
                      MoleCurrentUser.following_count += 1
@@ -1004,55 +1024,55 @@ import FBSDKShareKit
     }
     
 
-    func pressedLike(sender: UIButton) {
+    func pressedLike(_ sender: UIButton) {
         let buttonRow = sender.tag
         //print("like a basıldı at index path: \(buttonRow) ")
         pressedLike = true
-        let indexpath = NSIndexPath(forRow: buttonRow, inSection: 0)
-        var indexes = [NSIndexPath]()
+        let indexpath = IndexPath(row: buttonRow, section: 0)
+        var indexes = [IndexPath]()
         indexes.append(indexpath)
         
         if(videoArray[buttonRow].isLiked == 0){
-            sender.highlighted = true
+            sender.isHighlighted = true
             
             self.videoArray[buttonRow].isLiked=1
             self.videoArray[buttonRow].likeCount+=1
             
             
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
             MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     //print(data)
                 }
             }
         }else{
-            sender.highlighted = false
+            sender.isHighlighted = false
             
             self.videoArray[buttonRow].isLiked=0
             self.videoArray[buttonRow].likeCount-=1
-            self.tableView.reloadRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+            self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
             
             MolocateVideo.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     //print(data)
                 }
             }
         }
                pressedLike = false
     }
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         isScrollingFast = false
-        var ipArray = [NSIndexPath]()
+        var ipArray = [IndexPath]()
         for item in self.tableView.indexPathsForVisibleRows!{
-            let cell = self.tableView.cellForRowAtIndexPath(item) as! videoCell
+            let cell = self.tableView.cellForRow(at: item) as! videoCell
             if !cell.hasPlayer {
                 ipArray.append(item)
             }
         }
         if ipArray.count != 0 {
-            self.tableView.reloadRowsAtIndexPaths(ipArray, withRowAnimation: .None)
+            self.tableView.reloadRows(at: ipArray, with: .none)
         }
         
     }
@@ -1060,7 +1080,7 @@ import FBSDKShareKit
     
 
     
-    func pressedPlace(sender: UIButton) {
+    func pressedPlace(_ sender: UIButton) {
         let buttonRow = sender.tag
         
         player1.stop()
@@ -1068,25 +1088,25 @@ import FBSDKShareKit
         
         activityIndicator.startAnimating()
         
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        if navigationController?.navigationBarHidden == true {
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        if navigationController?.isNavigationBarHidden == true {
             //self.navigationcontroller?.setNavigationBarHidden(false, animated: false)
         }
         
         
-        let controller:profileVenue = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("profileVenue") as! profileVenue
+        let controller:profileVenue = self.parent!.storyboard!.instantiateViewController(withIdentifier: "profileVenue") as! profileVenue
        
         
-        self.parentViewController!.navigationController?.pushViewController(controller, animated: true)
+        self.parent!.navigationController?.pushViewController(controller, animated: true)
         
         
         MolocatePlace.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 thePlace = data
                 controller.classPlace = data
                 controller.RefreshGuiWithData()
                 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }
@@ -1094,8 +1114,8 @@ import FBSDKShareKit
     }
     
     
-    func pressedLikeCount(sender: UIButton) {
-        if navigationController?.navigationBarHidden == true {
+    func pressedLikeCount(_ sender: UIButton) {
+        if navigationController?.isNavigationBarHidden == true {
             //navigationcontroller?.setNavigationBarHidden(false, animated: false)
         }
         player1.stop()
@@ -1104,16 +1124,16 @@ import FBSDKShareKit
         videoIndex = sender.tag
 
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         
-        let controller:likeVideo = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
+        let controller:likeVideo = self.parent!.storyboard!.instantiateViewController(withIdentifier: "likeVideo") as! likeVideo
         
         MolocateVideo.getLikes(video_id) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 controller.users = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
             
@@ -1121,12 +1141,12 @@ import FBSDKShareKit
         
         //DBG: Burda  likeları çağır,
         //Her gectigimiz ekranda activity indicatorı goster
-        self.parentViewController!.navigationController?.pushViewController(controller, animated: true)
+        self.parent!.navigationController?.pushViewController(controller, animated: true)
     }
     
-    func pressedUsername(sender: UIButton) {
+    func pressedUsername(_ sender: UIButton) {
         
-        if navigationController?.navigationBar.hidden == true {
+        if navigationController?.navigationBar.isHidden == true {
         
             //self.parentViewController!.navigationcontroller?.setNavigationBarHidden(false, animated: false)
         }
@@ -1136,11 +1156,11 @@ import FBSDKShareKit
         player2.stop()
         activityIndicator.startAnimating()
         
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         
         
-        let controller:profileUser = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.parent!.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if videoArray[buttonRow].username != MoleCurrentUser.username{
             controller.isItMyProfile = false
@@ -1152,7 +1172,7 @@ import FBSDKShareKit
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
                 user = data
@@ -1160,14 +1180,14 @@ import FBSDKShareKit
                 controller.RefreshGuiWithData()
                 
                 //choosedIndex = 0
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }
     }
     
-    func pressedComment(sender: UIButton) {
-        if navigationController?.navigationBarHidden == true {
+    func pressedComment(_ sender: UIButton) {
+        if navigationController?.isNavigationBarHidden == true {
             //navigationcontroller?.setNavigationBarHidden(false, animated: false)
         }
         let buttonRow = sender.tag
@@ -1185,25 +1205,25 @@ import FBSDKShareKit
         }
         
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:commentController = self.parentViewController!.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+        let controller:commentController = self.parent!.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         comments.removeAll()
         MolocateVideo.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }
-        self.parentViewController!.navigationController?.pushViewController(controller, animated: true)
+        self.parent!.navigationController?.pushViewController(controller, animated: true)
         
     }
     
 
     
-    func pressedReport(sender: UIButton) {
+    func pressedReport(_ sender: UIButton) {
         let buttonRow = sender.tag
         player1.stop()
         player2.stop()
@@ -1211,20 +1231,20 @@ import FBSDKShareKit
             //////print(data)
         }
         //////print("pressedReport at index path: \(buttonRow)")
-        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if(videoArray[buttonRow].deletable){
             
-            let deleteVideo: UIAlertAction = UIAlertAction(title: "Videoyu Sil", style: .Default) { action -> Void in
-                let index = NSIndexPath(forRow: buttonRow, inSection: 0)
+            let deleteVideo: UIAlertAction = UIAlertAction(title: "Videoyu Sil", style: .default) { action -> Void in
+                let index = IndexPath(row: buttonRow, section: 0)
                 
                 
                 MolocateVideo.deleteAVideo(self.videoArray[buttonRow].id, completionHandler: { (data, response, error) in
                     
                 })
                 
-                self.videoArray.removeAtIndex(index.row)
-                self.tableView.deleteRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Automatic)
+                self.videoArray.remove(at: (index as NSIndexPath).row)
+                self.tableView.deleteRows(at: [index], with: UITableViewRowAnimation.automatic)
                 self.tableView.reloadData()
             }
             
@@ -1232,24 +1252,24 @@ import FBSDKShareKit
         }
         
         
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
             
         }
         
         actionSheetController.addAction(cancelAction)
         
-        let reportVideo: UIAlertAction = UIAlertAction(title: "Raporla", style: .Default) { action -> Void in
+        let reportVideo: UIAlertAction = UIAlertAction(title: "Raporla", style: .default) { action -> Void in
             
             //////print("reported")
         }
         actionSheetController.addAction(reportVideo)
         
-        self.presentViewController(actionSheetController, animated: true, completion: nil)
+        self.present(actionSheetController, animated: true, completion: nil)
         
     }
  
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         //self.tableView.removeFromSuperview()
         SDImageCache.sharedImageCache().cleanDisk()
         SDImageCache.sharedImageCache().clearMemory()
@@ -1259,13 +1279,13 @@ import FBSDKShareKit
         player2.removeFromParentViewController()
     }
     
-    func sharer(sharer: FBSDKSharing!, didCompleteWithResults results: [NSObject : AnyObject]!) {
+    func sharer(_ sharer: FBSDKSharing!, didCompleteWithResults results: [AnyHashable: Any]!) {
        // print(results)
     }
-    func sharerDidCancel(sharer: FBSDKSharing!) {
+    func sharerDidCancel(_ sharer: FBSDKSharing!) {
         
     }
-    func sharer(sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+    func sharer(_ sharer: FBSDKSharing!, didFailWithError error: NSError!) {
         
     }
     

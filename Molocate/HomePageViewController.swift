@@ -28,37 +28,37 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
         
         self.automaticallyAdjustsScrollViewInsets = true
         
-        tableController = self.storyboard?.instantiateViewControllerWithIdentifier("timelineController") as! TimelineController
+        tableController = self.storyboard?.instantiateViewController(withIdentifier: "timelineController") as! TimelineController
         tableController.type = "HomePage"
         tableController.view.frame = self.view.frame
         tableController.view.layer.zPosition = 0
         self.view.addSubview(tableController.view)
         self.addChildViewController(tableController);
-        tableController.didMoveToParentViewController(self)
+        tableController.didMove(toParentViewController: self)
         tableController.delegate = self
         
     
         self.navigationItem.titleView = UIImageView(image:  UIImage(named: "molocate"))
-        self.navigationItem.titleView?.tintColor = UIColor.whiteColor()
+        self.navigationItem.titleView?.tintColor = UIColor.white
         
         
 
         
      
         self.view.addSubview(nofollowings)
-        self.nofollowings.hidden = true
+        self.nofollowings.isHidden = true
         
         self.view.backgroundColor = swiftColor
         
         if(choosedIndex != 0 && profileOn == 1){
-            NSNotificationCenter.defaultCenter().postNotificationName("closeProfile", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "closeProfile"), object: nil)
         }
-       NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.showNavigation), name: "showNavigation", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.showNoFoll), name: "showNoFoll", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.hideNoFoll), name: "hideNoFoll", object: nil)
+       NotificationCenter.default.addObserver(self, selector: #selector(HomePageViewController.showNavigation), name: NSNotification.Name(rawValue: "showNavigation"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomePageViewController.showNoFoll), name: NSNotification.Name(rawValue: "showNoFoll"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomePageViewController.hideNoFoll), name: NSNotification.Name(rawValue: "hideNoFoll"), object: nil)
         
-        if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        if UIApplication.shared.isIgnoringInteractionEvents {
+            UIApplication.shared.endIgnoringInteractionEvents()
             
         }
         
@@ -67,13 +67,13 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
     }
 
    
-    func pressedUsername(username: String, profilePic: NSURL, isFollowing: Bool) {
+    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if username != MoleCurrentUser.username{
             controller.isItMyProfile = false
@@ -87,7 +87,7 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 if data.username != "" {
                     user = data
@@ -99,27 +99,27 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
                 
                 //choosedIndex = 0
                 self.activityIndicator.stopAnimating()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         
     }
     
-    func pressedPlace(placeId: String, Row: Int) {
+    func pressedPlace(_ placeId: String, Row: Int) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        let controller:profileVenue = self.storyboard!.instantiateViewControllerWithIdentifier("profileVenue") as! profileVenue
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        let controller:profileVenue = self.storyboard!.instantiateViewController(withIdentifier: "profileVenue") as! profileVenue
         self.navigationController?.pushViewController(controller, animated: true)
         
         MolocatePlace.getPlace(placeId) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 thePlace = data
                 controller.classPlace = data
                 controller.RefreshGuiWithData()
                 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }
@@ -133,24 +133,24 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    func pressedComment(videoId: String, Row: Int) {
+    func pressedComment(_ videoId: String, Row: Int) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         video_id = videoId
         videoIndex = Row
       
         myViewController = "HomeController"
         
-        let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+        let controller:commentController = self.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         
         comments.removeAll()
         MolocateVideo.getComments(videoId) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
         }
@@ -158,23 +158,23 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
         
     }
     
-    func pressedLikeCount(videoId: String, Row: Int) {
+    func pressedLikeCount(_ videoId: String, Row: Int) {
   
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         video_id = videoId
         videoIndex = Row
         
-        let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
+        let controller:likeVideo = self.storyboard!.instantiateViewController(withIdentifier: "likeVideo") as! likeVideo
         
         MolocateVideo.getLikes(videoId) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 controller.users = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
             
@@ -187,57 +187,57 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
     }
 
     
-    override func viewDidAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
+    override func viewDidAppear(_ animated: Bool) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "closeSideBar"), object: nil)
 
     }
     
     
-    @IBAction func sideBar(sender: AnyObject) {
+    @IBAction func sideBar(_ sender: AnyObject) {
         if(sideClicked == false){
             sideClicked = true
-            NSNotificationCenter.defaultCenter().postNotificationName("openSideBar", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "openSideBar"), object: nil)
         } else {
             sideClicked = false
-            NSNotificationCenter.defaultCenter().postNotificationName("closeSideBar", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "closeSideBar"), object: nil)
         }
     }
     
     func showNoFoll(){
-        self.nofollowings.hidden = false
+        self.nofollowings.isHidden = false
     }
     func hideNoFoll(){
-        self.nofollowings.hidden = true
+        self.nofollowings.isHidden = true
     }
     
     @IBOutlet var cameraButton: UIBarButtonItem!
     
-    @IBAction func openCamera(sender: AnyObject) {
+    @IBAction func openCamera(_ sender: AnyObject) {
         
         self.tableController.player1.stop()
         self.tableController.player2.stop()
         if CLLocationManager.locationServicesEnabled() {
             switch(CLLocationManager.authorizationStatus()) {
-            case .NotDetermined, .Restricted, .Denied:
+            case .notDetermined, .restricted, .denied:
                 let message = NSLocalizedString("Molocate'in konum servislerini kullanmasına izin vermediniz. Lütfen ayarları değiştiriniz.", comment: "" )
-                let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.Cancel, handler: nil)
+                let alertController = UIAlertController(title: "Molocate Konum", message: message, preferredStyle: UIAlertControllerStyle.alert)
+                let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: UIAlertActionStyle.cancel, handler: nil)
                 alertController.addAction(cancelAction)
-                let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.Default) {action in
-                    UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+                let settingsAction = UIAlertAction(title: NSLocalizedString("Ayarlar", comment: "Alert button to open Settings"), style: UIAlertActionStyle.default) {action in
+                    UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!)
                 }
                 alertController.addAction(settingsAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
                 
-            case .AuthorizedAlways, .AuthorizedWhenInUse:
-                activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+            case .authorizedAlways, .authorizedWhenInUse:
+                activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                 activityIndicator.center = self.view.center
                 activityIndicator.hidesWhenStopped = true
-                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
                 view.addSubview(activityIndicator)
                 activityIndicator.startAnimating()
-                UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-                self.parentViewController!.parentViewController!.performSegueWithIdentifier("goToCamera", sender: self.parentViewController)
+                UIApplication.shared.beginIgnoringInteractionEvents()
+                self.parent!.parent!.performSegue(withIdentifier: "goToCamera", sender: self.parent)
                 
             }
         } else {
@@ -248,25 +248,25 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
     }
 
 
-    override func viewWillAppear(animated: Bool) {
-        (self.parentViewController?.parentViewController!.parentViewController as! ContainerController).scrollView.scrollEnabled = true
+    override func viewWillAppear(_ animated: Bool) {
+        (self.parent?.parent!.parent as! ContainerController).scrollView.isScrollEnabled = true
          navigationController?.hidesBarsOnSwipe = true
-         tabBarController?.tabBar.hidden = true
+         tabBarController?.tabBar.isHidden = true
     }
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         
     }
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         cameraButton.image = nil
         cameraButton.title = "Cancel"
         
     }
-    func displayAlert(title: String, message: String) {
+    func displayAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             //self.dismissViewControllerAnimated(true, completion: nil)
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 }

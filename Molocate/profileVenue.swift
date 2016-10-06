@@ -33,10 +33,10 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.allowsSelection = false
         //tableView.tableFooterView = UIView()
-        tableView.separatorColor = UIColor.clearColor()
-        tableView.pagingEnabled = true
+        tableView.separatorColor = UIColor.clear
+        tableView.isPagingEnabled = true
         titleToolbar.title = thePlace.name
-        tableController = self.storyboard?.instantiateViewControllerWithIdentifier("timelineController") as! TimelineController
+        tableController = self.storyboard?.instantiateViewController(withIdentifier: "timelineController") as! TimelineController
         tableController.type = "profileVenue"
         tableController.placeId = thePlace.id
         tableController.videoArray = thePlace.videoArray
@@ -45,18 +45,18 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         self.navigationController?.hidesBarsOnSwipe = true
         //self.view.addSubview(tableController.view)
         //self.addChildViewController(tableController);
-        tableController.tableView.scrollEnabled = false
+        tableController.tableView.isScrollEnabled = false
         tableController.tableView.bounces = false 
         
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(profileUser.adjustTable))
         gesture.delegate = self
-        gesture.direction = .Down
+        gesture.direction = .down
         self.view.addGestureRecognizer(gesture)
         
         initGui()
         
         
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        UIApplication.shared.endIgnoringInteractionEvents()
      
         // Do any additional setup after loading the view.
     }
@@ -66,8 +66,8 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         if page == 2 {
             
                 if tableController.tableView.contentOffset.y == 0 {
-                    tableController.tableView.scrollEnabled = false
-                    self.tableView.pagingEnabled = true
+                    tableController.tableView.isScrollEnabled = false
+                    self.tableView.isPagingEnabled = true
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
                     if classPlace.video_count > 1 {
                     self.tableView.setContentOffset(CGPoint(x: 0,y:0), animated: true)
@@ -78,7 +78,7 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         }
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 
@@ -94,36 +94,36 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
     
     
     
-    @IBAction func followButton(sender: AnyObject) {
-        let indexPath = NSIndexPath(forRow: 1, inSection: 0)
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! profileVenue2ndCell
+    @IBAction func followButton(_ sender: AnyObject) {
+        let indexPath = IndexPath(row: 1, section: 0)
+        let cell = tableView.cellForRow(at: indexPath) as! profileVenue2ndCell
         if(thePlace.is_following == 0){
             thePlace.is_following = 1
             followButton.image = UIImage(named: "unfollow");
             MolocatePlace.followAPlace(thePlace.id) { (data, response, error) in
                 MoleCurrentUser.following_count += 1
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     thePlace.follower_count += 1
                     cell.numberFollower.text = "\(thePlace.follower_count)"
                     
                 }
             }
             
-        }else{ let actionSheetController: UIAlertController = UIAlertController(title: nil, message: "Takibi bırakmak istediğine emin misin?", preferredStyle: .ActionSheet)
+        }else{ let actionSheetController: UIAlertController = UIAlertController(title: nil, message: "Takibi bırakmak istediğine emin misin?", preferredStyle: .actionSheet)
             
             
-            let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { action -> Void in
+            let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .cancel) { action -> Void in
                 //Just dismiss the action sheet
             }
             actionSheetController.addAction(cancelAction)
             //Create and add first option action
-            let takePictureAction: UIAlertAction = UIAlertAction(title: "Takibi Bırak", style: .Default)
+            let takePictureAction: UIAlertAction = UIAlertAction(title: "Takibi Bırak", style: .default)
             { action -> Void in
                 self.followButton.image = UIImage(named: "follow");
                 thePlace.is_following = 0
                 MoleCurrentUser.following_count -= 1
                 MolocatePlace.unfollowAPlace(thePlace.id) { (data, response, error) in
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         thePlace.follower_count -= 1
                         cell.numberFollower.text = "\(thePlace.follower_count)"
                     }
@@ -136,7 +136,7 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
             actionSheetController.popoverPresentationController?.sourceView = sender as? UIView
             
             //Present the AlertController
-            self.presentViewController(actionSheetController, animated: true, completion: nil)
+            self.present(actionSheetController, animated: true, completion: nil)
             
         }
         
@@ -144,17 +144,17 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
     }
     
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         if scrollView == self.tableView {
             
             if (scrollView.contentSize.height-scrollView.contentOffset.y < MolocateDevice.size.height+70) {
-                tableController.tableView.scrollEnabled = true
-                tableView.pagingEnabled = false
+                tableController.tableView.isScrollEnabled = true
+                tableView.isPagingEnabled = false
                 page = 2
             } else {
-                tableController.tableView.scrollEnabled = false
-                tableView.pagingEnabled = true
+                tableController.tableView.isScrollEnabled = false
+                tableView.isPagingEnabled = true
                 page = 1
             }
         }
@@ -164,16 +164,16 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
 
    
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
 //        if tableView == tableController{
 //            return 200
 //        }
 //        else{
-        if indexPath.row == 0{
+        if (indexPath as NSIndexPath).row == 0{
             return UITableViewAutomaticDimension
         }
         else {
-            if indexPath.row == 1 {
+            if (indexPath as NSIndexPath).row == 1 {
             return 76
                 
             } else {
@@ -184,12 +184,12 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         
         
         
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("cell1", forIndexPath: indexPath) as! profileVenue1stCell
+        if (indexPath as NSIndexPath).row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! profileVenue1stCell
            
             let longitude :CLLocationDegrees = thePlace.lon
             let latitude :CLLocationDegrees = thePlace.lat
@@ -197,11 +197,11 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
             let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             let region:MKCoordinateRegion = MKCoordinateRegion(center: location, span: span)
              cell.mapView.setRegion(region, animated: false)
-             cell.mapView.userInteractionEnabled = false
+             cell.mapView.isUserInteractionEnabled = false
             let annotation = MKPointAnnotation()
             annotation.coordinate = location
              cell.mapView.addAnnotation(annotation)
-            cell.goMapButton.addTarget(self, action: #selector(profileVenue.launchMap(_:)), forControlEvents: .TouchUpInside)
+            cell.goMapButton.addTarget(self, action: #selector(profileVenue.launchMap(_:)), for: .touchUpInside)
             cell.nameVenue.text = thePlace.name
             self.navigationController!.topViewController!.title = thePlace.name
             //LocationTitle.text = thePlace.name
@@ -211,16 +211,16 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         }
             
         else  {
-            if indexPath.row == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("cell2", forIndexPath: indexPath) as! profileVenue2ndCell
+            if (indexPath as NSIndexPath).row == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell2", for: indexPath) as! profileVenue2ndCell
             cell.numberVideo.text = "\(thePlace.video_count)"
             cell.numberFollower.text = "\(thePlace.follower_count)"
             
         
             return cell
             } else {
-                let cell = tableView.dequeueReusableCellWithIdentifier("cell3", forIndexPath: indexPath) as! profileVenue3rdCell
-                cell.backgroundColor = UIColor.blackColor()
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cell3", for: indexPath) as! profileVenue3rdCell
+                cell.backgroundColor = UIColor.black
                 tableController.view.frame = cell.contentView.frame
                 cell.addSubview(tableController.view)
                 return cell
@@ -229,13 +229,13 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         }
     }
     
-        func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return 3
         }
     
-    func launchMap(sender: UIButton) {
+    func launchMap(_ sender: UIButton) {
         
-        let controller:oneMap = self.storyboard!.instantiateViewControllerWithIdentifier("oneMap") as! oneMap
+        let controller:oneMap = self.storyboard!.instantiateViewController(withIdentifier: "oneMap") as! oneMap
         controller.classPlace = classPlace
         navigationController?.pushViewController(controller, animated: true)
         
@@ -331,20 +331,20 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         self.tableController.tableView.reloadData()
         self.tableView.reloadData()
     }
-    override func viewWillAppear(animated: Bool) {
-        navigationController?.navigationBarHidden = false
-        (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = false
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = false
+        (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = false
         
     }
     
     
-    func pressedUsername(username: String, profilePic: NSURL, isFollowing: Bool) {
+    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if username != MoleCurrentUser.username{
             controller.isItMyProfile = false
@@ -359,7 +359,7 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 if data.username != "" {
                     user = data
@@ -369,36 +369,36 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
                 
                 //choosedIndex = 0
                 self.activityIndicator.stopAnimating()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         
     }
     
     
-    func pressedPlace(placeId: String, Row: Int) {
+    func pressedPlace(_ placeId: String, Row: Int) {
         
         //Empty it isnot logical
     }
     
-    func pressedComment(videoId: String, Row: Int) {
+    func pressedComment(_ videoId: String, Row: Int) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         video_id = videoId
         videoIndex = Row
         myViewController = "MainController"
         
         
-        let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+        let controller:commentController = self.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         
         comments.removeAll()
         MolocateVideo.getComments(videoId) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
         }
@@ -406,22 +406,22 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         
     }
     
-    func pressedLikeCount(videoId: String, Row: Int) {
+    func pressedLikeCount(_ videoId: String, Row: Int) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         video_id = videoId
         videoIndex = Row
         
-        let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
+        let controller:likeVideo = self.storyboard!.instantiateViewController(withIdentifier: "likeVideo") as! likeVideo
         
         MolocateVideo.getLikes(videoId) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 controller.users = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
             

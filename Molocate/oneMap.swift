@@ -35,17 +35,17 @@ class oneMap: UIViewController {
         // Dispose of any resources that can be recreated.
     }
    
-    @IBAction func getDirection(sender: AnyObject) {
+    @IBAction func getDirection(_ sender: AnyObject) {
         
-                let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         
-                let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { action -> Void in
+                let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .cancel) { action -> Void in
                     //Just dismiss the action sheet
                 }
                 actionSheetController.addAction(cancelAction)
                 //Create and add first option action
-                let takePictureAction: UIAlertAction = UIAlertAction(title: "Haritaya Yönlendir", style: .Default)
+                let takePictureAction: UIAlertAction = UIAlertAction(title: "Haritaya Yönlendir", style: .default)
                 { action -> Void in
         
                     self.openMapForPlace()
@@ -56,7 +56,7 @@ class oneMap: UIViewController {
                 actionSheetController.popoverPresentationController?.sourceView = sender as? UIView
         
                 //Present the AlertController
-                self.presentViewController(actionSheetController, animated: true, completion: nil)
+                self.present(actionSheetController, animated: true, completion: nil)
         
     }
     
@@ -67,8 +67,8 @@ class oneMap: UIViewController {
         let coordinates = CLLocationCoordinate2DMake(thePlace.lat , thePlace.lon)
         let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
         let options = [
-            MKLaunchOptionsMapCenterKey: NSValue(MKCoordinate: regionSpan.center),
-            MKLaunchOptionsMapSpanKey: NSValue(MKCoordinateSpan: regionSpan.span)
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
         ]
         
         let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
@@ -76,9 +76,9 @@ class oneMap: UIViewController {
         //mekanın adı eklenecek
         mapItem.name = thePlace.name
         
-        MKMapItem.openMapsWithItems([mapItem], launchOptions: options)
+        MKMapItem.openMaps(with: [mapItem], launchOptions: options)
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         //print(thePlace)
         let longitude :CLLocationDegrees = thePlace.lon
         let latitude :CLLocationDegrees = thePlace.lat
@@ -86,7 +86,7 @@ class oneMap: UIViewController {
         let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let region:MKCoordinateRegion = MKCoordinateRegion(center: location, span: span)
         mapView.setRegion(region, animated: true)
-        mapView.userInteractionEnabled = true
+        mapView.isUserInteractionEnabled = true
         let annotation = MKPointAnnotation()
         annotation.coordinate = location
         mapView.addAnnotation(annotation)

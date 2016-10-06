@@ -13,6 +13,27 @@ import AWSS3
 import Photos
 import QuadratTouch
 
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
+
 
 var selectedVenue = ""
 var isCategorySelected = false
@@ -43,11 +64,11 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     var searchArray:[String]!
     
     var autocompleteUrls = [String]()
-    var videoURL: NSURL?
+    var videoURL: URL?
     var categ:String!
     var kbHeight: CGFloat!
     
-    @IBAction func postVideo(sender: AnyObject) {
+    @IBAction func postVideo(_ sender: AnyObject) {
         
         
         if (!isLocationSelected){
@@ -58,8 +79,8 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             
             let random = randomStringWithLength(64)
             let fileName = random //.stringByAppendingFormat(".mp4", random)
-            let fileURL = NSURL(fileURLWithPath: videoPath!)
-            NSUserDefaults.standardUserDefaults().setObject(videoPath, forKey: "videoPath")
+            let fileURL = URL(fileURLWithPath: videoPath!)
+            UserDefaults.standard.set(videoPath, forKey: "videoPath")
             let uploadRequest = AWSS3TransferManagerUploadRequest()
             uploadRequest.body = fileURL
             uploadRequest.key = "videos/" + (fileName.stringByAppendingFormat(".mp4", fileName) as String)
@@ -67,7 +88,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             
             let json = [
                 "video_id": fileName as String,
-                "video_url": "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName.stringByAppendingFormat(".mp4", fileName) as String),
+                "video_url": "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName.appendingFormat(".mp4", fileName) as String),
                 "caption": CaptionText,
                 "category": "molocate",
                 "tagged_users": self.mentionedUsers,
@@ -80,7 +101,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
                         "address": videoLocation.adress
                     ]
                 ]
-            ]
+            ] as [String : Any]
             
             let video_id = Int(arc4random_uniform(UInt32.max))
             
@@ -93,17 +114,17 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             
             new_upload.upload(false, id: video_id, uploadRequest:uploadRequest,fileURL: "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName as String), fileID: fileName as String ,json: json as! [String : AnyObject], thumbnail_image: thumb!)
            
-             MyS3Uploads.insert(new_upload, atIndex: 0)
+             MyS3Uploads.insert(new_upload, at: 0)
             
             
-            self.performSegueWithIdentifier("finishUpdate", sender: self)
+            self.performSegue(withIdentifier: "finishUpdate", sender: self)
         }
         
     }
     
-    @IBAction func selectVenue(sender: AnyObject) {
+    @IBAction func selectVenue(_ sender: AnyObject) {
         
-        self.performSegueWithIdentifier("goTo4th", sender: self)
+        self.performSegue(withIdentifier: "goTo4th", sender: self)
         
         //
         //        let controller:cameraSearchVenue = self.storyboard!.instantiateViewControllerWithIdentifier("cameraSearchVenue") as! cameraSearchVenue
@@ -127,13 +148,13 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         var adress = ""
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?){
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         view.endEditing(true)
         updateSearch("")
-        super.touchesBegan(touches, withEvent: event)
+        super.touchesBegan(touches, with: event)
     }
     
-    @IBAction func backButton(sender: AnyObject) {
+    @IBAction func backButton(_ sender: AnyObject) {
         //        let alertController = UIAlertController(title: "Emin misiniz?", message: "Geriye giderseniz videonuz silinecektir.", preferredStyle: .Alert)
         //
         //        let cancelAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { (action) in
@@ -153,7 +174,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         //                cleanup()
         //                placesArray.removeAll()
         //                placeOrder.removeAllObjects()
-        self.performSegueWithIdentifier("backFrom3th", sender: self)
+        self.performSegue(withIdentifier: "backFrom3th", sender: self)
         
         
         
@@ -167,7 +188,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         
         
     }
-    @IBAction func buttonVenues(sender: AnyObject) {
+    @IBAction func buttonVenues(_ sender: AnyObject) {
         
     }
     
@@ -177,17 +198,17 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     
     var CaptionText = ""
     
-    override func viewWillAppear(animated:Bool) {
+    override func viewWillAppear(_ animated:Bool) {
         super.viewWillAppear(animated)
         
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(camera3thScreen.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(camera3thScreen.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(camera3thScreen.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(camera3thScreen.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectVenue.layer.borderColor = lineColor.CGColor
+        selectVenue.layer.borderColor = lineColor.cgColor
         selectVenue.layer.borderWidth = 0.5
         
         //        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(camera3thScreen.dismissKeyboard))
@@ -198,14 +219,14 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         
       
         captionView.delegate = self
-        captionView.layer.borderColor = lineColor.CGColor
+        captionView.layer.borderColor = lineColor.cgColor
         captionView.layer.borderWidth = 0.5;
     
         
-        mentionTable.hidden = true
+        mentionTable.isHidden = true
         mentionTable.tableFooterView = UIView()
-        self.view.backgroundColor = UIColor.whiteColor()
-        NSNotificationCenter.defaultCenter().addObserver(self,selector: #selector(self.keyboardNotification(_:)),name: UIKeyboardWillChangeFrameNotification,object: nil)
+        self.view.backgroundColor = UIColor.white
+        NotificationCenter.default.addObserver(self,selector: #selector(self.keyboardNotification(_:)),name: NSNotification.Name.UIKeyboardWillChangeFrame,object: nil)
         
         
         
@@ -220,7 +241,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             } else {
                 selectedVenue = placesArray[0]
                 venueName.text = selectedVenue
-                let correctedRow = placeOrder.objectForKey(placesArray[0]) as! Int
+                let correctedRow = placeOrder.object(forKey: placesArray[0]) as! Int
                 videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
                 isLocationSelected = true
             }
@@ -231,18 +252,18 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     
-    func keyboardNotification(notification: NSNotification) {
-        if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
-            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+    func keyboardNotification(_ notification: Notification) {
+        if let userInfo = (notification as NSNotification).userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            if endFrame?.origin.y >= UIScreen.mainScreen().bounds.size.height {
+            if endFrame?.origin.y >= UIScreen.main.bounds.size.height {
                 self.keyboardHeightLayoutConstraint?.constant = 0.0
                 
             } else {
@@ -250,15 +271,15 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
                 
                 
             }
-            UIView.animateWithDuration(duration,
-                                       delay: NSTimeInterval(0),
+            UIView.animate(withDuration: duration,
+                                       delay: TimeInterval(0),
                                        options: animationCurve,
                                        animations: { self.view.layoutIfNeeded() },
                                        completion: nil)
         }
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         let attributed = NSMutableAttributedString(string: textView.text)
         
         for mention in mentionAreas {
@@ -268,28 +289,28 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     
-    func textViewDidEndEditing(textView: UITextView) {
-        self.view.backgroundColor = UIColor.whiteColor()
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.view.backgroundColor = UIColor.white
         if textView.attributedText.string == "" {
             CaptionText = ""
-            captionView.attributedText = NSAttributedString(string: "Yorumunuzu buraya yazabilirsiniz.", attributes: [NSFontAttributeName:UIFont(name: "AvenirNext-Regular", size:14)!, NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+            captionView.attributedText = NSAttributedString(string: "Yorumunuzu buraya yazabilirsiniz.", attributes: [NSFontAttributeName:UIFont(name: "AvenirNext-Regular", size:14)!, NSForegroundColorAttributeName: UIColor.lightGray])
         }
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.attributedText.string == "Yorumunuzu buraya yazabilirsiniz." {
             textView.attributedText = NSAttributedString(string: "")
         }
-        self.view.backgroundColor = UIColor.lightGrayColor()
+        self.view.backgroundColor = UIColor.lightGray
 
     }
     
     
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange,
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
         
-        let new = (textView.attributedText.string as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        let new = (textView.attributedText.string as NSString).replacingCharacters(in: range, with: text)
         
         let textRange = NSRange(location: 0, length: new.characters.count )
         
@@ -304,7 +325,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
                 var word = new[mention.range.location+1...mention.range.location + mention.range.length-1]
                 
                 if word.hasPrefix("@") {
-                    word.removeAtIndex(word.startIndex)
+                    word.remove(at: word.startIndex)
                 }
                 
                 mentionedUsers.append(word)
@@ -315,7 +336,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
                 var word = new[mention.range.location...mention.range.location + mention.range.length-1]
                 
                 if word.hasPrefix("@") {
-                    word.removeAtIndex(word.startIndex)
+                    word.remove(at: word.startIndex)
                 }
                 
                 mentionedUsers.append(word)
@@ -389,7 +410,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         return textView.text.characters.count+(text.characters.count-range.length) <= 140
     }
     
-    func isTheRangeInMentionZone(range: NSRange, text: String) -> (Bool, Int){
+    func isTheRangeInMentionZone(_ range: NSRange, text: String) -> (Bool, Int){
         for i in 0..<mentionAreas.count{
             let mention = mentionAreas[i]
             if text != "" {
@@ -405,78 +426,78 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         return (false,0)
     }
     
-    func updateSearch(word: String){
+    func updateSearch(_ word: String){
         //print("word::",word)
         if word == ""{
-            mentionTable.hidden = true
+            mentionTable.isHidden = true
             searchResults.removeAll()
         }else{
             
             
             MolocateAccount.searchUser(word, completionHandler: { (data, response, error) in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     if data.count > 0 {
                         self.searchResults = data
                         self.mentionTable.reloadData()
                     }
                 }
             })
-            mentionTable.hidden = false
+            mentionTable.isHidden = false
             
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count+1
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "mention")
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "mention")
         
-        if indexPath.row < searchResults.count {
-            cell.followButton.hidden = true
-            cell.usernameLabel.text = "@\(searchResults[indexPath.row].username)"
-            if searchResults[indexPath.row].first_name == "" {
-                cell.nameLabel.text = "\(searchResults[indexPath.row].username)"
+        if (indexPath as NSIndexPath).row < searchResults.count {
+            cell.followButton.isHidden = true
+            cell.usernameLabel.text = "@\(searchResults[(indexPath as NSIndexPath).row].username)"
+            if searchResults[(indexPath as NSIndexPath).row].first_name == "" {
+                cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].username)"
             }
             else{
-                cell.nameLabel.text = "\(searchResults[indexPath.row].first_name) \(searchResults[indexPath.row].last_name)"
+                cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
             }
-            if(searchResults[indexPath.row].profilePic.absoluteString != ""){
+            if(searchResults[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
                 cell.profilePhoto.sd_setImageWithURL(searchResults[indexPath.row].profilePic, forState: UIControlState.Normal)
             }else{
-                cell.profilePhoto.setImage(UIImage(named: "profile"), forState: .Normal)
+                cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
             }
             
 //            cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             //cell.followButton.addTarget(self, action: Selector("pressedFollowSearch"), forControlEvents: .TouchUpInside)
-            cell.followButton.tag = indexPath.row
-            cell.profilePhoto.tag = indexPath.row
+            cell.followButton.tag = (indexPath as NSIndexPath).row
+            cell.profilePhoto.tag = (indexPath as NSIndexPath).row
             
             return cell
             
         }else{
             cell.usernameLabel.text = "Kullanicilar araniyor"
-            cell.followButton.hidden = true
-            cell.profilePhoto.hidden = true
+            cell.followButton.isHidden = true
+            cell.profilePhoto.isHidden = true
             return cell
         }
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-              if indexPath.row<searchResults.count {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+              if (indexPath as NSIndexPath).row<searchResults.count {
             
-            let username = searchResults[indexPath.row].username
+            let username = searchResults[(indexPath as NSIndexPath).row].username
             var captiontext = captionView.attributedText.string
             if mentionAreas[mentionModeIndex].location == 0 {
-                captiontext = captiontext.substringToIndex(captiontext.startIndex.advancedBy(mentionAreas[mentionModeIndex].location+1)) + username + " "
+                captiontext = captiontext.substring(to: captiontext.characters.index(captiontext.startIndex, offsetBy: mentionAreas[mentionModeIndex].location+1)) + username + " "
             }else{
-                captiontext = captiontext.substringToIndex(captiontext.startIndex.advancedBy(mentionAreas[mentionModeIndex].location+2)) + username + " "
+                captiontext = captiontext.substring(to: captiontext.characters.index(captiontext.startIndex, offsetBy: mentionAreas[mentionModeIndex].location+2)) + username + " "
             }
             
             
@@ -486,7 +507,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             
             textViewDidChange(captionView)
             isInTheMentionMode = false
-            mentionTable.hidden = true
+            mentionTable.isHidden = true
             searchResults.removeAll()
             
             
@@ -500,7 +521,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     //        textView.resignFirstResponder()
     //        return true
     //    }
-    func randomStringWithLength (len : Int) -> NSString {
+    func randomStringWithLength (_ len : Int) -> NSString {
         
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         
@@ -509,7 +530,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         for _ in 0..<len{
             let length = UInt32 (letters.length)
             let rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+            randomString.appendFormat("%C", letters.character(at: Int(rand)))
         }
         
         return randomString
@@ -521,22 +542,22 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Notification) {
         
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+        if let keyboardSize = ((notification as NSNotification).userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             self.view.frame.origin.y = 0 + (MolocateDevice.size.height - (MolocateDevice.size.height * 0.3 + 255 )) - keyboardSize.height
-            self.toolBar.hidden = true
+            self.toolBar.isHidden = true
         }
         
     }
-    func keyboardWillHide(notification: NSNotification) {
-        if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue()) != nil {
+    func keyboardWillHide(_ notification: Notification) {
+        if (((notification as NSNotification).userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
             self.view.frame.origin.y = 0
-            self.toolBar.hidden = false
+            self.toolBar.isHidden = false
             self.CaptionText = captionView.text
         }
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         
         let a : CGSize = CGSize.init(width: MolocateDevice.size.width / 4, height: 45)
         
@@ -585,15 +606,15 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     //
     //    }
     //
-    func displayAlert(title: String, message: String) {
+    func displayAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             //            if !self.postO.enabled {
             //                self.postO.enabled = true
             //            }
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     

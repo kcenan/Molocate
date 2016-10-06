@@ -31,58 +31,58 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
         if MoleCurrentUser.isFaceUser {
             tableView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width, height: self.view.frame.height-60-(self.navigationController?.navigationBar.frame.height)!)
             backgroundLabel = UILabel()
-            backgroundLabel.frame = CGRectMake( 0 , 0 , MolocateDevice.size.width , 44)
-            backgroundLabel.backgroundColor = UIColor.whiteColor()
+            backgroundLabel.frame = CGRect( x: 0 , y: 0 , width: MolocateDevice.size.width , height: 44)
+            backgroundLabel.backgroundColor = UIColor.white
             backgroundLabel.layer.borderWidth = 0.2
             backgroundLabel.layer.masksToBounds = false
-            backgroundLabel.layer.borderColor = swiftColor.CGColor
+            backgroundLabel.layer.borderColor = swiftColor.cgColor
             view.addSubview(backgroundLabel)
             
             
             
             faceButton = UIButton()
-            faceButton.frame = CGRectMake(MolocateDevice.size.width / 2  ,7 , MolocateDevice.size.width / 2 - 20, 30)
-            faceButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-            faceButton.contentHorizontalAlignment = .Center
-            faceButton.setTitle("Önerilen", forState: .Normal)
+            faceButton.frame = CGRect(x: MolocateDevice.size.width / 2  ,y: 7 , width: MolocateDevice.size.width / 2 - 20, height: 30)
+            faceButton.setTitleColor(UIColor.black, for: UIControlState())
+            faceButton.contentHorizontalAlignment = .center
+            faceButton.setTitle("Önerilen", for: UIControlState())
             faceButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size:13)
-            faceButton.addTarget(self, action: #selector(findFriendController.pressedFace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            faceButton.addTarget(self, action: #selector(findFriendController.pressedFace(_:)), for: UIControlEvents.touchUpInside)
             view.addSubview(faceButton)
             
             randButton = UIButton()
-            randButton.frame = CGRectMake(20 ,7 , MolocateDevice.size
-                .width / 2 - 20, 30)
-            randButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            randButton.contentHorizontalAlignment = .Center
-            randButton.setTitle("Facebook", forState: .Normal)
+            randButton.frame = CGRect(x: 20 ,y: 7 , width: MolocateDevice.size
+                .width / 2 - 20, height: 30)
+            randButton.setTitleColor(UIColor.white, for: UIControlState())
+            randButton.contentHorizontalAlignment = .center
+            randButton.setTitle("Facebook", for: UIControlState())
             randButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size:13)
             
-            randButton.addTarget(self, action: #selector(findFriendController.pressedRand(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            randButton.addTarget(self, action: #selector(findFriendController.pressedRand(_:)), for: UIControlEvents.touchUpInside)
             view.addSubview(randButton)
             randButton.backgroundColor = swiftColor2
-            randButton.hidden = false
+            randButton.isHidden = false
             faceButton.backgroundColor = swiftColor3
-            faceButton.hidden = false
-            backgroundLabel.hidden = false
+            faceButton.isHidden = false
+            backgroundLabel.isHidden = false
             
             
             let rectShape = CAShapeLayer()
             rectShape.bounds = self.faceButton.frame
             rectShape.position = self.faceButton.center
-            rectShape.path = UIBezierPath(roundedRect: self.faceButton.bounds, byRoundingCorners: [.BottomRight , .TopRight] , cornerRadii: CGSize(width: 8, height: 8)).CGPath
+            rectShape.path = UIBezierPath(roundedRect: self.faceButton.bounds, byRoundingCorners: [.bottomRight , .topRight] , cornerRadii: CGSize(width: 8, height: 8)).cgPath
             rectShape.borderWidth = 1.0
-            rectShape.borderColor = swiftColor2.CGColor
-            self.faceButton.layer.backgroundColor = swiftColor3.CGColor
+            rectShape.borderColor = swiftColor2.cgColor
+            self.faceButton.layer.backgroundColor = swiftColor3.cgColor
             //Here I'm masking the textView's layer with rectShape layer
             self.faceButton.layer.mask = rectShape
             
             let rectShape2 = CAShapeLayer()
             rectShape2.bounds = self.randButton.frame
             rectShape2.position = self.randButton.center
-            rectShape2.path = UIBezierPath(roundedRect: self.randButton.bounds, byRoundingCorners: [.BottomLeft , .TopLeft] , cornerRadii: CGSize(width: 8, height: 8)).CGPath
+            rectShape2.path = UIBezierPath(roundedRect: self.randButton.bounds, byRoundingCorners: [.bottomLeft , .topLeft] , cornerRadii: CGSize(width: 8, height: 8)).cgPath
             rectShape2.borderWidth = 1.0
-            rectShape2.borderColor = swiftColor2.CGColor
-            self.randButton.layer.backgroundColor = swiftColor2.CGColor
+            rectShape2.borderColor = swiftColor2.cgColor
+            self.randButton.layer.backgroundColor = swiftColor2.cgColor
             self.randButton.layer.mask = rectShape2
 
         } else {
@@ -100,28 +100,28 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
     }
     
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return userRelations.relations.count
     }
     
-    func pressedFace(sender: UIButton) {
+    func pressedFace(_ sender: UIButton) {
         self.faceButton.backgroundColor = swiftColor2
         self.randButton.backgroundColor = swiftColor3
         userRelations = userRelationsRandom
         tableView.reloadData()
     }
     
-    func pressedRand(sender: UIButton) {
+    func pressedRand(_ sender: UIButton) {
         self.faceButton.backgroundColor = swiftColor3
         self.randButton.backgroundColor = swiftColor2
         userRelations = userRelationsFace
@@ -129,62 +129,62 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "cellface")
+        let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "cellface")
         
-        cell.profilePhoto.tag = indexPath.row
-        cell.nameLabel.tag = indexPath.row
-        cell.followButton.tag = indexPath.row
-        cell.usernameLabel.tag = indexPath.row
-        cell.usernameLabel.text = userRelations.relations[indexPath.row].username
-        cell.nameLabel.text = userRelations.relations[indexPath.row].name
+        cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+        cell.nameLabel.tag = (indexPath as NSIndexPath).row
+        cell.followButton.tag = (indexPath as NSIndexPath).row
+        cell.usernameLabel.tag = (indexPath as NSIndexPath).row
+        cell.usernameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].username
+        cell.nameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].name
         
         
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
         
-        if(userRelations.relations[indexPath.row].picture_url.absoluteString != ""){
+        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url.absoluteString != ""){
             cell.profilePhoto.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
         }else{
-            cell.profilePhoto.setImage(UIImage(named: "profile"), forState: .Normal)
+            cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
         }
         
-        cell.profilePhoto.addTarget(self, action: #selector(findFriendController.pressedProfileSearch(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cell.profilePhoto.addTarget(self, action: #selector(findFriendController.pressedProfileSearch(_:)), for: UIControlEvents.touchUpInside)
         
         
-        if(!userRelations.relations[indexPath.row].is_following){
-            cell.followButton.setBackgroundImage(UIImage(named: "follow"), forState: UIControlState.Normal)
+        if(!userRelations.relations[(indexPath as NSIndexPath).row].is_following){
+            cell.followButton.setBackgroundImage(UIImage(named: "follow"), for: UIControlState())
 
         } else {
-            cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), forState: UIControlState.Normal)
+            cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
         }
-        cell.followButton.addTarget(self, action: #selector(findFriendController.pressedFollow(_:)), forControlEvents: .TouchUpInside)
+        cell.followButton.addTarget(self, action: #selector(findFriendController.pressedFollow(_:)), for: .touchUpInside)
         
         
         
-        if(userRelations.relations[indexPath.row].username == MoleCurrentUser.username){
-            cell.followButton.hidden = true
+        if(userRelations.relations[(indexPath as NSIndexPath).row].username == MoleCurrentUser.username){
+            cell.followButton.isHidden = true
         }
         
         
         return cell
         
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! searchUsername
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! searchUsername
         pressedProfileSearch(cell.profilePhoto)
     }
     
     
-    func pressedProfileSearch(sender:UIButton){
+    func pressedProfileSearch(_ sender:UIButton){
         
         let username = userRelations.relations[sender.tag].username
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         if username != MoleCurrentUser.username{
             controller.isItMyProfile = false
         }else{
@@ -196,14 +196,14 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
                 user = data
                 controller.classUser = data
                 controller.RefreshGuiWithData()
                 
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
         }
@@ -213,7 +213,7 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
     
 
     
-    func pressedFollow(sender: UIButton){
+    func pressedFollow(_ sender: UIButton){
         let Row = sender.tag
         //print(userRelations.relations[Row].is_following)
         if !userRelations.relations[Row].is_following {

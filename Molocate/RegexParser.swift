@@ -14,23 +14,23 @@ struct RegexParser {
         "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
     "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
     
-    static let hashtagRegex = try? NSRegularExpression(pattern: "(?:^|\\s|$)#[\\p{L}0-9_]*", options: [.CaseInsensitive])
-    static let mentionRegex = try? NSRegularExpression(pattern: "(?:^|\\s|$|[.])@[\\p{L}0-9_]*", options: [.CaseInsensitive]);
-    static let urlDetector = try? NSRegularExpression(pattern: urlPattern, options: [.CaseInsensitive])
+    static let hashtagRegex = try? NSRegularExpression(pattern: "(?:^|\\s|$)#[\\p{L}0-9_]*", options: [.caseInsensitive])
+    static let mentionRegex = try? NSRegularExpression(pattern: "(?:^|\\s|$|[.])@[\\p{L}0-9_]*", options: [.caseInsensitive]);
+    static let urlDetector = try? NSRegularExpression(pattern: urlPattern, options: [.caseInsensitive])
     
     static func getMentions(fromText text: String, range: NSRange) -> [NSTextCheckingResult] {
         guard let mentionRegex = mentionRegex else { return [] }
-        return mentionRegex.matchesInString(text, options: [], range: range)
+        return mentionRegex.matches(in: text, options: [], range: range)
     }
     
     static func getHashtags(fromText text: String, range: NSRange) -> [NSTextCheckingResult] {
         guard let hashtagRegex = hashtagRegex else { return [] }
-        return hashtagRegex.matchesInString(text, options: [], range: range)
+        return hashtagRegex.matches(in: text, options: [], range: range)
     }
     
     static func getURLs(fromText text: String, range: NSRange) -> [NSTextCheckingResult] {
         guard let urlDetector = urlDetector else { return [] }
-        return urlDetector.matchesInString(text, options: [], range: range)
+        return urlDetector.matches(in: text, options: [], range: range)
     }
     
 }

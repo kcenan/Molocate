@@ -15,7 +15,7 @@ let CognitoIdentityPoolId: String = "us-east-1:721a27e4-d95e-4586-a25c-83a658a1c
 let S3BucketName: String = "molocatebucket"
 var n = 0
 
-public class S3Upload {
+open class S3Upload {
     var isUp = false
     var isFailed = false
     var uploadTask:AWSS3TransferUtilityTask?
@@ -23,7 +23,7 @@ public class S3Upload {
     var key_id = 0
     var theRequest:VideoUploadRequest?
     
-    func upload(retry:Bool = false, id:Int,uploadRequest: AWSS3TransferManagerUploadRequest, fileURL: String, fileID: String, json:  [String:AnyObject], thumbnail_image: NSData) {
+    func upload(_ retry:Bool = false, id:Int,uploadRequest: AWSS3TransferManagerUploadRequest, fileURL: String, fileID: String, json:  [String:AnyObject], thumbnail_image: Data) {
         
         print("upload started with id:\(id)")
         isUp = false
@@ -43,11 +43,11 @@ public class S3Upload {
 //                }
                 let outputFileName = "thumbnail.jpg"
         
-                let outputFilePath: String = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(outputFileName)
+                let outputFilePath: String = (NSTemporaryDirectory() as NSString).appendingPathComponent(outputFileName)
                 
-                try thumbnail_image.writeToFile(outputFilePath, options: .AtomicWrite )
+                try thumbnail_image.write(to: URL(fileURLWithPath: outputFilePath), options: .atomicWrite )
                 
-                let thumb = NSURL(fileURLWithPath: outputFilePath)
+                let thumb = URL(fileURLWithPath: outputFilePath)
                 
               
                 
@@ -56,7 +56,7 @@ public class S3Upload {
                 
                 theRequest = VideoUploadRequest(filePath: fileURL,thumbUrl: thumb, thumbnail: thumbnail_image, JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false)
                 
-                VideoUploadRequests.insert(theRequest!, atIndex:0)
+                VideoUploadRequests.insert(theRequest!, at:0)
               
                 
                 MolocateVideo.encodeGlobalVideo()
@@ -67,7 +67,7 @@ public class S3Upload {
         }
         
         if VideoUploadRequests.count != 0 {
-            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isStuck")
+            UserDefaults.standard.set(false, forKey: "isStuck")
         }
         
         let expression = AWSS3TransferUtilityUploadExpression()
@@ -93,7 +93,7 @@ public class S3Upload {
         }
         
         self.completionHandler = {(task, error) -> Void in
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if ((error) != nil){
                     //print("Failed with error")
                    // print("Error: %@",error!);
@@ -192,7 +192,7 @@ public class S3Upload {
 
     
     
-    func cancelUploadRequest(uploadRequest: AWSS3TransferManagerUploadRequest) {
+    func cancelUploadRequest(_ uploadRequest: AWSS3TransferManagerUploadRequest) {
     
         uploadRequest.cancel().continueWithBlock({ (task) -> AnyObject! in
             if let error = task.error {
@@ -206,13 +206,13 @@ public class S3Upload {
         
     }
     
-    func sendThumbnailandData(thumbnail: NSData, info: [String:AnyObject], videoid: Int, completionHandler: (data: String!, thumbnailUrl: String, videoid: Int, response: NSURLResponse!, error: NSError!) -> ()){
+    func sendThumbnailandData(_ thumbnail: Data, info: [String:AnyObject], videoid: Int, completionHandler: @escaping (_ data: String?, _ thumbnailUrl: String, _ videoid: Int, _ response: URLResponse?, _ error: NSError?) -> ()){
         
         
-        var string_info:NSData = NSData()
+        var string_info:Data = Data()
         
         do {
-             string_info = try NSJSONSerialization.dataWithJSONObject(info, options:  NSJSONWritingOptions.PrettyPrinted)
+             string_info = try JSONSerialization.data(withJSONObject: info, options:  JSONSerialization.WritingOptions.prettyPrinted)
         }catch{
             
            // print("Errrorororororo")
@@ -262,37 +262,37 @@ public class S3Upload {
                 
                 body += "; filename=\"\(filename)\"\r\n"
                 body += "Content-Type: \(contentType)\r\n\r\n"
-                postData.appendData(body.dataUsingEncoding(NSUTF8StringEncoding)!)
-                postData.appendData(thumbnail)
+                postData.append(body.data(using: String.Encoding.utf8)!)
+                postData.append(thumbnail)
                 
             }else{
                 body+="\r\n\r\n"
-                postData.appendData(body.dataUsingEncoding(NSUTF8StringEncoding)!)
-                postData.appendData(param["value"] as! NSData)
+                postData.append(body.data(using: String.Encoding.utf8)!)
+                postData.append(param["value"] as! Data)
             }
             
         }
         
-        postData.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        postData.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
         
-        let request = NSMutableURLRequest(URL: NSURL(string:  MolocateBaseUrl + "video/api/upload_video_thumbnail/")!, cachePolicy: .UseProtocolCachePolicy, timeoutInterval: 5.0)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: URL(string:  MolocateBaseUrl + "video/api/upload_video_thumbnail/")!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 5.0)
+        request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
-        request.HTTPBody = postData
+        request.httpBody = postData as Data
         
-        let session = NSURLSession.sharedSession()
-        let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             do{
-                progressBar?.hidden = true
-                let data_string  = String(data: data!, encoding: NSUTF8StringEncoding)!
+                progressBar?.isHidden = true
+                let data_string  = String(data: data!, encoding: String.Encoding.utf8)!
                // print("data_string:" + data_string)
                 if data_string[0] == "{" {
-                    let result = try NSJSONSerialization.JSONObjectWithData( data!, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                     
                     if (error != nil) {
                         completionHandler(data:"error" , thumbnailUrl: "",videoid: 0,response: response , error: error  )
                     } else {
-                        if result.indexForKey("thumbnail") != nil {
+                        if result.index(forKey: "thumbnail") != nil {
                         completionHandler(data: "success", thumbnailUrl: result["thumbnail"]! as! String,videoid: videoid,response: response , error: error  )
                         }else{
                         completionHandler(data:"error" , thumbnailUrl: "",videoid: 0,response: response , error: nil  )

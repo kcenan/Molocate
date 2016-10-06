@@ -28,26 +28,26 @@ class searchVenue: UITableViewCell {
         
         
    
-        nameLabel.frame = CGRectMake(10 , 4 , screenSize.width - 100, 20)
-        nameLabel.textColor = UIColor.blackColor()
-        nameLabel.textAlignment = .Left
+        nameLabel.frame = CGRect(x: 10 , y: 4 , width: screenSize.width - 100, height: 20)
+        nameLabel.textColor = UIColor.black
+        nameLabel.textAlignment = .left
         nameLabel.text = ""
         nameLabel.font = UIFont(name: "AvenirNext-Regular", size:15)
         contentView.addSubview(nameLabel)
         
         
 
-        addressNameLabel.frame = CGRectMake(10 , 26 , screenSize.width - 100, 14)
-        addressNameLabel.textColor = UIColor.grayColor()
-        addressNameLabel.textAlignment = .Left
+        addressNameLabel.frame = CGRect(x: 10 , y: 26 , width: screenSize.width - 100, height: 14)
+        addressNameLabel.textColor = UIColor.gray
+        addressNameLabel.textAlignment = .left
         addressNameLabel.text = "-"
         addressNameLabel.font = UIFont(name: "AvenirNext-Regular", size:12)
         contentView.addSubview(addressNameLabel)
         
         
-        distanceLabel.frame = CGRectMake(10 , 42 , screenSize.width - 100, 14)
-        distanceLabel.textColor = UIColor.grayColor()
-        distanceLabel.textAlignment = .Left
+        distanceLabel.frame = CGRect(x: 10 , y: 42 , width: screenSize.width - 100, height: 14)
+        distanceLabel.textColor = UIColor.gray
+        distanceLabel.textAlignment = .left
         distanceLabel.text = "-"
         distanceLabel.font = UIFont(name: "AvenirNext-Regular", size:11)
         contentView.addSubview(distanceLabel)

@@ -37,7 +37,7 @@
                             actionName:(NSString *)actionName
                            outputClass:(Class)outputClass {
     if (self = [super init]) {
-        
+
         _serviceDefinitionJSON = JSONDefinition;
         if (_serviceDefinitionJSON == nil) {
             AWSLogError(@"serviceDefinitionJSON of is nil.");
@@ -56,18 +56,16 @@
                  currentRequest:(NSURLRequest *)currentRequest
                            data:(id)data
                           error:(NSError *__autoreleasing *)error {
-    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-        AWSLogDebug(@"Response header: [%@]", response.allHeaderFields);
-    }
+    if ([AWSLogger defaultLogger].logLevel >= AWSLogLevelDebug) {
+        if ([data isKindOfClass:[NSData class]]) {
+            if ([data length] <= 100 * 1024) {
+                AWSLogDebug(@"Response body:\n%@", [[NSString alloc] initWithData:data
+                                                                         encoding:NSUTF8StringEncoding]);
+            } else {
+                AWSLogDebug(@"Response body (Partial data. The first 100KB is displayed.):\n%@", [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 100 * 1024)]
+                                                                                                                       encoding:NSUTF8StringEncoding]);
 
-    if ([data isKindOfClass:[NSData class]]) {
-        if ([data length] <= 100 * 1024) {
-            AWSLogDebug(@"Response body: [%@]", [[NSString alloc] initWithData:data
-                                                                     encoding:NSUTF8StringEncoding]);
-        } else {
-            AWSLogDebug(@"Response body (Partial data. The first 100KB is displayed.): [%@]", [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 100 * 1024)]
-                                                                                                                   encoding:NSUTF8StringEncoding]);
-            
+            }
         }
     }
 
@@ -140,7 +138,7 @@
                             actionName:(NSString *)actionName
                            outputClass:(Class)outputClass {
     if (self = [super init]) {
-        
+
         _serviceDefinitionJSON = JSONDefinition;
         if (_serviceDefinitionJSON == nil) {
             AWSLogError(@"serviceDefinitionJSON of is nil.");
@@ -167,7 +165,7 @@
                         bodyDictionary:(NSMutableDictionary *)bodyDictionary
                                  error:(NSError *__autoreleasing *)error {
     NSDictionary *responseHeaders = [response allHeaderFields];
-    
+
     //If no rule just return
     if (rules == (id)[NSNull null] ||  [rules count] == 0) {
         return bodyDictionary;
@@ -183,7 +181,7 @@
                 if ([rulesType isEqualToString:@"integer"]) {
                     bodyDictionary[memberName] = @([responseHeaders[locationName] integerValue]);
                 } else if ([rulesType isEqualToString:@"long"]) {
-                    bodyDictionary[memberName] = @([responseHeaders[locationName] longValue]);
+                    bodyDictionary[memberName] = @([responseHeaders[locationName] longLongValue]);
                 } else if ([rulesType isEqualToString:@"float"]) {
                     bodyDictionary[memberName] = @([responseHeaders[locationName] floatValue]);
                 } else if ([rulesType isEqualToString:@"double"]) {
@@ -214,7 +212,7 @@
                 }
             }
         }
-        
+
         //may also need to pass the response statusCode if the memberRule ask for it
         if (memberName && [memberRules isKindOfClass:[NSDictionary class]] && [memberRules[@"location"] isEqualToString:@"statusCode"]) {
             NSString *rulesType = memberRules[@"type"];
@@ -235,33 +233,15 @@
                  currentRequest:(NSURLRequest *)currentRequest
                            data:(id)data
                           error:(NSError *__autoreleasing *)error {
-    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-        AWSLogDebug(@"Response header: [%@]", response.allHeaderFields);
-    }
+    if ([AWSLogger defaultLogger].logLevel >= AWSLogLevelDebug) {
+        if ([data isKindOfClass:[NSData class]]) {
+            if ([data length] <= 100 * 1024) {
+                AWSLogDebug(@"Response body:\n%@", [[NSString alloc] initWithData:data
+                                                                         encoding:NSUTF8StringEncoding]);
+            } else {
+                AWSLogDebug(@"Response body (Partial data. The first 100KB is displayed.):\n%@", [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 100 * 1024)]
+                                                                                                                       encoding:NSUTF8StringEncoding]);
 
-    if ([data isKindOfClass:[NSData class]]) {
-        if ([data length] <= 100 * 1024) {
-            AWSLogDebug(@"Response body: [%@]", [[NSString alloc] initWithData:data
-                                                                     encoding:NSUTF8StringEncoding]);
-        } else {
-            AWSLogDebug(@"Response body (Partial data. The first 100KB is displayed.): [%@]", [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 100 * 1024)]
-                                                                                                                   encoding:NSUTF8StringEncoding]);
-
-        }
-    }
-
-    NSString *responseContentTypeStr = [[response allHeaderFields] objectForKey:@"Content-Type"];
-    if (responseContentTypeStr) {
-        if ([responseContentTypeStr rangeOfString:@"text/html"].location != NSNotFound) {
-            //found html response rather than xml format. should be an error.
-            if (error) {
-                NSString *message = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-
-                *error = [NSError errorWithDomain:AWSServiceErrorDomain
-                                             code:AWSServiceErrorUnknown
-                                         userInfo:@{NSLocalizedDescriptionKey : message?message:[NSNull null]}];
-                return nil;
             }
         }
     }
@@ -269,10 +249,10 @@
     if (![self validateResponse:response fromRequest:currentRequest data:data error:error]) {
         return nil;
     }
+
     NSDictionary *anActionRules = [[self.serviceDefinitionJSON objectForKey:@"operations"] objectForKey:self.actionName];
     NSDictionary *shapeRules = [self.serviceDefinitionJSON objectForKey:@"shapes"];
     AWSJSONDictionary *outputRules = [[AWSJSONDictionary alloc] initWithDictionary:[anActionRules objectForKey:@"output"] JSONDefinitionRule:shapeRules];
-
 
     NSMutableDictionary *resultDic = [NSMutableDictionary new];
 

@@ -25,12 +25,12 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
     
     @IBOutlet var toolBar: UIToolbar!
     
-    @IBAction func backButton(sender: AnyObject) {
+    @IBAction func backButton(_ sender: AnyObject) {
         
 //        self.willMoveToParentViewController(nil)
 //        self.view.removeFromSuperview()
 //        self.removeFromParentViewController()
-        self.performSegueWithIdentifier("backFrom4th", sender: self)
+        self.performSegue(withIdentifier: "backFrom4th", sender: self)
     }
     struct placeVar {
         var name: String!
@@ -42,7 +42,7 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
         var selectedCell = 0
     }
     
-    private var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    fileprivate var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     var isSearch = true
 
@@ -54,12 +54,12 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
         super.viewDidLoad()
 
      
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        UIApplication.shared.endIgnoringInteractionEvents()
         
         videoLocation = locationss()
         //print(videoLocation)
-        self.textField.textColor = UIColor.blackColor()
-        self.textField.autocapitalizationType = .Words
+        self.textField.textColor = UIColor.black
+        self.textField.autocapitalizationType = .words
         placeTable.delegate = self
         placeTable.dataSource = self
         //placeTable.scrollEnabled = true
@@ -72,15 +72,15 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
             textField.text = "Konum ara"
         } else {
             //textField.text = "📌"+placesArray[0]
-            let correctedRow = placeOrder.objectForKey(placesArray[0]) as! Int
+            let correctedRow = placeOrder.object(forKey: placesArray[0]) as! Int
             videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
             isLocationSelected = true
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(cameraSearchVenue.reloadPlaces), name: "reloadPlaces", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(cameraSearchVenue.reloadPlaces), name: NSNotification.Name(rawValue: "reloadPlaces"), object: nil)
        autocompleteUrls = placesArray
         
     }
-    func randomStringWithLength (len : Int) -> NSString {
+    func randomStringWithLength (_ len : Int) -> NSString {
         
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         
@@ -89,7 +89,7 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
         for _ in 0..<len{
             let length = UInt32 (letters.length)
             let rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+            randomString.appendFormat("%C", letters.character(at: Int(rand)))
         }
         
         return randomString
@@ -97,28 +97,28 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
     
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearch {
             return autocompleteUrls.count
         } else {
             return searchArray.count
         }
     }
-    func displayAlert(title: String, message: String) {
+    func displayAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             //self.dismissViewControllerAnimated(true, completion: nil)
            
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func configurePlace() {
         self.activityIndicator.stopAnimating()
         if placesArray.count > 0 {
             textField.text = "📌"+placesArray[0]
-            let correctedRow = placeOrder.objectForKey(placesArray[0]) as! Int
+            let correctedRow = placeOrder.object(forKey: placesArray[0]) as! Int
             videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
             //print(videoLocation.name)
             isLocationSelected = true
@@ -126,15 +126,15 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
      
-        let cell = searchCameraCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "cell")
+        let cell = searchCameraCell(style: UITableViewCellStyle.value1, reuseIdentifier: "cell")
         
-        let index = indexPath.row as Int
+        let index = (indexPath as NSIndexPath).row as Int
         
         if isSearch {
-            let correctedRow = placeOrder.objectForKey(autocompleteUrls[index]) as! Int
+            let correctedRow = placeOrder.object(forKey: autocompleteUrls[index]) as! Int
             let place = locationDict[correctedRow][autocompleteUrls[index]]
             cell.nameLabel.text = place?.name
             cell.addressNameLabel.text = place?.adress
@@ -148,62 +148,62 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
         return cell
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
     {
         
-        placeTable.hidden = false
-        let substring = (self.textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        placeTable.isHidden = false
+        let substring = (self.textField.text! as NSString).replacingCharacters(in: range, with: string)
         searchAutocompleteEntriesWithSubstring(substring)
         return true
     }
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text == "" {
-            textField.attributedPlaceholder = NSAttributedString(string:"Konum ara", attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+            textField.attributedPlaceholder = NSAttributedString(string:"Konum ara", attributes:[NSForegroundColorAttributeName: UIColor.white])
             
         }
     }
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         //placeTable.hidden = false
         autocompleteUrls = placesArray
         placeTable.reloadData()
-        dispatch_async(dispatch_get_main_queue()){
+        DispatchQueue.main.async{
             textField.text = ""
         }
     }
 
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let selectedCell  = tableView.cellForRowAtIndexPath(indexPath) as! searchCameraCell
+        let selectedCell  = tableView.cellForRow(at: indexPath) as! searchCameraCell
         autocompleteUrls = placesArray
         
         //self.view.endEditing(true)
         //print(selectedCell.nameLabel.text!)
         if isSearch {
-            let correctedRow = placeOrder.objectForKey(selectedCell.nameLabel.text!) as! Int
+            let correctedRow = placeOrder.object(forKey: selectedCell.nameLabel.text!) as! Int
             videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
         } else {
-            videoLocation = searchDict[indexPath.row][searchArray[indexPath.row]]
+            videoLocation = searchDict[(indexPath as NSIndexPath).row][searchArray[(indexPath as NSIndexPath).row]]
         }
         //print(videoLocation.id)
         selectedVenue = videoLocation.name
         isLocationSelected = true
         //print(selectedVenue)
         //selectedVenue = selectedCell.nameLabel.text!
-        self.performSegueWithIdentifier("backFrom4th", sender: self)
+        self.performSegue(withIdentifier: "backFrom4th", sender: self)
     }
 
     
    
     
-    func searchAutocompleteEntriesWithSubstring(substring: String)
+    func searchAutocompleteEntriesWithSubstring(_ substring: String)
     {
         
-        autocompleteUrls.removeAll(keepCapacity: false)
+        autocompleteUrls.removeAll(keepingCapacity: false)
         isSearch = true
         var n = 0
         for curString in placesArray
@@ -211,7 +211,7 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
             
             ////print(curString)
             let myString: NSString! = curString as NSString
-            let substringRange: NSRange! = myString.rangeOfString(substring)
+            let substringRange: NSRange! = myString.range(of: substring)
             ////print(substringRange.location)
             if (substringRange.location == 0)
             {
@@ -234,7 +234,7 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
             searchArray = [String]()
             let searchTask = Session.sharedSession().venues.search(parameters) {
                 (result) -> Void in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     if let response = result.response {
                         let venues = response["venues"] as! [JSONParameters]?
                         for i in 0..<venues!.count{
@@ -293,7 +293,7 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
     
 
     
-    func getParameters(strippedString:String) -> Parameters {
+    func getParameters(_ strippedString:String) -> Parameters {
         return [Parameter.ll:valuell,Parameter.llAcc:valuellacc,Parameter.alt:valuealt,Parameter.altAcc:valuealtacc,Parameter.radius:"\(3000)",Parameter.query:strippedString]
     }
 

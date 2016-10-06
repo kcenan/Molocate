@@ -15,9 +15,9 @@ class tagComment: UIViewController, UITextViewDelegate {
     @IBOutlet var toolBar: UIToolbar!
 
     //done da verileri yolla backde vazgeçsin yollama
-    @IBAction func done(sender: AnyObject) {
+    @IBAction func done(_ sender: AnyObject) {
         CaptionText = textField.text!
-        let parent =  (self.parentViewController as! capturePreviewController)
+        let parent =  (self.parent as! capturePreviewController)
         
         var textstring = " "
         
@@ -30,7 +30,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         
         var multipleAttributes2 = [String : NSObject]()
         multipleAttributes2[NSFontAttributeName] =  UIFont(name: "AvenirNext-Regular", size: 14)
-        multipleAttributes2[NSForegroundColorAttributeName] = UIColor.blackColor()
+        multipleAttributes2[NSForegroundColorAttributeName] = UIColor.black
         
         let commentext = NSMutableAttributedString(string: CaptionText, attributes:  multipleAttributes2)
         
@@ -40,17 +40,17 @@ class tagComment: UIViewController, UITextViewDelegate {
         
         let tags =  NSAttributedString(string: textstring, attributes: multipleAttributes)
         
-        commentext.appendAttributedString(tags)
-        parent.caption.setAttributedTitle(commentext, forState: .Normal)
+        commentext.append(tags)
+        parent.caption.setAttributedTitle(commentext, for: UIControlState())
         parent.numbers = numbers
         
-        self.willMoveToParentViewController(nil)
+        self.willMove(toParentViewController: nil)
         self.view.removeFromSuperview()
         self.removeFromParentViewController()
     }
     
-    @IBAction func backButton(sender: AnyObject) {
-        self.willMoveToParentViewController(nil)
+    @IBAction func backButton(_ sender: AnyObject) {
+        self.willMove(toParentViewController: nil)
         self.view.removeFromSuperview()
         self.removeFromParentViewController()
     }
@@ -60,14 +60,14 @@ class tagComment: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        textField.layer.borderColor = UIColor.blackColor().CGColor
+        textField.layer.borderColor = UIColor.black.cgColor
         textField.layer.borderWidth = 1.0;
         textField.layer.cornerRadius = 5.0;
-        textField.keyboardDismissMode = .Interactive
-        textField.keyboardType = .Default
+        textField.keyboardDismissMode = .interactive
+        textField.keyboardType = .default
         
         toolBar.barTintColor = swiftColor
-        toolBar.translucent = false
+        toolBar.isTranslucent = false
         toolBar.clipsToBounds = true
         
         if(CaptionText == "Yorum ve arkadaş ekle") {
@@ -75,43 +75,43 @@ class tagComment: UIViewController, UITextViewDelegate {
         }else{
             textField.text = CaptionText
         }
-        textField.textColor = UIColor.lightGrayColor()
-        textField.returnKeyType = .Done
+        textField.textColor = UIColor.lightGray
+        textField.returnKeyType = .done
         
         MolocateAccount.getFollowers(username:MoleCurrentUser.username) { (data, response, error, count, next, previous) -> () in
-             dispatch_async(dispatch_get_main_queue()){
+             DispatchQueue.main.async{
                 self.relationNextUrl = next
                 self.userRelations = data
                 self.tableView.reloadData()
             }
         }
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         cell.textLabel!.font = UIFont(name: "Lato-Regular", size: 16)
         
-        if numbers.contains(indexPath.row) {
-        cell.textLabel?.text = "⚫         " + userRelations.relations[indexPath.row].username
+        if numbers.contains((indexPath as NSIndexPath).row) {
+        cell.textLabel?.text = "⚫         " + userRelations.relations[(indexPath as NSIndexPath).row].username
         }else{
-        cell.textLabel?.text = "⚪         " + userRelations.relations[indexPath.row].username
+        cell.textLabel?.text = "⚪         " + userRelations.relations[(indexPath as NSIndexPath).row].username
         }
             return cell
     }
     
     
-    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if((indexPath.row%50 == 35)&&(relationNextUrl != nil)){
+    func tableView(_ tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath) {
+        if(((indexPath as NSIndexPath).row%50 == 35)&&(relationNextUrl != nil)){
             MolocateAccount.getFollowers(relationNextUrl!, username: MoleCurrentUser.username, completionHandler: { (data, response, error, count, next, previous) in
                 if next != nil {
                     self.relationNextUrl = next!
                 }
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     for item in data.relations{
                         self.userRelations.relations.append(item)
-                        let newIndexPath = NSIndexPath(forRow: self.userRelations.relations.count-1, inSection: 0)
-                        tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                        let newIndexPath = IndexPath(row: self.userRelations.relations.count-1, section: 0)
+                        tableView.insertRows(at: [newIndexPath], with: .bottom)
                         
                     }
                 }
@@ -121,17 +121,17 @@ class tagComment: UIViewController, UITextViewDelegate {
         
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
         
         // get the cell and text of the tapped row
-        let cell = self.tableView.cellForRowAtIndexPath(indexPath)
+        let cell = self.tableView.cellForRow(at: indexPath)
         let text = cell!.textLabel!.text!
         
        // cell?.textLabel!.font = UIFont(name: UIFont.fontNamesForFamilyName("Lato-Bold.ttf") , size: 20)
         
         // get the first character
-        let index = text.startIndex.advancedBy(1)
-        let firstChar = text.substringToIndex(index)
+        let index = text.characters.index(text.startIndex, offsetBy: 1)
+        let firstChar = text.substring(to: index)
         
         // compare the first character
         let newChar: String
@@ -142,7 +142,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         if firstChar == "⚪" {
             newChar = "⚫         "
            //checkedSymptom = true
-            numbers.append(indexPath.row)
+            numbers.append((indexPath as NSIndexPath).row)
             //print(numbers)
            
            
@@ -152,15 +152,15 @@ class tagComment: UIViewController, UITextViewDelegate {
             var xAppears = false
             
             for number in numbers {
-                if number == indexPath.row {
+                if number == (indexPath as NSIndexPath).row {
                     xAppears = true
                 }
             }
             
             if xAppears {
                 //print("yes")
-                let indexOfA = numbers.indexOf(indexPath.row)
-                numbers.removeAtIndex(indexOfA!)
+                let indexOfA = numbers.index(of: (indexPath as NSIndexPath).row)
+                numbers.remove(at: indexOfA!)
             } else {
                 //print("no")
             }
@@ -168,49 +168,49 @@ class tagComment: UIViewController, UITextViewDelegate {
         }
         
         // change the cell and text of the tapped row with the new "checkbox"
-        cell!.textLabel!.text = newChar + " " + userRelations.relations[indexPath.row].username
+        cell!.textLabel!.text = newChar + " " + userRelations.relations[(indexPath as NSIndexPath).row].username
     }
 
-    func textViewDidBeginEditing(textView: UITextView) {
-        if textView.textColor == UIColor.lightGrayColor() {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
             textView.text = nil
-            textView.textColor = UIColor.blackColor()
+            textView.textColor = UIColor.black
         }
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = ""
-            textView.textColor = UIColor.lightGrayColor()
+            textView.textColor = UIColor.lightGray
         }
     }
     func dismissKeyboard() {
         view.endEditing(true)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return userRelations.relations.count
     }
     
-    func textViewShouldReturn(textField: UITextField!) -> Bool {
+    func textViewShouldReturn(_ textField: UITextField!) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let maxLength = 120
-        let currentString: NSString = textField.text!
-        let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: currentString as String)
+        let currentString: NSString = textField.text! as NSString
+        let newString: NSString = currentString.replacingCharacters(in: range, with: currentString as String) as NSString
         return newString.length <= maxLength
         
     }

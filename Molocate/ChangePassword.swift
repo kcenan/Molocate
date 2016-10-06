@@ -7,16 +7,36 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class changePasswordd: UIViewController {
 
-    let screenSize: CGRect = UIScreen.mainScreen().bounds
+    let screenSize: CGRect = UIScreen.main.bounds
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
-    @IBAction func backButton(sender: AnyObject) {
+    @IBAction func backButton(_ sender: AnyObject) {
         
-        self.willMoveToParentViewController(nil)
+        self.willMove(toParentViewController: nil)
         self.view.removeFromSuperview()
         self.removeFromParentViewController()
         
@@ -26,17 +46,17 @@ class changePasswordd: UIViewController {
     @IBOutlet var yenitekrar: UITextField!
     @IBOutlet var yeni: UITextField!
     @IBOutlet var eski: UITextField!
-    @IBAction func onayButton(sender: UIButton) {
+    @IBAction func onayButton(_ sender: UIButton) {
         activityIndicator.frame = sender.frame
         activityIndicator.center = sender.center
         self.view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-        sender.hidden = true
+        sender.isHidden = true
         if yeni.text == yenitekrar.text && yeni.text?.characters.count > 3 && yeni.text?.characters.count < 20{
           
             MolocateAccount.changePassword(eski.text!, new_password: yeni.text!, completionHandler: { (data, response, error) in
-                dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                sender.hidden = false
+                DispatchQueue.main.async { () -> Void in
+                sender.isHidden = false
                 self.activityIndicator.stopAnimating()
                 if data == "password_changed" {
                     
@@ -55,26 +75,26 @@ class changePasswordd: UIViewController {
             
         }
         else{
-            sender.hidden = false
+            sender.isHidden = false
             self.activityIndicator.stopAnimating()
             //displayAlert("Hata", message: "Yazdığınız şifreler uyuşmuyor, lütfen aynı şifreyi girin.")
             let alertController = UIAlertController(title: "Hata!", message:
-                "Yazdığınız şifreler uyuşmuyor ve ya şifreniz çok kısa", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.Default,handler: nil))
+                "Yazdığınız şifreler uyuşmuyor ve ya şifreniz çok kısa", preferredStyle: UIAlertControllerStyle.alert)
+            alertController.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.default,handler: nil))
             
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
             self.activityIndicator.stopAnimating()
         }
         
     }
     
-    func displayAlert(title: String, message: String) {
+    func displayAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "Tamam", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "Tamam", style: .default, handler: { (action) -> Void in
         //self.dismissViewControllerAnimated(true, completion: nil)
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -83,7 +103,7 @@ class changePasswordd: UIViewController {
 //        self.toolBar.translucent = false
 //        self.toolBar.barTintColor = swiftColor
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
     }
 
     override func didReceiveMemoryWarning() {

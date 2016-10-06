@@ -2,6 +2,26 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import CoreLocation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 var frame:CGRect = CGRect()
 
@@ -31,19 +51,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         dictionary.removeAllObjects()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         scrollWidth = 3 * self.view.frame.size.width
         scrollHeight  = self.view.frame.size.height
         adjustViewLayout(MolocateDevice.size)
         
         if(MolocateDevice.isConnectedToNetwork()){
-            if NSUserDefaults.standardUserDefaults().objectForKey("userToken") != nil {
-                MoleUserToken = NSUserDefaults.standardUserDefaults().objectForKey("userToken") as? String
-                self.view.hidden = true
+            if UserDefaults.standard.object(forKey: "userToken") != nil {
+                MoleUserToken = UserDefaults.standard.object(forKey: "userToken") as? String
+                self.view.isHidden = true
                 MolocateAccount.getCurrentUser({ (data, response, error) in
-                    dispatch_async(dispatch_get_main_queue()){
-                        self.performSegueWithIdentifier("login", sender: self)
+                    DispatchQueue.main.async{
+                        self.performSegue(withIdentifier: "login", sender: self)
                         user = MoleCurrentUser
                     }
                 })
@@ -60,17 +80,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         let screenHeight = MolocateDevice.size.height
         let screenWidth = MolocateDevice.size.width
         
-        loginBut.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).CGColor
-        loginBut.layer.shadowOffset = CGSizeMake(0.0, 0.7)
+        loginBut.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        loginBut.layer.shadowOffset = CGSize(width: 0.0, height: 0.7)
         loginBut.layer.shadowOpacity = 1.0
         loginBut.layer.shadowRadius = 1.0
         loginBut.layer.masksToBounds = false
         loginBut.layer.cornerRadius = 5
         loginBut.layer.borderWidth = 1
-        loginBut.layer.borderColor = swiftColor.CGColor
+        loginBut.layer.borderColor = swiftColor.cgColor
         
         let imageView = UIImageView(image: UIImage(named: "Logo.png"))
-        imageView.frame = CGRectMake((screenWidth / 2 ) - (screenHeight * 80), 10, (screenHeight  / 9) , (screenHeight  / 9))
+        imageView.frame = CGRect(x: (screenWidth / 2 ) - (screenHeight * 80), y: 10, width: (screenHeight  / 9) , height: (screenHeight  / 9))
         self.view.addSubview(imageView)
         
   
@@ -91,37 +111,37 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         facebookButton.frame.size.height = (screenHeight * 40) / 450
         forgotButton.frame.size.height = (screenHeight * 25 ) / 450
         registeredText.frame.size.height = (screenHeight * 25) / 450
-        username.layer.borderColor = UIColor.whiteColor().CGColor
-        password.layer.borderColor = UIColor.whiteColor().CGColor
-        email.layer.borderColor = UIColor.whiteColor().CGColor
-        email.hidden = true
+        username.layer.borderColor = UIColor.white.cgColor
+        password.layer.borderColor = UIColor.white.cgColor
+        email.layer.borderColor = UIColor.white.cgColor
+        email.isHidden = true
         
         username.attributedPlaceholder = NSAttributedString(string:"Kullanıcı Adı",
-                                                            attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+                                                            attributes:[NSForegroundColorAttributeName: UIColor.white])
         email.attributedPlaceholder = NSAttributedString(string:"E-mail",
-                                                         attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+                                                         attributes:[NSForegroundColorAttributeName: UIColor.white])
         password.attributedPlaceholder = NSAttributedString(string:"Şifre",
-                                                            attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+                                                            attributes:[NSForegroundColorAttributeName: UIColor.white])
         username.delegate = self
         password.delegate = self
         
-        username.autocapitalizationType = .None
-        email.autocapitalizationType = .None
+        username.autocapitalizationType = .none
+        email.autocapitalizationType = .none
         
         frame = self.view.frame
     }
     
     
     func stuckedVideoConfiguration(){
-       if NSUserDefaults.standardUserDefaults().boolForKey("isStuck"){
+       if UserDefaults.standard.bool(forKey: "isStuck"){
             MolocateVideo.decodeGlobalVideo()
         }
     }
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         adjustViewLayout(size)
     }
     
-    func adjustViewLayout(size: CGSize) {
+    func adjustViewLayout(_ size: CGSize) {
         switch(size.width, size.height) {
         case (480, 320):
         break                        // iPhone 4S in landscape
@@ -142,38 +162,38 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func loginButton(sender: AnyObject) {
+    @IBAction func loginButton(_ sender: AnyObject) {
         if(MolocateDevice.isConnectedToNetwork()){
             choosedIndex = 2
             if username.text == "" || password.text == "" {
                 displayAlert("Hata", message: "lütfen kullanıcı adı ve parola giriniz.")
             }else {
-                activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+                activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                 activityIndicator.center = self.view.center
                 activityIndicator.hidesWhenStopped = true
-                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
                 view.addSubview(activityIndicator)
                 activityIndicator.startAnimating()
-                UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+                UIApplication.shared.beginIgnoringInteractionEvents()
                 
-                let uname: String = (username.text?.lowercaseString)!
+                let uname: String = (username.text?.lowercased())!
                 let pwd: String = password.text!
                 
                 if loginActive {
                     
                     MolocateAccount.Login(uname, password: pwd, completionHandler: { (data, response, error) in
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             if( data == "success" ){
-                                self.performSegueWithIdentifier("login", sender: self)
-                                if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-                                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                self.performSegue(withIdentifier: "login", sender: self)
+                                if UIApplication.shared.isIgnoringInteractionEvents {
+                                    UIApplication.shared.endIgnoringInteractionEvents()
                                 }
                                 self.activityIndicator.stopAnimating()
                             }else{
                                 self.displayAlert("Hata", message: "Kullanıcı Adı ya da Parola Yanlış!")
                                 self.activityIndicator.stopAnimating()
-                                if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-                                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                if UIApplication.shared.isIgnoringInteractionEvents {
+                                    UIApplication.shared.endIgnoringInteractionEvents()
                                 }
                             }
                         })
@@ -185,20 +205,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     let emailValidation = MolocateUtility.isValidEmail(email.text!)
                     //print(emailValidation)
                     if username.text?.characters.count > 3 && emailValidation{
-                        let mail: String = email.text!.lowercaseString
+                        let mail: String = email.text!.lowercased()
                         
                         MolocateAccount.SignUp(uname, password: pwd, email: mail, completionHandler: { (data, response, error) in
-                            dispatch_async(dispatch_get_main_queue(), {
+                            DispatchQueue.main.async(execute: {
                                 if(data == "success"){
-                                    self.performSegueWithIdentifier("login", sender: self)
-                                    if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                    self.performSegue(withIdentifier: "login", sender: self)
+                                    if UIApplication.shared.isIgnoringInteractionEvents {
+                                        UIApplication.shared.endIgnoringInteractionEvents()
                                     }
                                     
                                 } else{
                                     self.displayAlert("Hata", message: data)
-                                    if UIApplication.sharedApplication().isIgnoringInteractionEvents() {
-                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                    if UIApplication.shared.isIgnoringInteractionEvents {
+                                        UIApplication.shared.endIgnoringInteractionEvents()
                                     }
                                     self.activityIndicator.stopAnimating()
                                     self.activityIndicator.hidesWhenStopped = true
@@ -226,26 +246,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     
-    @IBAction func signupButton(sender: AnyObject) {
+    @IBAction func signupButton(_ sender: AnyObject) {
         //signup butonuna basınca login ve signup yer değiştirip işlevi yer değiştiriyor
         
         if loginActive == true{
-            email.hidden = false
-            signupBut.setTitle("Giriş yap", forState: UIControlState.Normal)
+            email.isHidden = false
+            signupBut.setTitle("Giriş yap", for: UIControlState())
             registeredText.text = "Zaten üye misin?"
-            loginBut.setTitle("Üye ol", forState: UIControlState.Normal)
+            loginBut.setTitle("Üye ol", for: UIControlState())
             loginActive = false
         } else {
-            email.hidden = true
-            signupBut.setTitle("Üye ol", forState: UIControlState.Normal)
+            email.isHidden = true
+            signupBut.setTitle("Üye ol", for: UIControlState())
             registeredText.text = "Hala kayıtlı değil misin?"
-            loginBut.setTitle("Giriş yap", forState: UIControlState.Normal)
+            loginBut.setTitle("Giriş yap", for: UIControlState())
             loginActive = true
         }
     }
     
     
-    @IBAction func facebooklogin(sender: AnyObject) {
+    @IBAction func facebooklogin(_ sender: AnyObject) {
         if(MolocateDevice.isConnectedToNetwork()){
             fbLoginInitiate()
         }else{
@@ -253,13 +273,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         }
     }
     
-    @IBAction func forgotButton(sender: AnyObject) {
+    @IBAction func forgotButton(_ sender: AnyObject) {
       //  print("user forgot password")
     }
   
     
     func fbLoginInitiate() {
-        FBSDKLoginManager().logInWithReadPermissions(["public_profile", "email","user_birthday", "user_friends"],fromViewController:self,handler: { (Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+        FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email","user_birthday", "user_friends"],from:self,handler: { (Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             
             if (error != nil) {
                 self.removeFbData()
@@ -268,7 +288,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 self.removeFbData()
             } else {
                // print("success")
-                FbToken = FBSDKAccessToken.currentAccessToken().tokenString
+                FbToken = FBSDKAccessToken.current().tokenString
                 let json = ["access_token":FbToken]
                 
                // print(FbToken)
@@ -276,15 +296,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 MolocateAccount.FacebookLogin(json, completionHandler: { (data, response, error) in
                     if (data == "success") {
                         MolocateAccount.getCurrentUser({ (data, response, error) in
-                            dispatch_async(dispatch_get_main_queue()) {
-                                self.performSegueWithIdentifier("login", sender: self)
+                            DispatchQueue.main.async {
+                                self.performSegue(withIdentifier: "login", sender: self)
                             }
                         })
                         
                         
                     } else if (data == "signup") {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            self.performSegueWithIdentifier("facebookLogin", sender: self)
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "facebookLogin", sender: self)
                         }
                     }
                     
@@ -293,14 +313,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 
                 if Result.grantedPermissions.contains("email") {
                     //Do work
-                    self.activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+                    self.activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                     self.activityIndicator.center = self.view.center
                     self.activityIndicator.hidesWhenStopped = true
-                    self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.White
+                    self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
                     self.view.addSubview(self.activityIndicator)
                     self.activityIndicator.hidesWhenStopped = true
                     self.activityIndicator.startAnimating()
-                    UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+                    UIApplication.shared.beginIgnoringInteractionEvents()
                    // self.fetchFacebookProfile()
                 } else {
                     //Handle error
@@ -311,7 +331,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     
-    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         if error == nil{
            // print("login completed...")
         }else{
@@ -322,32 +342,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     func removeFbData() {
         let fbManager = FBSDKLoginManager()
         fbManager.logOut()
-        FBSDKAccessToken.setCurrentAccessToken(nil)
+        FBSDKAccessToken.setCurrent(nil)
     }
     
     
-    func displayAlert(title: String, message: String) {
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "Tamam", style: .Default, handler: { (action) -> Void in
+    func displayAlert(_ title: String, message: String) {
+        UIApplication.shared.endIgnoringInteractionEvents()
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "Tamam", style: .default, handler: { (action) -> Void in
             self.activityIndicator.stopAnimating()
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let _ = touches.first {
             self.view.endEditing(true)   // ...
         }
-        super.touchesBegan(touches, withEvent:event)
+        super.touchesBegan(touches, with:event)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         if(textField == username){
             username.attributedPlaceholder = nil
         }else if(textField == email){
@@ -360,32 +380,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if(username.text == ""){
             username.attributedPlaceholder = NSAttributedString(string:"Kullanıcı Adı",
-                                                                attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+                                                                attributes:[NSForegroundColorAttributeName: UIColor.white])
         }
         
         if(email.text == ""){
             email.attributedPlaceholder = NSAttributedString(string:"E-mail",
-                                                             attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+                                                             attributes:[NSForegroundColorAttributeName: UIColor.white])
         }
         if(password.text == ""){
             password.attributedPlaceholder = NSAttributedString(string:"Şifre",
-                                                                attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
+                                                                attributes:[NSForegroundColorAttributeName: UIColor.white])
             
         }
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if(textField==username){
             let maxLength = 20
-            let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq1234567890_-.").invertedSet
-            let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
-            let numberFiltered = compSepByCharInSet.joinWithSeparator("")
-            let currentString: NSString = textField.text!
-            let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
+            let aSet = CharacterSet(charactersIn:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq1234567890_-.").inverted
+            let compSepByCharInSet = string.components(separatedBy: aSet)
+            let numberFiltered = compSepByCharInSet.joined(separator: "")
+            let currentString: NSString = textField.text! as NSString
+            let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
             
             if(string == numberFiltered && newString.length <= maxLength){
                 return true

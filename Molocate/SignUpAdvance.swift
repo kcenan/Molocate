@@ -1,6 +1,17 @@
 //  SignUpAdvance.swift
 //  Molocate
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class SignUpAdvance: UIViewController , UITextFieldDelegate {
     let screenSize: CGSize = MolocateDevice.size
@@ -20,7 +31,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
 
     @IBOutlet var confirmButton: UIButton!
     
-    @IBAction func back(sender: AnyObject) {
+    @IBAction func back(_ sender: AnyObject) {
         //geri basarsa yeni username olmadığı için üye oluşmamış olucak
     }
     @IBOutlet var termsButton: UIButton!
@@ -30,16 +41,16 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         initGui()
        
         email.delegate = self
-        email.autocapitalizationType = .None
+        email.autocapitalizationType = .none
         username.delegate = self
-        username.autocapitalizationType = .None
+        username.autocapitalizationType = .none
        
         if(FaceMail != "not_valid"){email.text = FaceMail}
         
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-        termsButton.titleLabel?.lineBreakMode = .ByWordWrapping
-        termsButton.titleLabel?.textAlignment = .Center
-        termsButton.setTitle("Kaydolarak, Koşullarımızı ve Gizlilik İlkemizi.\nkabul etmiş olursun.", forState: .Normal)
+        UIApplication.shared.endIgnoringInteractionEvents()
+        termsButton.titleLabel?.lineBreakMode = .byWordWrapping
+        termsButton.titleLabel?.textAlignment = .center
+        termsButton.setTitle("Kaydolarak, Koşullarımızı ve Gizlilik İlkemizi.\nkabul etmiş olursun.", for: UIControlState())
     }
     
     func initGui(){
@@ -48,52 +59,52 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         self.view.addGestureRecognizer(tap)
        
         toolBar.clipsToBounds = true
-        toolBar.translucent = false
+        toolBar.isTranslucent = false
         toolBar.barTintColor = swiftColor
         
         message = UILabel()
-        message.frame = CGRectMake(screenSize.width / 2 - 90 , screenSize.height / 4 - 30 , 180, 40)
+        message.frame = CGRect(x: screenSize.width / 2 - 90 , y: screenSize.height / 4 - 30 , width: 180, height: 40)
         message.textColor = swiftColor
         message.font = UIFont(name: "AvenirNext-Regular", size: 18)
         message.text = "HOŞGELDİN!"
-        message.textAlignment = .Center
+        message.textAlignment = .center
         self.view.addSubview(message)
         
         message2 = UILabel()
-        message2.frame = CGRectMake(screenSize.width / 2 - 125 , screenSize.height / 4 + 10 , 250 , 40)
+        message2.frame = CGRect(x: screenSize.width / 2 - 125 , y: screenSize.height / 4 + 10 , width: 250 , height: 40)
         message2.textColor = swiftColor
         message2.font = UIFont(name: "AvenirNext-Regular", size: 16)
         message2.text = "Başlamak için son basamak:"
-        message2.textAlignment = .Center
+        message2.textAlignment = .center
         self.view.addSubview(message2)
         
         
         onay = UIButton()
-        onay.frame = CGRectMake(screenSize.width / 2 - 90 ,screenSize.height / 2 + 90 , 180 , 50)
-        onay.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        onay.contentHorizontalAlignment = .Center
+        onay.frame = CGRect(x: screenSize.width / 2 - 90 ,y: screenSize.height / 2 + 90 , width: 180 , height: 50)
+        onay.setTitleColor(UIColor.white, for: UIControlState())
+        onay.contentHorizontalAlignment = .center
         onay.backgroundColor = swiftColor
-        onay.setTitle("Onaylıyorum.", forState: .Normal)
+        onay.setTitle("Onaylıyorum.", for: UIControlState())
         onay.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size:16)
-        onay.addTarget(self, action: #selector(SignUpAdvance.pressedOnay(_:)), forControlEvents:UIControlEvents.TouchUpInside)
+        onay.addTarget(self, action: #selector(SignUpAdvance.pressedOnay(_:)), for:UIControlEvents.touchUpInside)
         self.view.addSubview(onay)
         
         usernameLabel = UILabel()
-        usernameLabel.frame = CGRectMake(20 , screenSize.height / 4 + 90 , 90 , 40)
+        usernameLabel.frame = CGRect(x: 20 , y: screenSize.height / 4 + 90 , width: 90 , height: 40)
         usernameLabel.textColor = swiftColor
         usernameLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         usernameLabel.text = "Kullanıcı Adı:"
-        usernameLabel.textAlignment = .Right
+        usernameLabel.textAlignment = .right
         self.view.addSubview(usernameLabel)
         
         username = UITextField()
-        username.frame = CGRectMake(115  , screenSize.height / 4 + 90 , 180, 40 )
-        username.textColor = UIColor.blackColor()
-        username.keyboardType = .Default
+        username.frame = CGRect(x: 115  , y: screenSize.height / 4 + 90 , width: 180, height: 40 )
+        username.textColor = UIColor.black
+        username.keyboardType = .default
         username.font = UIFont(name: "AvenirNext-Regular", size: 14)
         let border = CALayer()
         let width = CGFloat(1.5)
-        border.borderColor = swiftColor.CGColor
+        border.borderColor = swiftColor.cgColor
         border.frame = CGRect(x: 0, y: username.frame.size.height - width, width:  username.frame.size.width, height: username.frame.size.height )
         border.borderWidth = width
         
@@ -102,47 +113,47 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         username.placeholder = "Kullanıcı Adı"
         border.borderWidth = width
         username.layer.addSublayer(border)
-        username.textAlignment = .Left
+        username.textAlignment = .left
         username.layer.masksToBounds = true
         self.view.addSubview(username)
         
         emailLabel = UILabel()
-        emailLabel.frame = CGRectMake(20 , screenSize.height / 4 + 140, 90, 40)
+        emailLabel.frame = CGRect(x: 20 , y: screenSize.height / 4 + 140, width: 90, height: 40)
         emailLabel.textColor = swiftColor
         emailLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         emailLabel.text = "E-mail:"
-        emailLabel.textAlignment = .Right
+        emailLabel.textAlignment = .right
         self.view.addSubview(emailLabel)
         
         email = UITextField()
-        email.frame = CGRectMake(115  , screenSize.height / 4 + 140 , 180 , 40 )
-        email.textColor = UIColor.blackColor()
-        email.keyboardType = .EmailAddress
+        email.frame = CGRect(x: 115  , y: screenSize.height / 4 + 140 , width: 180 , height: 40 )
+        email.textColor = UIColor.black
+        email.keyboardType = .emailAddress
         email.font = UIFont(name: "AvenirNext-Regular", size: 14)
         let border2 = CALayer()
         border2.frame = CGRect(x: 0, y: email.frame.size.height - width, width:
             email.frame.size.width , height: email.frame.size.height )
-        border2.borderColor = swiftColor.CGColor
+        border2.borderColor = swiftColor.cgColor
         border2.borderWidth = width
         email.layer.addSublayer(border2)
         email.layer.masksToBounds = true
         email.placeholder = "E-Mail"
         email.layer.addSublayer(border2)
-        email.textAlignment = .Left
+        email.textAlignment = .left
         email.layer.masksToBounds = true
         self.view.addSubview(email)
     }
     
-    func pressedOnay(sender: UIButton) {
+    func pressedOnay(_ sender: UIButton) {
         
-        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         self.view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         if username.text?.characters.count < 4 {
             displayAlert("Hata", message: "Seçtiğiniz kullanıcı adı 4 ile 20 karakter arasında olmalıdır.")
@@ -151,13 +162,13 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         }
         else{
             
-            let uname = (username.text! as String).lowercaseString
-            let mail = (email.text! as String).lowercaseString
+            let uname = (username.text! as String).lowercased()
+            let mail = (email.text! as String).lowercased()
             let token = FbToken
             let json = ["access_token": token , "username": uname, "email": mail]
             
             MolocateAccount.FacebookSignup(json, completionHandler: { (data, response, error) in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     if(data == "success"){
                         MolocateAccount.getCurrentUser({ (data, response, error) -> () in
                           
@@ -166,14 +177,14 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                         
                         
                         MolocateAccount.getFacebookFriends(completionHandler: { (data, response, error, count, next, previous) in
-                            dispatch_async(dispatch_get_main_queue(), {
+                            DispatchQueue.main.async(execute: {
                                 self.facebookfriends.relations += data.relations
                                 
                                 MolocateAccount.getSuggestedFriends(completionHandler: { (data, response, error, count, next, previous) in
-                                    dispatch_async(dispatch_get_main_queue(), {
+                                    DispatchQueue.main.async(execute: {
                                         self.facebookfriends.relations  +=  data.relations
-                                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                                        self.performSegueWithIdentifier("usernameAfter", sender: self)
+                                        UIApplication.shared.endIgnoringInteractionEvents()
+                                        self.performSegue(withIdentifier: "usernameAfter", sender: self)
                                     })
                                 })
                           
@@ -193,8 +204,8 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
     }
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let yourVC = segue.destinationViewController as? FacebookFriends{
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let yourVC = segue.destination as? FacebookFriends{
             yourVC.userRelations = self.facebookfriends
         }
     }
@@ -203,21 +214,21 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         view.endEditing(true)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         textField.resignFirstResponder()
         
         return true
         
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if(textField==username){
             let maxLength = 20
-            let aSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq1234567890_-.").invertedSet
-            let compSepByCharInSet = string.componentsSeparatedByCharactersInSet(aSet)
-            let numberFiltered = compSepByCharInSet.joinWithSeparator("")
-            let currentString: NSString = textField.text!
-            let newString: NSString = currentString.stringByReplacingCharactersInRange(range, withString: string)
+            let aSet = CharacterSet(charactersIn:"ABCDEFGHIJKLMNOPRSTUVYZXWQabcdefghijklmnoprstuvyzxwq1234567890_-.").inverted
+            let compSepByCharInSet = string.components(separatedBy: aSet)
+            let numberFiltered = compSepByCharInSet.joined(separator: "")
+            let currentString: NSString = textField.text! as NSString
+            let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
             
             if(string == numberFiltered && newString.length <= maxLength){
                 return true
@@ -234,15 +245,15 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func displayAlert(title: String, message: String) {
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+    func displayAlert(_ title: String, message: String) {
+        UIApplication.shared.endIgnoringInteractionEvents()
         self.activityIndicator.stopAnimating()
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: nil)))
-        self.presentViewController(alert, animated: true, completion: nil)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: nil)))
+        self.present(alert, animated: true, completion: nil)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
        
     }
     

@@ -19,9 +19,9 @@ class termsPrivacy: UIViewController {
         super.viewDidLoad()
 
         textView1!.layer.borderWidth = 1
-        textView1!.layer.borderColor = swiftColor.CGColor
+        textView1!.layer.borderColor = swiftColor.cgColor
         textView2!.layer.borderWidth = 1
-        textView2!.layer.borderColor = swiftColor.CGColor
+        textView2!.layer.borderColor = swiftColor.cgColor
         // Do any additional setup after loading the view.
     }
 

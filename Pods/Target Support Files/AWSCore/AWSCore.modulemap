@@ -3,8 +3,4 @@ framework module AWSCore {
 
   export *
   module * { export * }
-
-  private header "AWSXMLDictionary.h"
-  private header "AWSXMLWriter.h"
-  private header "AWSFMDatabase+Private.h"
 }

@@ -28,13 +28,13 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         super.viewDidLoad()
         thePlace = MolePlace()
         
-        tableController = self.storyboard?.instantiateViewControllerWithIdentifier("timelineController") as! TimelineController
+        tableController = self.storyboard?.instantiateViewController(withIdentifier: "timelineController") as! TimelineController
         tableController.type = "ProfileLocation"
         tableController.placeId = thePlace.id
         tableController.videoArray = thePlace.videoArray
         tableController.delegate = self
-        tableController.view.frame = CGRectMake(0, 114, MolocateDevice.size
-            .width, MolocateDevice.size.height - 114)
+        tableController.view.frame = CGRect(x: 0, y: 114, width: MolocateDevice.size
+            .width, height: MolocateDevice.size.height - 114)
         
         tableController.view.layer.zPosition = 0
         self.view.addSubview(tableController.view)
@@ -42,22 +42,22 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         
         initGui()
       
-        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        UIApplication.shared.endIgnoringInteractionEvents()
 
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         SDImageCache.sharedImageCache().clearMemory()
     }
     
     
     func initGui(){
         
-        followerCount.setTitle("\(thePlace.follower_count)", forState: UIControlState.Normal)
+        followerCount.setTitle("\(thePlace.follower_count)", for: UIControlState())
         locationName.text = thePlace.name
         self.navigationController!.topViewController!.title = thePlace.name
         //LocationTitle.text = thePlace.name
@@ -84,7 +84,7 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let region:MKCoordinateRegion = MKCoordinateRegion(center: location, span: span)
         map.setRegion(region, animated: false)
-        map.userInteractionEnabled = false
+        map.isUserInteractionEnabled = false
         let annotation = MKPointAnnotation()
         annotation.coordinate = location
         map.addAnnotation(annotation)
@@ -93,7 +93,7 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
     }
     func RefreshGuiWithData(){
         
-        followerCount.setTitle("\(thePlace.follower_count)", forState: UIControlState.Normal)
+        followerCount.setTitle("\(thePlace.follower_count)", for: UIControlState())
         locationName.text = thePlace.name
         self.navigationController!.topViewController!.title = thePlace.name
         address.text = thePlace.address
@@ -111,13 +111,13 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
 //        }
         
         if self.tableController.videoArray.count == 0 {
-            self.tableController.tableView.hidden = true
-            followButton.tintColor = UIColor.clearColor()
-            followButton.enabled = false
+            self.tableController.tableView.isHidden = true
+            followButton.tintColor = UIColor.clear
+            followButton.isEnabled = false
         }else{
-            followButton.tintColor = UIColor.whiteColor()
-            followButton.enabled = true
-            self.tableController.tableView.hidden = false
+            followButton.tintColor = UIColor.white
+            followButton.isEnabled = true
+            self.tableController.tableView.isHidden = false
         }
         
         //mekanın koordinatları eklenecek
@@ -127,7 +127,7 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let region:MKCoordinateRegion = MKCoordinateRegion(center: location, span: span)
         map.setRegion(region, animated: false)
-        map.userInteractionEnabled = false
+        map.isUserInteractionEnabled = false
         let annotation = MKPointAnnotation()
         annotation.coordinate = location
         map.addAnnotation(annotation)
@@ -136,13 +136,13 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
 
     
     
-    func pressedUsername(username: String, profilePic: NSURL, isFollowing: Bool) {
+    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool) {
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
-        let controller:profileUser = self.storyboard!.instantiateViewControllerWithIdentifier("profileUser") as! profileUser
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if username != MoleCurrentUser.username{
             controller.isItMyProfile = false
@@ -157,7 +157,7 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(username) { (data, response, error) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 if data.username != "" {
                     user = data
@@ -167,36 +167,36 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
                 
                 //choosedIndex = 0
                 self.activityIndicator.stopAnimating()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         
     }
 
     
-    func pressedPlace(placeId: String, Row: Int) {
+    func pressedPlace(_ placeId: String, Row: Int) {
         
         //Empty it isnot logical
     }
     
-    func pressedComment(videoId: String, Row: Int) {
+    func pressedComment(_ videoId: String, Row: Int) {
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         video_id = videoId
         videoIndex = Row
         myViewController = "MainController"
         
         
-        let controller:commentController = self.storyboard!.instantiateViewControllerWithIdentifier("commentController") as! commentController
+        let controller:commentController = self.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         
         comments.removeAll()
         MolocateVideo.getComments(videoId) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.removeFromSuperview()
             }
         }
@@ -204,22 +204,22 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         
     }
     
-    func pressedLikeCount(videoId: String, Row: Int) {
+    func pressedLikeCount(_ videoId: String, Row: Int) {
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
         video_id = videoId
         videoIndex = Row
         
-        let controller:likeVideo = self.storyboard!.instantiateViewControllerWithIdentifier("likeVideo") as! likeVideo
+        let controller:likeVideo = self.storyboard!.instantiateViewController(withIdentifier: "likeVideo") as! likeVideo
         
         MolocateVideo.getLikes(videoId) { (data, response, error, count, next, previous) -> () in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 controller.users = data
                 controller.tableView.reloadData()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                UIApplication.shared.endIgnoringInteractionEvents()
                 self.activityIndicator.stopAnimating()
             }
             
@@ -232,36 +232,36 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
     }
     
 
-    @IBAction func followButton(sender: AnyObject) {
+    @IBAction func followButton(_ sender: AnyObject) {
         
         if(thePlace.is_following == 0){
             thePlace.is_following = 1
             followButton.image = UIImage(named: "unfollow");
             MolocatePlace.followAPlace(thePlace.id) { (data, response, error) in
                 MoleCurrentUser.following_count += 1
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     thePlace.follower_count += 1
-                    self.followerCount.setTitle("\(thePlace.follower_count)", forState: .Normal)
+                    self.followerCount.setTitle("\(thePlace.follower_count)", for: UIControlState())
                 }
             }
             
-        }else{ let actionSheetController: UIAlertController = UIAlertController(title: nil, message: "Takibi bırakmak istediğine emin misin?", preferredStyle: .ActionSheet)
+        }else{ let actionSheetController: UIAlertController = UIAlertController(title: nil, message: "Takibi bırakmak istediğine emin misin?", preferredStyle: .actionSheet)
             
             
-            let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { action -> Void in
+            let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .cancel) { action -> Void in
                 //Just dismiss the action sheet
             }
             actionSheetController.addAction(cancelAction)
             //Create and add first option action
-            let takePictureAction: UIAlertAction = UIAlertAction(title: "Takibi Bırak", style: .Default)
+            let takePictureAction: UIAlertAction = UIAlertAction(title: "Takibi Bırak", style: .default)
             { action -> Void in
                 self.followButton.image = UIImage(named: "follow");
                 thePlace.is_following = 0
                 MoleCurrentUser.following_count -= 1
                 MolocatePlace.unfollowAPlace(thePlace.id) { (data, response, error) in
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         thePlace.follower_count -= 1
-                        self.followerCount.setTitle("\(thePlace.follower_count)", forState: .Normal)
+                        self.followerCount.setTitle("\(thePlace.follower_count)", for: UIControlState())
                     }
                     
                 }
@@ -272,24 +272,24 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
             actionSheetController.popoverPresentationController?.sourceView = sender as? UIView
             
             //Present the AlertController
-            self.presentViewController(actionSheetController, animated: true, completion: nil)
+            self.present(actionSheetController, animated: true, completion: nil)
             
         }
         
     }
     
     
-    @IBAction func launchMap(sender: AnyObject) {
+    @IBAction func launchMap(_ sender: AnyObject) {
         
-        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { action -> Void in
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Vazgeç", style: .cancel) { action -> Void in
             //Just dismiss the action sheet
         }
         actionSheetController.addAction(cancelAction)
         //Create and add first option action
-        let takePictureAction: UIAlertAction = UIAlertAction(title: "Haritaya Yönlendir", style: .Default)
+        let takePictureAction: UIAlertAction = UIAlertAction(title: "Haritaya Yönlendir", style: .default)
         { action -> Void in
             
             self.openMapForPlace()
@@ -300,14 +300,14 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         actionSheetController.popoverPresentationController?.sourceView = sender as? UIView
         
         //Present the AlertController
-        self.presentViewController(actionSheetController, animated: true, completion: nil)
+        self.present(actionSheetController, animated: true, completion: nil)
         
     }
 
-    @IBAction func followersButton(sender: AnyObject) {
+    @IBAction func followersButton(_ sender: AnyObject) {
         tableController.pausePLayers()
         user = MoleCurrentUser
-        let controller:Followers = self.storyboard!.instantiateViewControllerWithIdentifier("Followers") as! Followers
+        let controller:Followers = self.storyboard!.instantiateViewController(withIdentifier: "Followers") as! Followers
         controller.classPlace = thePlace
         controller.classUser = MoleCurrentUser
         controller.followersclicked = true
@@ -321,8 +321,8 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         let coordinates = CLLocationCoordinate2DMake(thePlace.lat , thePlace.lon)
         let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
         let options = [
-            MKLaunchOptionsMapCenterKey: NSValue(MKCoordinate: regionSpan.center),
-            MKLaunchOptionsMapSpanKey: NSValue(MKCoordinateSpan: regionSpan.span)
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
         ]
         
         let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
@@ -330,7 +330,7 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
         //mekanın adı eklenecek
         mapItem.name = thePlace.name
         
-        MKMapItem.openMapsWithItems([mapItem], launchOptions: options)
+        MKMapItem.openMaps(with: [mapItem], launchOptions: options)
     }
 
   
@@ -342,8 +342,8 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
     }
    
     
-    override func viewWillAppear(animated: Bool) {
-        (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = false
+    override func viewWillAppear(_ animated: Bool) {
+        (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = false
 
     }
     

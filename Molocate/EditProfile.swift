@@ -9,7 +9,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
-    let screenSize: CGRect = UIScreen.mainScreen().bounds
+    let screenSize: CGRect = UIScreen.main.bounds
     
     let name : UILabel = UILabel()
     let notification : UILabel = UILabel()
@@ -40,7 +40,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
         
         user = MoleCurrentUser
         initGui()
@@ -65,49 +65,49 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         view.addGestureRecognizer(tap)
         
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         
 
     }
     
     
-    func addSaveandPassword(screenWidth: CGFloat, screenHeight: CGFloat){
+    func addSaveandPassword(_ screenWidth: CGFloat, screenHeight: CGFloat){
         let scr = screenHeight-0
-        let saveButton   = UIButton(type: UIButtonType.System) as UIButton
-        saveButton.frame = CGRectMake(30 , -40 + (scr * 100) / 120 , screenWidth - 60 , (scr * 12) / 120 )
+        let saveButton   = UIButton(type: UIButtonType.system) as UIButton
+        saveButton.frame = CGRect(x: 30 , y: -40 + (scr * 100) / 120 , width: screenWidth - 60 , height: (scr * 12) / 120 )
         saveButton.backgroundColor = swiftColor
-        saveButton.setTitle("Değişiklikleri Kaydet", forState: UIControlState.Normal)
-        saveButton.addTarget(self, action: #selector(editProfile.buttonAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        saveButton.setTitle("Değişiklikleri Kaydet", for: UIControlState())
+        saveButton.addTarget(self, action: #selector(editProfile.buttonAction(_:)), for: UIControlEvents.touchUpInside)
         saveButton.layer.cornerRadius = 10
         saveButton.layer.borderWidth = 0
-        saveButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        saveButton.setTitleColor(UIColor.white, for: UIControlState())
         saveButton.titleLabel!.font =  UIFont(name: "AvenirNext-DemiBold.ttf", size: 18)
         self.view.addSubview(saveButton)
         
     
-        let password   = UIButton(type: UIButtonType.System) as UIButton
-        password.frame = CGRectMake(30 , 0 + (scr * 82) / 120 , screenWidth - 60 , (scr * 6) / 120 )
-        password.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        let password   = UIButton(type: UIButtonType.system) as UIButton
+        password.frame = CGRect(x: 30 , y: 0 + (scr * 82) / 120 , width: screenWidth - 60 , height: (scr * 6) / 120 )
+        password.setTitleColor(UIColor.white, for: UIControlState())
         password.titleLabel!.font =  UIFont(name: "AvenirNext-DemiBold.tff", size: 16)
         password.backgroundColor = swiftColor
-        password.setTitle("Şifre Değiştir", forState: UIControlState.Normal)
-        password.addTarget(self, action: #selector(editProfile.changePassword(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        password.setTitle("Şifre Değiştir", for: UIControlState())
+        password.addTarget(self, action: #selector(editProfile.changePassword(_:)), for: UIControlEvents.touchUpInside)
         password.layer.cornerRadius = 10
         password.layer.borderWidth = 0
         self.view.addSubview(password)
     }
-    func addNotificationsPart(screenWidth: CGFloat, screenHeight: CGFloat){
+    func addNotificationsPart(_ screenWidth: CGFloat, screenHeight: CGFloat){
         let scr = screenHeight-0
    
-        notification.frame = CGRectMake(0, 0 + (scr * (42 / 120)), screenWidth / 3, (scr * 6) / 120)
+        notification.frame = CGRect(x: 0, y: 0 + (scr * (42 / 120)), width: screenWidth / 3, height: (scr * 6) / 120)
         notification.text = "Durum:"
-        notification.textAlignment = .Right
+        notification.textAlignment = .right
         notification.font = UIFont (name: "AvenirNext-Regular", size: 16)
         self.view.addSubview(notification)
 
     }
     
-    func addPhotoPart(screenWidth: CGFloat, screenHeight: CGFloat){
+    func addPhotoPart(_ screenWidth: CGFloat, screenHeight: CGFloat){
         let scr = screenHeight-0
        
         if(user.profilePic.absoluteString != ""){
@@ -118,7 +118,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
             photo.image = UIImage(named: "profile")!
         }
         
-        photo.frame = CGRectMake((screenWidth / 2) - ((scr * 19) / 240) , 0 + (scr * 2) / 120 , (scr * 19) / 120 , (scr * 19) / 120)
+        photo.frame = CGRect(x: (screenWidth / 2) - ((scr * 19) / 240) , y: 0 + (scr * 2) / 120 , width: (scr * 19) / 120 , height: (scr * 19) / 120)
         photo.layer.borderWidth = 0.1
         photo.layer.masksToBounds = false
         photo.backgroundColor = profileBackgroundColor
@@ -127,82 +127,82 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
         self.view.addSubview(photo)
         
         
-        let changePhoto   = UIButton(type: UIButtonType.System) as UIButton
-        changePhoto.frame = CGRectMake((screenWidth / 2) - 40, 0 + (scr * 22) / 120 , 80 , (scr * 5) / 120)
+        let changePhoto   = UIButton(type: UIButtonType.system) as UIButton
+        changePhoto.frame = CGRect(x: (screenWidth / 2) - 40, y: 0 + (scr * 22) / 120 , width: 80 , height: (scr * 5) / 120)
         changePhoto.backgroundColor = swiftColor
         changePhoto.layer.cornerRadius = 10
         changePhoto.layer.borderWidth = 0
         
-        changePhoto.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        changePhoto.setTitleColor(UIColor.white, for: UIControlState())
         changePhoto.titleLabel!.font =  UIFont(name: "AvenirNext-Regular", size: 12)
-        changePhoto.setTitle("Düzenle", forState: UIControlState.Normal)
-        changePhoto.addTarget(self, action: #selector(editProfile.changePhoto(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        changePhoto.setTitle("Düzenle", for: UIControlState())
+        changePhoto.addTarget(self, action: #selector(editProfile.changePhoto(_:)), for: UIControlEvents.touchUpInside)
         self.view.addSubview(changePhoto)
         imagePicker.delegate = self
     }
-    func addTimePart(screenWidth: CGFloat, screenHeight: CGFloat){
+    func addTimePart(_ screenWidth: CGFloat, screenHeight: CGFloat){
         let scr = screenHeight-0
                 birthday.font = UIFont (name: "AvenirNext-Regular", size: 16)
-        birthday.frame = CGRectMake(0, 0 + (scr * (63 / 120)), screenWidth / 3, (scr * 16) / 120)
+        birthday.frame = CGRect(x: 0, y: 0 + (scr * (63 / 120)), width: screenWidth / 3, height: (scr * 16) / 120)
         birthday.text = "Doğum Tarihi:"
-        birthday.textAlignment = .Right
+        birthday.textAlignment = .right
         self.view.addSubview(birthday)
         
         
-        datepicker.frame = CGRectMake(screenWidth / 3 + 5  , 0 + (scr * (61 / 120)), screenWidth - (screenWidth / 3 - 10)     , (scr * 20) / 120 )
-        datepicker.locale = NSLocale(localeIdentifier: "tr_TR")
-        datepicker.datePickerMode = UIDatePickerMode.Date
-        datepicker.tintColor = UIColor.whiteColor()
-        datepicker.setValue(UIColor.blackColor(), forKeyPath: "textColor")
-        datepicker.transform = CGAffineTransformMakeScale(0.8 , 0.9 )
-        let dateFormatter = NSDateFormatter()
+        datepicker.frame = CGRect(x: screenWidth / 3 + 5  , y: 0 + (scr * (61 / 120)), width: screenWidth - (screenWidth / 3 - 10)     , height: (scr * 20) / 120 )
+        datepicker.locale = Locale(identifier: "tr_TR")
+        datepicker.datePickerMode = UIDatePickerMode.date
+        datepicker.tintColor = UIColor.white
+        datepicker.setValue(UIColor.black, forKeyPath: "textColor")
+        datepicker.transform = CGAffineTransform(scaleX: 0.8 , y: 0.9 )
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         var birthdaytext = user.birthday
         if(birthdaytext != ""){
-            let index = birthdaytext.startIndex.advancedBy(2)
+            let index = birthdaytext.characters.index(birthdaytext.startIndex, offsetBy: 2)
             if(birthdaytext[index] == "/" ){
-                let fullNameArr = birthdaytext.componentsSeparatedByString("/")
+                let fullNameArr = birthdaytext.components(separatedBy: "/")
                 birthdaytext =  fullNameArr[2] + "-" + fullNameArr[0] + "-"+fullNameArr[1]// First
             }
         }
-        datepicker.setDate( dateFormatter.dateFromString(birthdaytext)!, animated: true)
+        datepicker.setDate( dateFormatter.date(from: birthdaytext)!, animated: true)
         self.view.addSubview(datepicker)
         
 
         
     }
     
-    func addNamePart(screenWidth: CGFloat, screenHeight: CGFloat){
+    func addNamePart(_ screenWidth: CGFloat, screenHeight: CGFloat){
         let scr = screenHeight-0
      
-        name.frame = CGRectMake(0, 0 + (scr * (31 / 120)), screenWidth / 3, (scr * 6) / 120)
+        name.frame = CGRect(x: 0, y: 0 + (scr * (31 / 120)), width: screenWidth / 3, height: (scr * 6) / 120)
         name.text = "İsim Soyisim:"
-        name.textAlignment = .Right
+        name.textAlignment = .right
         name.font = UIFont (name: "AvenirNext-Regular", size: 16)
         name.layer.borderWidth = 0.3
-        name.layer.borderColor = lineColor.CGColor
+        name.layer.borderColor = lineColor.cgColor
         self.view.addSubview(name)
         
     
         
         
-        nameText.frame = CGRectMake(screenWidth / 3 + 10 , 0 + (scr * (31 / 120)), (screenWidth - (screenWidth / 3) - 30)  - 5, (scr * 6) / 120)
-        nameText.borderStyle = .RoundedRect
-        nameText.textColor = UIColor.blackColor()
-        nameText.keyboardType = .Default
+        nameText.frame = CGRect(x: screenWidth / 3 + 10 , y: 0 + (scr * (31 / 120)), width: (screenWidth - (screenWidth / 3) - 30)  - 5, height: (scr * 6) / 120)
+        nameText.borderStyle = .roundedRect
+        nameText.textColor = UIColor.black
+        nameText.keyboardType = .default
         //user.printUser()
         nameText.font = UIFont(name: "AvenirNext-Regular", size: 14)
         nameText.text = user.first_name
         self.view.addSubview(nameText)
         
-        caption.frame = CGRectMake(screenWidth / 3 + 10 , 0 + (scr * (41 / 120)), (screenWidth - (screenWidth / 3) - 30)  - 5, (scr * 8) / 120)
+        caption.frame = CGRect(x: screenWidth / 3 + 10 , y: 0 + (scr * (41 / 120)), width: (screenWidth - (screenWidth / 3) - 30)  - 5, height: (scr * 8) / 120)
         
-        caption.layer.borderColor = lineColor.CGColor
+        caption.layer.borderColor = lineColor.cgColor
         caption.layer.borderWidth = 0.5
         caption.layer.cornerRadius = 10
         //ca = .RoundedRect
-        caption.textColor = UIColor.blackColor()
-        caption.keyboardType = .Default
+        caption.textColor = UIColor.black
+        caption.keyboardType = .default
         caption.font = UIFont(name: "AvenirNext-Regular", size: 14)
         caption.text = user.bio
         self.view.addSubview(caption)
@@ -212,41 +212,41 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
 
     }
     
-    override func viewWillAppear(animated: Bool) {
-        (self.parentViewController?.parentViewController?.parentViewController as! ContainerController).scrollView.scrollEnabled = false
+    override func viewWillAppear(_ animated: Bool) {
+        (self.parent?.parent?.parent as! ContainerController).scrollView.isScrollEnabled = false
     }
-    func addGenderPart(screenWidth: CGFloat, screenHeight: CGFloat){
+    func addGenderPart(_ screenWidth: CGFloat, screenHeight: CGFloat){
         let scr = screenHeight-0
         
     
-        gender.frame = CGRectMake(0, 0 + (scr * (53 / 120)), screenWidth / 3, (scr * 6) / 120)
+        gender.frame = CGRect(x: 0, y: 0 + (scr * (53 / 120)), width: screenWidth / 3, height: (scr * 6) / 120)
         gender.text = "Cinsiyet:"
-        gender.textAlignment = .Right
+        gender.textAlignment = .right
         gender.font = UIFont (name: "AvenirNext-Regular", size: 16)
         self.view.addSubview(gender)
         
      
-        kadın.frame = CGRectMake(screenWidth / 3 + 10, 0 + (scr * (53 / 120)), 50, (scr * 6) / 120)
+        kadın.frame = CGRect(x: screenWidth / 3 + 10, y: 0 + (scr * (53 / 120)), width: 50, height: (scr * 6) / 120)
         kadın.text = "Kadın"
         kadın.font = UIFont (name: "AvenirNext-Regular", size: 16)
-        kadın.textAlignment = .Right
+        kadın.textAlignment = .right
         self.view.addSubview(kadın)
         
 
-        erkekimage.frame = CGRectMake(screenWidth / 3 + 150 , 0 + (scr * (56 / 120)) - 10 , 25 , 20)
+        erkekimage.frame = CGRect(x: screenWidth / 3 + 150 , y: 0 + (scr * (56 / 120)) - 10 , width: 25 , height: 20)
         erkekimage.text = "◽️"
         self.view.addSubview(erkekimage)
     
-        kadınimage.frame = CGRectMake(screenWidth / 3 + 65 , 0 + (scr * (56 / 120)) - 10 , 25 , 20)
+        kadınimage.frame = CGRect(x: screenWidth / 3 + 65 , y: 0 + (scr * (56 / 120)) - 10 , width: 25 , height: 20)
         kadınimage.text = "◽️"
         self.view.addSubview(kadınimage)
         
         
     
-        erkek.frame = CGRectMake(screenWidth / 3 + 100 , 0 + (scr * (53 / 120)) , 50, (scr * 6) / 120)
+        erkek.frame = CGRect(x: screenWidth / 3 + 100 , y: 0 + (scr * (53 / 120)) , width: 50, height: (scr * 6) / 120)
         erkek.text = "Erkek"
         erkek.font = UIFont (name: "AvenirNext-Regular", size: 16)
-        erkek.textAlignment = .Left
+        erkek.textAlignment = .left
         self.view.addSubview(erkek)
         
         
@@ -257,84 +257,84 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
             kadınimage.text = "🔳"
         }
         
-        let femaleButton   = UIButton(type: UIButtonType.RoundedRect)
-        femaleButton.frame = CGRectMake(screenWidth / 3 + 51 , 0 + (scr * (56 / 120)) - 6 , 38 , 38)
-        femaleButton.addTarget(self, action: #selector(editProfile.femaleSelected(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        let femaleButton   = UIButton(type: UIButtonType.roundedRect)
+        femaleButton.frame = CGRect(x: screenWidth / 3 + 51 , y: 0 + (scr * (56 / 120)) - 6 , width: 38 , height: 38)
+        femaleButton.addTarget(self, action: #selector(editProfile.femaleSelected(_:)), for: UIControlEvents.touchUpInside)
         self.view.addSubview(femaleButton)
         
         
-        let maleButton   = UIButton(type: UIButtonType.System) as UIButton
-        maleButton.frame = CGRectMake(screenWidth / 3 + 141 , 0 + (scr * (56 / 120)) - 6 , 38 , 38)
-        maleButton.addTarget(self, action: #selector(editProfile.maleSelected(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        let maleButton   = UIButton(type: UIButtonType.system) as UIButton
+        maleButton.frame = CGRect(x: screenWidth / 3 + 141 , y: 0 + (scr * (56 / 120)) - 6 , width: 38 , height: 38)
+        maleButton.addTarget(self, action: #selector(editProfile.maleSelected(_:)), for: UIControlEvents.touchUpInside)
         self.view.addSubview(maleButton)
     }
     
     
-    func addlines(screenWidth: CGFloat, screenHeight: CGFloat){
+    func addlines(_ screenWidth: CGFloat, screenHeight: CGFloat){
         let scr = screenHeight - 0
         
-        let line1 = UIView(frame: CGRectMake(0 , 0 + (scr * (29 / 120)) , screenWidth , 1.0))
+        let line1 = UIView(frame: CGRect(x: 0 , y: 0 + (scr * (29 / 120)) , width: screenWidth , height: 1.0))
         line1.layer.borderWidth = 1.0
-        line1.layer.borderColor = lineColor.CGColor
+        line1.layer.borderColor = lineColor.cgColor
         self.view.addSubview(line1)
         
         
-        let line3 = UIView(frame: CGRectMake(0 , 0 + (scr * (39 / 120)) , screenWidth , 1.0))
+        let line3 = UIView(frame: CGRect(x: 0 , y: 0 + (scr * (39 / 120)) , width: screenWidth , height: 1.0))
         line3.layer.borderWidth = 1.0
-        line3.layer.borderColor = lineColor.CGColor
+        line3.layer.borderColor = lineColor.cgColor
         self.view.addSubview(line3)
         
         
         
-        let line5 = UIView(frame: CGRectMake(0 , 0 + (scr * (51 / 120)) , screenWidth , 0.5))
+        let line5 = UIView(frame: CGRect(x: 0 , y: 0 + (scr * (51 / 120)) , width: screenWidth , height: 0.5))
         line5.layer.borderWidth = 0.5
-        line5.layer.borderColor = lineColor.CGColor
+        line5.layer.borderColor = lineColor.cgColor
         self.view.addSubview(line5)
         
         
-        let line7 = UIView(frame: CGRectMake(0 , 0 + (scr * (61 / 120)) , screenWidth , 0.5))
+        let line7 = UIView(frame: CGRect(x: 0 , y: 0 + (scr * (61 / 120)) , width: screenWidth , height: 0.5))
         line7.layer.borderWidth = 0.5
-        line7.layer.borderColor = lineColor.CGColor
+        line7.layer.borderColor = lineColor.cgColor
         self.view.addSubview(line7)
         
         
-        let line11 = UIView(frame: CGRectMake(0 , 0 + (scr * (81 / 120)) , screenWidth , 0.5))
+        let line11 = UIView(frame: CGRect(x: 0 , y: 0 + (scr * (81 / 120)) , width: screenWidth , height: 0.5))
         line11.layer.borderWidth = 0.5
-        line11.layer.borderColor = lineColor.CGColor
+        line11.layer.borderColor = lineColor.cgColor
         self.view.addSubview(line11)
         
-        let line12 = UIView(frame: CGRectMake(0 , 0 + (scr * (89 / 120)) , screenWidth , 0.5))
+        let line12 = UIView(frame: CGRect(x: 0 , y: 0 + (scr * (89 / 120)) , width: screenWidth , height: 0.5))
         line12.layer.borderWidth = 0.5
-        line12.layer.borderColor = lineColor.CGColor
+        line12.layer.borderColor = lineColor.cgColor
         self.view.addSubview(line12)
         
     }
 
     
-    func femaleSelected(sender:UIButton!){
+    func femaleSelected(_ sender:UIButton!){
        // print("female selected")
         kadınimage.text = "🔳"
         erkekimage.text = "◽️"
         user.gender = "female"
         
     }
-    func maleSelected(sender:UIButton!){
+    func maleSelected(_ sender:UIButton!){
       //  print("male selected")
         kadınimage.text = "◽️"
         erkekimage.text = "🔳"
         user.gender = "male"
     }
     
-    func buttonAction(sender:UIButton!)
+    func buttonAction(_ sender:UIButton!)
     {
         
-        sender.hidden = true
+        sender.isHidden = true
         
         user.first_name = nameText.text!
         user.bio = caption.text!
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        user.birthday = dateFormatter.stringFromDate(datepicker.date)
+        user.birthday = dateFormatter.string(from: datepicker.date)
         MoleCurrentUser = user
         
      //   let imageData = UIImageJPEGRepresentation(photo.image!, 0.5)
@@ -354,40 +354,40 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
             
           
             MolocateAccount.sendProfilePhotoandThumbnail(imageData!, thumbnail: thumbNailData!, completionHandler: { (data, pictureUrl, thumbnailUrl, response, error) in
-                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                DispatchQueue.main.async { () -> Void in
                     
                     if data == "success"{
                         SDImageCache.sharedImageCache().removeImageForKey(MoleCurrentUser.profilePic.absoluteString)
                         SDImageCache.sharedImageCache().removeImageForKey(MoleCurrentUser.thumbnailPic.absoluteString)
                         SDImageCache.sharedImageCache().storeImage(self.selected!, forKey: pictureUrl)
                         SDImageCache.sharedImageCache().storeImage(self.thumbnail!, forKey: thumbnailUrl)
-                        MoleCurrentUser.profilePic = NSURL(string: pictureUrl)!
-                        MoleCurrentUser.thumbnailPic = NSURL(string: thumbnailUrl)!
+                        MoleCurrentUser.profilePic = URL(string: pictureUrl)!
+                        MoleCurrentUser.thumbnailPic = URL(string: thumbnailUrl)!
 
                         choosedIndex = 0
-                        self.navigationController?.popViewControllerAnimated(true)
+                        self.navigationController?.popViewController(animated: true)
                         self.selected = nil
                         self.thumbnail = nil
                     }else{
                         self.displayAlert("Tamam", message: "Kullanıcı bilgileri değiştirilirken bir hata oluştu")
-                        sender.hidden = false
+                        sender.isHidden = false
                     }
         
                     self.activityIndicator.stopAnimating()
-                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    UIApplication.shared.endIgnoringInteractionEvents()
                     
                 }
                
             })
         }else{
             MolocateAccount.EditUser({ (data, response, error) in
-                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                DispatchQueue.main.async { () -> Void in
                     if data == "success"{
                         choosedIndex = 0
-                        self.navigationController?.popViewControllerAnimated(true)
+                        self.navigationController?.popViewController(animated: true)
                     }else{
                         self.displayAlert("Tamam", message: "Kullanıcı bilgileri değiştirilirken bir hata oluştu")
-                        sender.hidden = false
+                        sender.isHidden = false
                     }
                 }
             })
@@ -430,7 +430,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     
 
     
-    func changePassword(sender:UIButton!)
+    func changePassword(_ sender:UIButton!)
     {
         //DBG: Push View Controller
 //        let controller:changePasswordd = self.storyboard!.instantiateViewControllerWithIdentifier("changePasswordd") as! changePasswordd
@@ -441,36 +441,36 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
 //        controller.didMoveToParentViewController(self)
         //print("şifre değiştirecek")
         
-        let controller:changePasswordd = self.storyboard!.instantiateViewControllerWithIdentifier("changePasswordd") as! changePasswordd
+        let controller:changePasswordd = self.storyboard!.instantiateViewController(withIdentifier: "changePasswordd") as! changePasswordd
         navigationController?.pushViewController(controller, animated: true)
         
     }
-    func changePhoto(sender:UIButton!)
+    func changePhoto(_ sender:UIButton!)
     {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary){
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
             //print("Button capture")
             let imag = UIImagePickerController()
             imag.delegate = self
-            imag.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            imag.sourceType = UIImagePickerControllerSourceType.photoLibrary
             imag.allowsEditing = false
-            self.presentViewController(imag, animated: true, completion: nil)
+            self.present(imag, animated: true, completion: nil)
         }
         
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!) {
+    func imagePickerController(_ picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!) {
         let selectedImage : UIImage = image
         photo.image = MolocateUtility.RBSquareImageTo(selectedImage, size: CGSize(width: 480, height: 480))
         selected = photo.image
         thumbnail = MolocateUtility.RBSquareImageTo(selectedImage, size: CGSize(width: 92, height: 92))
     
         //print("new image")
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
     }
-    func imagePickerControllerDidCancel(picker: UIImagePickerController)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         //print("picker cancel.")
     }
     
@@ -488,13 +488,13 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
 //    }
 //    
     
-    func displayAlert(title: String, message: String) {
+    func displayAlert(_ title: String, message: String) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             //self.dismissViewControllerAnimated(true, completion: nil)
         })))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     

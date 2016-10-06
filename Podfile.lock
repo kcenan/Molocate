@@ -1,42 +1,15 @@
 PODS:
-  - AWSCore (2.4.0)
-  - AWSS3 (2.4.0):
-    - AWSCore (= 2.4.0)
-  - Crashlytics (3.7.2):
-    - Fabric (~> 1.6.3)
-  - Fabric (1.6.7)
-  - HanekeSwift (0.10.1)
-  - QuadratTouch (1.1.1)
-  - RecordButton (1.0.0)
-  - RNCryptor (4.0.0)
-  - SDWebImage (3.7.5):
-    - SDWebImage/Core (= 3.7.5)
-  - SDWebImage/Core (3.7.5)
-  - XLActionController (2.0.0):
-    - XLActionController/Core (= 2.0.0)
-  - XLActionController/Core (2.0.0)
+  - AWSCore (2.4.9)
+  - AWSS3 (2.4.9):
+    - AWSCore (= 2.4.9)
 
 DEPENDENCIES:
-  - AWSS3
-  - Crashlytics
-  - Fabric
-  - HanekeSwift
-  - QuadratTouch (>= 1.0)
-  - RecordButton
-  - RNCryptor (~> 4.0.0-beta)
-  - SDWebImage
-  - XLActionController
+  - AWSS3 (= 2.4.9)
 
 SPEC CHECKSUMS:
-  AWSCore: 7e0da755786280a76ed4ab4ed8c1d38ced09b460
-  AWSS3: dc00e788fb6733853ecd615a45f9d7dd6ce25823
-  Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
-  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
-  HanekeSwift: 08e47d3d0f2899ec58e5d257beba0de619aca9e8
-  QuadratTouch: 296d83c63a4328f6f40af9fc728fe24f0e3b00d4
-  RecordButton: 53e5cea9112aa2f09dccf83e55d3c4645197b58a
-  RNCryptor: 59d6483908115af5c12b884db23392024e52a5fe
-  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
-  XLActionController: 97ed31237413db4d9401c6a559270f4d2b4de136
+  AWSCore: 175208358b95492e0ebe0337df2ab415300bddac
+  AWSS3: e4959b48db48d5f3dcd5cdf9e24a07f60a313611
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 7e3b455414649eb76bf6a26f760f45b0f6f09f5c
+
+COCOAPODS: 1.0.1

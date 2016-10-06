@@ -7,6 +7,26 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
 
 class TestViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate{
     
@@ -28,17 +48,17 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
         MoleCurrentUser = MoleUser()
         MoleUserToken = "91cdabf16a61915bd99c7403b3a3c2c08fdf9be7"
         captionView.delegate = self
-        captionView.layer.borderColor = UIColor.blueColor().CGColor
+        captionView.layer.borderColor = UIColor.blue.cgColor
         captionView.layer.borderWidth = 1.0;
         captionView.layer.cornerRadius = 5.0;
-        mentionTable.hidden = true
+        mentionTable.isHidden = true
         mentionTable.tableFooterView = UIView()
-        profilePhoto.backgroundColor = UIColor.lightGrayColor()
+        profilePhoto.backgroundColor = UIColor.lightGray
         profilePhoto.image = UIImage(named: "profile")
-        self.view.backgroundColor = UIColor.whiteColor()
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        self.view.backgroundColor = UIColor.white
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(self.keyboardNotification(_:)),
-                                                         name: UIKeyboardWillChangeFrameNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillChangeFrame,
                                                          object: nil)
         
         //        let image = UIImage(named: "logoVectorel")
@@ -70,18 +90,18 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     
-    func keyboardNotification(notification: NSNotification) {
-        if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
-            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+    func keyboardNotification(_ notification: Notification) {
+        if let userInfo = (notification as NSNotification).userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            if endFrame?.origin.y >= UIScreen.mainScreen().bounds.size.height {
+            if endFrame?.origin.y >= UIScreen.main.bounds.size.height {
                 self.keyboardHeightLayoutConstraint?.constant = 0.0
                 self.photoHeightLayoutConstraint?.constant = 10.0
             } else {
@@ -89,15 +109,15 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.photoHeightLayoutConstraint?.constant = endFrame?.size.height ?? 10.0
                 
             }
-            UIView.animateWithDuration(duration,
-                                       delay: NSTimeInterval(0),
+            UIView.animate(withDuration: duration,
+                                       delay: TimeInterval(0),
                                        options: animationCurve,
                                        animations: { self.view.layoutIfNeeded() },
                                        completion: nil)
         }
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         let attributed = NSMutableAttributedString(string: textView.text)
         
         for mention in mentionAreas {
@@ -107,26 +127,26 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
-    func textViewDidEndEditing(textView: UITextView) {
-        self.view.backgroundColor = UIColor.whiteColor()
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.view.backgroundColor = UIColor.white
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
-        self.view.backgroundColor = UIColor.lightGrayColor()
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.view.backgroundColor = UIColor.lightGray
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
     
     
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange,
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
         
-        let new = (textView.attributedText.string as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        let new = (textView.attributedText.string as NSString).replacingCharacters(in: range, with: text)
         
         let textRange = NSRange(location: 0, length: new.characters.count )
         
@@ -142,7 +162,7 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
                 var word = new[mention.range.location+1...mention.range.location + mention.range.length-1]
                 
                 if word.hasPrefix("@") {
-                    word.removeAtIndex(word.startIndex)
+                    word.remove(at: word.startIndex)
                 }
                 
                 mentionedUsers.append(word)
@@ -153,7 +173,7 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
                 var word = new[mention.range.location...mention.range.location + mention.range.length-1]
                 
                 if word.hasPrefix("@") {
-                    word.removeAtIndex(word.startIndex)
+                    word.remove(at: word.startIndex)
                 }
                 
                 mentionedUsers.append(word)
@@ -226,7 +246,7 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
         return text.characters.count+(text.characters.count-range.length) <= 140
     }
     
-    func isTheRangeInMentionZone(range: NSRange, text: String) -> (Bool, Int){
+    func isTheRangeInMentionZone(_ range: NSRange, text: String) -> (Bool, Int){
         for i in 0..<mentionAreas.count{
             let mention = mentionAreas[i]
             if text != "" {
@@ -242,80 +262,80 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
         return (false,0)
     }
     
-    func updateSearch(word: String){
+    func updateSearch(_ word: String){
         print("word::",word)
         if word == ""{
-            mentionTable.hidden = true
+            mentionTable.isHidden = true
             searchResults.removeAll()
         }else{
             
             
             MolocateAccount.searchUser(word, completionHandler: { (data, response, error) in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     if data.count > 0 {
                         self.searchResults = data
                         self.mentionTable.reloadData()
                     }
                 }
             })
-            mentionTable.hidden = false
+            mentionTable.isHidden = false
             
         }
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count+1
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 48
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = searchUsername(style: UITableViewCellStyle.Default, reuseIdentifier: "mention")
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "mention")
         
-        if indexPath.row < searchResults.count {
-            cell.followButton.hidden = true
-            cell.usernameLabel.text = "@\(searchResults[indexPath.row].username)"
-            if searchResults[indexPath.row].first_name == "" {
-                cell.nameLabel.text = "\(searchResults[indexPath.row].username)"
+        if (indexPath as NSIndexPath).row < searchResults.count {
+            cell.followButton.isHidden = true
+            cell.usernameLabel.text = "@\(searchResults[(indexPath as NSIndexPath).row].username)"
+            if searchResults[(indexPath as NSIndexPath).row].first_name == "" {
+                cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].username)"
             }
             else{
-                cell.nameLabel.text = "\(searchResults[indexPath.row].first_name) \(searchResults[indexPath.row].last_name)"
+                cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
             }
-            if(searchResults[indexPath.row].profilePic.absoluteString != ""){
+            if(searchResults[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
                 cell.profilePhoto.sd_setImageWithURL(searchResults[indexPath.row].profilePic, forState: UIControlState.Normal)
             }else{
-                cell.profilePhoto.setImage(UIImage(named: "profile"), forState: .Normal)
+                cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
             }
             
-            cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), for: UIControlEvents.touchUpInside)
             //cell.followButton.addTarget(self, action: Selector("pressedFollowSearch"), forControlEvents: .TouchUpInside)
-            cell.followButton.tag = indexPath.row
-            cell.profilePhoto.tag = indexPath.row
+            cell.followButton.tag = (indexPath as NSIndexPath).row
+            cell.profilePhoto.tag = (indexPath as NSIndexPath).row
             
             return cell
             
         }else{
             cell.usernameLabel.text = "Kullanicilar araniyor"
-            cell.followButton.hidden = true
-            cell.profilePhoto.hidden = true
+            cell.followButton.isHidden = true
+            cell.profilePhoto.isHidden = true
             return cell
         }
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.row<searchResults.count {
+        if (indexPath as NSIndexPath).row<searchResults.count {
             
-            let username = searchResults[indexPath.row].username
+            let username = searchResults[(indexPath as NSIndexPath).row].username
             var captiontext = captionView.attributedText.string
             if mentionAreas[mentionModeIndex].location == 0 {
-                captiontext = captiontext.substringToIndex(captiontext.startIndex.advancedBy(mentionAreas[mentionModeIndex].location+1)) + username + " "
+                captiontext = captiontext.substring(to: captiontext.characters.index(captiontext.startIndex, offsetBy: mentionAreas[mentionModeIndex].location+1)) + username + " "
             }else{
-                captiontext = captiontext.substringToIndex(captiontext.startIndex.advancedBy(mentionAreas[mentionModeIndex].location+2)) + username + " "
+                captiontext = captiontext.substring(to: captiontext.characters.index(captiontext.startIndex, offsetBy: mentionAreas[mentionModeIndex].location+2)) + username + " "
             }
             
             
@@ -325,7 +345,7 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             textViewDidChange(captionView)
             isInTheMentionMode = false
-            mentionTable.hidden = true
+            mentionTable.isHidden = true
             searchResults.removeAll()
             
          
