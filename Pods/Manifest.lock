@@ -2,14 +2,19 @@ PODS:
   - AWSCore (2.4.9)
   - AWSS3 (2.4.9):
     - AWSCore (= 2.4.9)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
   - AWSS3 (= 2.4.9)
+  - SDWebImage
 
 SPEC CHECKSUMS:
   AWSCore: 175208358b95492e0ebe0337df2ab415300bddac
   AWSS3: e4959b48db48d5f3dcd5cdf9e24a07f60a313611
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 7e3b455414649eb76bf6a26f760f45b0f6f09f5c
+PODFILE CHECKSUM: 3db0ddcce7673fcdf5907eab7645ac2d43d4afba
 
 COCOAPODS: 1.0.1

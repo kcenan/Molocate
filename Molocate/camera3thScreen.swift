@@ -13,25 +13,25 @@ import AWSS3
 import Photos
 import QuadratTouch
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l >= r
-  default:
-    return !(lhs < rhs)
-  }
-}
+//fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+//  switch (lhs, rhs) {
+//  case let (l?, r?):
+//    return l < r
+//  case (nil, _?):
+//    return true
+//  default:
+//    return false
+//  }
+//}
+//
+//fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+//  switch (lhs, rhs) {
+//  case let (l?, r?):
+//    return l >= r
+//  default:
+//    return !(lhs < rhs)
+//  }
+//}
 
 
 
@@ -201,9 +201,9 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     override func viewWillAppear(_ animated:Bool) {
         super.viewWillAppear(animated)
         
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(camera3thScreen.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(camera3thScreen.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    
+        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(camera3thScreen.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(camera3thScreen.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidLoad() {
@@ -226,7 +226,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         mentionTable.isHidden = true
         mentionTable.tableFooterView = UIView()
         self.view.backgroundColor = UIColor.white
-        NotificationCenter.default.addObserver(self,selector: #selector(self.keyboardNotification(_:)),name: NSNotification.Name.UIKeyboardWillChangeFrame,object: nil)
+        NotificationCenter.defaultCenter().addObserver(self,selector: #selector(self.keyboardNotification(_:)),name: NSNotification.Name.UIKeyboardWillChangeFrame,object: nil)
         
         
         
@@ -252,7 +252,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.defaultCenter().removeObserver(self)
     }
     
     
@@ -456,7 +456,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "mention")
+        let cell = searchUsername(style: .Default, reuseIdentifier: "mention")
         
         if (indexPath as NSIndexPath).row < searchResults.count {
             cell.followButton.isHidden = true
@@ -609,7 +609,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     func displayAlert(_ title: String, message: String) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             //            if !self.postO.enabled {
             //                self.postO.enabled = true
             //            }
