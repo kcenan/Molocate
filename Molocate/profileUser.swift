@@ -109,7 +109,7 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
         if page == 2 {
             if vidortag {
                 if BVc.tableView.contentOffset.y == 0 {
-                    estRowH = tableView.contentSize.height-MolocateDevice.size.height-50
+                    estRowH = Double(tableView.contentSize.height)-Double(MolocateDevice.size.height)-50
                     BVc.tableView.isScrollEnabled = false
                     self.tableView.isPagingEnabled = true
                     //self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -117,7 +117,7 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
                 }
             } else {
                 if AVc.tableView.contentOffset.y == 0 {
-                    estRowH = tableView.contentSize.height-MolocateDevice.size.height-50
+                    estRowH = Double(tableView.contentSize.height)-Double(MolocateDevice.size.height)-50
                     AVc.tableView.isScrollEnabled = false
                     self.tableView.isPagingEnabled = true
                     //self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -484,7 +484,7 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
                     let indexPath = IndexPath(row: 2, section: 0)
                    // let cell = tableView.cellForRowAtIndexPath(indexPath) as! profile3thCell
             
-                    redLabelOrigin  = scrollView.contentOffset.x / 2
+                    redLabelOrigin  = Double(scrollView.contentOffset.x ) / 2
                     if scrollView.contentOffset.x < MolocateDevice.size.width / 2{
                         vidortag = false
                       

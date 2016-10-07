@@ -231,7 +231,7 @@ class videoCell: UITableViewCell {
         
         videoComment.text = textstring        
         if(videoInfo.userpic.absoluteString != ""){
-            self.profilePhoto.sd_setImageWithURL(videoInfo.userpic, forState: UIControlState.Normal)
+            self.profilePhoto.sd_setImage(with: videoInfo.userpic, for: UIControlState.normal)
         }else{
             self.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
         }

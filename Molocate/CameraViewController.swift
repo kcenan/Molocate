@@ -339,10 +339,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         recordButton.progressColor = .redColor()
         recordButton.closeWhenFinished = false
         recordButton.buttonColor = swiftColor
-        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), forControlEvents: .TouchDown)
-        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), forControlEvents: .TouchUpInside)
-        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), forControlEvents: UIControlEvents.TouchDragExit)
-        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), forControlEvents: UIControlEvents.TouchDragEnter)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), for: .TouchDown)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), for: .TouchUpInside)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), for: UIControlEvents.TouchDragExit)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), for: UIControlEvents.TouchDragEnter)
         
         recordButton.center.x = self.view.center.x
         view.addSubview(recordButton)
@@ -413,7 +413,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     func displayLocationInfo(_ location: CLLocation) {
             //stop updating location to save battery life
         locationManager.stopUpdatingLocation()
-        let session = Session.sharedSession()
+        let session = URLSession.sharedSession()
         
     
         //var parameters = [Parameter.query:"moda sahil"]
@@ -513,7 +513,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     @IBAction func cameraChange(_ sender: AnyObject) {
         
         self.cameraChange.isEnabled = false
-        self.recordButton.enabled = false
+        self.recordButton.isEnabled = false
         
         for item in captureSession!.inputs {
             
@@ -582,7 +582,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 if !self.firstFront{
                 self.cameraChange.isEnabled = true
                 }
-                self.recordButton.enabled = true
+                self.recordButton.isEnabled = true
                 
             }
         }
@@ -593,7 +593,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     func capture(_ captureOutput: AVCaptureFileOutput!, didStartRecordingToOutputFileAt fileURL: URL!, fromConnections connections: [Any]!) {
         // Enable the Record button to let the user stop the recording.
         DispatchQueue.main.async {
-            self.recordButton.enabled = true
+            self.recordButton.isEnabled = true
             //self.recordButton.setTitle(NSLocalizedString("Stop", comment: "Recording button stop title"), forState: .Normal)
 
         }
@@ -758,7 +758,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         if !(self.videoOutput?.isRecording)! {
         self.cameraChange.isEnabled = true
         self.videoDone.isEnabled = true
-        self.recordButton.enabled = true
+        self.recordButton.isEnabled = true
         }
         if ((self.progress > 0.9999)) {
             
@@ -930,7 +930,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         self.videoDone.isEnabled = false
         self.progressTimer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(CameraViewController.updateProgress), userInfo: nil, repeats: true)
         self.cameraChange.isEnabled = false
-        self.recordButton.enabled = false
+        self.recordButton.isEnabled = false
        
         
         self.sessionQueue!.async {
@@ -1025,7 +1025,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         recordButton.setProgress(progress)
         if progress > 0.999999 {
             self.holdRelease()
-            self.recordButton.enabled = false
+            self.recordButton.isEnabled = false
         }
         if progress >= 1 {
             progressTimer.invalidate()
@@ -1201,7 +1201,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 // Only enable the ability to change camera if the device has more than one camera.
                 
                 self.cameraChange.isEnabled = isSessionRunning && (AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo).count > 1)
-                self.recordButton.enabled = isSessionRunning
+                self.recordButton.isEnabled = isSessionRunning
                 
             }
         default:
@@ -1224,12 +1224,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                     self.sessionRunning = self.captureSession!.isRunning
                 } else {
                     DispatchQueue.main.async {
-                        self.recordButton.hidden = false
+                        self.recordButton.isHidden = false
                     }
                 }
             }
         } else {
-            self.recordButton.hidden = false
+            self.recordButton.isHidden = false
         }
     }
     
@@ -1275,12 +1275,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
 extension CLLocation {
     func parameters(_ bool: Bool) -> Parameters {
-        let myll = Parameter.ll
-        let myllacc = Parameter.llAcc
-        let myalt = Parameter.alt
-        let myaltAcc = Parameter.altAcc
-        let intent = Parameter.intent
-        let radius = Parameter.radius
+        let myll = parameters.ll
+        let myllacc = parameters.llAcc
+        let myalt = parameters.alt
+        let myaltAcc = parameters.altAcc
+        let intent = parameters.intent
+        let radius = parameters.radius
         valuell = "\(self.coordinate.latitude),\(self.coordinate.longitude)"
         valuellacc = "\(self.horizontalAccuracy)"
         valuealt = "\(self.altitude)"

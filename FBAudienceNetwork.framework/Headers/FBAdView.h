@@ -46,7 +46,7 @@ FB_CLASS_EXPORT
  */
 - (instancetype)initWithPlacementID:(NSString *)placementID
                              adSize:(FBAdSize)adSize
-                 rootViewController:(UIViewController *)viewController NS_DESIGNATED_INITIALIZER;
+                 rootViewController:(nullable UIViewController *)viewController NS_DESIGNATED_INITIALIZER;
 
 /*!
  @method
@@ -156,7 +156,7 @@ FB_CLASS_EXPORT
 - (void)adViewWillLogImpression:(FBAdView *)adView;
 
 /*!
- @method
+ @property
 
  @abstract
  Asks the delegate for a view controller to present modal content, such as the in-app
@@ -164,7 +164,7 @@ FB_CLASS_EXPORT
 
  @return A view controller that is used to present modal content.
  */
-- (UIViewController *)viewControllerForPresentingModalView;
+@property (nonatomic, readonly, strong, nonnull) UIViewController *viewControllerForPresentingModalView;
 
 @end
 

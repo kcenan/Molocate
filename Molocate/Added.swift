@@ -254,7 +254,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             parentLayer.addSublayer(videoLayer)
             parentLayer.addSublayer(over.layer)
             parentLayer.addSublayer(text)
-            composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+            composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
             let instruction = AVMutableVideoCompositionInstruction()
             instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
             let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
@@ -269,7 +269,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             exporter?.outputURL = exportURL
             exporter?.outputFileType = AVFileTypeMPEG4
             exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.asynchronously(execute: {
                     let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
                     photoLibrary.performChanges({
@@ -331,7 +331,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             parentLayer.addSublayer(videoLayer)
             parentLayer.addSublayer(over.layer)
             parentLayer.addSublayer(text)
-            composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+            composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
             let instruction = AVMutableVideoCompositionInstruction()
             instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
             let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
@@ -346,7 +346,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             exporter?.outputURL = exportURL
             exporter?.outputFileType = AVFileTypeMPEG4
             exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                dispatch_async(DispatchQueue.main, {
+                DispatchQueue.main.asynchronously(execute: {
                     
                     let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
@@ -383,7 +383,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 })
             })        }))
         // present actionSheet like any other view controller
-        presentViewController(actionSheet, animated: true, completion: nil)
+        present(actionSheet, animated: true, completion: nil)
     }
 
 
@@ -577,7 +577,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 _ = VideoUploadRequests[row].uploadRequest.body
                 
                 do {
-                    try FileManager.default.removeItemAtURL(VideoUploadRequests[row].uploadRequest.body)
+                    try FileManager.default.removeItem(at: VideoUploadRequests[row].uploadRequest.body)
                 }catch{
                     //print("Video Silinemedi")
                 }
@@ -646,7 +646,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
             let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
-                cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
+                cell.cellthumbnail.sd_setImage(with: thumbnailURL)
                 //print("burda")
             }else{
                 cell.cellthumbnail.image = UIImage(named: "Mole")!
@@ -972,7 +972,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         let imageSize = likeHeart.image?.size.height
         likeHeart.frame = CGRect(x: likeHeart.center.x-imageSize!/2 , y: likeHeart.center.y-imageSize!/2, width: imageSize!, height: imageSize!)
         cell?.addSubview(likeHeart)
-        MolocateUtility.animateLikeButton(&likeHeart)
+        MolocateUtility.animateLikeButton(heart: &likeHeart)
         var indexes = [IndexPath]()
         indexes.append(indexpath)
         
@@ -1271,7 +1271,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     
     override func viewDidDisappear(_ animated: Bool) {
         //self.tableView.removeFromSuperview()
-        SDImageCache.sharedImageCache().cleanDisk()
+        SDImageCache.shared().cleanDisk()
         SDImageCache.shared().clearMemory()
         player1.stop()
         player1.removeFromParentViewController()

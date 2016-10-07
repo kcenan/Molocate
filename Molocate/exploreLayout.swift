@@ -69,7 +69,7 @@ class exploreLayout: UICollectionViewLayout {
         scalew3 = ((9*contentWidth)-1)/209
         scalew2 = (contentWidth-1)/8
       let columnWidth = contentWidth / CGFloat(numberOfColumns)
-      var xOffset = [CGFloat]()
+      _ = [CGFloat]()
       var column = 0
       var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
       
@@ -176,7 +176,7 @@ class exploreLayout: UICollectionViewLayout {
 
         yoffset = yoffset + CGFloat(eventcount)*(eventl+cellPadding)
         
-        var frame = CGRect(x: xoffset, y: yoffset, width: width, height: height)
+        let frame = CGRect(x: xoffset, y: yoffset, width: width, height: height)
 
         let insetFrame = frame.insetBy(dx: 0, dy: 0)
         

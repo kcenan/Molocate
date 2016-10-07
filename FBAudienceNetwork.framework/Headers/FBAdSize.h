@@ -53,7 +53,7 @@ FB_EXPORT FBAdSize const kFBAdSizeHeight90Banner;
 /*!
  @abstract Represents the interstitial ad size.
  */
-FB_EXPORT FBAdSize const kFBAdSizeInterstital;
+FB_EXPORT FBAdSize const kFBAdSizeInterstitial;
 
 /*!
  @abstract Represents the flexible rectangle ad size, where width depends on

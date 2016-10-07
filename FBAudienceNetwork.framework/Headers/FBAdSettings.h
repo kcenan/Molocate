@@ -22,7 +22,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-FB_EXPORT NSString * const __nonnull FBAudienceNetworkErrorDomain;
+FB_EXPORT NSString * const FBAudienceNetworkErrorDomain;
 
 typedef NS_ENUM(NSInteger, FBAdLogLevel) {
     FBAdLogLevelNone,
@@ -39,8 +39,24 @@ typedef NS_ENUM(NSInteger, FBAdLogLevel) {
 
  @abstract AdSettings contains global settings for all ad controls.
  */
-FB_CLASS_EXPORT
+FB_CLASS_EXPORT FB_SUBCLASSING_RESTRICTED
 @interface FBAdSettings : NSObject
+
+/*!
+ @method
+
+ @abstract
+ Returns test mode on/off.
+ */
++ (BOOL)isTestMode;
+
+/*!
+ @method
+
+ @abstract
+ Returns the hashid of the device to use test mode on.
+ */
++ (NSString *)testDeviceHash;
 
 /*!
  @method
@@ -48,7 +64,7 @@ FB_CLASS_EXPORT
  @abstract
  Adds a test device.
 
- @param deviceHash The id of the device to use test mode, can be obtained from debug log
+ @param deviceHash The id of the device to use test mode, can be obtained from debug log or testDeviceHash
 
  @discussion
  Copy the current device Id from debug log and add it as a test device to get test ads. Apps
@@ -62,7 +78,7 @@ FB_CLASS_EXPORT
  @abstract
  Add a collection of test devices. See `+addTestDevices:` for details.
 
- @param devicesHash The array of the device id to use test mode, can be obtained from debug log
+ @param devicesHash The array of the device id to use test mode, can be obtained from debug log or testDeviceHash
  */
 + (void)addTestDevices:(FB_NSArrayOf(NSString *)*)devicesHash;
 
@@ -73,6 +89,16 @@ FB_CLASS_EXPORT
  Clear all the added test devices
  */
 + (void)clearTestDevices;
+
+/*!
+ @method
+
+ @abstract
+ Clears the added test device
+
+ @param deviceHash The id of the device using test mode, can be obtained from debug log or testDeviceHash
+ */
++ (void)clearTestDevice:(NSString *)deviceHash;
 
 /*!
  @method
@@ -90,13 +116,24 @@ FB_CLASS_EXPORT
 
 /*!
  @method
- 
+
  @abstract
  If an ad provided service is mediating Audience Network in their sdk, it is required to set the name of the mediation service
- 
+
  @param service Representing the name of the mediation that is mediation Audience Network
  */
 + (void)setMediationService:(NSString *)service;
+
+/*!
+ @method
+
+ @abstract
+ Gets the url prefix to use when making ad requests.
+
+ @discussion
+ This method should never be used in production.
+ */
++ (NSString *)urlPrefix;
 
 /*!
  @method

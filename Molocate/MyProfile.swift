@@ -153,7 +153,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         if page == 2 {
             if vidortag {
                 if BVc.tableView.contentOffset.y == 0 {
-                    estRowH = tableView.contentSize.height-MolocateDevice.size.height-CGFloat(50.0)
+                    estRowH = Double(tableView.contentSize.height)-Double(MolocateDevice.size.height)-50.0
                     BVc.tableView.isScrollEnabled = false
                     self.tableView.isPagingEnabled = true
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -161,7 +161,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 }
             } else {
                 if AVc.tableView.contentOffset.y == 0 {
-                    estRowH = tableView.contentSize.height-MolocateDevice.size.height-CGFloat(50.0)
+                    estRowH = Double(tableView.contentSize.height)-Double(MolocateDevice.size.height)-50.0
                     AVc.tableView.isScrollEnabled = false
                     self.tableView.isPagingEnabled = true
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -519,7 +519,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 let indexPath = IndexPath(row: 2, section: 0)
                 // let cell = tableView.cellForRowAtIndexPath(indexPath) as! profile3thCell
                 
-                redLabelOrigin  = scrollView.contentOffset.x / 2
+                redLabelOrigin  = Double(scrollView.contentOffset.x) / 2
                 if scrollView.contentOffset.x < MolocateDevice.size.width / 2{
                     vidortag = false
                     
@@ -670,7 +670,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         let indexPath = IndexPath(row: 2, section: 0)
        // let cell = tableView.cellForRowAtIndexPath(indexPath) as! profile3thCell
         
-        self.redLabelOrigin = MolocateDevice.size.width/2
+        self.redLabelOrigin = Double(MolocateDevice.size.width)/2
         let indexPath2 = IndexPath(row: 3, section: 0)
         //        cell.redLabel.frame.origin.x = MolocateDevice.size.width / 2
         //        cell.videosButton.titleLabel!.font = UIFont(name: "AvenirNext-Regular", size: 14)

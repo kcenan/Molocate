@@ -28,6 +28,8 @@ import XLActionController
 
 open class TwitterCell: ActionCell {
     
+    @IBOutlet weak var imageViewWidthConstraint: NSLayoutConstraint!
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         initialize()
@@ -40,6 +42,14 @@ open class TwitterCell: ActionCell {
     open override func awakeFromNib() {
         super.awakeFromNib()
         initialize()
+    }
+    
+    open override func setup(_ title: String?, detail: String?, image: UIImage?) {
+        super.setup(title, detail: detail, image: image)
+        
+        imageViewWidthConstraint.constant = image == nil ? 0 : 36
+        
+        setNeedsLayout()
     }
     
     func initialize() {
@@ -94,14 +104,13 @@ open class TwitterActionController: ActionController<TwitterCell, ActionData, Tw
         settings.animation.present.duration = 0.6
         settings.animation.dismiss.duration = 0.6
         cellSpec = CellSpec.nibFile(nibName: "TwitterCell", bundle: Bundle(for: TwitterCell.self), height: { _ in 56 })
-        headerSpec = .CellClass(height: { _ -> CGFloat in return 45 })
+        headerSpec = .cellClass(height: { _ -> CGFloat in return 45 })
         
         
         onConfigureHeader = { header, title in
             header.label.text = title
         }
         onConfigureCellForAction = { [weak self] cell, action, indexPath in
-            
             cell.setup(action.data?.title, detail: action.data?.subtitle, image: action.data?.image)
             cell.separatorView?.isHidden = indexPath.item == (self?.collectionView.numberOfItems(inSection: indexPath.section))! - 1
             cell.alpha = action.enabled ? 1.0 : 0.5
@@ -117,9 +126,9 @@ open class TwitterActionController: ActionController<TwitterCell, ActionData, Tw
         
         collectionView.clipsToBounds = false
         let hideBottomSpaceView: UIView = {
-            let hideBottomSpaceView = UIView(frame: CGRect(0, 0, collectionView.bounds.width, contentHeight + 20))
-            hideBottomSpaceView.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleBottomMargin)
-            hideBottomSpaceView.backgroundColor = .whiteColor()
+            let hideBottomSpaceView = UIView(frame: CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: contentHeight + 20))
+            hideBottomSpaceView.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
+            hideBottomSpaceView.backgroundColor = .white
             return hideBottomSpaceView
         }()
         collectionView.addSubview(hideBottomSpaceView)
@@ -132,20 +141,20 @@ open class TwitterActionController: ActionController<TwitterCell, ActionData, Tw
         let upTime = 0.1
         UIView.animate(withDuration: upTime, delay: 0, options: .curveEaseIn, animations: { [weak self] in
             self?.collectionView.frame.origin.y -= 10
-        }, completion: { [weak self] (completed) -> Void in
-            UIView.animate(withDuration: animationDuration - upTime,
-                delay: 0,
-                usingSpringWithDamping: animationSettings.damping,
-                initialSpringVelocity: animationSettings.springVelocity,
-                options: UIViewAnimationOptions.curveEaseIn,
-                animations: { [weak self] in
-                    presentingView.transform = CGAffineTransformIdentity
-                    self?.performCustomDismissingAnimation(presentedView, presentingView: presentingView)
-                },
-                completion: { [weak self] finished in
-                    self?.onDidDismissView()
-                    completion?(finished)
-                })
-        })
+            }, completion: { [weak self] (completed) -> Void in
+                UIView.animate(withDuration: animationDuration - upTime,
+                               delay: 0,
+                               usingSpringWithDamping: animationSettings.damping,
+                               initialSpringVelocity: animationSettings.springVelocity,
+                               options: UIViewAnimationOptions.curveEaseIn,
+                               animations: { [weak self] in
+                                presentingView.transform = CGAffineTransform.identity
+                                self?.performCustomDismissingAnimation(presentedView, presentingView: presentingView)
+                    },
+                               completion: { [weak self] finished in
+                                self?.onDidDismissView()
+                                completion?(finished)
+                    })
+            })
     }
 }

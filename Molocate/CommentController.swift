@@ -174,7 +174,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 
             }
             
-            cell.comment.handleMentionTap { userHandle in  self.pressedMention(userHandle, profilePic: URL(), isFollowing: false)}
+            cell.comment.handleMentionTap { userHandle in  self.pressedMention(userHandle, profilePic: URL(string: "")!, isFollowing: false)}
 
             cell.comment.text = comments[(indexPath as NSIndexPath).row].text
            

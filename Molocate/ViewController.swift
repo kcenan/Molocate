@@ -279,21 +279,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
   
     
     func fbLoginInitiate() {
-        FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email","user_birthday", "user_friends"],from:self,handler: { (Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
-            
+        
+        var manager = FBSDKLoginManager.init()
+        manager.logIn(withReadPermissions:  ["public_profile", "email","user_birthday", "user_friends"], from: self) { (Result, error) in
             if (error != nil) {
                 self.removeFbData()
-            } else if Result.isCancelled {
-               // print("Error in fbLoginInitiate")
+            } else if (Result?.isCancelled)! {
+                // print("Error in fbLoginInitiate")
                 self.removeFbData()
             } else {
-               // print("success")
+                // print("success")
                 FbToken = FBSDKAccessToken.current().tokenString
                 let json = ["access_token":FbToken]
                 
-               // print(FbToken)
+                // print(FbToken)
                 
-                MolocateAccount.FacebookLogin(json, completionHandler: { (data, response, error) in
+                MolocateAccount.FacebookLogin(json as JSONParameters, completionHandler: { (data, response, error) in
                     if (data == "success") {
                         MolocateAccount.getCurrentUser({ (data, response, error) in
                             DispatchQueue.main.async {
@@ -311,7 +312,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 })
                 
                 
-                if Result.grantedPermissions.contains("email") {
+                if (Result?.grantedPermissions.contains("email"))! {
                     //Do work
                     self.activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                     self.activityIndicator.center = self.view.center
@@ -321,13 +322,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     self.activityIndicator.hidesWhenStopped = true
                     self.activityIndicator.startAnimating()
                     UIApplication.shared.beginIgnoringInteractionEvents()
-                   // self.fetchFacebookProfile()
+                    // self.fetchFacebookProfile()
                 } else {
                     //Handle error
                 }
                 
             }
-        })
+
+        }
+//        FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email","user_birthday", "user_friends"],from:self,handler: { (Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+//            
+//                    })
     }
     
     

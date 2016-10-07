@@ -167,7 +167,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
             let token = FbToken
             let json = ["access_token": token , "username": uname, "email": mail]
             
-            MolocateAccount.FacebookSignup(json, completionHandler: { (data, response, error) in
+            MolocateAccount.FacebookSignup(json as JSONParameters, completionHandler: { (data, response, error) in
                 DispatchQueue.main.async(execute: {
                     if(data == "success"){
                         MolocateAccount.getCurrentUser({ (data, response, error) -> () in
@@ -194,7 +194,7 @@ class SignUpAdvance: UIViewController , UITextFieldDelegate {
                             
                         })
                     }else if (data != "error"){
-                        self.displayAlert("Dikkat!", message: data)
+                        self.displayAlert("Dikkat!", message: data!)
                     }else{
                         self.displayAlert("Hata", message: "Ooops! Lütfen tekrar deneyiniz.")
                     }

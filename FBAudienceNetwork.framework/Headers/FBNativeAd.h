@@ -25,11 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol FBNativeAdDelegate;
 @class FBAdImage;
 
-typedef NS_ENUM(NSInteger, FBNativeAdsCachePolicy) {
-    FBNativeAdsCachePolicyNone = 0,
-    FBNativeAdsCachePolicyIcon = 0x1,
-    FBNativeAdsCachePolicyCoverImage = 0x2,
-    FBNativeAdsCachePolicyAll = FBNativeAdsCachePolicyCoverImage | FBNativeAdsCachePolicyIcon,
+typedef NS_OPTIONS(NSInteger, FBNativeAdsCachePolicy) {
+    FBNativeAdsCachePolicyNone = 1 << 0,
+    FBNativeAdsCachePolicyIcon = 1 << 1,
+    FBNativeAdsCachePolicyCoverImage = 1 << 2,
+    FBNativeAdsCachePolicyVideo = 1 << 3,
+    FBNativeAdsCachePolicyAll = FBNativeAdsCachePolicyCoverImage | FBNativeAdsCachePolicyIcon | FBNativeAdsCachePolicyVideo,
 };
 
 /*!
@@ -39,7 +40,7 @@ typedef NS_ENUM(NSInteger, FBNativeAdsCachePolicy) {
  The FBNativeAd represents ad metadata to allow you to construct custom ad views.
  See the NativeAdSample in the sample apps section of the Audience Network framework.
  */
-FB_CLASS_EXPORT
+FB_CLASS_EXPORT FB_SUBCLASSING_RESTRICTED
 @interface FBNativeAd : NSObject
 
 /*!
@@ -90,7 +91,7 @@ FB_CLASS_EXPORT
 /*!
  @property
 
- @abstract Set the native ad caching policy. This controls which media from the native ad are cached before the native ad calls nativeAdLoaded on its delegate. The default is to not block on caching.
+ @abstract Set the native ad caching policy. This controls which media (images, video, etc) from the native ad are cached before the native ad calls nativeAdLoaded on its delegate. The default is to not block on caching. Ensure that media is loaded through FBMediaView or through [FBAdImage loadImageAsyncWithBlock:] to take full advantage of caching.
  */
 @property (nonatomic, assign) FBNativeAdsCachePolicy mediaCachePolicy;
 /*!
@@ -117,12 +118,12 @@ FB_CLASS_EXPORT
 
  @param view The UIView you created to render all the native ads data elements.
  @param viewController The UIViewController that will be used to present SKStoreProductViewController
- (iTunes Store product information) or the in-app browser.
+ (iTunes Store product information) or the in-app browser. If nil is passed, the top view controller currently shown will be used.
 
  @discussion The whole area of the UIView will be clickable.
  */
 - (void)registerViewForInteraction:(UIView *)view
-                withViewController:(UIViewController *)viewController;
+                withViewController:(nullable UIViewController *)viewController;
 
 /*!
  @method
@@ -133,12 +134,12 @@ FB_CLASS_EXPORT
 
  @param view The UIView you created to render all the native ads data elements.
  @param viewController The UIViewController that will be used to present SKStoreProductViewController
- (iTunes Store product information).
+ (iTunes Store product information). If nil is passed, the top view controller currently shown will be used.
  @param clickableViews An array of UIView you created to render the native ads data element, e.g.
  CallToAction button, Icon image, which you want to specify as clickable.
  */
 - (void)registerViewForInteraction:(UIView *)view
-                withViewController:(UIViewController *)viewController
+                withViewController:(nullable UIViewController *)viewController
                 withClickableViews:(FB_NSArrayOf(UIView *)*)clickableViews;
 
 /*!
@@ -168,6 +169,8 @@ FB_CLASS_EXPORT
  rendering is done as part of the loadAd callback, it is guarantee to be consistent
  */
 @property (nonatomic, getter=isAdValid, readonly) BOOL adValid;
+
+@property (nonatomic, copy, readonly, nullable, getter=getAdNetwork) NSString *adNetwork;
 
 @end
 
@@ -311,7 +314,7 @@ FB_CLASS_EXPORT FB_DEPRECATED
  @property
  @abstract The current rating from an FBNativeAd. When set, updates the view.
  */
-@property (nonatomic) struct FBAdStarRating rating FB_DEPRECATED;
+@property (nonatomic, assign) struct FBAdStarRating rating FB_DEPRECATED;
 
 /*!
  @property

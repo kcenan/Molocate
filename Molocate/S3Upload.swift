@@ -9,8 +9,8 @@
 import Foundation
 import AWSS3
 
-let CognitoRegionType = AWSRegionType.USEast1
-let DefaultServiceRegionType = AWSRegionType.EUCentral1
+let CognitoRegionType = AWSRegionType.usEast1
+let DefaultServiceRegionType = AWSRegionType.euCentral1
 let CognitoIdentityPoolId: String = "us-east-1:721a27e4-d95e-4586-a25c-83a658a1c7cc"
 let S3BucketName: String = "molocatebucket"
 var n = 0
@@ -102,27 +102,27 @@ open class S3Upload {
                     self.sendThumbnailandData(self.theRequest!.thumbnail, info: json, videoid:id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
                         if data == "success" {
                             self.isUp = true
-                         dispatch_async(dispatch_get_main_queue(), {
+                         DispatchQueue.main.asynchronously(execute: {
                             do {
                               
                                 CaptionText = ""
                  
-                                if let i = VideoUploadRequests.indexOf({$0.id == videoid}) {
+                                if let i = VideoUploadRequests.index(where: {$0.id == videoid}) {
                                     print("video deleted with id:\(id)")
-                                    try NSFileManager.defaultManager().removeItemAtURL(VideoUploadRequests[i].uploadRequest.body)
+                                    try FileManager.defaultManager().removeItemAtURL(VideoUploadRequests[i].uploadRequest.body)
                                   
-                                    NSNotificationCenter.defaultCenter().postNotificationName("uploadFinished", object: nil, userInfo: ["id":i])
+                                    NotificationCenter.defaultCenter().postNotificationName("uploadFinished", object: nil, userInfo: ["id":i])
                                     
-                                    VideoUploadRequests.removeAtIndex(i)
+                                    VideoUploadRequests.remove(at: i)
                                     
                                     MolocateVideo.encodeGlobalVideo()
                                     
                                     if VideoUploadRequests.count == 0 {
-                                        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isStuck")
+                                        UserDefaults.standardUserDefaults.setBool(false, forKey: "isStuck")
                                     }
                                     
                                     
-                                    MyS3Uploads.removeAtIndex(i)
+                                    MyS3Uploads.remove(at: i)
                                    
                                     
                                 }
@@ -141,7 +141,7 @@ open class S3Upload {
                         }else if !self.isFailed{
                             self.isFailed = true
                             let userinf = ["id":videoid]
-                            NSNotificationCenter.defaultCenter().postNotificationName("prepareForRetry", object: nil, userInfo:userinf )
+                            NotificationCenter.defaultCenter.postNotificationName("prepareForRetry", object: nil, userInfo:userinf )
                             MolocateVideo.encodeGlobalVideo()
                         }
                     })
@@ -152,8 +152,8 @@ open class S3Upload {
         }
 
       
-        let transferUtility = AWSS3TransferUtility.defaultS3TransferUtility()
-        transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression, completionHander: completionHandler).continueWithBlock { (task) -> AnyObject? in
+        let transferUtility = AWSS3TransferUtility.default()
+        transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression, completionHander: completionHandler).continue { (task) -> AnyObject? in
 
             if ((task.error) != nil) {
                 //print("Error: %@", task.error)
@@ -168,8 +168,8 @@ open class S3Upload {
         
                 let seconds = 100.0
                 let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
-                let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                let dispatchTime = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), Int64(delay))
+                dispatch_after(dispatchTime, DispatchQueue.main, {
                     //print("18s passed")
                     if !self.isUp && !self.isFailed{
                         //print("cancel")
@@ -194,11 +194,11 @@ open class S3Upload {
     
     func cancelUploadRequest(_ uploadRequest: AWSS3TransferManagerUploadRequest) {
     
-        uploadRequest.cancel().continueWithBlock({ (task) -> AnyObject! in
-            if let error = task.error {
+        uploadRequest.cancel().continue({ (task) -> AnyObject! in
+            if task.error != nil {
                // print("cancel() failed: [\(error)]")
             }
-            if let exception = task.exception {
+            if task.exception != nil {
               //  print("cancel() failed: [\(exception)]")
             }
             return nil

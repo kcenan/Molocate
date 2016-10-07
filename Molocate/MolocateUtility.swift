@@ -67,27 +67,27 @@ open class MolocateUtility {
         
         statusBar.backgroundColor = color
     }
-//    
-//    class func animateLikeButton(heart: inout UIImageView){
-//        
-//        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
-//            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
-//            heart.alpha = 0.8;
-//            }) { (finished1) in
-//                UIView.animate(withDuration: 0.1, delay: 0, options: .allowUserInteraction, animations: { 
-//                       heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
-//                    }, completion: { (finished2) in
-//                        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
-//                            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
-//                            heart.alpha = 0.0;
-//                            }, completion: { (finished3) in
-//                                heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
-//                        })
-//                })
-//        }
-//        
-//    }
-//    
+    
+    class func animateLikeButton(heart:inout UIImageView){
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
+            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
+            heart.alpha = 0.8;
+            }) { (finished1) in
+                UIView.animate(withDuration: 0.1, delay: 0, options: .allowUserInteraction, animations: { 
+                       heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
+                    }, completion: { (finished2) in
+                        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
+                            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
+                            heart.alpha = 0.0;
+                            }, completion: { (finished3) in
+                                heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
+                        })
+                })
+        }
+        
+    }
+    
     class func isValidEmail(_ testStr:String) -> Bool {
         
         do {

@@ -31,6 +31,15 @@ import FBSDKShareKit
 var watch_list = [String]()
 
 class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDelegate {
+    /*!
+     @abstract Sent to the delegate when the sharer encounters an error.
+     @param sharer The FBSDKSharing that completed.
+     @param error The error.
+     */
+    public func sharer(_ sharer: FBSDKSharing!, didFailWithError error: Error!) {
+    
+    }
+
 
 
 
@@ -171,7 +180,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                         queu.location = loc[0]["name"] as! String
                         queu.locationID = loc[0]["id"] as! String
                         queu.isFollowing = 1
-                        queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)
+                        queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
                         queu.id = "\(VideoUploadRequests[i].id)"
                         if VideoUploadRequests[i].isFailed {
                             queu.isFailed = VideoUploadRequests[i].isFailed
@@ -316,7 +325,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
 
             if(thumbnailURL.absoluteString != ""){
-                cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
+                cell.cellthumbnail.sd_setImage(with: thumbnailURL)
                 //////print("burda")
             }else{
                 cell.cellthumbnail.image = UIImage(named: "Mole")!
@@ -324,20 +333,20 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
             if !isScrollingFast || (self.tableView.contentOffset.y == 0)  {
                
-                var trueURL = URL()
+                var trueURL = URL(string: "")
                 if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
-                    trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as! URL
+                    trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as? URL
                 } else {
                     let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta.absoluteString
-                    if(url?[0] == "h") {
+                    if(url.characters.first! == "h") {
                         trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
                         DispatchQueue.main.async {
                             myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                                 ////print("hop")
                                 let url = self.videoArray[indexPath.row].urlSta.absoluteString
-                                let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
-                                let cached = DiskCache(path: path.absoluteString).pathForKey(url)
-                                let file = NSURL(fileURLWithPath: cached)
+                                let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
+                                let cached = DiskCache(path: (path?.absoluteString)!).pathForKey(url)
+                                let file = URL(fileURLWithPath: cached)
                                 dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
 
                             }
@@ -351,7 +360,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                     if (indexPath as NSIndexPath).row % 2 == 1 {
 
-                        self.player1.setUrl(trueURL)
+                        self.player1.setUrl(trueURL!)
                         self.player1.id = self.videoArray[(indexPath as NSIndexPath).row].id
                         self.player1.view.frame = cell.newRect
                         self.player1.view.layer.zPosition = 1111
@@ -360,7 +369,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                     }else{
 
-                        self.player2.setUrl(trueURL)
+                        self.player2.setUrl(trueURL!)
                         self.player2.id = self.videoArray[(indexPath as NSIndexPath).row].id
                         self.player2.view.frame = cell.newRect
                         self.player2.view.layer.zPosition = 1111
@@ -1224,10 +1233,10 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 cell.resendButton.isEnabled = false
                 cell.deleteButton.isEnabled = false
              
-                let fileUrl = VideoUploadRequests[row].uploadRequest.body
+                _ = VideoUploadRequests[row].uploadRequest.body
                
                 do {
-                    try FileManager.default.removeItemAtURL(VideoUploadRequests[row].uploadRequest.body)
+                    try FileManager.default.removeItem(at: VideoUploadRequests[row].uploadRequest.body)
                 }catch{
                     print("Video Silinemedi")
                 }
@@ -1261,7 +1270,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         let imageSize = likeHeart.image?.size.height
         likeHeart.frame = CGRect(x: likeHeart.center.x-imageSize!/2 , y: likeHeart.center.y-imageSize!/2, width: imageSize!, height: imageSize!)
         cell.addSubview(likeHeart)
-        MolocateUtility.animateLikeButton(&likeHeart)
+        MolocateUtility.animateLikeButton(heart: &likeHeart)
 
         if(videoArray[Row].isLiked == 0){
 
@@ -1357,7 +1366,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
         } else {
             let url = self.videoArray[Row].urlSta.absoluteString
-            if(url?[0] == "h") {
+            if(url[0] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -1365,7 +1374,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         // set up a header title
         actionSheet.headerData = "Paylaş"
         // Add some actions, note that the first parameter of `Action` initializer is `ActionData`.
-        actionSheet.addAction(Action(ActionData(title: "Facebook", subtitle: "Facebook'da paylaş", image: UIImage(named: "facebookLogo")!), style: .Default, handler: { action in
+        actionSheet.addAction(Action(ActionData(title: "Facebook", subtitle: "Facebook'da paylaş", image: UIImage(named: "facebookLogo")!), style: .default, handler: { action in
             let videoLayer = CALayer()
             let parentLayer = CALayer()
             parentLayer.frame = videoLayer.frame
@@ -1375,7 +1384,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
             let composition = AVMutableVideoComposition()
             composition.frameDuration = CMTimeMake(1,30)
-            composition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
+            composition.renderSize = CGSize(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
             let dist = CGFloat(string.characters.count*15)
@@ -1390,7 +1399,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             parentLayer.addSublayer(videoLayer)
             parentLayer.addSublayer(over.layer)
             parentLayer.addSublayer(text)
-            composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+            composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
             let instruction = AVMutableVideoCompositionInstruction()
             instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
             let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
@@ -1405,7 +1414,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             exporter?.outputURL = exportURL
             exporter?.outputFileType = AVFileTypeMPEG4
             exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.asynchronously(execute: {
                     let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
                     photoLibrary.performChanges({
@@ -1442,7 +1451,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         
 
         
-        actionSheet.addAction(Action(ActionData(title: "Instagram", subtitle: "Instagram'da paylaş", image: UIImage(named: "instagramLogo")!), style: .Default, handler: { action in
+        actionSheet.addAction(Action(ActionData(title: "Instagram", subtitle: "Instagram'da paylaş", image: UIImage(named: "instagramLogo")!), style: .default, handler: { action in
                 let videoLayer = CALayer()
                 let parentLayer = CALayer()
                 parentLayer.frame = videoLayer.frame
@@ -1452,7 +1461,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
                 let composition = AVMutableVideoComposition()
                 composition.frameDuration = CMTimeMake(1,30)
-                composition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
+                composition.renderSize = CGSize(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
                 let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
                 over.image = sticker
                 let dist = CGFloat(string.characters.count*15)
@@ -1467,7 +1476,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 parentLayer.addSublayer(videoLayer)
                 parentLayer.addSublayer(over.layer)
                 parentLayer.addSublayer(text)
-                composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+                composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
                 let instruction = AVMutableVideoCompositionInstruction()
                 instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
                 let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
@@ -1482,7 +1491,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 exporter?.outputURL = exportURL
                 exporter?.outputFileType = AVFileTypeMPEG4
                 exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                            dispatch_async(dispatch_get_main_queue(), {
+                            DispatchQueue.main.asynchronously(execute: {
                     
                                 let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
                                 var videoAssetPlaceholder:PHObjectPlaceholder!
@@ -1519,7 +1528,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                             })
                 })        }))
         // present actionSheet like any other view controller
-        presentViewController(actionSheet, animated: true, completion: nil)
+        present(actionSheet, animated: true, completion: nil)
     }
 
     func pressedReport(_ sender: UIButton) {
@@ -1683,7 +1692,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func sharerDidCancel(_ sharer: FBSDKSharing!) {
         
     }
-    func sharer(_ sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+    func sharer(sharer: FBSDKSharing!, didFailWithError error: NSError!) {
         
     }
 
