@@ -5,21 +5,42 @@ import Foundation
 import UIKit
 
 extension String {
-    
-    subscript (i: Int) -> Character {
-        return self[self.characters.index(self.startIndex, offsetBy: i)]
+    func index(from: Int) -> Index {
+        return self.index(startIndex, offsetBy: from)
     }
     
-    subscript (i: Int) -> String {
-        return String(self[i] as Character)
+    func substring(from: Int) -> String {
+        let fromIndex = index(from: from)
+        return substring(from: fromIndex)
     }
     
-    subscript (r: Range<Int>) -> String {
-        let start = characters.index(startIndex, offsetBy: r.lowerBound)
-        let end = <#T##String.CharacterView corresponding to `start`##String.CharacterView#>.index(start, offsetBy: r.upperBound - r.lowerBound)
-        return self[Range(start ..< end)]
+    func substring(to: Int) -> String {
+        let toIndex = index(from: to)
+        return substring(to: toIndex)
+    }
+    
+    func substring(with r: Range<Int>) -> String {
+        let startIndex = index(from: r.lowerBound)
+        let endIndex = index(from: r.upperBound)
+        return substring(with: startIndex..<endIndex)
     }
 }
+//extension String {
+//    
+//    subscript (i: Int) -> Character {
+//        return self[self.characters.index(self.startIndex, offsetBy: i)]
+//    }
+//    
+//    subscript (i: Int) -> String {
+//        return String(self[i] as Character)
+//    }
+//    
+//    subscript (r: Range<Int>) -> String {
+//        let start = characters.index(startIndex, offsetBy: r.lowerBound)
+//        let end = <#T##String.CharacterView corresponding to `start`##String.CharacterView#>.index(start, offsetBy: r.upperBound - r.lowerBound)
+//        return self[Range(start ..< end)]
+//    }
+//}
 
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {
@@ -46,27 +67,27 @@ open class MolocateUtility {
         
         statusBar.backgroundColor = color
     }
-    
-    class func animateLikeButton(_ heart: inout UIImageView){
-        
-        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
-            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
-            heart.alpha = 0.8;
-            }) { (finished1) in
-                UIView.animate(withDuration: 0.1, delay: 0, options: .allowUserInteraction, animations: { 
-                       heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
-                    }, completion: { (finished2) in
-                        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
-                            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
-                            heart.alpha = 0.0;
-                            }, completion: { (finished3) in
-                                heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
-                        })
-                })
-        }
-        
-    }
-    
+//    
+//    class func animateLikeButton(heart: inout UIImageView){
+//        
+//        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
+//            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
+//            heart.alpha = 0.8;
+//            }) { (finished1) in
+//                UIView.animate(withDuration: 0.1, delay: 0, options: .allowUserInteraction, animations: { 
+//                       heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
+//                    }, completion: { (finished2) in
+//                        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: { 
+//                            heart.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
+//                            heart.alpha = 0.0;
+//                            }, completion: { (finished3) in
+//                                heart.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
+//                        })
+//                })
+//        }
+//        
+//    }
+//    
     class func isValidEmail(_ testStr:String) -> Bool {
         
         do {

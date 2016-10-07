@@ -100,7 +100,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
             
 
             if(users[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
-                cell.profileImage.sd_setBackgroundImageWithURL(users[indexPath.row].profilePic, forState: .Normal)
+                cell.profileImage.sd_setBackgroundImage(with: users[indexPath.row].profilePic, for: .normal)
             }else{
                 cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, for:
                     UIControlState())

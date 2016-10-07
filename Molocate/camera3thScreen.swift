@@ -84,7 +84,8 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             UserDefaults.standard.set(videoPath, forKey: "videoPath")
             let uploadRequest = AWSS3TransferManagerUploadRequest()
             uploadRequest?.body = fileURL
-            uploadRequest?.key = "videos/" + (fileName.stringByAppendingFormat(".mp4", fileName) as String)
+        
+            uploadRequest?.key = "videos/" + (fileName.appendingPathExtension(".mp4")! as String)
             uploadRequest?.bucket = S3BucketName
             
             let json = [
@@ -113,7 +114,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
                     //default thumbnail ata
             }
             
-            new_upload.upload(false, id: video_id, uploadRequest:uploadRequest!,fileURL: "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName as String), fileID: fileName as String ,json: json as! [String : AnyObject], thumbnail_image: thumb!)
+            new_upload.upload(false, id: video_id, uploadRequest:uploadRequest!,fileURL: "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName as String), fileID: fileName as String ,json: json as [String : AnyObject], thumbnail_image: thumb!)
            
              MyS3Uploads.insert(new_upload, at: 0)
             
@@ -280,7 +281,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         let attributed = NSMutableAttributedString(string: textView.text)
         
         for mention in mentionAreas {
@@ -290,7 +291,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         self.view.backgroundColor = UIColor.white
         if textView.attributedText.string == "" {
             CaptionText = ""
@@ -298,7 +299,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.attributedText.string == "Yorumunuzu buraya yazabilirsiniz." {
             textView.attributedText = NSAttributedString(string: "")
         }
@@ -308,7 +309,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     
     
     
-    func textView(textView: UITextView, shouldChangeTextIn range: NSRange,
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
         
         let new = (textView.attributedText.string as NSString).replacingCharacters(in: range, with: text)
@@ -323,7 +324,8 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         for mention in mentions where mention.range.length > 1{
            // print(mention.range.location)
             if mention.range.length > 2 {
-                var word = new[mention.range.location+1...mention.range.location + mention.range.length-1]
+                
+                var word = new.substring(with:mention.range.location+1..<mention.range.location + mention.range.length-1)
                 
                 if word.hasPrefix("@") {
                     word.remove(at: word.startIndex)
@@ -334,7 +336,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             }else if mention.range.location == 0{
                 
                // print("mentionn range location")
-                var word = new[mention.range.location...mention.range.location + mention.range.length-1]
+                var word = new.substring(with:mention.range.location..<mention.range.location + mention.range.length-1)
                 
                 if word.hasPrefix("@") {
                     word.remove(at: word.startIndex)
@@ -452,7 +454,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         return searchResults.count+1
     }
     
-    func tableView(tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
@@ -490,7 +492,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
               if (indexPath as NSIndexPath).row<searchResults.count {
             
             let username = searchResults[(indexPath as NSIndexPath).row].username
@@ -506,7 +508,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             mentionAreas[mentionModeIndex].length = username.characters.count + 2
             mentionedUsers[mentionModeIndex] = username
             
-            textViewDidChange(textView: captionView)
+            textViewDidChange(captionView)
             isInTheMentionMode = false
             mentionTable.isHidden = true
             searchResults.removeAll()

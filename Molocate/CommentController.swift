@@ -129,7 +129,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                     cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
                 }
                 if(searchResults[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
-                    cell.profilePhoto.sd_setImageWithURL(searchResults[indexPath.row].profilePic, forState: UIControlState.Normal)
+                    cell.profilePhoto.sd_setImage(with: searchResults[indexPath.row].profilePic, for: UIControlState.normal)
                 }else{
                     cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
                 }
@@ -197,7 +197,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
    
             
             if(comments[(indexPath as NSIndexPath).row].photo.absoluteString != ""){
-                cell.profilePhoto.sd_setImageWithURL(comments[indexPath.row].photo, forState: UIControlState.Normal)
+                cell.profilePhoto.sd_setImage(with: comments[indexPath.row].photo, for: UIControlState.normal)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile")!, for:
                     UIControlState())
@@ -287,7 +287,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                     
                     if data != "fail" {
                         if comments.count > 0 {
-                            comments[comments.endIndex-1].id = data
+                            comments[comments.endIndex-1].id = data!
                         }else{
                             //DBG: do somthing
                         }

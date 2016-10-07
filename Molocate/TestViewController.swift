@@ -159,7 +159,8 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
         for mention in mentions where mention.range.length > 1{
             print(mention.range.location)
             if mention.range.length > 2 {
-                var word = new[mention.range.location+1...mention.range.location + mention.range.length-1]
+                
+                var word = new.substring(with:mention.range.location+1..<mention.range.location + mention.range.length-1)
                 
                 if word.hasPrefix("@") {
                     word.remove(at: word.startIndex)
@@ -169,8 +170,8 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
                 mentionAreas.append(mention.range)
             }else if mention.range.location == 0{
                 
-                print("mentionn range location")
-                var word = new[mention.range.location...mention.range.location + mention.range.length-1]
+                // print("mentionn range location")
+                var word = new.substring(with:mention.range.location..<mention.range.location + mention.range.length-1)
                 
                 if word.hasPrefix("@") {
                     word.remove(at: word.startIndex)
@@ -305,7 +306,7 @@ class TestViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
             }
             if(searchResults[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
-                cell.profilePhoto.sd_setImageWithURL(searchResults[indexPath.row].profilePic, forState: UIControlState.Normal)
+                cell.profilePhoto.sd_setImage(with: searchResults[indexPath.row].profilePic, for: .normal)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
             }

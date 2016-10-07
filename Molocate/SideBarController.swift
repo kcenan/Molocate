@@ -106,7 +106,7 @@ class SideBarController: UITableViewController {
                 profile_picture = UIImage(data: thumbnail as! Data)
                 cell.profilePhoto.image = profile_picture
             }else{
-                cell.profilePhoto.sd_setImageWithURL(MoleCurrentUser.profilePic)
+                cell.profilePhoto.sd_setImage(with: MoleCurrentUser.profilePic)
             }
             
             cell.username.text = MoleCurrentUser.username

@@ -34,7 +34,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
     }
     
     
-    func tableView(tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
@@ -70,7 +70,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
         return cell
         
     }
-    func tableView(tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let cell = tableView.cellForRowAtIndexPath(indexPath) as! searchUsername
         pressedPlace(placeId: venues[(indexPath as NSIndexPath).row].id)
         

@@ -129,7 +129,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                         queu.location = loc[0]["name"] as! String
                         queu.locationID = loc[0]["id"] as! String
                         queu.isFollowing = 1
-                        queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)
+                        queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
                         queu.id = "\(VideoUploadRequests[i].id)"
                         if VideoUploadRequests[i].isFailed {
                             queu.isFailed = VideoUploadRequests[i].isFailed
@@ -221,7 +221,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
         } else {
             let url = self.videoArray[Row].urlSta.absoluteString
-            if(url?[0] == "h") {
+            if(url[0] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -229,7 +229,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         // set up a header title
         actionSheet.headerData = "Paylaş"
         // Add some actions, note that the first parameter of `Action` initializer is `ActionData`.
-        actionSheet.addAction(Action(ActionData(title: "Facebook", subtitle: "Facebook'da paylaş", image: UIImage(named: "facebookLogo")!), style: .Default, handler: { action in
+        actionSheet.addAction(Action(ActionData(title: "Facebook", subtitle: "Facebook'da paylaş", image: UIImage(named: "facebookLogo")!), style: .default, handler: { action in
             let videoLayer = CALayer()
             let parentLayer = CALayer()
             parentLayer.frame = videoLayer.frame
@@ -263,7 +263,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             composition.instructions = NSArray(object: instruction) as! [AVVideoCompositionInstructionProtocol]
             let documentsPath = (NSTemporaryDirectory() as NSString)
             let exportPath = documentsPath.stringByAppendingFormat("fbshare.mp4", documentsPath)
-            let exportURL = NSURL(fileURLWithPath: exportPath as String)
+            let exportURL = URL(fileURLWithPath: exportPath as String)
             let exporter = AVAssetExportSession(asset: tempasset, presetName:AVAssetExportPresetHighestQuality )
             exporter?.videoComposition = composition
             exporter?.outputURL = exportURL
@@ -306,7 +306,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         
         
         
-        actionSheet.addAction(Action(ActionData(title: "Instagram", subtitle: "Instagram'da paylaş", image: UIImage(named: "instagramLogo")!), style: .Default, handler: { action in
+        actionSheet.addAction(Action(ActionData(title: "Instagram", subtitle: "Instagram'da paylaş", image: UIImage(named: "instagramLogo")!), style: .default, handler: { action in
             let videoLayer = CALayer()
             let parentLayer = CALayer()
             parentLayer.frame = videoLayer.frame
@@ -346,7 +346,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             exporter?.outputURL = exportURL
             exporter?.outputFileType = AVFileTypeMPEG4
             exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                dispatch_async(dispatch_get_main_queue(), {
+                dispatch_async(DispatchQueue.main, {
                     
                     let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
@@ -574,7 +574,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 cell.resendButton.isEnabled = false
                 cell.deleteButton.isEnabled = false
                 
-                let fileUrl = VideoUploadRequests[row].uploadRequest.body
+                _ = VideoUploadRequests[row].uploadRequest.body
                 
                 do {
                     try FileManager.default.removeItemAtURL(VideoUploadRequests[row].uploadRequest.body)
@@ -667,15 +667,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as! URL
             } else {
                 let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta.absoluteString
-                if(url?[0] == "h") {
+                if(url[0] == "h") {
                     trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
                     DispatchQueue.main.async {
                         myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                             ////print("hop")
                             let url = self.videoArray[indexPath.row].urlSta.absoluteString
-                            let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
+                            let path = URL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
                             let cached = DiskCache(path: path.absoluteString).pathForKey(url)
-                            let file = NSURL(fileURLWithPath: cached)
+                            let file = URL(fileURLWithPath: cached)
                             dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
                             
                         }
@@ -1272,7 +1272,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     override func viewDidDisappear(_ animated: Bool) {
         //self.tableView.removeFromSuperview()
         SDImageCache.sharedImageCache().cleanDisk()
-        SDImageCache.sharedImageCache().clearMemory()
+        SDImageCache.shared().clearMemory()
         player1.stop()
         player1.removeFromParentViewController()
         player2.stop()
@@ -1285,7 +1285,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     func sharerDidCancel(_ sharer: FBSDKSharing!) {
         
     }
-    func sharer(_ sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+    func sharer(_ sharer: FBSDKSharing!, didFailWithError error: Error!) {
         
     }
     

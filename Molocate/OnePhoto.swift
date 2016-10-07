@@ -21,7 +21,7 @@ class onePhoto: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     override func viewWillAppear(_ animated: Bool) {
-        profilePhoto.sd_setImageWithURL(classUser.profilePic)
+        profilePhoto.sd_setImage(with: classUser.profilePic)
     }
     
     

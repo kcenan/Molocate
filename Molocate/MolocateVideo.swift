@@ -17,16 +17,16 @@ struct MoleVideoInformation{
     var location:String = ""
     var locationID:String = ""
     var caption:String = ""
-    var urlSta:NSURL = NSURL()
+    var urlSta:URL = URL(string:"")!
     var likeCount = 0
     var commentCount = 0
     var comments = [String]()
     var isLiked: Int = 0
     var isFollowing: Int = 0
-    var userpic: NSURL = NSURL()
+    var userpic: URL = URL(string:"")!
     var dateStr: String = ""
     var taggedUsers = [String]()
-    var thumbnailURL:NSURL = NSURL()
+    var thumbnailURL:URL = URL(string:"")!
     var isUploading = false
     var isFailed = false
     var deletable = false
@@ -34,7 +34,7 @@ struct MoleVideoInformation{
 
 struct VideoUploadRequest{
     var filePath = ""
-    var thumbUrl = NSURL()
+    var thumbUrl = URL(string:"")
     var thumbnail:Data
     var JsonData: [String:AnyObject]
     var fileId = ""
@@ -44,7 +44,7 @@ struct VideoUploadRequest{
     func encode() -> Dictionary<String, AnyObject> {
         var dictionary : Dictionary = Dictionary<String, AnyObject>()
         dictionary["filePath"] = filePath as AnyObject?
-        dictionary["thumbUrl"] = thumbUrl.absoluteString as AnyObject?
+        dictionary["thumbUrl"] = thumbUrl?.absoluteString as AnyObject?
         dictionary["JsonData"] = JsonData as AnyObject?
         dictionary["thumbnail"] = thumbnail as AnyObject?
         dictionary["uploadRequestBody"] = uploadRequest.body.absoluteString as AnyObject?
@@ -61,7 +61,7 @@ struct MoleVideoComment{
     var id: String = ""
     var text: String = ""
     var username: String = ""
-    var photo: NSURL = NSURL()
+    var photo: URL = URL(string:"")!
     var deletable = false
 }
 
@@ -104,7 +104,7 @@ open class MolocateVideo {
     class func decodeVideoUploadRequest(_ dictionary: Dictionary<String, AnyObject>) -> VideoUploadRequest{
        
         let filePath = dictionary["filePath"] as! String
-        let thumbUrl:NSURL = NSURL(string: dictionary["thumbUrl"] as! String)!
+        let thumbUrl:URL = URL(string: dictionary["thumbUrl"] as! String)!
         let JsonData = dictionary["JsonData"] as! [String:AnyObject]
         let thumbnail = dictionary["thumbnail"] as! Data
         let uploadRequest = AWSS3TransferManagerUploadRequest()
@@ -147,7 +147,7 @@ open class MolocateVideo {
                             let thing = commentdata[i] as! [String:AnyObject]
                             //print(thing)
                             thecomment.username = thing["username"] as! String
-                            thecomment.photo = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
+                            thecomment.photo = thing["picture_url"] is NSNull ? URL(string:"")!:URL(string: thing["picture_url"] as! String)! as URL
                             thecomment.text = thing["comment"] as! String
                             thecomment.id = thing["comment_id"] as! String
                             thecomment.deletable = thing["is_deletable"] as! Bool
@@ -201,7 +201,7 @@ open class MolocateVideo {
                         }
                         filt.name = item["name"] as! String
                         filt.raw_name = item["name_raw"] as! String
-                        filt.thumbnail_url = URL(string: item["thumbnail_url"] as! String) == nil ? URL():URL(string: item["thumbnail_url"] as! String)!
+                        filt.thumbnail_url = URL(string: item["thumbnail_url"] as! String) == nil ? URL(string:""):URL(string: item["thumbnail_url"] as! String)!
                         filters.append(filt)
                     }
                     completionHandler(filters, response, nsError as NSError?)
@@ -258,7 +258,7 @@ open class MolocateVideo {
                             var videoStr = MoleVideoInformation()
                             
                             videoStr.id = item["video_id"] as! String
-                            videoStr.urlSta = URL(string:  item["video_url"] as! String)! as NSURL
+                            videoStr.urlSta = URL(string:  item["video_url"] as! String)! as URL
                             videoStr.username = owner_user["username"] as! String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
@@ -268,10 +268,10 @@ open class MolocateVideo {
                             videoStr.category = item["category"] as! String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
-                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
+                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string:"")!:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as! String
                             videoStr.taggedUsers = item["tagged_users"] as! [String]
-                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)! as NSURL
+                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)! as URL
                             videoStr.deletable = item["is_deletable"] as! Bool
                             videoArray.append(videoStr)
 //                            print(videoStr.username)
@@ -339,7 +339,7 @@ open class MolocateVideo {
                             var videoStr = MoleVideoInformation()
                             
                             videoStr.id = item["video_id"] as! String
-                            videoStr.urlSta = URL(string:  item["video_url"] as! String)! as NSURL
+                            videoStr.urlSta = URL(string:  item["video_url"] as! String)!
                             videoStr.username = owner_user["username"] as! String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
@@ -349,10 +349,10 @@ open class MolocateVideo {
                             videoStr.category = item["category"] as! String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
-                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
+                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string:"")!:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as! String
                             videoStr.taggedUsers = item["tagged_users"] as! [String]
-                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)! as NSURL
+                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                             videoStr.deletable = item["is_deletable"] as! Bool
                             videoArray.append(videoStr)
                             //                            print(videoStr.username)
@@ -407,7 +407,7 @@ open class MolocateVideo {
                                 let thing = likers[i] as! [String:AnyObject]
                                 var user = MoleUser()
                                 user.username = thing["username"] as! String
-                                user.profilePic = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
+                                user.profilePic = thing["picture_url"] is NSNull ? URL(string:"")!:URL(string: thing["picture_url"] as! String)!
                                 user.isFollowing = thing["is_following"] as! Int == 1 ? true:false
                                 users.append(user)
                             }
@@ -445,7 +445,7 @@ open class MolocateVideo {
                 nextURL = URL(string: MolocateBaseUrl+"video/api/tagged_videos/?username="+name)!
                 break
             default:
-                nextURL = NSURL() as URL
+                nextURL = URL(string:"")!
                 break
         }
         
@@ -499,7 +499,7 @@ open class MolocateVideo {
                             
                             var videoStr = MoleVideoInformation()
                             videoStr.id = item["video_id"] as! String
-                            videoStr.urlSta = URL(string:  item["video_url"] as! String)! as NSURL
+                            videoStr.urlSta = URL(string:  item["video_url"] as! String)!
                             videoStr.username = owner_user["username"] as! String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
@@ -509,11 +509,11 @@ open class MolocateVideo {
                             videoStr.category = item["category"] as! String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
-                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
+                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string:"")!:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as! String
                             videoStr.taggedUsers = item["tagged_users"] as! [String]
                             
-                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)! as NSURL
+                            videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                             videoStr.deletable = item["is_deletable"] as! Bool
                             videoArray.append(videoStr)
                            
@@ -560,7 +560,7 @@ open class MolocateVideo {
                         let placeTaken = item["place_taken"] as! [String:String]
                         
                         videoStr.id = item["video_id"] as! String
-                        videoStr.urlSta = URL(string:  item["video_url"] as! String)! as NSURL
+                        videoStr.urlSta = URL(string:  item["video_url"] as! String)! as URL
                         videoStr.username = owner_user["username"] as! String
                         videoStr.location = placeTaken["name"]!
                         videoStr.locationID = placeTaken["place_id"]!
@@ -570,11 +570,11 @@ open class MolocateVideo {
                         videoStr.category = item["category"] as! String
                         videoStr.isLiked = item["is_liked"] as! Int
                         videoStr.isFollowing = owner_user["is_following"] as! Int
-                        videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
+                        videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string:"")!:URL(string: owner_user["picture_url"] as! String)!
                         videoStr.dateStr = item["date_str"] as! String
                         videoStr.taggedUsers = item["tagged_users"] as! [String]
                         videoStr.deletable = item["is_deletable"] as! Bool
-                        videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)! as NSURL
+                        videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)! as URL
                         
 //                        print(videoStr.username)
 //                        print(videoStr.location)
@@ -614,7 +614,7 @@ open class MolocateVideo {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                     if result.index(forKey: "result") != nil{
-                        completionHandler(result["result"] as! String , response , nsError as NSError?)
+                        completionHandler(result["result"] as? String , response , nsError as NSError?)
                     }else{
                         completionHandler("fail" , nil , nsError as NSError?)
                         if debug {print("ServerDataError:: in MolocateVideo.likeAVideo()")}
@@ -647,7 +647,7 @@ open class MolocateVideo {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil{
-                        completionHandler(result["result"] as! String , response , nsError as NSError? )
+                        completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
                         completionHandler("fail" , nil , nsError as NSError? )
                         if debug {print("ServerDataError:: in MolocateVideo.reportAVideo()")}
@@ -680,7 +680,7 @@ open class MolocateVideo {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil{
-                        completionHandler(result["result"] as! String , response , nsError as NSError? )
+                        completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
                         completionHandler("fail" , nil , nsError as NSError? )
                         if debug {print("ServerDataError:: in MolocateVideo.unLikeAVideo()")}
@@ -715,7 +715,7 @@ open class MolocateVideo {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil{
-                        completionHandler(result["result"] as! String , response , nsError as NSError? )
+                        completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
                         completionHandler("fail" , nil , nsError as NSError? )
                         if debug {print("ServerDataError:: in MolocateVideo.deleteAVideo()")}
@@ -762,7 +762,7 @@ open class MolocateVideo {
                         let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                         //print(result)
                         if result.index(forKey: "result") != nil{
-                            completionHandler(result["comment_id"] as! String , response , nsError as NSError? )
+                            completionHandler(result["comment_id"] as? String , response , nsError as NSError? )
                         } else {
                             completionHandler("fail" , nil , nsError as NSError? )
                             if debug { print("ServerDataError:: in MolocateVideo.commentAVideo()")}
@@ -830,7 +830,7 @@ open class MolocateVideo {
                         
                         let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                         if result.index(forKey: "result") != nil{
-                           completionHandler(result["result"] as! String , response , nsError as NSError? )
+                           completionHandler(result["result"] as? String , response , nsError as NSError? )
                         }else{
                             completionHandler("fail" , nil , nsError as NSError? )
                             if debug {print("ServerDataError:: in mole.deleteComment()")}

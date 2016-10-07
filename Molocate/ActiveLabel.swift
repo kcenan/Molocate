@@ -18,19 +18,19 @@ public protocol ActiveLabelDelegate: class {
     // MARK: - public properties
     open weak var delegate: ActiveLabelDelegate?
     
-    @IBInspectable open var mentionColor: UIColor = .blue() {
+    @IBInspectable open var mentionColor: UIColor = .blue {
         didSet { updateTextStorage(parseText: false) }
     }
     @IBInspectable open var mentionSelectedColor: UIColor? {
         didSet { updateTextStorage(parseText: false) }
     }
-    @IBInspectable open var hashtagColor: UIColor = .blue() {
+    @IBInspectable open var hashtagColor: UIColor = .blue {
         didSet { updateTextStorage(parseText: false) }
     }
     @IBInspectable open var hashtagSelectedColor: UIColor? {
         didSet { updateTextStorage(parseText: false) }
     }
-    @IBInspectable open var URLColor: UIColor = .blue() {
+    @IBInspectable open var URLColor: UIColor = .blue {
         didSet { updateTextStorage(parseText: false) }
     }
     @IBInspectable open var URLSelectedColor: UIColor? {

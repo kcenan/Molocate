@@ -143,8 +143,8 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
         
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
         
-        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url.absoluteString != ""){
-            cell.profilePhoto.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
+        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url?.absoluteString != ""){
+            cell.profilePhoto.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.normal)
         }else{
             cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
         }
@@ -191,7 +191,7 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
             controller.isItMyProfile = true
         }
         controller.classUser.username = username
-        controller.classUser.profilePic =  userRelations.relations[sender.tag].picture_url
+        controller.classUser.profilePic =  userRelations.relations[sender.tag].picture_url!
         controller.classUser.isFollowing = userRelations.relations[sender.tag].is_following
         
         self.navigationController?.pushViewController(controller, animated: true)

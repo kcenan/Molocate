@@ -51,7 +51,7 @@ class profileLocation: UIViewController, UICollectionViewDelegateFlowLayout,NSUR
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        SDImageCache.sharedImageCache().clearMemory()
+        SDImageCache.shared().clearMemory()
     }
     
     

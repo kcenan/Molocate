@@ -294,7 +294,7 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
             cell.profilePhoto.clipsToBounds = true
             cell.profilePhoto.tag = (indexPath as NSIndexPath).row
             if(classUser.profilePic.absoluteString != ""){
-                cell.profilePhoto.sd_setImageWithURL(classUser.profilePic)
+                cell.profilePhoto.sd_setImage(with: classUser.profilePic)
                 
             }else{
                 cell.profilePhoto.image = UIImage(named: "profile")!
@@ -636,7 +636,7 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
         let indexPath = IndexPath(row: 2, section: 0)
         //let cell = tableView.cellForRowAtIndexPath(indexPath) as! profile3thCell
         
-        self.redLabelOrigin = MolocateDevice.size.width
+        self.redLabelOrigin = Double(MolocateDevice.size.width)
         let indexPath2 = IndexPath(row: 3, section: 0)
 //        cell.redLabel.frame.origin.x = MolocateDevice.size.width / 2
 //        cell.videosButton.titleLabel!.font = UIFont(name: "AvenirNext-Regular", size: 14)

@@ -16,13 +16,13 @@ let profileBackgroundColor = UIColor(netHex: 0xDCDDDF)
     var name = ""
     var raw_name = ""
     var isevent = false
-    var thumbnail_url = URL()
+    var thumbnail_url = URL(string:"")
     
  }
 struct MoleUserFriend {
     var is_following = false
-    var picture_url = URL()
-    var thumbnail_url = URL()
+    var picture_url = URL(string: "")
+    var thumbnail_url = URL(string: "")
     var username:String = ""
     var name: String = "Deneme Deneme"
 }
@@ -35,8 +35,8 @@ struct MoleUserRelations{
 struct MoleUser{
     var username:String = ""
     var email : String = ""
-    var profilePic:URL = URL()
-    var thumbnailPic:URL = URL()
+    var profilePic:URL = URL(string:"")
+    var thumbnailPic:URL = URL(string:"")
     var token: String = ""
     var first_name = ""
     var last_name = ""
@@ -166,7 +166,7 @@ open class MolocateAccount {
                 
                 let response = String(data: data!, encoding: String.Encoding.utf8)
                 
-                if response![0]=="[" {
+                if response!.characters(0)=="[" {
                 
                 let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
                 
@@ -765,7 +765,7 @@ open class MolocateAccount {
                 do {
                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil{
-                        completionHandler(result["result"] as! String , response , nsError as NSError? )
+                        completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
                         completionHandler("ServerDataError" , nil , nsError  as NSError?)
                         if debug{print("ServerDataError:: in MolocateAccount.follow()")}
@@ -807,7 +807,7 @@ open class MolocateAccount {
                         isRegistered = true
                         UserDefaults.standard.set(true, forKey: "isRegistered")
                         UserDefaults.standard.set(DeviceToken, forKey: "DeviceToken")
-                        completionHandler(result["result"] as! String , response , nsError as NSError?)
+                        completionHandler(result["result"] as? String , response , nsError as NSError?)
                         
                     }else{
                         completionHandler("ServerDataError" , nil , nsError as NSError? )
@@ -844,7 +844,7 @@ open class MolocateAccount {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil{
-                        completionHandler(result["result"] as! String , response , nsError as NSError? )
+                        completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
                         completionHandler("ServerDataError" , nil , nsError as NSError? )
                         if debug {print("ServerDataError:: in MolocateAccount.resetBadge()")}
@@ -883,7 +883,7 @@ open class MolocateAccount {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil {
-                        completionHandler(result["result"] as! String , response , nsError as NSError? )
+                        completionHandler(result["result"] as? String , response , nsError as NSError? )
                         UserDefaults.standard.set(false, forKey: "isRegistered")
                         UserDefaults.standard.set("", forKey: "DeviceToken")
                         isRegistered = false
@@ -917,7 +917,7 @@ open class MolocateAccount {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil {
-                        completionHandler(result["result"] as! String , response , nsError as NSError? )
+                        completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
                         completionHandler("ServerDataError" , nil , nsError as NSError? )
                         if debug { print("ServerDataError:: in MolocateAccount.unfollow()")}
@@ -1282,7 +1282,7 @@ open class MolocateAccount {
     
     class func getDataFromUrl(_ url: URL, completionHandler: @escaping (_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> ()) {
         
-        let task =  URLSession.shared.dataTask(with: url, completionHandler: {
+        let task =  URLSession.sharedSession.dataTask(with: url, completionHandler: {
             (data, response, error) in
             completionHandler(data, response, error)
         }) 

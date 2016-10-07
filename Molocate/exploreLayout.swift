@@ -190,7 +190,11 @@ class exploreLayout: UICollectionViewLayout {
         contentHeight = max(contentHeight, frame.maxY)
         yOffset[column] = yOffset[column] + height + cellPadding
         
-        column = column >= (numberOfColumns - 1) ? 0 : ++column
+        if column >= (numberOfColumns - 1) {
+           column=0
+        }else{
+           column = column+1
+        }
       }
     //}
   }

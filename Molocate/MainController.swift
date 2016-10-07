@@ -186,7 +186,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         searchText.layer.cornerRadius = 5
         searchText.layer.borderColor = UIColor.white.cgColor
         
-        let index = IndexPath(row: 0, section: 0)
+        _ = IndexPath(row: 0, section: 0)
 
         collectionView!.backgroundColor = UIColor.clear
         //collectionView!.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:0, right: 0)
@@ -318,7 +318,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                     cell.nameLabel.text = "\(searchedUsers[(indexPath as NSIndexPath).row].first_name) \(searchedUsers[(indexPath as NSIndexPath).row].last_name)"
                 }
                 if(searchedUsers[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
-                    cell.profilePhoto.sd_setImageWithURL(searchedUsers[indexPath.row].profilePic, forState: UIControlState.Normal)
+                    cell.profilePhoto.sd_setImage(with: searchedUsers[indexPath.row].profilePic, for: UIControlState.normal)
                 }else{
                     cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
                 }
@@ -644,7 +644,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        SDImageCache.sharedImageCache().clearMemory()
+        SDImageCache.shared().clearMemory()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -750,7 +750,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell : myCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell", for: indexPath) as! myCollectionViewCell
-        myCell.categoryImage.sd_setImageWithURL(filters[indexPath.row].thumbnail_url)
+        myCell.categoryImage.sd_setImage(with: filters[indexPath.row].thumbnail_url)
         let backgroundView = UIView()
         backgroundView.backgroundColor = swiftColor
         return myCell
@@ -807,7 +807,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
     
     
-    func locationManager(_ manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+    private func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         let locationAge = newLocation.timestamp.timeIntervalSinceNow
         
         //print(locationAge)

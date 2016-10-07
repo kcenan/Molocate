@@ -216,7 +216,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                     }
                                     
                                 } else{
-                                    self.displayAlert("Hata", message: data)
+                                    self.displayAlert("Hata", message: data!)
                                     if UIApplication.shared.isIgnoringInteractionEvents {
                                         UIApplication.shared.endIgnoringInteractionEvents()
                                     }

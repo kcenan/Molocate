@@ -124,8 +124,8 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
        
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
        
-        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url.absoluteString != ""){
-            cell.profilePhoto.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
+        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url?.absoluteString != ""){
+            cell.profilePhoto.sd_setImage(with: userRelations.relations[indexPath.row].picture_url, for: UIControlState.normal)
         }else{
             cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
         }
@@ -212,7 +212,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             }
         
             controller.classUser.username =  userRelations.relations[(indexPath as NSIndexPath).row].username
-            controller.classUser.profilePic = userRelations.relations[(indexPath as NSIndexPath).row].picture_url
+            controller.classUser.profilePic = userRelations.relations[(indexPath as NSIndexPath).row].picture_url!
             controller.classUser.isFollowing = userRelations.relations[(indexPath as NSIndexPath).row].is_following
             
             self.navigationController?.pushViewController(controller, animated: true)
@@ -320,7 +320,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         }
         
         controller.classUser.username =  userRelations.relations[row].username
-        controller.classUser.profilePic = userRelations.relations[row].picture_url
+        controller.classUser.profilePic = userRelations.relations[row].picture_url!
         controller.classUser.isFollowing = userRelations.relations[row].is_following
         
         self.navigationController?.pushViewController(controller, animated: true)

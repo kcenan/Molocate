@@ -117,7 +117,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                             queu.location = loc[0]["name"] as! String
                             queu.locationID = loc[0]["id"] as! String
                             queu.isFollowing = 1
-                            queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)
+                            queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
                             queu.isUploading = true
                             self.AVc.videoArray.append(queu)
                             
@@ -153,7 +153,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         if page == 2 {
             if vidortag {
                 if BVc.tableView.contentOffset.y == 0 {
-                    estRowH = tableView.contentSize.height-MolocateDevice.size.height-50
+                    estRowH = tableView.contentSize.height-MolocateDevice.size.height-CGFloat(50.0)
                     BVc.tableView.isScrollEnabled = false
                     self.tableView.isPagingEnabled = true
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -161,7 +161,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 }
             } else {
                 if AVc.tableView.contentOffset.y == 0 {
-                    estRowH = tableView.contentSize.height-MolocateDevice.size.height-50
+                    estRowH = tableView.contentSize.height-MolocateDevice.size.height-CGFloat(50.0)
                     AVc.tableView.isScrollEnabled = false
                     self.tableView.isPagingEnabled = true
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -327,7 +327,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 cell.profilePhoto.clipsToBounds = true
                 cell.profilePhoto.tag = (indexPath as NSIndexPath).row
                 if(classUser.profilePic.absoluteString != ""){
-                    cell.profilePhoto.sd_setImageWithURL(classUser.profilePic)
+                    cell.profilePhoto.sd_setImage(with: classUser.profilePic)
                     
                 }else{
                     cell.profilePhoto.image = UIImage(named: "profile")!
