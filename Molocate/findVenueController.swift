@@ -43,7 +43,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return venues.count
     }
@@ -51,9 +51,9 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
 
     
     
-    func tableView(tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = searchVenue(style: .Default, reuseIdentifier: "cellface")
+        let cell = searchVenue(style: .default, reuseIdentifier: "cellface")
         cell.nameLabel.text = venues[(indexPath as NSIndexPath).row].name
         cell.addressNameLabel.text = venues[(indexPath as NSIndexPath).row].address
         cell.distanceLabel.text = venues[(indexPath as NSIndexPath).row].distance
@@ -72,7 +72,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
     }
     func tableView(tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let cell = tableView.cellForRowAtIndexPath(indexPath) as! searchUsername
-        pressedPlace(venues[(indexPath as NSIndexPath).row].id)
+        pressedPlace(placeId: venues[(indexPath as NSIndexPath).row].id)
         
     }
     

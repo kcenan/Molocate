@@ -81,7 +81,7 @@ open class MolocateAccount {
             url = URL(string:nextUrl)!
         }
         
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -125,17 +125,17 @@ open class MolocateAccount {
                         
                         followers.relations = friends
                         
-                        completionHandler(data: followers , response: response , error: nsError, count: count, next: next, previous: previous)
+                        completionHandler(followers , response , nsError as NSError?, count, next, previous)
                     }else{
-                        completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: -1, next: nil, previous: nil  ) //next is not nil, next should be previous next***************check count mines -1
+                        completionHandler(MoleUserRelations() , nil , nsError as NSError?, -1, nil, nil  ) //next is not nil, next should be previous next***************check count mines -1
                         if debug { print("ServerDataError:: in mole.getFollowers()") }
                     }
                 } catch{
-                    completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                    completionHandler(MoleUserRelations() , nil , nsError as NSError?, 0, nil, nil  )
                     if debug { print("JSONCastError:: in mole.getFollowers()") }
                 }
             }else{
-                    completionHandler(data:  MoleUserRelations() , response: nil , error: error, count: 0, next: nil, previous: nil  )
+                    completionHandler(MoleUserRelations() , nil , error as NSError?, 0, nil, nil  )
                     if debug {print("RequestError:: in mole.getFollowers()")}
             }
             
@@ -153,7 +153,7 @@ open class MolocateAccount {
         url = URL(string:nextUrl)!
     }
     
-    let request = NSMutableURLRequest(url: url)
+    var request = URLRequest(url: url)
     request.httpMethod = "GET"
     request.addValue("Token " + MoleUserToken! , forHTTPHeaderField: "Authorization")
     request.timeoutInterval = timeOut
@@ -196,18 +196,18 @@ open class MolocateAccount {
                 
                 
                     
-                    completionHandler(data: friends , response: nil, error: nsError, count: 0, next: nil, previous: nil )
+                    completionHandler(friends , nil, nsError as NSError?, 0, nil, nil )
                 }else{
-                    completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: 0, next: nil, previous: ""  )
+                    completionHandler(MoleUserRelations() , nil , nsError as NSError?, 0, nil, ""  )
                     if debug {print("JSONCastError:: in mole.getFacebookFriends()")}
                 }
               
             } catch{
-                completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: 0, next: nil, previous: ""  )
+                completionHandler(MoleUserRelations() , nil , nsError as NSError?, 0, nil, ""  )
                 if debug {print("JSONCastError:: in mole.getFacebookFriends()")}
             }
         }else{
-            completionHandler(data:  MoleUserRelations() , response: nil , error: error, count: 0, next: nil, previous: ""  )
+            completionHandler(MoleUserRelations() , nil , error as NSError?, 0, nil, ""  )
             if debug {print("RequestError:: in mole.getFacebookFriends()")}
         }
     })
@@ -226,7 +226,7 @@ open class MolocateAccount {
             url = URL(string:nextUrl)!
         }
         
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken! , forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -265,17 +265,17 @@ open class MolocateAccount {
                         }
                     
                         
-                        completionHandler(data: followings , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                        completionHandler(followings , nil , nsError as NSError?, 0, nil, nil  )
                     }else{
-                        completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: 0, next: nil, previous: ""  )
+                        completionHandler(MoleUserRelations() , nil , nsError as NSError?, 0, nil, ""  )
                         if debug {print("JSONCastError:: in mole.getFacebookFriends()")}
                     }
                 } catch{
-                    completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: 0, next: nil, previous: ""  )
+                    completionHandler(MoleUserRelations() , nil , nsError as NSError?, 0, nil, ""  )
                     if debug {print("JSONCastError:: in mole.getFacebookFriends()")}
                 }
             }else{
-                completionHandler(data:  MoleUserRelations() , response: nil , error: error, count: 0, next: nil, previous: ""  )
+                completionHandler(MoleUserRelations() , nil , error as NSError?, 0, nil, ""  )
                 if debug {print("RequestError:: in mole.getFacebookFriends()")}
             }
         })
@@ -295,7 +295,7 @@ open class MolocateAccount {
             url = URL(string:nextUrl)!
         }
  
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken! , forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -340,17 +340,17 @@ open class MolocateAccount {
                         
                         followings.relations = friends
                         
-                        completionHandler(data: followings , response: response , error: nsError, count: count, next: next, previous: previous  )
+                        completionHandler(followings , response , nsError as NSError?, count, next, previous  )
                     }else{
-                        completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: -1, next: nil, previous: ""  )
+                        completionHandler(MoleUserRelations() , nil , nsError as NSError?, -1, nil, ""  )
                         if debug {print("ServerDataError:: in mole.getFollowings()")}
                     }
                 } catch{
-                    completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: 0, next: nil, previous: ""  )
+                    completionHandler(MoleUserRelations() , nil , nsError as NSError?, 0, nil, ""  )
                     if debug {print("JSONCastError:: in mole.getFollowings()")}
                 }
             }else{
-                   completionHandler(data:  MoleUserRelations() , response: nil , error: error, count: 0, next: nil, previous: ""  )
+                   completionHandler(MoleUserRelations() , nil , error as NSError?, 0, nil, ""  )
                     if debug {print("RequestError:: in mole.getFollowings()")}
             }
         })
@@ -365,7 +365,7 @@ open class MolocateAccount {
         url = URL(string: MolocateTestUrl + "/account/api/following_places/?username=" + (username as String) )!
 
         
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -390,17 +390,17 @@ open class MolocateAccount {
                             
                         }
                      
-                        completionHandler(data: places , response: response , error: nsError)
+                        completionHandler(places , response , nsError as NSError?)
                    }else{
-                        completionHandler(data:  [MolePlace]() , response: nil , error: nsError ) //next is not nil, next should be previous next***************check count mines -1
+                        completionHandler([MolePlace]() , nil , nsError as NSError? ) //next is not nil, next should be previous next***************check count mines -1
                         if debug { print("ServerDataError:: in mole.getFollowers()") }
                     }
                 } catch{
-                    completionHandler(data:  [MolePlace]() , response: nil , error: nsError )
+                    completionHandler([MolePlace]() , nil , nsError as NSError? )
                     if debug { print("JSONCastError:: in mole.getFollowers()") }
                 }
             }else{
-                completionHandler(data:  [MolePlace]() , response: nil , error: error)
+                completionHandler([MolePlace]() , nil , error as NSError?)
                 if debug {print("RequestError:: in mole.getFollowers()")}
             }
             
@@ -414,7 +414,7 @@ open class MolocateAccount {
         url = URL(string: MolocateTestUrl + "/account/api/checkedin_places/?username=" + (username as String) )!
         
         
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -439,17 +439,17 @@ open class MolocateAccount {
                             
                         }
                         
-                        completionHandler(data: places , response: response , error: nsError)
+                        completionHandler(places , response , nsError as NSError?)
                     }else{
-                        completionHandler(data:  [MolePlace]() , response: nil , error: nsError ) //next is not nil, next should be previous next***************check count mines -1
+                        completionHandler([MolePlace]() , nil , nsError as NSError?) //next is not nil, next should be previous next***************check count mines -1
                         if debug { print("ServerDataError:: in mole.getFollowers()") }
                     }
                 } catch{
-                    completionHandler(data:  [MolePlace]() , response: nil , error: nsError )
+                    completionHandler([MolePlace]() , nil , nsError as NSError?)
                     if debug { print("JSONCastError:: in mole.getFollowers()") }
                 }
             }else{
-                completionHandler(data:  [MolePlace]() , response: nil , error: error)
+                completionHandler([MolePlace]() , nil , error as NSError?)
                 if debug {print("RequestError:: in mole.getFollowers()")}
             }
             
@@ -469,7 +469,7 @@ open class MolocateAccount {
             
             let url = URL(string: MolocateBaseUrl + "api-token-auth/")!
             
-            let request = NSMutableURLRequest(url: url)
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
@@ -491,7 +491,7 @@ open class MolocateAccount {
                             DispatchQueue.main.async(execute: {
                                
                                 MolocateAccount.getCurrentUser({ (data, response, error) -> () in
-                                    completionHandler(data:"success" , response: response , error: nsError  )
+                                    completionHandler("success" , response , nsError as NSError? )
                                 })
                             
                                 if(DeviceToken != nil){
@@ -502,19 +502,19 @@ open class MolocateAccount {
                             })
                             
                         }else {
-                            completionHandler(data: "Hata", response: response , error: nsError  )
+                            completionHandler("Hata", response , nsError as NSError? )
                             if debug { print("Wrong password or username::in MolocateAccount.Login() ") }
                             
                         }
                         
                     } catch {
                         
-                        completionHandler(data: "error" , response: response , error: nsError  )
+                        completionHandler("error" , response , nsError as NSError? )
                         if debug { print("JSONError::in MolocateAccount.Login()") }
                     }
                 }else{
                     
-                    completionHandler(data: "error" , response: response , error: error )
+                    completionHandler("error" , response , error as NSError?)
                     if debug { print("RequestError::in MolocateAccount.Login()") }
                 }
             })
@@ -533,7 +533,7 @@ open class MolocateAccount {
             let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
             let url = URL(string: MolocateBaseUrl + "/account/facebook_login/")!
             
-            let request = NSMutableURLRequest(url: url)
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
@@ -563,28 +563,28 @@ open class MolocateAccount {
                                         })
                                     }
                                 })
-                                completionHandler(data: "success", response:  response, error: error)
+                                completionHandler("success", response, error as NSError?)
                                 
                             } else if let _ = resultJson["email_validation"]{
                                 FaceMail = resultJson["email_validation"] as! String
                                 FaceUsername = resultJson["suggested_username"] as! String
-                                completionHandler(data: "signup", response:  response, error: error)
+                                completionHandler("signup", response, error as NSError?)
                             }else{
-                                completionHandler(data: "error", response:  response, error: error)
+                                completionHandler("error", response, error as NSError?)
                                 if debug {print("JSONCastError:: in MolocateAccount.facebookLogin()")}
                             }
                         }else{
-                            completionHandler(data: "error", response:  response, error: error)
+                            completionHandler("error", response, error as NSError?)
                             if debug {print("ServerDataError:: in MolocateAccount.facebookLogin()")}
                         }
                             
                     } catch{
     
-                        completionHandler(data: "error", response:  response, error: Nserror)
+                        completionHandler("error", response, Nserror as NSError?)
                         if debug {print("JSONCastError:: in MolocateAccount.facebookLogin() in start*")}
                     }
                 }else{
-                    completionHandler(data: "error", response:  response, error: error)
+                    completionHandler("error", response, error as NSError?)
                     if debug {print("RequestError:: in MolocateAccount.facebookLogin()")}
                 }
             })
@@ -601,7 +601,7 @@ open class MolocateAccount {
             let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
             let url = URL(string: MolocateBaseUrl + "/account/facebook_login/")!
             
-            let request = NSMutableURLRequest(url: url)
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
@@ -624,13 +624,13 @@ open class MolocateAccount {
                                 let emailNotValid: Bool = emailb  == "not_valid"
                                 
                                 if (usernameExist && emailNotValid){
-                                    completionHandler(data: "Kullanıcı adınız ve e-mailiniz daha önce alındı.", response:  response, error: Nserror)
+                                    completionHandler("Kullanıcı adınız ve e-mailiniz daha önce alındı.", response, Nserror as NSError?)
                                 } else {
                                     if usernameExist {
-                                        completionHandler(data: "Kullanıcı adı daha önce alındı.", response:  response, error: Nserror)
+                                        completionHandler("Kullanıcı adı daha önce alındı.", response, Nserror as NSError?)
                                         
                                     } else {
-                                        completionHandler(data: "Lütfen e-mailinizi değiştirin.", response:  response, error: Nserror)
+                                        completionHandler("Lütfen e-mailinizi değiştirin.", response, Nserror as NSError?)
                                     }
                                 }
                             }else {
@@ -644,20 +644,20 @@ open class MolocateAccount {
                                         })
                                     }
                                 })
-                                completionHandler(data: "success", response:  response, error: Nserror)
+                                completionHandler("success", response, Nserror as NSError?)
                             }
                         }else{
-                            completionHandler(data: "error", response:  response, error: Nserror)
+                            completionHandler("error", response, Nserror as NSError?)
                             if debug { print("ServerDataError:: in MolocateAccount.facebookSignup()")}
                         }
                         
                     } catch{
-                        completionHandler(data: "error", response:  response, error: Nserror)
+                        completionHandler("error", response, Nserror as NSError?)
                         if debug { print("JSONCastError:: in MolocateAccount.facebookSignup()")}
                         
                     }
                 }else{
-                    completionHandler(data: "error", response:  response, error: error)
+                    completionHandler("error", response, error as NSError?)
                     if debug { print("RequestError:: in MolocateAccount.facebookSignup()")}
                 }
             })
@@ -678,15 +678,15 @@ open class MolocateAccount {
     
             let pureData = pureString.data(using: String.Encoding.utf8)
             let passwordEnc = "3+bHv9S_7Q+HZdW"
-            let encriptedString = RNCryptor.encryptData(pureData!, password: passwordEnc)
+        let encriptedString = RNCryptor.encrypt(data: pureData!, withPassword: passwordEnc)
             
             let url = URL(string: MolocateBaseUrl + "account/regisnew/")!
             
-            let request = NSMutableURLRequest(url: url)
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("/*/", forHTTPHeaderField: "Content-Type")
             request.setValue("attachment;filename=register", forHTTPHeaderField: "Content-Disposition")
-            request.HTTPBody = encriptedString
+            request.httpBody = encriptedString
             request.timeoutInterval = timeOut
             
             let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
@@ -707,37 +707,37 @@ open class MolocateAccount {
                                     })
                                 }
                             })
-                            completionHandler(data: "success" , response: response , error: nsError  )
+                            completionHandler("success" , response , nsError as NSError? )
                             
                         } else if result.index(forKey: "result") != nil{
                             let servererror = result["result"] as! String
                            // print(error)
                             switch (servererror){
                             case "user_exist":
-                                completionHandler(data: "Lütfen daha önce kullanılmamış bir kullanıcı adı seçiniz." , response: response , error: nsError  )
+                                completionHandler("Lütfen daha önce kullanılmamış bir kullanıcı adı seçiniz." , response , nsError as NSError? )
                                 break
                             case "not_valid":
-                                completionHandler(data: "Lütfen geçerli bir email adresi giriniz." , response: response , error: nsError  )
+                                completionHandler("Lütfen geçerli bir email adresi giriniz." , response , nsError as NSError? )
                                 break
                             case "email_exists":
-                                completionHandler(data: "Lütfen daha önce kullanılmamış bir mail seçiniz." , response: response , error: nsError  )
+                                completionHandler("Lütfen daha önce kullanılmamış bir mail seçiniz." , response , nsError as NSError? )
                                 break
                             default:
-                                completionHandler(data: "Lütfen daha önce kullanılmamış bir kullanıcı adı seçiniz." , response: response , error: nsError  )
+                                completionHandler("Lütfen daha önce kullanılmamış bir kullanıcı adı seçiniz." , response , nsError as NSError? )
                                 break
                                 
                             }
                         }else{
-                            completionHandler(data: "ServerDataError" , response: response , error: nsError  )
+                            completionHandler("ServerDataError" , response , nsError as NSError? )
                             if debug {print("ServerDataError: in MolocateAccount.signup()")}
                         }
                         
                     } catch {
-                        completionHandler(data: "JsonError" , response: response , error: nsError  )
+                        completionHandler("JsonError" , response , nsError as NSError? )
                         if debug {print("JSONCastError: in MolocateAccount.signup()")}
                     }
                 }else{
-                    completionHandler(data: "RequestError check your internet connection" , response: response , error:error  )
+                    completionHandler("RequestError check your internet connection" , response , error as NSError? )
                     if debug {print("RequestError: in MolocateAccount.signup()")}
                 }
             })
@@ -751,7 +751,7 @@ open class MolocateAccount {
     class func follow(_ username: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         let url = URL(string: MolocateBaseUrl + "/relation/api/follow/?username=" + (username as String))!
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -765,18 +765,18 @@ open class MolocateAccount {
                 do {
                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil{
-                        completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+                        completionHandler(result["result"] as! String , response , nsError as NSError? )
                     }else{
-                        completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
+                        completionHandler("ServerDataError" , nil , nsError  as NSError?)
                         if debug{print("ServerDataError:: in MolocateAccount.follow()")}
 
                     }
                 } catch{
-                    completionHandler(data: "JsonError" , response: nil , error: nsError  )
+                    completionHandler("JsonError" , nil , nsError as NSError? )
                     if debug{print("JSONError:: in MolocateAccount.follow()")}
                 }
             }else{
-                completionHandler(data: "RequestError" , response: nil , error: error  )
+                completionHandler("RequestError" , nil , error  as NSError?)
                 if debug{print("RequestError:: in MolocateAccount.follow()")}
             }
         })
@@ -789,7 +789,7 @@ open class MolocateAccount {
     class func registerDevice (_ completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         let url = URL(string: MolocateBaseUrl + "/activity/api/register_device/?device_token=" + (DeviceToken! as String))!
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -807,19 +807,19 @@ open class MolocateAccount {
                         isRegistered = true
                         UserDefaults.standard.set(true, forKey: "isRegistered")
                         UserDefaults.standard.set(DeviceToken, forKey: "DeviceToken")
-                        completionHandler(data: result["result"] as! String , response: response , error: nsError)
+                        completionHandler(result["result"] as! String , response , nsError as NSError?)
                         
                     }else{
-                        completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
+                        completionHandler("ServerDataError" , nil , nsError as NSError? )
                         if debug {print("ServerDataError:: in MolcateAccount.registerDevice()")}
                     }
                 } catch{
-                    completionHandler(data: "JsonError" , response: nil , error: nsError  )
+                    completionHandler("JsonError" , nil , nsError as NSError? )
                     if debug {print("JsonError:: in MolcateAccount.registerDevice()")}
                   
                 }
             }else{
-                completionHandler(data: "RequestError" , response: nil , error: error  )
+                completionHandler("RequestError" , nil , error as NSError? )
                 if debug {print("RequestError:: in MolcateAccount.registerDevice()")}
             }
             
@@ -832,7 +832,7 @@ open class MolocateAccount {
     class func resetBadge (_ completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         let url = URL(string: MolocateBaseUrl + "/activity/api/zero_badge/")
-        let request = NSMutableURLRequest(url: url!)
+        var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -844,19 +844,19 @@ open class MolocateAccount {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil{
-                        completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+                        completionHandler(result["result"] as! String , response , nsError as NSError? )
                     }else{
-                        completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
+                        completionHandler("ServerDataError" , nil , nsError as NSError? )
                         if debug {print("ServerDataError:: in MolocateAccount.resetBadge()")}
 
                     }
                  
                 } catch{
-                    completionHandler(data: "JsonError" , response: nil , error: nsError  )
+                    completionHandler("JsonError" , nil , nsError as NSError? )
                     if debug {print("JsonError:: in MolocateAccount.resetBadge()")}
                 }
             }else{
-                completionHandler(data: "RequestError" , response: nil , error: error )
+                completionHandler("RequestError" , nil , error as NSError?)
                 if debug {print("RequestError:: in MolocateAccount.resetBadge()")}
             }
             
@@ -870,7 +870,7 @@ open class MolocateAccount {
         
         let url = URL(string: MolocateBaseUrl + "/activity/api/unregister_device/")
         
-        let request = NSMutableURLRequest(url: url!)
+        var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -883,20 +883,20 @@ open class MolocateAccount {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil {
-                        completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+                        completionHandler(result["result"] as! String , response , nsError as NSError? )
                         UserDefaults.standard.set(false, forKey: "isRegistered")
                         UserDefaults.standard.set("", forKey: "DeviceToken")
                         isRegistered = false
                     }else{
-                        completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
+                        completionHandler("ServerDataError" , nil , nsError as NSError? )
                        // print("ServerDataError:: in MolocateAccount.unregisterDevice()")
                     }
                 } catch{
-                    completionHandler(data: "JsonError" , response: nil , error: nsError  )
+                    completionHandler("JsonError" , nil , nsError  as NSError?)
                    // print("JsonError:: in MolocateAccount.unregisterDevice()")
                 }
             }else{
-                completionHandler(data: "JsonError" , response: nil , error: error  )
+                completionHandler("JsonError" , nil , error as NSError? )
                 //print("RequestError:: in MolocateAccount.unregisterDevice()")
             }
             
@@ -906,7 +906,7 @@ open class MolocateAccount {
     
     class func unfollow(_ username: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         let url = URL(string: MolocateBaseUrl + "relation/api/unfollow/?username=" + (username as String))!
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -917,17 +917,17 @@ open class MolocateAccount {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                     if result.index(forKey: "result") != nil {
-                        completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+                        completionHandler(result["result"] as! String , response , nsError as NSError? )
                     }else{
-                        completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
+                        completionHandler("ServerDataError" , nil , nsError as NSError? )
                         if debug { print("ServerDataError:: in MolocateAccount.unfollow()")}
                     }
                 } catch{
-                    completionHandler(data: "JsonError" , response: nil , error: nsError  )
+                    completionHandler("JsonError" , nil , nsError as NSError? )
                     if debug { print("JsonError:: in MolocateAccount.unfollow()")}
                 }
             }else{
-                completionHandler(data: "RequestError" , response: nil , error: error  )
+                completionHandler("RequestError" , nil , error as NSError? )
                 if debug { print("RequestError:: in MolocateAccount.unfollow()")}
             }
             
@@ -940,7 +940,7 @@ open class MolocateAccount {
 
         var url = URLComponents(string: MolocateBaseUrl + "/account/api/search_user/")
         url?.queryItems = [URLQueryItem(name: "username", value: username)]
-        let request = NSMutableURLRequest(url: (url?.url)!)
+        var request = URLRequest(url: (url?.url)!)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -964,14 +964,14 @@ open class MolocateAccount {
                         userArray.append(user)
                         
                     }
-                    completionHandler(data: userArray , response: nil , error: nsError  )
+                    completionHandler(userArray , nil , nsError as NSError? )
                 
                 } catch {
-                    completionHandler(data: [MoleUser]() , response: nil , error: nsError  )
+                    completionHandler([MoleUser]() , nil , nsError  as NSError?)
                     if debug { print("JSONError:: in MolocateAccount.searchUser()")}
                 }
             }else{
-                completionHandler(data: [MoleUser]() , response: nil , error:error )
+                completionHandler([MoleUser]() , nil , error as NSError?)
                 if debug { print("RequestError:: in MolocateAccount.searchUser()")}
             }
         })
@@ -980,7 +980,7 @@ open class MolocateAccount {
     class func getUser(_ username: String, completionHandler: @escaping (_ data: MoleUser, _ response: URLResponse?, _ error: NSError?) -> ()) {
         
         let url = URL(string: MolocateBaseUrl + "account/api/get_user/?username=" + (username as String))!
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -1007,17 +1007,17 @@ open class MolocateAccount {
                         user.tag_count = result["tag_count"] as! Int
                         user.post_count = result["post_count"]as! Int
                         user.isFollowing = result["is_following"] as! Int == 1 ? true:false
-                        completionHandler(data: user, response: response , error: nsError  )
+                        completionHandler(user, response , nsError as NSError? )
                     }else{
-                        completionHandler(data: MoleUser() , response: nil , error: nsError  )
+                        completionHandler(MoleUser() , nil , nsError  as NSError?)
                         if debug {print("ServerDataError:: in MolocateAccount.getUser()")}
                     }
                 } catch{
-                    completionHandler(data: MoleUser() , response: nil , error: nsError  )
+                    completionHandler(MoleUser() , nil , nsError as NSError? )
                     if debug {print("JsonError:: in MolocateAccount.getUser()")}
                 }
             }else{
-                completionHandler(data: MoleUser() , response: nil , error:error )
+                completionHandler(MoleUser() , nil , error as NSError?)
                 if debug {print("RequestError:: in MolocateAccount.getUser()")}
             }
         })
@@ -1036,7 +1036,7 @@ open class MolocateAccount {
             let jsonData = try JSONSerialization.data(withJSONObject: Body, options: JSONSerialization.WritingOptions())
             let url = URL(string: MolocateBaseUrl + "account/api/change_password/")!
             
-            let request = NSMutableURLRequest(url: url)
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
             request.httpBody = jsonData
@@ -1051,17 +1051,17 @@ open class MolocateAccount {
                         let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                         if result.index(forKey: "result") != nil {
                             let answer = result["result"] as! String
-                            completionHandler(data: answer  , response: response , error: nsError  )
+                            completionHandler(answer  , response , nsError as NSError? )
                         }else{
-                            completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
+                            completionHandler("ServerDataError" , nil , nsError  as NSError?)
                             if debug {print("ServerDataError:: in MolocateAccount.changePassword()")}
                         }
                     } catch{
-                        completionHandler(data: "JsonError" , response: nil , error: nsError  )
+                        completionHandler("JsonError" , nil , nsError  as NSError?)
                         if debug {print("JsonError:: in MolocateAccount.changePassword()")}
                     }
                 }else {
-                    completionHandler(data: "RequestError" , response: nil , error: error )
+                    completionHandler("RequestError" , nil , error as NSError?)
                     if debug {print("RequestError:: in MolocateAccount.changePassword()")}
                 }
                 
@@ -1089,7 +1089,7 @@ open class MolocateAccount {
             
             let jsonData = try JSONSerialization.data(withJSONObject: Body, options: JSONSerialization.WritingOptions())
             let url = URL(string: MolocateBaseUrl + "account/api/edit_user/")!
-            let request = NSMutableURLRequest(url: url)
+            var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
             request.httpBody = jsonData
@@ -1106,20 +1106,20 @@ open class MolocateAccount {
                     
                         if result.index(forKey: "following_count") != nil {
                             
-                            completionHandler(data:"success"  , response: response , error: nsError  )
+                            completionHandler("success"  , response , nsError as NSError? )
                             
                         }else{
-                            completionHandler(data: "ServerError" , response: nil , error: nsError  )
+                            completionHandler("ServerError" , nil , nsError as NSError? )
                             if debug {print("ServerDataError:: in MolocateAccount.EditUser()")}
 
                         }
                        
                     } catch{
-                        completionHandler(data: "JsonError" , response: nil , error: nsError  )
+                        completionHandler("JsonError" , nil , nsError  as NSError?)
                         if debug {print("JsonError:: in MolocateAccount.EditUser()")}
                     }
                 }else {
-                    completionHandler(data: "RequestError" , response: nil , error: error  )
+                    completionHandler("RequestError" , nil , error  as NSError?)
                     if debug {print("RequestError:: in MolocateAccount.EditUser()")}
                 }
             })
@@ -1183,7 +1183,7 @@ open class MolocateAccount {
         
         postData.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
         
-        let request = NSMutableURLRequest(url: URL(string: MolocateBaseUrl + "account/api/upload_both/")!,cachePolicy: .useProtocolCachePolicy, timeoutInterval: 5.0)
+        var request = URLRequest(url: URL(string: MolocateBaseUrl + "account/api/upload_both/")!,cachePolicy: .useProtocolCachePolicy, timeoutInterval: 5.0)
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
         request.httpBody = postData as Data
@@ -1194,20 +1194,20 @@ open class MolocateAccount {
                
                 
                 if (error != nil) {
-                    completionHandler(data:"error" , pictureUrl: "", thumbnailUrl: "",response: response , error: error  )
+                    completionHandler("error" , "", "",response , error as NSError? )
                 } else {
                     
                      let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: String]
                     if result.index(forKey: "thumbnail_url") != nil  {
                     
-                    completionHandler(data: "success", pictureUrl: result["picture_url"]!, thumbnailUrl: result["thumbnail_url"]!,response: response , error: error  )
+                    completionHandler("success", result["picture_url"]!, result["thumbnail_url"]!,response , error as NSError? )
                         
                     }else{
-                          completionHandler(data:"error" , pictureUrl: "", thumbnailUrl: "",response: response , error: nil  )
+                          completionHandler("error" , "", "",response , nil  )
                     }
                 }
             }catch{
-                completionHandler(data:"error" , pictureUrl: "", thumbnailUrl: "",response: response , error: nil  )
+                completionHandler("error" , "", "",response , nil  )
             }
         })
         
@@ -1219,7 +1219,7 @@ open class MolocateAccount {
         
         let headers = ["content-type": "/*/", "content-disposition":"attachment;filename=molocate.png" ]
         
-        let request = NSMutableURLRequest(url: URL(string: MolocateBaseUrl + "/account/api/upload_picture/")!, cachePolicy:.useProtocolCachePolicy, timeoutInterval: 10.0)
+        var request = URLRequest(url: URL(string: MolocateBaseUrl + "/account/api/upload_picture/")!, cachePolicy:.useProtocolCachePolicy, timeoutInterval: 10.0)
         
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
@@ -1241,18 +1241,18 @@ open class MolocateAccount {
                         }else{
                             urlString = ""
                         }
-                        completionHandler(data: urlString, response: response , error: nsError  )
+                        completionHandler(urlString, response , nsError  as NSError?)
                     }else{
-                        completionHandler(data: "ServerDataError" , response: nil , error: nsError  )
+                        completionHandler("ServerDataError" , nil , nsError  as NSError?)
                         if debug {print("ServerDataError:: in MolocateAccount.uploadProfilePhoto()")}
                     }
                    
                 } catch{
-                    completionHandler(data: "JsonError" , response: nil , error: nsError  )
+                    completionHandler("JsonError" , nil , nsError as NSError? )
                     if debug {print("JsonError:: in MolocateAccount.uploadProfilePhoto()")}
                 }
             }else{
-                completionHandler(data: "RequestError" , response: nil , error: error  )
+                completionHandler("RequestError" , nil , error as NSError? )
                 if debug {print("RequestError:: in MolocateAccount.uploadProfilePhoto()")}
             }
             
@@ -1293,7 +1293,7 @@ open class MolocateAccount {
     class func getCurrentUser(_ completionHandler: @escaping (_ data: MoleUser, _ response: URLResponse?, _ error: NSError?) -> ()) {
         
         let url = URL(string: MolocateBaseUrl +  "/account/api/current/")!
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
@@ -1334,18 +1334,18 @@ open class MolocateAccount {
                             MoleCurrentUser.isFaceUser = true
                         }
                        // print(MoleCurrentUser.token)
-                        completionHandler(data: MoleCurrentUser, response: response , error: nsError  )
+                        completionHandler(MoleCurrentUser, response , nsError as NSError? )
                     }else{
-                        completionHandler(data: MoleCurrentUser , response: nil , error: nsError  )
+                        completionHandler(MoleCurrentUser , nil , nsError as NSError? )
                         if debug {print("ServerDataError:: in MolocateAccount.getCurrentUser()")}
                     }
                     
                 } catch{
-                    completionHandler(data: MoleCurrentUser , response: nil , error: nsError  )
+                    completionHandler(MoleCurrentUser , nil , nsError as NSError? )
                     if debug {print("JsonError:: in MolocateAccount.getCurrentUser()")}
                 }
             }else{
-                completionHandler(data: MoleCurrentUser , response: nil , error: error  )
+                completionHandler(MoleCurrentUser , nil , error as NSError? )
                 if debug {print("RequestError:: in MolocateAccount.getCurrentUser()")}
             }
             

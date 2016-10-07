@@ -74,18 +74,18 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         
         if (!isLocationSelected){
             //self.postO.enabled = false
-            displayAlert("Dikkat", message: "Lütfen konum seçiniz.")
+            displayAlert(title: "Dikkat", message: "Lütfen konum seçiniz.")
         }
         else {
             
-            let random = randomStringWithLength(64)
+            let random = randomStringWithLength(len: 64)
             let fileName = random //.stringByAppendingFormat(".mp4", random)
             let fileURL = URL(fileURLWithPath: videoPath!)
             UserDefaults.standard.set(videoPath, forKey: "videoPath")
             let uploadRequest = AWSS3TransferManagerUploadRequest()
-            uploadRequest.body = fileURL
-            uploadRequest.key = "videos/" + (fileName.stringByAppendingFormat(".mp4", fileName) as String)
-            uploadRequest.bucket = S3BucketName
+            uploadRequest?.body = fileURL
+            uploadRequest?.key = "videos/" + (fileName.stringByAppendingFormat(".mp4", fileName) as String)
+            uploadRequest?.bucket = S3BucketName
             
             let json = [
                 "video_id": fileName as String,
@@ -113,7 +113,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
                     //default thumbnail ata
             }
             
-            new_upload.upload(false, id: video_id, uploadRequest:uploadRequest,fileURL: "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName as String), fileID: fileName as String ,json: json as! [String : AnyObject], thumbnail_image: thumb!)
+            new_upload.upload(false, id: video_id, uploadRequest:uploadRequest!,fileURL: "https://d1jkin67a303u2.cloudfront.net/videos/"+(fileName as String), fileID: fileName as String ,json: json as! [String : AnyObject], thumbnail_image: thumb!)
            
              MyS3Uploads.insert(new_upload, at: 0)
             
@@ -149,9 +149,9 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         var adress = ""
     }
     
-    override func touchesBegan(touches: Set<UITouch>, with event: UIEvent?){
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         view.endEditing(true)
-        updateSearch("")
+        updateSearch(word: "")
         super.touchesBegan(touches, with: event)
     }
     
@@ -199,12 +199,12 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     
     var CaptionText = ""
     
-    override func viewWillAppear(animated:Bool) {
+    override func viewWillAppear(_ animated:Bool) {
         super.viewWillAppear(animated)
         
     
-        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(camera3thScreen.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(camera3thScreen.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(camera3thScreen.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(camera3thScreen.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidLoad() {
@@ -227,7 +227,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         mentionTable.isHidden = true
         mentionTable.tableFooterView = UIView()
         self.view.backgroundColor = UIColor.white
-        NotificationCenter.defaultCenter().addObserver(self,selector: #selector(self.keyboardNotification(_:)),name: NSNotification.Name.UIKeyboardWillChangeFrame,object: nil)
+        NotificationCenter.default.addObserver(self,selector: #selector(camera3thScreen.keyboardNotification),name: NSNotification.Name.UIKeyboardWillChangeFrame,object: nil)
         
         
         
@@ -253,7 +253,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     deinit {
-        NotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     
@@ -264,7 +264,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            if endFrame?.origin.y >= UIScreen.main.bounds.size.height {
+            if (endFrame?.origin.y)! >= UIScreen.main.bounds.size.height {
                 self.keyboardHeightLayoutConstraint?.constant = 0.0
                 
             } else {
@@ -347,16 +347,16 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
 
         
-        let info = isTheRangeInMentionZone(range, text: text)
+        let info = isTheRangeInMentionZone(range: range, text: text)
         
         if info.0{
             isInTheMentionMode = true
             mentionModeIndex = info.1
-            updateSearch(mentionedUsers[mentionModeIndex])
+            updateSearch(word: mentionedUsers[mentionModeIndex])
         }else{
             isInTheMentionMode = false
             mentionModeIndex = 0
-            updateSearch("")
+            updateSearch(word: "")
         }
         
         //
@@ -448,7 +448,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count+1
     }
     
@@ -456,8 +456,8 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         return 60
     }
     
-    func tableView(tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = searchUsername(style: .Default, reuseIdentifier: "mention")
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = searchUsername(style: .default, reuseIdentifier: "mention")
         
         if (indexPath as NSIndexPath).row < searchResults.count {
             cell.followButton.isHidden = true
@@ -469,7 +469,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
                 cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
             }
             if(searchResults[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
-                cell.profilePhoto.sd_setImageWithURL(searchResults[indexPath.row].profilePic, forState: UIControlState.Normal)
+                cell.profilePhoto.sd_setImage(with: searchResults[indexPath.row].profilePic, for: UIControlState.normal)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
             }
@@ -506,7 +506,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             mentionAreas[mentionModeIndex].length = username.characters.count + 2
             mentionedUsers[mentionModeIndex] = username
             
-            textViewDidChange(captionView)
+            textViewDidChange(textView: captionView)
             isInTheMentionMode = false
             mentionTable.isHidden = true
             searchResults.removeAll()
@@ -610,7 +610,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     func displayAlert(title: String, message: String) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             //            if !self.postO.enabled {
             //                self.postO.enabled = true
             //            }
