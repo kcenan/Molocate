@@ -16,6 +16,8 @@ pod 'XLActionController'
 pod 'Fabric'
 pod 'Crashlytics'
 pod 'RNCryptor', '~> 5.0.1'
+pod "RecordButton"
+pod 'QuadratTouch', :git => 'https://github.com/Constantine-Fry/das-quadrat.git', :branch => 'fry-swift30'
 end
 
 target 'MolocateTests' do
