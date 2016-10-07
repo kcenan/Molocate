@@ -141,7 +141,7 @@ open class S3Upload {
                         }else if !self.isFailed{
                             self.isFailed = true
                             let userinf = ["id":videoid]
-                            NotificationCenter.defaultCenter.postNotificationName("prepareForRetry", object: nil, userInfo:userinf )
+                            NotificationCenter.default.postNotificationName("prepareForRetry", object: nil, userInfo:userinf )
                             MolocateVideo.encodeGlobalVideo()
                         }
                     })

@@ -280,7 +280,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     func fbLoginInitiate() {
         
-        var manager = FBSDKLoginManager.init()
+        let manager = FBSDKLoginManager.init()
         manager.logIn(withReadPermissions:  ["public_profile", "email","user_birthday", "user_friends"], from: self) { (Result, error) in
             if (error != nil) {
                 self.removeFbData()

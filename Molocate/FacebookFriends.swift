@@ -92,8 +92,8 @@ class FacebookFriends: UIViewController {
         
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
         
-        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url.absoluteString != ""){
-            cell.profilePhoto.sd_setImageWithURL(userRelations.relations[indexPath.row].picture_url, forState: UIControlState.Normal)
+        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url?.absoluteString != ""){
+            cell.profilePhoto.sd_setImage(with: userRelations.relations[indexPath.row].picture_url, for: UIControlState.normal)
         }else{
             cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
         }

@@ -339,10 +339,10 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         recordButton.progressColor = .redColor()
         recordButton.closeWhenFinished = false
         recordButton.buttonColor = swiftColor
-        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), for: .TouchDown)
-        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), for: .TouchUpInside)
-        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), for: UIControlEvents.TouchDragExit)
-        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), for: UIControlEvents.TouchDragEnter)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), for: .touchDown)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), for: .touchUpInside)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdRelease), for: UIControlEvents.touchDragExit)
+        recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), for: UIControlEvents.touchDragEnter)
         
         recordButton.center.x = self.view.center.x
         view.addSubview(recordButton)
@@ -413,7 +413,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     func displayLocationInfo(_ location: CLLocation) {
             //stop updating location to save battery life
         locationManager.stopUpdatingLocation()
-        let session = URLSession.sharedSession()
+        let session = URLSession.shared
         
     
         //var parameters = [Parameter.query:"moda sahil"]

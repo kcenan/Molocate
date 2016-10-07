@@ -518,7 +518,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         for mention in mentions where mention.range.length > 1{
             //print(mention.range.location)
             if mention.range.length > 2 {
-                var word = new[mention.range.location+1...mention.range.location + mention.range.length-1]
+                
+                var word = new.substring(with:mention.range.location+1..<mention.range.location + mention.range.length-1)
                 
                 if word.hasPrefix("@") {
                     word.remove(at: word.startIndex)
@@ -528,8 +529,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 mentionAreas.append(mention.range)
             }else if mention.range.location == 0{
                 
-               // print("mentionn range location")
-                var word = new[mention.range.location...mention.range.location + mention.range.length-1]
+                // print("mentionn range location")
+                var word = new.substring(with:mention.range.location..<mention.range.location + mention.range.length-1)
                 
                 if word.hasPrefix("@") {
                     word.remove(at: word.startIndex)
