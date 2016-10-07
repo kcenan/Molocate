@@ -78,11 +78,12 @@ class firstController: UIViewController , CLLocationManagerDelegate {
     
     func fbLoginInitiate() {
         choosedIndex = 2
-        FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email","user_birthday", "user_friends"],from:self,handler: { (Result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+
+        FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email","user_birthday", "user_friends"],from:self,handler: { (loginresult, error) -> Void in
             
             if (error != nil) {
                 self.removeFbData()
-            } else if Result.isCancelled {
+            } else if (loginresult?.isCancelled)! {
                 //print("Error in fbLoginInitiate")
                 self.removeFbData()
             } else {
@@ -92,7 +93,7 @@ class firstController: UIViewController , CLLocationManagerDelegate {
                 
               //  print(FbToken)
                 
-                MolocateAccount.FacebookLogin(json, completionHandler: { (data, response, error) in
+                MolocateAccount.FacebookLogin(json as JSONParameters, completionHandler: { (data, response, error) in
                     if (data == "success") {
                         MolocateAccount.getCurrentUser({ (data, response, error) in
                             DispatchQueue.main.async {
@@ -111,7 +112,7 @@ class firstController: UIViewController , CLLocationManagerDelegate {
                 })
                 
                 
-                if Result.grantedPermissions.contains("email") {
+                if (loginresult?.grantedPermissions.contains("email"))! {
                     //Do work
                     self.activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                     self.activityIndicator.center = self.view.center

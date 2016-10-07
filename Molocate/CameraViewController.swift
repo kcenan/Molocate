@@ -78,7 +78,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     fileprivate var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     fileprivate var rootLayer = CALayer()
     fileprivate var camera = true
-    fileprivate var videoURL = URL()
+    fileprivate var videoURL = URL(string:"")
     fileprivate var sessionQueue: DispatchQueue?
     fileprivate var vurl: URL?
     fileprivate var topLayer = CALayer()
@@ -336,7 +336,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         bottomToolbar.clipsToBounds = true
         recordButton = RecordButton(frame: CGRect(x: 0,y: 0,width: 2*topRect.height/3,height: 2*topRect.height/3))
         recordButton.center = nview.center
-        recordButton.progressColor = .redColor()
+        recordButton.progressColor = .red
         recordButton.closeWhenFinished = false
         recordButton.buttonColor = swiftColor
         recordButton.addTarget(self, action: #selector(CameraViewController.holdDown), for: .touchDown)
@@ -374,7 +374,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         let locationAge = newLocation.timestamp.timeIntervalSinceNow
         
         //print(locationAge)
@@ -618,7 +618,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
         if error != nil {
             //NSLog("Movie file finishing error: %@", error!) "The recording reached the maximum allowable length."
-            if error.localizedRecoverySuggestion == "There is not enough available space to continue the file writing. Make room by deleting existing videos or photos." {
+            if error.localizedDescription == "There is not enough available space to continue the file writing. Make room by deleting existing videos or photos." {
           //  success = error!.userInfo[AVErrorRecordingSuccessfullyFinishedKey] as! Bool? ?? false
             self.holdRelease()
             self.displayRecordAlert("Hata", message: "Telefonunuzda yeterli yer yok.")
@@ -1274,7 +1274,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 }
 
 extension CLLocation {
-    func parameters(_ bool: Bool) -> Parameters {
+    func parameters(bool: Bool) -> Parameters {
         let myll = parameters.ll
         let myllacc = parameters.llAcc
         let myalt = parameters.alt

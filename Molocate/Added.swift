@@ -216,12 +216,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         player1.pause()
         player2.pause()
         let username = self.videoArray[Row].username
-        var shareURL = URL()
+        var shareURL = URL(string:"")!
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
         } else {
             let url = self.videoArray[Row].urlSta.absoluteString
-            if(url[0] == "h") {
+            if(url[url.startIndex] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -235,11 +235,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             parentLayer.frame = videoLayer.frame
             let sticker = UIImage(named: "videoSticker2")
             let string = username
-            let tempasset = AVAsset(URL: shareURL)
-            let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
+            let tempasset = AVAsset(url: shareURL)
+            let clipVideoTrack = (tempasset.tracks(withMediaType: AVMediaTypeVideo)[0]) as AVAssetTrack
             let composition = AVMutableVideoComposition()
             composition.frameDuration = CMTimeMake(1,30)
-            composition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
+            composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width, height:clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
             let dist = CGFloat(string.characters.count*15)
@@ -249,8 +249,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             text.string = string
             text.fontSize = 25
             text.font = UIFont(name: "AvenirNext-Regular", size:5)!
-            parentLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
-            videoLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
+            parentLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
+            videoLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
             parentLayer.addSublayer(videoLayer)
             parentLayer.addSublayer(over.layer)
             parentLayer.addSublayer(text)
@@ -258,29 +258,29 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             let instruction = AVMutableVideoCompositionInstruction()
             instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
             let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
-            transformer.setTransform(clipVideoTrack.preferredTransform, atTime: kCMTimeZero)
+            transformer.setTransform(clipVideoTrack.preferredTransform, at: kCMTimeZero)
             instruction.layerInstructions = NSArray(object: transformer) as! [AVVideoCompositionLayerInstruction]
             composition.instructions = NSArray(object: instruction) as! [AVVideoCompositionInstructionProtocol]
             let documentsPath = (NSTemporaryDirectory() as NSString)
-            let exportPath = documentsPath.stringByAppendingFormat("fbshare.mp4", documentsPath)
+            let exportPath = documentsPath.appendingFormat("fbshare.mp4", documentsPath)
             let exportURL = URL(fileURLWithPath: exportPath as String)
             let exporter = AVAssetExportSession(asset: tempasset, presetName:AVAssetExportPresetHighestQuality )
             exporter?.videoComposition = composition
             exporter?.outputURL = exportURL
             exporter?.outputFileType = AVFileTypeMPEG4
-            exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                DispatchQueue.main.asynchronously(execute: {
-                    let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
+            exporter?.exportAsynchronously(completionHandler: { () -> Void in
+                DispatchQueue.main.async(execute: {
+                    let photoLibrary = PHPhotoLibrary.shared()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
                     photoLibrary.performChanges({
-                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(exportURL)
+                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
                         videoAssetPlaceholder = request!.placeholderForCreatedAsset
                         },
                         completionHandler: { success, error in
                             if success {
                                 do {
                                     
-                                    try NSFileManager.defaultManager().removeItemAtURL(exportURL)
+                                    try FileManager.default.removeItem(at: exportURL)
                                     
                                 } catch _ {
                                 }
@@ -288,7 +288,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                 let assetID =
                                     localID.stringByReplacingOccurrencesOfString(
                                         "/.*", withString: "",
-                                        options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+                                        options: NSString.CompareOptions.RegularExpressionSearch, range: nil)
                                 let ext = "mp4"
                                 let assetURLStr =
                                     "assets-library://asset/asset.\(ext)?id=\(assetID)&ext=\(ext)"
@@ -296,7 +296,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                 let video = FBSDKShareVideo(videoURL: url)
                                 let content = FBSDKShareVideoContent()
                                 content.video = video
-                                FBSDKShareDialog.showFromViewController(self, withContent: content, delegate: self)
+                                FBSDKShareDialog.show(from: self, with: content, delegate: self)
                                 
                             }
                     })
@@ -312,11 +312,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             parentLayer.frame = videoLayer.frame
             let sticker = UIImage(named: "videoSticker2")
             let string = username
-            let tempasset = AVAsset(URL: shareURL)
-            let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
+            let tempasset = AVAsset(url: shareURL)
+            let clipVideoTrack = (tempasset.tracks(withMediaType: AVMediaTypeVideo)[0]) as AVAssetTrack
             let composition = AVMutableVideoComposition()
             composition.frameDuration = CMTimeMake(1,30)
-            composition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
+            composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width, height:clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
             let dist = CGFloat(string.characters.count*15)
@@ -326,8 +326,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             text.string = string
             text.fontSize = 25
             text.font = UIFont(name: "AvenirNext-Regular", size:5)!
-            parentLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
-            videoLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
+            parentLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
+            videoLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
             parentLayer.addSublayer(videoLayer)
             parentLayer.addSublayer(over.layer)
             parentLayer.addSublayer(text)
@@ -335,30 +335,30 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             let instruction = AVMutableVideoCompositionInstruction()
             instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
             let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
-            transformer.setTransform(clipVideoTrack.preferredTransform, atTime: kCMTimeZero)
+            transformer.setTransform(clipVideoTrack.preferredTransform, at: kCMTimeZero)
             instruction.layerInstructions = NSArray(object: transformer) as! [AVVideoCompositionLayerInstruction]
             composition.instructions = NSArray(object: instruction) as! [AVVideoCompositionInstructionProtocol]
             let documentsPath = (NSTemporaryDirectory() as NSString)
-            let exportPath = documentsPath.stringByAppendingFormat("instashare.mp4", documentsPath)
+            let exportPath = documentsPath.appendingFormat("instashare.mp4", documentsPath)
             let exportURL = NSURL(fileURLWithPath: exportPath as String)
             let exporter = AVAssetExportSession(asset: tempasset, presetName:AVAssetExportPresetHighestQuality )
             exporter?.videoComposition = composition
-            exporter?.outputURL = exportURL
+            exporter?.outputURL = exportURL as URL
             exporter?.outputFileType = AVFileTypeMPEG4
-            exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                DispatchQueue.main.asynchronously(execute: {
+            exporter?.exportAsynchronously(completionHandler: { () -> Void in
+                DispatchQueue.main.async(execute: {
                     
-                    let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
+                    let photoLibrary = PHPhotoLibrary.shared()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
                     photoLibrary.performChanges({
-                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(exportURL)
+                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL as URL)
                         videoAssetPlaceholder = request!.placeholderForCreatedAsset
                         },
                         completionHandler: { success, error in
                             if success {
                                 do {
                                     
-                                    try NSFileManager.defaultManager().removeItemAtURL(exportURL)
+                                    try FileManager.default.removeItem(at: exportURL as URL)
                                     
                                 } catch _ {
                                 }
@@ -366,7 +366,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                 let assetID =
                                     localID.stringByReplacingOccurrencesOfString(
                                         "/.*", withString: "",
-                                        options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+                                        options: NSString.CompareOptions.RegularExpressionSearch, range: nil)
                                 let ext = "mp4"
                                 let assetURLStr =
                                     "assets-library://asset/asset.\(ext)?id=\(assetID)&ext=\(ext)"
@@ -660,21 +660,21 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 cell.contentView.addSubview(progressBar!)
             }
             
-            var trueURL = URL()
+            var trueURL = URL(string:"")
             if !isScrollingFast {
                 
             if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
                 trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as! URL
             } else {
                 let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta.absoluteString
-                if(url[0] == "h") {
+                if(url[url.startIndex] == "h") {
                     trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
                     DispatchQueue.main.async {
                         myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
                             ////print("hop")
                             let url = self.videoArray[indexPath.row].urlSta.absoluteString
-                            let path = URL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
-                            let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+                            let path = URL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
+                            let cached = DiskCache(path: path.absoluteString).path(url)
                             let file = URL(fileURLWithPath: cached)
                             dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
                             
@@ -689,7 +689,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             
             if (indexPath as NSIndexPath).row % 2 == 1 {
                 
-                self.player1.setUrl(trueURL)
+                self.player1.setUrl(trueURL!)
                 self.player1.id = self.videoArray[(indexPath as NSIndexPath).row].id
                 self.player1.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player1.view)
@@ -697,7 +697,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 
             }else{
                 
-                self.player2.setUrl(trueURL)
+                self.player2.setUrl(trueURL!)
                 self.player2.id = self.videoArray[(indexPath as NSIndexPath).row].id
                 self.player2.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player2.view)

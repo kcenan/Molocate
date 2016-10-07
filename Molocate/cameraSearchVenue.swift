@@ -261,7 +261,7 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
                                     loc.adress = loc.adress + item
                                 }
                                 //print(venues?.count)
-                                if item.indexForKey("photo") != nil {
+                                if item.index(forKey: "photo") != nil {
                                     //////print("foto var")
                                 } else {
                                     

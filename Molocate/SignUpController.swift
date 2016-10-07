@@ -103,7 +103,7 @@ class signUpController: UIViewController,UITextFieldDelegate {
                                 }
                                 
                             } else{
-                                self.displayAlert("Hata oluştu.", message: data)
+                                self.displayAlert("Hata oluştu.", message: data!)
                                 if UIApplication.shared.isIgnoringInteractionEvents {
                                     UIApplication.shared.endIgnoringInteractionEvents()
                                 }

@@ -241,13 +241,13 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
             let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
             if(thumbnailURL.absoluteString != ""){
-                cell.cellthumbnail.sd_setImageWithURL(thumbnailURL)
+                cell.cellthumbnail.sd_setImage(with: thumbnailURL)
                 //print("burda")
             }else{
                 cell.cellthumbnail.image = UIImage(named: "Mole")!
             }
 
-            var trueURL = URL()
+            var trueURL = URL(string:"")!
             if !isScrollingFast {
 
             if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
@@ -259,8 +259,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                         let url = self.videoArray[indexPath.row].urlSta.absoluteString
 
                             //DBG:hata verdi INDEX OUT OF RANGE WHY SO?
-                        let path = NSURL(string: DiskCache.basePath())!.URLByAppendingPathComponent("shared-data/original")
-                        let cached = DiskCache(path: path.absoluteString).pathForKey(url)
+                        let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
+                        let cached = DiskCache(path: (path?.absoluteString)!).pathForKey(url)
                         let file = NSURL(fileURLWithPath: cached)
                         dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
                     }
@@ -522,7 +522,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
         } else {
             let url = self.videoArray[Row].urlSta.absoluteString
-            if(url?[0] == "h") {
+            if(url[url.startIndex] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -530,7 +530,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         // set up a header title
         actionSheet.headerData = "Paylaş"
         // Add some actions, note that the first parameter of `Action` initializer is `ActionData`.
-        actionSheet.addAction(Action(ActionData(title: "Facebook", subtitle: "Facebook'da paylaş", image: UIImage(named: "facebookLogo")!), style: .Default, handler: { action in
+        actionSheet.addAction(Action(ActionData(title: "Facebook", subtitle: "Facebook'da paylaş", image: UIImage(named: "facebookLogo")!), style: .default, handler: { action in
             let videoLayer = CALayer()
             let parentLayer = CALayer()
             parentLayer.frame = videoLayer.frame
@@ -540,7 +540,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
             let composition = AVMutableVideoComposition()
             composition.frameDuration = CMTimeMake(1,30)
-            composition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
+            composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width, height:clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
             let dist = CGFloat(string.characters.count*15)
@@ -550,12 +550,12 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             text.string = string
             text.fontSize = 25
             text.font = UIFont(name: "AvenirNext-Regular", size:5)!
-            parentLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
-            videoLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
+            parentLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, heigth:composition.renderSize.height)
+            videoLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
             parentLayer.addSublayer(videoLayer)
             parentLayer.addSublayer(over.layer)
             parentLayer.addSublayer(text)
-            composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+            composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
             let instruction = AVMutableVideoCompositionInstruction()
             instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
             let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
@@ -570,7 +570,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             exporter?.outputURL = exportURL
             exporter?.outputFileType = AVFileTypeMPEG4
             exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
                     photoLibrary.performChanges({
@@ -607,7 +607,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         
         
         
-        actionSheet.addAction(Action(ActionData(title: "Instagram", subtitle: "Instagram'da paylaş", image: UIImage(named: "instagramLogo")!), style: .Default, handler: { action in
+        actionSheet.addAction(Action(ActionData(title: "Instagram", subtitle: "Instagram'da paylaş", image: UIImage(named: "instagramLogo")!), style: .default, handler: { action in
             let videoLayer = CALayer()
             let parentLayer = CALayer()
             parentLayer.frame = videoLayer.frame
@@ -617,7 +617,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
             let composition = AVMutableVideoComposition()
             composition.frameDuration = CMTimeMake(1,30)
-            composition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
+            composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width,height: clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
             let dist = CGFloat(string.characters.count*15)
@@ -627,8 +627,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             text.string = string
             text.fontSize = 25
             text.font = UIFont(name: "AvenirNext-Regular", size:5)!
-            parentLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
-            videoLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
+            parentLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
+            videoLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
             parentLayer.addSublayer(videoLayer)
             parentLayer.addSublayer(over.layer)
             parentLayer.addSublayer(text)
@@ -647,7 +647,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             exporter?.outputURL = exportURL
             exporter?.outputFileType = AVFileTypeMPEG4
             exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     
                     let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
@@ -684,7 +684,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 })
             })        }))
         // present actionSheet like any other view controller
-        presentViewController(actionSheet, animated: true, completion: nil)
+        present(actionSheet, animated: true, completion: nil)
     }
 
     func pressedComment(_ sender: UIButton) {
@@ -882,7 +882,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         let imageSize = likeHeart.image?.size.height
         likeHeart.frame = CGRect(x: likeHeart.center.x-imageSize!/2 , y: likeHeart.center.y-imageSize!/2, width: imageSize!, height: imageSize!)
         cell?.addSubview(likeHeart)
-        MolocateUtility.animateLikeButton(&likeHeart)
+        MolocateUtility.animateLikeButton(heart: &likeHeart)
         var indexes = [IndexPath]()
         indexes.append(indexpath)
 
@@ -1003,8 +1003,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         }
     }
     override func viewDidDisappear(_ animated: Bool) {
-        SDImageCache.sharedImageCache().cleanDisk()
-        SDImageCache.sharedImageCache().clearMemory()
+        SDImageCache.shared().cleanDisk()
+        SDImageCache.shared().clearMemory()
         player1.stop()
         player1.removeFromParentViewController()
         player2.stop()

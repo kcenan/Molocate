@@ -315,7 +315,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
 
-            cell.videoComment.handleMentionTap { userHandle in  self.delegate?.pressedUsername(userHandle, profilePic: URL(), isFollowing: false)}
+            cell.videoComment.handleMentionTap { userHandle in  self.delegate?.pressedUsername(userHandle, profilePic: URL(string:"")!, isFollowing: false)}
 
    
 
@@ -345,9 +345,9 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                                 ////print("hop")
                                 let url = self.videoArray[indexPath.row].urlSta.absoluteString
                                 let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
-                                let cached = DiskCache(path: (path?.absoluteString)!).pathForKey(url)
+                                let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url)
                                 let file = URL(fileURLWithPath: cached)
-                                dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
+                                dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as NSCopying)
 
                             }
                         }
@@ -1361,12 +1361,12 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         player1.pause()
         player2.pause()
         let username = self.videoArray[Row].username
-        var shareURL = URL()
+        var shareURL = URL(string:"")
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
         } else {
             let url = self.videoArray[Row].urlSta.absoluteString
-            if(url[0] == "h") {
+            if(url[url.startIndex] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -1380,11 +1380,11 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             parentLayer.frame = videoLayer.frame
             let sticker = UIImage(named: "videoSticker2")
             let string = username
-            let tempasset = AVAsset(URL: shareURL)
-            let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
+            let tempasset = AVAsset(url: shareURL!)
+            let clipVideoTrack = (tempasset.tracks(withMediaType: AVMediaTypeVideo)[0]) as AVAssetTrack
             let composition = AVMutableVideoComposition()
             composition.frameDuration = CMTimeMake(1,30)
-            composition.renderSize = CGSize(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
+            composition.renderSize = CGSize(width: clipVideoTrack.naturalSize.width, height: clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
             let dist = CGFloat(string.characters.count*15)
@@ -1394,8 +1394,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             text.string = string
             text.fontSize = 25
             text.font = UIFont(name: "AvenirNext-Regular", size:5)!
-            parentLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
-            videoLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
+            parentLayer.frame = CGRect(x: 0, y: 0, width: composition.renderSize.width, height: composition.renderSize.height)
+            videoLayer.frame = CGRect(x: 0, y: 0, width: composition.renderSize.width, height: composition.renderSize.height)
             parentLayer.addSublayer(videoLayer)
             parentLayer.addSublayer(over.layer)
             parentLayer.addSublayer(text)
@@ -1403,45 +1403,45 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             let instruction = AVMutableVideoCompositionInstruction()
             instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
             let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
-            transformer.setTransform(clipVideoTrack.preferredTransform, atTime: kCMTimeZero)
+            transformer.setTransform(clipVideoTrack.preferredTransform, at: kCMTimeZero)
             instruction.layerInstructions = NSArray(object: transformer) as! [AVVideoCompositionLayerInstruction]
             composition.instructions = NSArray(object: instruction) as! [AVVideoCompositionInstructionProtocol]
             let documentsPath = (NSTemporaryDirectory() as NSString)
-            let exportPath = documentsPath.stringByAppendingFormat("fbshare.mp4", documentsPath)
+            let exportPath = documentsPath.appendingFormat("fbshare.mp4", documentsPath)
             let exportURL = NSURL(fileURLWithPath: exportPath as String)
             let exporter = AVAssetExportSession(asset: tempasset, presetName:AVAssetExportPresetHighestQuality )
             exporter?.videoComposition = composition
-            exporter?.outputURL = exportURL
+            exporter?.outputURL = exportURL as URL
             exporter?.outputFileType = AVFileTypeMPEG4
-            exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                DispatchQueue.main.asynchronously(execute: {
-                    let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
+            exporter?.exportAsynchronously(completionHandler: { () -> Void in
+                
+                DispatchQueue.main.async(execute: {
+                    let photoLibrary = PHPhotoLibrary.shared()
                     var videoAssetPlaceholder:PHObjectPlaceholder!
                     photoLibrary.performChanges({
-                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(exportURL)
+                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL as URL)
                         videoAssetPlaceholder = request!.placeholderForCreatedAsset
                         },
                         completionHandler: { success, error in
                             if success {
                                 do {
                                     
-                                    try NSFileManager.defaultManager().removeItemAtURL(exportURL)
+                                    try FileManager.default.removeItem(at: exportURL as URL)
                                     
                                 } catch _ {
                                 }
                                 let localID = videoAssetPlaceholder.localIdentifier
-                                let assetID =
-                                    localID.stringByReplacingOccurrencesOfString(
-                                        "/.*", withString: "",
-                                        options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+                                let assetID = localID.replacingOccurrences(
+                                        of: "/.*", with: "",
+                                        options: NSString.CompareOptions.regularExpression, range: nil)
                                 let ext = "mp4"
                                 let assetURLStr =
                                     "assets-library://asset/asset.\(ext)?id=\(assetID)&ext=\(ext)"
                                 let url = NSURL(string: assetURLStr)
-                                let video = FBSDKShareVideo(videoURL: url)
+                                let video = FBSDKShareVideo(videoURL: url as URL!)
                                 let content = FBSDKShareVideoContent()
                                 content.video = video
-                                FBSDKShareDialog.showFromViewController(self, withContent: content, delegate: self)
+                                FBSDKShareDialog.show(from: self, with: content, delegate: self)
                                 
                             }
                     })
@@ -1457,11 +1457,11 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 parentLayer.frame = videoLayer.frame
                 let sticker = UIImage(named: "videoSticker2")
                 let string = username
-                let tempasset = AVAsset(URL: shareURL)
-                let clipVideoTrack = (tempasset.tracksWithMediaType(AVMediaTypeVideo)[0]) as AVAssetTrack
+                let tempasset = AVAsset(url: shareURL!)
+                let clipVideoTrack = (tempasset.tracks(withMediaType: AVMediaTypeVideo)[0]) as AVAssetTrack
                 let composition = AVMutableVideoComposition()
                 composition.frameDuration = CMTimeMake(1,30)
-                composition.renderSize = CGSize(clipVideoTrack.naturalSize.width, clipVideoTrack.naturalSize.height)
+            composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width, height:clipVideoTrack.naturalSize.height)
                 let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
                 over.image = sticker
                 let dist = CGFloat(string.characters.count*15)
@@ -1471,8 +1471,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 text.string = string
                 text.fontSize = 25
                 text.font = UIFont(name: "AvenirNext-Regular", size:5)!
-                parentLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
-                videoLayer.frame = CGRectMake(0, 0,composition.renderSize.width, composition.renderSize.height)
+            parentLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
+                videoLayer.frame = CGRect(x:0, y:0,width:composition.renderSize.width, height:composition.renderSize.height)
                 parentLayer.addSublayer(videoLayer)
                 parentLayer.addSublayer(over.layer)
                 parentLayer.addSublayer(text)
@@ -1480,44 +1480,44 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 let instruction = AVMutableVideoCompositionInstruction()
                 instruction.timeRange = CMTimeRangeMake(kCMTimeZero,clipVideoTrack.timeRange.duration)
                 let transformer = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
-                transformer.setTransform(clipVideoTrack.preferredTransform, atTime: kCMTimeZero)
+                transformer.setTransform(clipVideoTrack.preferredTransform, at: kCMTimeZero)
                 instruction.layerInstructions = NSArray(object: transformer) as! [AVVideoCompositionLayerInstruction]
                 composition.instructions = NSArray(object: instruction) as! [AVVideoCompositionInstructionProtocol]
                 let documentsPath = (NSTemporaryDirectory() as NSString)
-                let exportPath = documentsPath.stringByAppendingFormat("instashare.mp4", documentsPath)
+                let exportPath = documentsPath.appendingFormat("instashare.mp4", documentsPath)
                 let exportURL = NSURL(fileURLWithPath: exportPath as String)
                 let exporter = AVAssetExportSession(asset: tempasset, presetName:AVAssetExportPresetHighestQuality )
                 exporter?.videoComposition = composition
-                exporter?.outputURL = exportURL
+                exporter?.outputURL = exportURL as URL
                 exporter?.outputFileType = AVFileTypeMPEG4
-                exporter?.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-                            DispatchQueue.main.asynchronously(execute: {
+                exporter?.exportAsynchronously(completionHandler: { () -> Void in
+                            DispatchQueue.main.async(execute: {
                     
-                                let photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
+                                let photoLibrary = PHPhotoLibrary.shared()
                                 var videoAssetPlaceholder:PHObjectPlaceholder!
                                 photoLibrary.performChanges({
-                                    let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(exportURL)
+                                    let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL as URL)
                                     videoAssetPlaceholder = request!.placeholderForCreatedAsset
                                     },
                                     completionHandler: { success, error in
                                         if success {
                                             do {
                     
-                                                try NSFileManager.defaultManager().removeItemAtURL(exportURL)
+                                                try FileManager.default.removeItem(at: exportURL as URL)
                     
                                             } catch _ {
                                             }
                                             let localID = videoAssetPlaceholder.localIdentifier
                                             let assetID =
-                                                localID.stringByReplacingOccurrencesOfString(
-                                                    "/.*", withString: "",
-                                                    options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+                                                localID.replacingOccurrences(
+                                                    of: "/.*", with: "",
+                                                    options: NSString.CompareOptions.regularExpression, range: nil)
                                             let ext = "mp4"
                                             let assetURLStr =
                                                 "assets-library://asset/asset.\(ext)?id=\(assetID)&ext=\(ext)"
                                             let instagramURL = NSURL(string:"instagram://library?AssetPath=\(assetURLStr)")
-                                            if (UIApplication.sharedApplication().canOpenURL(instagramURL!)) {
-                                                UIApplication.sharedApplication().openURL(instagramURL!)
+                                            if (UIApplication.shared.canOpenURL(instagramURL! as URL)) {
+                                                UIApplication.shared.openURL(instagramURL! as URL)
                                                 self.activityIndicator.stopAnimating()
                                             }
                                             

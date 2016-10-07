@@ -94,7 +94,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         cell.fotoButton.tag = (indexPath as NSIndexPath).row
         
         if(notificationArray[(indexPath as NSIndexPath).row].picture_url.absoluteString != ""){
-            cell.fotoButton.sd_setImageWithURL(notificationArray[indexPath.row].picture_url, forState: UIControlState.Normal)
+            cell.fotoButton.sd_setImage(with: notificationArray[indexPath.row].picture_url, for: UIControlState.normal)
         } else {
             cell.fotoButton.setImage(UIImage(named: "profile"), for: UIControlState())
         }

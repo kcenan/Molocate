@@ -54,7 +54,7 @@ class capturePreviewController: UIViewController, PlayerDelegate {
                         PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: newURL)
                         }, completionHandler: {success, error in
                             if !success {
-                                NSLog("Could not save movie to photo library: %@", error!)
+                                
                             } else {
         
                             }

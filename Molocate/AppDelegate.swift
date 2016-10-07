@@ -47,13 +47,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             MolocateAccount.setProfilePictures()
         }
         
-        registerForPushNotifications(application)
+        registerForPushNotifications(application: application)
         
  
         
         //SDImageCache.sharedImageCache().clearMemory()
         //SDImageCache.sharedImageCache().clearDisk()
-        SDImageCache.sharedImageCache().maxMemoryCountLimit = 100
+        SDImageCache.shared().maxMemoryCountLimit = 100
 
        
         let credentialProvider = AWSCognitoCredentialsProvider(
@@ -63,8 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             region: DefaultServiceRegionType,
             credentialsProvider: credentialProvider)
         
-        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration1
-        AWSLogger.defaultLogger().logLevel = .None
+        AWSServiceManager.default().defaultServiceConfiguration = configuration1
+        AWSLogger.default().logLevel = .none
         // [Optional] Track statistics around application opens.
         let client = Client(clientID: "HKPVG4H554DNGF002XP30XKS1UL1MLX1XLRPZIZVBVMET5HX",
             clientSecret:   "1XXP2QTMACGMW5GSU4GRXZ2PZRLM5G1WEFM5EWQCBWKWCYRG",
@@ -80,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let _ = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [String: AnyObject] {
             choosedIndex = 3
-            NotificationCenter.defaultCenter().post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
             UIApplication.shared.applicationIconBadgeNumber = 0
             
             
@@ -175,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         if(DeviceToken == nil) {
-            registerForPushNotifications(application)
+            registerForPushNotifications(application: application)
             if MoleUserToken != nil && DeviceToken != nil && !isRegistered {
                     MolocateAccount.registerDevice({ (data, response, error) in
                      //   print("Success")
@@ -193,7 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
         UIApplication.shared.applicationIconBadgeNumber = 0
  
-        NotificationCenter.defaultCenter().post(name: Notification.Name(rawValue: "reloadMain"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "reloadMain"), object: nil)
         
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
@@ -241,7 +241,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    override func touchesBegan(touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
         let location :CGPoint = (event?.allTouches?.first?.location(in: self.window))!

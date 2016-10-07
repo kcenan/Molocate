@@ -35,8 +35,8 @@ struct MoleUserRelations{
 struct MoleUser{
     var username:String = ""
     var email : String = ""
-    var profilePic:URL = URL(string:"")
-    var thumbnailPic:URL = URL(string:"")
+    var profilePic:URL = URL(string:"")!
+    var thumbnailPic:URL = URL(string:"")!
     var token: String = ""
     var first_name = ""
     var last_name = ""
@@ -239,7 +239,7 @@ open class MolocateAccount {
                     
                     let response = String(data: data!, encoding: String.Encoding.utf8)
                     
-                    if response![0]=="[" {
+                    if response![(response?.startIndex)!]=="[" {
                         
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
                     
@@ -250,7 +250,7 @@ open class MolocateAccount {
                             let thing = result[i] as! [String:AnyObject]
                             friend.username = thing["username"] as! String
                             friend.name =  thing["first_name"] as! String
-                            friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
+                            friend.picture_url = thing["picture_url"] is NSNull ? URL(string:"")!:URL(string: thing["picture_url"] as! String)!
                             let thumbnail = thing["thumbnail_url"] as! String
                             
                             friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
@@ -323,7 +323,7 @@ open class MolocateAccount {
                             let thing = results[i] as! [String:AnyObject]
                             friend.username = thing["username"] as! String
                             friend.name =  thing["first_name"] as! String
-                            friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
+                            friend.picture_url = thing["picture_url"] is NSNull ? URL(string:"")!:URL(string: thing["picture_url"] as! String)!
                             let thumbnail = thing["thumbnail_url"] as! String
                             
                             friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
@@ -426,7 +426,7 @@ open class MolocateAccount {
                 
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Dictionary]
                 
                     if(result.count != 0){
                         var places = [MolePlace]()

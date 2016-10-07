@@ -301,7 +301,7 @@ class oneVideo: UIViewController,PlayerDelegate {
         let imageSize = likeHeart.image?.size.height
         likeHeart.frame = CGRect(x: likeHeart.center.x-imageSize!/2 , y: likeHeart.center.y-imageSize!/2, width: imageSize!, height: imageSize!)
         cell?.addSubview(likeHeart)
-        MolocateUtility.animateLikeButton(&likeHeart)
+        MolocateUtility.animateLikeButton(heart: &likeHeart)
         
         var indexes = [IndexPath]()
         indexes.append(indexpath)

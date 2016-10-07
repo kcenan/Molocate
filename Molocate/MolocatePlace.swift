@@ -11,7 +11,7 @@ struct MolePlace{
     var follower_count = 0;
     var following_count = 0;
     var tag_count = 0;
-    var picture_url:URL = URL()
+    var picture_url:URL = URL(string:"")!
     var placeVideos: [MoleVideoInformation] = [MoleVideoInformation]()
     var city = ""
     var address = ""
@@ -31,7 +31,7 @@ open class MolocatePlace {
     class func followAPlace(_ place_id: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         
         let url = URL(string: MolocateBaseUrl + "place/api/follow/?place_id=" + (place_id as String))!
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
@@ -41,13 +41,13 @@ open class MolocatePlace {
                 let nsError = error
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
-                    completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+                    completionHandler(result["result"] as! String , response , nsError as NSError?  )
                 } catch{
-                    completionHandler(data: "fail" , response: nil , error: nsError  )
+                    completionHandler("fail" , nil , nsError  )
                     if debug {print("JsonError:: in MolocatePlace.followAPlace()")}
                 }
             }else{
-                completionHandler(data: "fail" , response: nil , error: error  )
+                completionHandler("fail" , nil , error  )
                 if debug {print("RequestError:: in MolocatePlace.followAPlace()")}
 
             }
@@ -59,7 +59,7 @@ open class MolocatePlace {
     
     class func unfollowAPlace(_ place_id: String, completionHandler: @escaping (_ data: String? , _ response: URLResponse?, _ error: NSError?) -> ()){
         let url = URL(string: MolocateBaseUrl + "place/api/unfollow/?place_id=" + (place_id as String))!
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("Token "+MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
@@ -88,7 +88,7 @@ open class MolocatePlace {
     class func getPlace(_ placeid: String, completionHandler: @escaping (_ data: MolePlace, _ response: URLResponse?, _ error: NSError?) -> ()) {
         
         let url = URL(string: MolocateBaseUrl + "place/api/get_place/?place_id=" + (placeid as String))!
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
@@ -179,7 +179,7 @@ open class MolocatePlace {
     class func getNearbyPlace(_ placeLat: Float,placeLon: Float, completionHandler: @escaping (_ data: [MolePlace], _ response: URLResponse?, _ error: NSError?) -> ()) {
         
         let url = URL(string: MolocateTestUrl +  "place/api/nearby_places/?lat=\(placeLat)&lon=\(placeLon)")
-        let request = NSMutableURLRequest(url: url!)
+        var request = URLRequest(url: url!)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
@@ -223,7 +223,7 @@ open class MolocatePlace {
         var url = URLComponents(string: MolocateBaseUrl + "/place/api/search_place/")
         url?.queryItems = [URLQueryItem(name: "name", value: str),URLQueryItem(name: "lat", value: "\(placeLat)"),URLQueryItem(name: "lon", value: "\(placeLon)")]
         print(url?.url)
-        let request = NSMutableURLRequest(url: (url?.url)!)
+        var request = URLRequest(url: (url?.url)!)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
@@ -235,7 +235,7 @@ open class MolocatePlace {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                     if result.index(forKey: "results") != nil{
-                        let places = result["results"] as! NSArray
+                        let places = result["results"] as! [Dictionary]
                         
                         for item in places {
                             var place = MolePlace()
@@ -247,14 +247,14 @@ open class MolocatePlace {
                             
                         }
                     }
-                    completionHandler(data: lastPlaces, response: response , error: nsError  )
+                    completionHandler(lastPlaces, response , nsError as NSError?  )
                 } catch{
-                    completionHandler(data: [MolePlace]() , response: nil , error: nsError  )
+                    completionHandler([MolePlace]() , nil , nsError  )
                     if debug {print("JsonError:: in MolocatePlace.getPlace()")}
                 }
                 
             }else{
-                completionHandler(data: [MolePlace]() , response: nil , error: error  )
+                completionHandler([MolePlace]() , nil , error  )
                 if debug {print("RequestError:: in MolocatePlace.getPlace()")}
             }
         })
@@ -275,7 +275,7 @@ open class MolocatePlace {
         }else{
             url = URL(string:nextUrl)!
         }
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout

@@ -112,7 +112,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
        
         if(user.profilePic.absoluteString != ""){
             photo.image = UIImage(named: "profile")!
-            photo.sd_setImageWithURL(user.profilePic)
+            photo.sd_setImage(with: user.profilePic)
             
         }else{
             photo.image = UIImage(named: "profile")!
@@ -357,10 +357,10 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
                 DispatchQueue.main.async { () -> Void in
                     
                     if data == "success"{
-                        SDImageCache.sharedImageCache().removeImageForKey(MoleCurrentUser.profilePic.absoluteString)
-                        SDImageCache.sharedImageCache().removeImageForKey(MoleCurrentUser.thumbnailPic.absoluteString)
-                        SDImageCache.sharedImageCache().storeImage(self.selected!, forKey: pictureUrl)
-                        SDImageCache.sharedImageCache().storeImage(self.thumbnail!, forKey: thumbnailUrl)
+                        SDImageCache.shared().removeImage(forKey: MoleCurrentUser.profilePic.absoluteString)
+                        SDImageCache.shared().removeImage(forKey: MoleCurrentUser.thumbnailPic.absoluteString)
+                        SDImageCache.shared().store(self.selected!, forKey: pictureUrl)
+                        SDImageCache.shared().store(self.thumbnail!, forKey: thumbnailUrl)
                         MoleCurrentUser.profilePic = URL(string: pictureUrl)!
                         MoleCurrentUser.thumbnailPic = URL(string: thumbnailUrl)!
 

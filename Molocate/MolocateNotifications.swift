@@ -10,7 +10,7 @@ struct MoleUserNotifications{
     var actor:String = ""
     var target:String = ""
     var sentence:String = ""
-    var picture_url: URL = URL()
+    var picture_url: URL = URL(string:"")!
 }
 
 open class MolocateNotifications{
@@ -19,7 +19,7 @@ open class MolocateNotifications{
     class func getNotifications(_ nextURL: URL?, completionHandler: @escaping (_ data: [MoleUserNotifications]?, _ response: URLResponse?, _ error: NSError?) -> ()){
         
         let nURL = URL(string: MolocateBaseUrl+"activity/api/show_activities/")
-        let request = NSMutableURLRequest(url: nURL!)
+        var request = URLRequest(url: nURL!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -45,16 +45,16 @@ open class MolocateNotifications{
                         notification.date = item["date_str"] as! String
                         notification.sentence = item["sentence"] as! String
                         notification.target = item["target"] as! String
-                        notification.picture_url = item["picture_url"] is NSNull ? URL():URL(string: item["picture_url"] as! String)!
+                        notification.picture_url = item["picture_url"] is NSNull ? URL(string:"")!:URL(string: item["picture_url"] as! String)!
                         notificationArray.append(notification)
                     }
-                    completionHandler(data: notificationArray, response: response, error: nsError)
+                    completionHandler(notificationArray, response, nsError as NSError?)
                 }catch{
-                    completionHandler(data: [MoleUserNotifications](), response: URLResponse(), error: nsError)
+                    completionHandler([MoleUserNotifications](), URLResponse(), nsError as NSError?)
                     if debug {print("JsonError: in MolocateNotifications.getNotifications")}
                 }
             }else{
-                completionHandler(data: [MoleUserNotifications](), response: URLResponse(), error: error)
+                completionHandler([MoleUserNotifications](), URLResponse(), error as NSError?)
                 if debug {print("RequestError: in MolocateNotifications.getNotifications")}
             }
         })
