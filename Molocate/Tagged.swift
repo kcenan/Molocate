@@ -249,7 +249,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             playtap.require(toFail: tap)
 
             let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
-            if(thumbnailURL.absoluteString != ""){
+            if(thumbnailURL?.absoluteString != ""){
                 cell.cellthumbnail.sd_setImage(with: thumbnailURL)
                 //print("burda")
             }else{
@@ -271,7 +271,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                         let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
                         let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url!)
                         let file = NSURL(fileURLWithPath: cached)
-                        dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as NSCopying)
+                        dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as! NSCopying)
                     }
                 }
             }
@@ -475,7 +475,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         self.parent!.navigationController?.pushViewController(controller, animated: true)
 
 
-        MolocatePlace.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
+        MolocatePlace.getPlace(videoArray[buttonRow].locationID!) { (data, response, error) -> () in
             DispatchQueue.main.async{
                 thePlace = data
                 controller.classPlace = data
@@ -493,7 +493,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         navigationController?.isNavigationBarHidden = false
         player1.stop()
         player2.stop()
-        video_id = videoArray[sender.tag].id
+        video_id = videoArray[sender.tag].id!
         videoIndex = sender.tag
         activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
@@ -552,7 +552,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width, height:clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
-            let dist = CGFloat(string.characters.count*15)
+            let dist = CGFloat((string?.characters.count)!*15)
             let text = CATextLayer()
             text.frame = CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142-dist,y:5), size: CGSize(width: dist, height: 42.8))
             text.alignmentMode = "left"
@@ -629,7 +629,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width,height: clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
-            let dist = CGFloat(string.characters.count*15)
+            let dist = CGFloat((string?.characters.count)!*15)
             let text = CATextLayer()
             text.frame = CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142-dist,y:5), size: CGSize(width: dist, height: 42.8))
             text.alignmentMode = "left"
@@ -704,7 +704,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         player2.stop()
 
         videoIndex = buttonRow
-        video_id = videoArray[videoIndex].id
+        video_id = videoArray[videoIndex].id!
 
 
 
@@ -725,7 +725,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
         let controller:commentController = self.parent!.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         comments.removeAll()
-        MolocateVideo.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
+        MolocateVideo.getComments(videoArray[buttonRow].id!) { (data, response, error, count, next, previous) -> () in
             DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
@@ -819,7 +819,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         indexes.append(index)
         self.tableView.reloadRows(at: indexes, with: .none)
 
-        MolocateAccount.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
+        MolocateAccount.follow(videoArray[buttonRow].username!){ (data, response, error) -> () in
             MoleCurrentUser.following_count += 1
         }
         pressedFollow = false
@@ -842,7 +842,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
             self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
 
-            MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[buttonRow].id!) { (data, response, error) -> () in
                 DispatchQueue.main.async{
                     //print(data)
                 }
@@ -855,7 +855,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
 
 
-            MolocateVideo.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
+            MolocateVideo.unLikeAVideo(videoArray[buttonRow].id!){ (data, response, error) -> () in
                 DispatchQueue.main.async{
                     //print(data)
                 }
@@ -903,7 +903,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
             self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
 
-            MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[buttonRow].id!) { (data, response, error) -> () in
                 DispatchQueue.main.async{
                     //print(data)
                 }
@@ -930,7 +930,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         let buttonRow = sender.tag
         player1.stop()
         player2.stop()
-        MolocateVideo.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+        MolocateVideo.reportAVideo(videoArray[buttonRow].id!) { (data, response, error) -> () in
             //////print(data)
         }
         //////print("pressedReport at index path: \(buttonRow)")
@@ -942,7 +942,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 let index = IndexPath(row: buttonRow, section: 0)
 
 
-                MolocateVideo.deleteAVideo(self.videoArray[buttonRow].id, completionHandler: { (data, response, error) in
+                MolocateVideo.deleteAVideo(self.videoArray[buttonRow].id!, completionHandler: { (data, response, error) in
 
                 })
 
@@ -998,7 +998,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         }
 
         self.navigationController?.pushViewController(controller, animated: true)
-        MolocateAccount.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
+        MolocateAccount.getUser(videoArray[buttonRow].username!) { (data, response, error) -> () in
             DispatchQueue.main.async{
                 //DBG: If it is mine profile?
 

@@ -124,10 +124,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                         //print("url:" + queu.urlSta.absoluteString)
                         queu.username = MoleCurrentUser.username
                         queu.userpic = MoleCurrentUser.profilePic!
-                        queu.caption = json["caption"] as! String
+                        queu.caption = json["caption"] as? String
                         // print(queu.caption                                 )
-                        queu.location = loc[0]["name"] as! String
-                        queu.locationID = loc[0]["id"] as! String
+                        queu.location = loc[0]["name"] as? String
+                        queu.locationID = loc[0]["id"] as? String
                         queu.isFollowing = 1
                         queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
                         queu.id = "\(VideoUploadRequests[i].id)"
@@ -242,7 +242,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width, height:clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
-            let dist = CGFloat(string.characters.count*15)
+            let dist = CGFloat((string?.characters.count)!*15)
             let text = CATextLayer()
             text.frame = CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142-dist,y:5), size: CGSize(width: dist, height: 42.8))
             text.alignmentMode = "left"
@@ -319,7 +319,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width, height:clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
-            let dist = CGFloat(string.characters.count*15)
+            let dist = CGFloat((string?.characters.count)!*15)
             let text = CATextLayer()
             text.frame = CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142-dist,y:5), size: CGSize(width: dist, height: 42.8))
             text.alignmentMode = "left"
@@ -536,7 +536,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         //app yeni acildiginda s3uploads bos olcak onlari tekrar dan olusturmak lazim
         if let cell = tableView.cellForRow(at: IndexPath(row: row,section: 0)) as? videoCell{
             
-            MyS3Uploads[row].upload(true,id: VideoUploadRequests[row].id, uploadRequest: VideoUploadRequests[row].uploadRequest, fileURL:VideoUploadRequests[row].filePath, fileID:  VideoUploadRequests[row].fileId, json: VideoUploadRequests[row].JsonData, thumbnail_image: VideoUploadRequests[row].thumbnail)
+            MyS3Uploads[row].upload(true,id: VideoUploadRequests[row].id, uploadRequest: VideoUploadRequests[row].uploadRequest, fileURL:VideoUploadRequests[row].filePath!, fileID:  VideoUploadRequests[row].fileId!, json: VideoUploadRequests[row].JsonData, thumbnail_image: VideoUploadRequests[row].thumbnail)
             
             DispatchQueue.main.async(execute: {
                 cell.resendButton.isEnabled = false
@@ -645,7 +645,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             playtap.require(toFail: tap)
 
             let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
-            if(thumbnailURL.absoluteString != ""){
+            if(thumbnailURL?.absoluteString != ""){
                 cell.cellthumbnail.sd_setImage(with: thumbnailURL)
                 //print("burda")
             }else{
@@ -676,7 +676,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                             let path = URL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
                             let cached = DiskCache(path: path.absoluteString).path(forKey: url!)
                             let file = URL(fileURLWithPath: cached)
-                            dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as NSCopying)
+                            dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as! NSCopying)
                             
                         }
                     }
@@ -984,7 +984,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             
             self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
-            MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[buttonRow].id!) { (data, response, error) -> () in
                 DispatchQueue.main.async{
                     //print(data)
                 }
@@ -1017,7 +1017,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         indexes.append(index)
         self.tableView.reloadRows(at: indexes, with: .none)
         
-        MolocateAccount.follow(videoArray[buttonRow].username){ (data, response, error) -> () in
+        MolocateAccount.follow(videoArray[buttonRow].username!){ (data, response, error) -> () in
                      MoleCurrentUser.following_count += 1
         }
         pressedFollow = false
@@ -1041,7 +1041,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             
             self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
-            MolocateVideo.likeAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[buttonRow].id!) { (data, response, error) -> () in
                 DispatchQueue.main.async{
                     //print(data)
                 }
@@ -1054,7 +1054,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             self.tableView.reloadRows(at: indexes, with: UITableViewRowAnimation.none)
             
             
-            MolocateVideo.unLikeAVideo(videoArray[buttonRow].id){ (data, response, error) -> () in
+            MolocateVideo.unLikeAVideo(videoArray[buttonRow].id!){ (data, response, error) -> () in
                 DispatchQueue.main.async{
                     //print(data)
                 }
@@ -1100,7 +1100,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         self.parent!.navigationController?.pushViewController(controller, animated: true)
         
         
-        MolocatePlace.getPlace(videoArray[buttonRow].locationID) { (data, response, error) -> () in
+        MolocatePlace.getPlace(videoArray[buttonRow].locationID!) { (data, response, error) -> () in
             DispatchQueue.main.async{
                 thePlace = data
                 controller.classPlace = data
@@ -1120,7 +1120,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         player1.stop()
         player2.stop()
-        video_id = videoArray[sender.tag].id
+        video_id = videoArray[sender.tag].id!
         videoIndex = sender.tag
 
         activityIndicator.startAnimating()
@@ -1171,7 +1171,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
       
         
         self.navigationController?.pushViewController(controller, animated: true)
-        MolocateAccount.getUser(videoArray[buttonRow].username) { (data, response, error) -> () in
+        MolocateAccount.getUser(videoArray[buttonRow].username!) { (data, response, error) -> () in
             DispatchQueue.main.async{
                 //DBG: If it is mine profile?
                 
@@ -1196,7 +1196,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         player2.stop()
         
         videoIndex = buttonRow
-        video_id = videoArray[videoIndex].id
+        video_id = videoArray[videoIndex].id!
     
         if isItMyProfile {
             myViewController = "MyAdded"
@@ -1209,7 +1209,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         
         let controller:commentController = self.parent!.storyboard!.instantiateViewController(withIdentifier: "commentController") as! commentController
         comments.removeAll()
-        MolocateVideo.getComments(videoArray[buttonRow].id) { (data, response, error, count, next, previous) -> () in
+        MolocateVideo.getComments(videoArray[buttonRow].id!) { (data, response, error, count, next, previous) -> () in
             DispatchQueue.main.async{
                 comments = data
                 controller.tableView.reloadData()
@@ -1227,7 +1227,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         let buttonRow = sender.tag
         player1.stop()
         player2.stop()
-        MolocateVideo.reportAVideo(videoArray[buttonRow].id) { (data, response, error) -> () in
+        MolocateVideo.reportAVideo(videoArray[buttonRow].id!) { (data, response, error) -> () in
             //////print(data)
         }
         //////print("pressedReport at index path: \(buttonRow)")
@@ -1239,7 +1239,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 let index = IndexPath(row: buttonRow, section: 0)
                 
                 
-                MolocateVideo.deleteAVideo(self.videoArray[buttonRow].id, completionHandler: { (data, response, error) in
+                MolocateVideo.deleteAVideo(self.videoArray[buttonRow].id!, completionHandler: { (data, response, error) in
                     
                 })
                 

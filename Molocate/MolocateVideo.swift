@@ -11,33 +11,33 @@ var VideoUploadRequests: [VideoUploadRequest] = [VideoUploadRequest]()
 var MyS3Uploads: [S3Upload] = [S3Upload]()
 
 struct MoleVideoInformation{
-    var id: String = ""
-    var username:String = ""
-    var category:String = ""
-    var location:String = ""
-    var locationID:String = ""
-    var caption:String = ""
+    var id: String?
+    var username:String?
+    var category:String?
+    var location:String?
+    var locationID:String?
+    var caption:String?
     var urlSta:URL?
     var likeCount = 0
     var commentCount = 0
-    var comments = [String]()
+    var comments:[String]?
     var isLiked: Int = 0
     var isFollowing: Int = 0
-    var userpic: URL = URL(string:"")!
-    var dateStr: String = ""
-    var taggedUsers = [String]()
-    var thumbnailURL:URL = URL(string:"")!
+    var userpic: URL?
+    var dateStr: String?
+    var taggedUsers:[String]?
+    var thumbnailURL:URL?
     var isUploading = false
     var isFailed = false
     var deletable = false
 }
 
 struct VideoUploadRequest{
-    var filePath = ""
-    var thumbUrl = URL(string:"")
+    var filePath:String?
+    var thumbUrl: URL?
     var thumbnail:Data
     var JsonData: [String:AnyObject]
-    var fileId = ""
+    var fileId:String?
     var uploadRequest: AWSS3TransferManagerUploadRequest
     var id = 0
     var isFailed = false
@@ -257,20 +257,20 @@ open class MolocateVideo {
                             let place_taken = item["place_taken"] as! [String:String]
                             var videoStr = MoleVideoInformation()
                             
-                            videoStr.id = item["video_id"] as! String
+                            videoStr.id = item["video_id"] as? String
                             videoStr.urlSta = URL(string:  item["video_url"] as! String)! as URL
-                            videoStr.username = owner_user["username"] as! String
+                            videoStr.username = owner_user["username"] as? String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
-                            videoStr.caption = item["caption"] as! String
+                            videoStr.caption = item["caption"] as? String
                             videoStr.likeCount = item["like_count"] as! Int
                             videoStr.commentCount = item["comment_count"] as! Int
-                            videoStr.category = item["category"] as! String
+                            videoStr.category = item["category"] as? String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
                             videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string:"")!:URL(string: owner_user["picture_url"] as! String)!
-                            videoStr.dateStr = item["date_str"] as! String
-                            videoStr.taggedUsers = item["tagged_users"] as! [String]
+                            videoStr.dateStr = item["date_str"] as? String
+                            videoStr.taggedUsers = item["tagged_users"] as? [String]
                             videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)! as URL
                             videoStr.deletable = item["is_deletable"] as! Bool
                             videoArray.append(videoStr)
@@ -338,20 +338,20 @@ open class MolocateVideo {
                             let place_taken = item["place_taken"] as! [String:String]
                             var videoStr = MoleVideoInformation()
                             
-                            videoStr.id = item["video_id"] as! String
+                            videoStr.id = item["video_id"] as? String
                             videoStr.urlSta = URL(string:  item["video_url"] as! String)!
-                            videoStr.username = owner_user["username"] as! String
+                            videoStr.username = owner_user["username"] as? String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
-                            videoStr.caption = item["caption"] as! String
+                            videoStr.caption = item["caption"] as? String
                             videoStr.likeCount = item["like_count"] as! Int
                             videoStr.commentCount = item["comment_count"] as! Int
-                            videoStr.category = item["category"] as! String
+                            videoStr.category = item["category"] as? String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
                             videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string:"")!:URL(string: owner_user["picture_url"] as! String)!
-                            videoStr.dateStr = item["date_str"] as! String
-                            videoStr.taggedUsers = item["tagged_users"] as! [String]
+                            videoStr.dateStr = item["date_str"] as? String
+                            videoStr.taggedUsers = item["tagged_users"] as? [String]
                             videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                             videoStr.deletable = item["is_deletable"] as! Bool
                             videoArray.append(videoStr)
@@ -498,20 +498,20 @@ open class MolocateVideo {
                             let place_taken = item["place_taken"] as! [String:String]
                             
                             var videoStr = MoleVideoInformation()
-                            videoStr.id = item["video_id"] as! String
+                            videoStr.id = item["video_id"] as? String
                             videoStr.urlSta = URL(string:  item["video_url"] as! String)!
-                            videoStr.username = owner_user["username"] as! String
+                            videoStr.username = owner_user["username"] as? String
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
-                            videoStr.caption = item["caption"] as! String
+                            videoStr.caption = item["caption"] as? String
                             videoStr.likeCount = item["like_count"] as! Int
                             videoStr.commentCount = item["comment_count"] as! Int
-                            videoStr.category = item["category"] as! String
+                            videoStr.category = item["category"] as? String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
                             videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string:"")!:URL(string: owner_user["picture_url"] as! String)!
-                            videoStr.dateStr = item["date_str"] as! String
-                            videoStr.taggedUsers = item["tagged_users"] as! [String]
+                            videoStr.dateStr = item["date_str"] as? String
+                            videoStr.taggedUsers = item["tagged_users"] as? [String]
                             
                             videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                             videoStr.deletable = item["is_deletable"] as! Bool
@@ -559,20 +559,20 @@ open class MolocateVideo {
                         let owner_user = item["owner_user"] as! [String:AnyObject]
                         let placeTaken = item["place_taken"] as! [String:String]
                         
-                        videoStr.id = item["video_id"] as! String
+                        videoStr.id = item["video_id"] as? String
                         videoStr.urlSta = URL(string:  item["video_url"] as! String)! as URL
-                        videoStr.username = owner_user["username"] as! String
+                        videoStr.username = owner_user["username"] as? String
                         videoStr.location = placeTaken["name"]!
                         videoStr.locationID = placeTaken["place_id"]!
-                        videoStr.caption = item["caption"] as! String
+                        videoStr.caption = item["caption"] as? String
                         videoStr.likeCount = item["like_count"] as! Int
                         videoStr.commentCount = item["comment_count"] as! Int
-                        videoStr.category = item["category"] as! String
+                        videoStr.category = item["category"] as? String
                         videoStr.isLiked = item["is_liked"] as! Int
                         videoStr.isFollowing = owner_user["is_following"] as! Int
                         videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string:"")!:URL(string: owner_user["picture_url"] as! String)!
-                        videoStr.dateStr = item["date_str"] as! String
-                        videoStr.taggedUsers = item["tagged_users"] as! [String]
+                        videoStr.dateStr = item["date_str"] as? String
+                        videoStr.taggedUsers = item["tagged_users"] as? [String]
                         videoStr.deletable = item["is_deletable"] as! Bool
                         videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)! as URL
                         

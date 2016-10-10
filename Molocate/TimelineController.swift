@@ -175,10 +175,10 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                         //print("url:" + queu.urlSta.absoluteString)
                         queu.username = MoleCurrentUser.username
                         queu.userpic = MoleCurrentUser.profilePic!
-                        queu.caption = json["caption"] as! String
+                        queu.caption = json["caption"] as? String
                                  // print(queu.caption                                 )
-                        queu.location = loc[0]["name"] as! String
-                        queu.locationID = loc[0]["id"] as! String
+                        queu.location = loc[0]["name"] as? String
+                        queu.locationID = loc[0]["id"] as? String
                         queu.isFollowing = 1
                         queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
                         queu.id = "\(VideoUploadRequests[i].id)"
@@ -324,7 +324,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
             let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
 
-            if(thumbnailURL.absoluteString != ""){
+            if(thumbnailURL?.absoluteString != ""){
                 cell.cellthumbnail.sd_setImage(with: thumbnailURL)
                 //////print("burda")
             }else{
@@ -347,7 +347,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                                 let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
                                 let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url!)
                                 let file = URL(fileURLWithPath: cached)
-                                dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as NSCopying)
+                                dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as! NSCopying)
 
                             }
                         }
@@ -1052,7 +1052,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
         tableView.reloadRows(at: tableView.indexPathsForVisibleRows!, with: .none)
 
-        MolocateAccount.follow(videoArray[Row].username){ (data, response, error) -> () in
+        MolocateAccount.follow(videoArray[Row].username!){ (data, response, error) -> () in
             MoleCurrentUser.following_count += 1
         }
         likeorFollowClicked = false
@@ -1195,7 +1195,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     //app yeni acildiginda s3uploads bos olcak onlari tekrar dan olusturmak lazim
           if let cell = tableView.cellForRow(at: IndexPath(row: row,section: 0)) as? videoCell{
             
-            MyS3Uploads[row].upload(true,id: VideoUploadRequests[row].id, uploadRequest: VideoUploadRequests[row].uploadRequest, fileURL:VideoUploadRequests[row].filePath, fileID:  VideoUploadRequests[row].fileId, json: VideoUploadRequests[row].JsonData, thumbnail_image: VideoUploadRequests[row].thumbnail)
+            MyS3Uploads[row].upload(true,id: VideoUploadRequests[row].id, uploadRequest: VideoUploadRequests[row].uploadRequest, fileURL:VideoUploadRequests[row].filePath!, fileID:  VideoUploadRequests[row].fileId!, json: VideoUploadRequests[row].JsonData, thumbnail_image: VideoUploadRequests[row].thumbnail)
             
              DispatchQueue.main.async(execute: {
                 cell.resendButton.isEnabled = false
@@ -1280,7 +1280,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
             tableView.reloadRows(at: [index], with: UITableViewRowAnimation.none)
 
-            MolocateVideo.likeAVideo(videoArray[Row].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[Row].id!) { (data, response, error) -> () in
             }
         }else{
             //Do Nothing
@@ -1296,7 +1296,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         player2?.pause()
         //stop players
 
-        delegate?.pressedUsername(videoArray[Row].username, profilePic: videoArray[Row].userpic as URL, isFollowing: isFollowing)
+        delegate?.pressedUsername(videoArray[Row].username!, profilePic: videoArray[Row].userpic! as URL, isFollowing: isFollowing)
 
     }
 
@@ -1306,7 +1306,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         player1?.pause()
         player2?.pause()
         //stopplayers
-        delegate?.pressedPlace(placeId, Row: Row)
+        delegate?.pressedPlace(placeId!, Row: Row)
     }
 
     func pressedLikeCount(_ sender: UIButton) {
@@ -1315,7 +1315,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         player1?.pause()
         player2?.pause()
         //stopplayers
-        delegate?.pressedLikeCount(videoId,Row: Row)
+        delegate?.pressedLikeCount(videoId!,Row: Row)
     }
 
     func pressedComment(_ sender: UIButton) {
@@ -1325,7 +1325,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         player1?.pause()
         player2?.pause()
 
-        delegate?.pressedComment(videoId,Row: Row)
+        delegate?.pressedComment(videoId!,Row: Row)
     }
 
     func pressedLike(_ sender: UIButton) {
@@ -1340,7 +1340,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
             self.tableView.reloadRows(at: [index], with: UITableViewRowAnimation.none)
 
-            MolocateVideo.likeAVideo(videoArray[Row].id) { (data, response, error) -> () in
+            MolocateVideo.likeAVideo(videoArray[Row].id!) { (data, response, error) -> () in
             }
 
         }else{
@@ -1350,7 +1350,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             videoArray[Row].likeCount-=1
             self.tableView.reloadRows(at: [index], with: UITableViewRowAnimation.none)
 
-            MolocateVideo.unLikeAVideo(videoArray[Row].id){ (data, response, error) -> () in
+            MolocateVideo.unLikeAVideo(videoArray[Row].id!){ (data, response, error) -> () in
             }
         }
         likeorFollowClicked = false
@@ -1387,7 +1387,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             composition.renderSize = CGSize(width: clipVideoTrack.naturalSize.width, height: clipVideoTrack.naturalSize.height)
             let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
             over.image = sticker
-            let dist = CGFloat(string.characters.count*15)
+            let dist = CGFloat((string?.characters.count)!*15)
             let text = CATextLayer()
             text.frame = CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142-dist,y:5), size: CGSize(width: dist, height: 42.8))
             text.alignmentMode = "left"
@@ -1464,7 +1464,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             composition.renderSize = CGSize(width:clipVideoTrack.naturalSize.width, height:clipVideoTrack.naturalSize.height)
                 let over = UIImageView(frame: CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142,y:10), size: CGSize(width: 142, height: 42.8)))
                 over.image = sticker
-                let dist = CGFloat(string.characters.count*15)
+                let dist = CGFloat((string?.characters.count)!*15)
                 let text = CATextLayer()
                 text.frame = CGRect(origin: CGPoint(x: clipVideoTrack.naturalSize.width-142-dist,y:5), size: CGSize(width: dist, height: 42.8))
                 text.alignmentMode = "left"
@@ -1544,7 +1544,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             let deleteVideo: UIAlertAction = UIAlertAction(title: "Videoyu Sil", style: .default) { action -> Void in
                 let index = IndexPath(row: Row, section: 0)
 
-                MolocateVideo.deleteAVideo(self.videoArray[Row].id, completionHandler: { (data, response, error) in
+                MolocateVideo.deleteAVideo(self.videoArray[Row].id!, completionHandler: { (data, response, error) in
 
                 })
 

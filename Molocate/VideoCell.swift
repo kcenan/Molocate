@@ -230,7 +230,7 @@ class videoCell: UITableViewCell {
         let textstring = videoInfo.caption
         
         videoComment.text = textstring        
-        if(videoInfo.userpic.absoluteString != ""){
+        if(videoInfo.userpic?.absoluteString != ""){
             self.profilePhoto.sd_setImage(with: videoInfo.userpic, for: UIControlState.normal)
         }else{
             self.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())

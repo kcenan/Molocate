@@ -113,9 +113,9 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                             queu.urlSta = (VideoUploadRequests[i].uploadRequest.body)!
                             queu.username = MoleCurrentUser.username
                             queu.userpic = MoleCurrentUser.profilePic!
-                            queu.caption = json["caption"] as! String
-                            queu.location = loc[0]["name"] as! String
-                            queu.locationID = loc[0]["id"] as! String
+                            queu.caption = json["caption"] as? String
+                            queu.location = loc[0]["name"] as? String
+                            queu.locationID = loc[0]["id"] as? String
                             queu.isFollowing = 1
                             queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
                             queu.isUploading = true

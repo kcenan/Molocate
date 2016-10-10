@@ -140,20 +140,20 @@ open class MolocatePlace {
                             let owner_user = item["owner_user"] as!  [String: AnyObject]
                             let placeTaken = item["place_taken"] as! [String:String]
                             var videoStr = MoleVideoInformation()
-                            videoStr.id = item["video_id"] as! String
+                            videoStr.id = item["video_id"] as? String
                             videoStr.urlSta = URL(string:  item["video_url"] as! String)!
-                            videoStr.username = owner_user["username"] as! String
+                            videoStr.username = owner_user["username"] as? String
                             videoStr.location = placeTaken["name"]!
                             videoStr.locationID = placeTaken["place_id"]!
-                            videoStr.caption = item["caption"] as! String
+                            videoStr.caption = item["caption"] as? String
                             videoStr.likeCount = item["like_count"] as! Int
                             videoStr.commentCount = item["comment_count"] as! Int
-                            videoStr.category = item["category"] as! String
+                            videoStr.category = item["category"] as? String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
                             videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string: "")!:URL(string: owner_user["picture_url"] as! String)!
-                            videoStr.dateStr = item["date_str"] as! String
-                            videoStr.taggedUsers = item["tagged_users"] as! [String]
+                            videoStr.dateStr = item["date_str"] as? String
+                            videoStr.taggedUsers = item["tagged_users"] as? [String]
                             
                             videoStr.thumbnailURL = URL(string:item["thumbnail"] as! String)!
                             place.videoArray.append(videoStr)
