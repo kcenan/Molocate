@@ -413,7 +413,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     func displayLocationInfo(_ location: CLLocation) {
             //stop updating location to save battery life
         locationManager.stopUpdatingLocation()
-        let session = URLSession.shared
+        let session = Session.sharedSession()
         
     
         //var parameters = [Parameter.query:"moda sahil"]
@@ -440,7 +440,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                         let enoughCheckin:Bool = (checkinsCount > 300)
                         
                             if(isVerified||enoughCheckin){
-                                placeOrder.setObject(placesArray.count , forKey: (item["name"] as! String))
+                                placeOrder.setObject(placesArray.count , forKey: (item["name"] as! String as NSCopying))
                                 placesArray.append(item["name"] as! String)
                                 let name = item["name"] as! String
                                 let id = item["id"] as! String
@@ -456,7 +456,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                                 for item in address {
                                     loc.adress = loc.adress + item
                                 }
-                                if item.indexForKey("photo") != nil {
+                                if item.index(forKey: "photo") != nil {
                                     //////print("foto var")
                                 } else {
                                     
@@ -469,8 +469,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                             }
                         }
                     
-                    NSNotificationCenter.defaultCenter().postNotificationName("configurePlace", object: nil)
-                    NSNotificationCenter.defaultCenter().postNotificationName("reloadPlaces", object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "configurePlace"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadPlaces"), object: nil)
                 }
                 
                 
@@ -532,18 +532,22 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
         
         self.sessionQueue!.async {
-            let currentVideoDevice = self.videoDeviceInput.device
-            var preferredPosition = AVCaptureDevicePosition.unspecified
-            let currentPosition = currentVideoDevice?.position
+            
+            
+            let currentVideoDevice:AVCaptureDevice = self.videoDeviceInput!.device
+            let currentPosition: AVCaptureDevicePosition = currentVideoDevice.position
+            var preferredPosition: AVCaptureDevicePosition = AVCaptureDevicePosition.unspecified
             
             switch currentPosition {
-            case AVCaptureDevicePosition.unspecified , AVCaptureDevicePosition.front:
+            case AVCaptureDevicePosition.front:
                 preferredPosition = AVCaptureDevicePosition.back
             case AVCaptureDevicePosition.back:
                 preferredPosition = AVCaptureDevicePosition.front
-            default:
-                preferredPosition = AVCaptureDevicePosition.front
+            case AVCaptureDevicePosition.unspecified:
+                preferredPosition = AVCaptureDevicePosition.back
+                
             }
+
             
             let videoDevice = CameraViewController.deviceWithMediaType(AVMediaTypeVideo,  preferringPosition: preferredPosition)
             let videoDeviceInput: AVCaptureDeviceInput!
@@ -1195,10 +1199,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
-        switch context {
-            
-        case SessionRunningContext:
-        
+        if context == SessionRunningContext {
             let isSessionRunning = change![NSKeyValueChangeKey.newKey]! as! Bool
             
             DispatchQueue.main.async {
@@ -1208,7 +1209,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 self.recordButton.isEnabled = isSessionRunning
                 
             }
-        default:
+       
+        } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
@@ -1280,12 +1282,12 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 extension CLLocation {
     
     func parameters(bool: Bool) -> Parameters {
-        let myll = parameters.ll
-        let myllacc = parameters.llAcc
-        let myalt = parameters.alt
-        let myaltAcc = parameters.altAcc
-        let intent = parameters.intent
-        let radius = parameters.radius
+        let myll = Parameter.ll
+        let myllacc = Parameter.llAcc
+        let myalt = Parameter.alt
+        let myaltAcc = Parameter.altAcc
+        let intent = Parameter.intent
+        let radius = Parameter.radius
         valuell = "\(self.coordinate.latitude),\(self.coordinate.longitude)"
         valuellacc = "\(self.horizontalAccuracy)"
         valuealt = "\(self.altitude)"
