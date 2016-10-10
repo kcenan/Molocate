@@ -41,13 +41,13 @@ open class MolocatePlace {
                 let nsError = error
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
-                    completionHandler(result["result"] as! String , response , nsError as NSError?  )
+                    completionHandler(result["result"] as? String , response , nsError as NSError?  )
                 } catch{
-                    completionHandler("fail" , nil , nsError  )
+                    completionHandler("fail" , nil , nsError as NSError?  )
                     if debug {print("JsonError:: in MolocatePlace.followAPlace()")}
                 }
             }else{
-                completionHandler("fail" , nil , error  )
+                completionHandler("fail" , nil , error as NSError?  )
                 if debug {print("RequestError:: in MolocatePlace.followAPlace()")}
 
             }
@@ -69,13 +69,13 @@ open class MolocatePlace {
                 let nsError = error
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
-                    completionHandler(data: result["result"] as! String , response: response , error: nsError  )
+                    completionHandler(result["result"] as? String , response , nsError as NSError?  )
                 } catch{
-                    completionHandler(data: "fail" , response: nil , error: nsError  )
+                    completionHandler("fail" , nil , nsError as NSError?  )
                     if debug {print("JsonError:: in MolocatePlace.unFollowAPlace()")}
                 }
             }else{
-                completionHandler(data: "fail" , response: nil , error: error  )
+                completionHandler("fail" , nil , error   as NSError?)
                 if debug {print("RequestError:: in MolocatePlace.unFollowAPlace()")}
                 
             }
@@ -102,6 +102,7 @@ open class MolocatePlace {
                     
                     var place = MolePlace()
                     let exist = item.index(forKey: "result")
+                    
                     if  exist != nil{
                         place.name = "notExist"
                     } else{
@@ -114,13 +115,13 @@ open class MolocatePlace {
                         place.video_count = item["video_count"] as! Int
                         place.follower_count = item["follower_count"] as! Int
                         place.caption = item["caption"] as! String
-                        place.picture_url = item["picture_url"] is NSNull ? URL():URL(string: item["picture_url"] as! String)!
+                        place.picture_url = item["picture_url"] is NSNull ? URL(string: "")!:URL(string: item["picture_url"] as! String)!
                         place.phone = item["phone"] as! String
                         place.web_site = item["web_site"] as! String
                         let lon = item["longitude"] as! String
                         let lat = item["latitude"] as! String
-                        place.lon = CFStringGetDoubleValue(lon)
-                        place.lat = CFStringGetDoubleValue(lat)
+                        place.lon = CFStringGetDoubleValue(lon as CFString!)
+                        place.lat = CFStringGetDoubleValue(lat as CFString!)
                       
                         if (item.index(forKey: "next_place_videos") != nil){
                             if item["next_place_videos"] is NSNull {
@@ -132,7 +133,7 @@ open class MolocatePlace {
                             }
                         }
                         
-                        let videos = item["place_videos"] as! NSArray
+                        let videos = item["place_videos"] as! [Dictionary<String, AnyObject>]
                         
                         for i in 0..<videos.count {
                             let item = videos[i]
@@ -150,7 +151,7 @@ open class MolocatePlace {
                             videoStr.category = item["category"] as! String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
-                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL():URL(string: owner_user["picture_url"] as! String)!
+                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string: "")!:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as! String
                             videoStr.taggedUsers = item["tagged_users"] as! [String]
                             
@@ -160,14 +161,14 @@ open class MolocatePlace {
                         }
                     }
                     
-                    completionHandler(data: place, response: response , error: nsError  )
+                    completionHandler( place, response , nsError as NSError?  )
                 } catch{
-                    completionHandler(data: MolePlace() , response: nil , error: nsError  )
+                    completionHandler(MolePlace() , nil , nsError as NSError?  )
                     if debug {print("JsonError:: in MolocatePlace.getPlace()")}
                 }
             
             }else{
-                completionHandler(data: MolePlace() , response: nil , error: error  )
+                completionHandler(MolePlace() , nil , error as NSError?  )
                 if debug {print("RequestError:: in MolocatePlace.getPlace()")}
             }
         })
@@ -178,8 +179,14 @@ open class MolocatePlace {
     
     class func getNearbyPlace(_ placeLat: Float,placeLon: Float, completionHandler: @escaping (_ data: [MolePlace], _ response: URLResponse?, _ error: NSError?) -> ()) {
         
-        let url = URL(string: MolocateTestUrl +  "place/api/nearby_places/?lat=\(placeLat)&lon=\(placeLon)")
+        let url = URL(string: MolocateBaseUrl +  "place/api/nearby_places/?lat=\(placeLat)&lon=\(placeLon)")
         var request = URLRequest(url: url!)
+        
+        
+        
+        
+        
+        
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeout
@@ -191,26 +198,26 @@ open class MolocatePlace {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                      if result.index(forKey: "results") != nil{
-                    let places = result["results"] as! NSArray
+                    let places = result["results"] as! [Dictionary<String,String>]
                     
                     for item in places {
                         var place = MolePlace()
-                        place.id = item["place_id"] as! String
-                        place.name = item["name"] as! String
-                        place.distance = item["distance"] as! String
-                        place.address = item["address"] as! String
+                        place.id = item["place_id"]!
+                        place.name = item["name"]!
+                        place.distance = item["distance"]!
+                        place.address = item["address"]!
                         lastPlaces.append(place)
                         
                     }
                     }
-                    completionHandler(data: lastPlaces, response: response , error: nsError  )
+                    completionHandler(lastPlaces, response , nsError as NSError?  )
                 } catch{
-                    completionHandler(data: [MolePlace]() , response: nil , error: nsError  )
+                    completionHandler([MolePlace]() , nil , nsError as NSError?  )
                     if debug {print("JsonError:: in MolocatePlace.getPlace()")}
                 }
                 
             }else{
-                completionHandler(data: [MolePlace]() , response: nil , error: error  )
+                completionHandler([MolePlace]() , nil , error as NSError?  )
                 if debug {print("RequestError:: in MolocatePlace.getPlace()")}
             }
         })
@@ -235,26 +242,26 @@ open class MolocatePlace {
                 do {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                     if result.index(forKey: "results") != nil{
-                        let places = result["results"] as! [Dictionary]
+                        let places = result["results"] as! [Dictionary<String, String>]
                         
                         for item in places {
                             var place = MolePlace()
-                            place.id = item["place_id"] as! String
-                            place.name = item["name"] as! String
-                            place.distance = item["distance"] as! String
-                            place.address = item["address"] as! String
+                            place.id = item["place_id"]!
+                            place.name = item["name"]!
+                            place.distance = item["distance"]!
+                            place.address = item["address"]!
                             lastPlaces.append(place)
                             
                         }
                     }
                     completionHandler(lastPlaces, response , nsError as NSError?  )
                 } catch{
-                    completionHandler([MolePlace]() , nil , nsError  )
+                    completionHandler([MolePlace]() , nil , nsError as NSError?  )
                     if debug {print("JsonError:: in MolocatePlace.getPlace()")}
                 }
                 
             }else{
-                completionHandler([MolePlace]() , nil , error  )
+                completionHandler([MolePlace]() , nil , error as NSError?  )
                 if debug {print("RequestError:: in MolocatePlace.getPlace()")}
             }
         })
@@ -269,7 +276,7 @@ open class MolocatePlace {
     
     
     class func getFollowers(_ nextUrl: String = "", placeId: String, completionHandler: @escaping (_ data: MoleUserRelations, _ response: URLResponse?, _ error: NSError?, _ count: Int, _ next: String?, _ previous: String? ) -> ()) {
-        var url  = URL()
+        var url  = URL(string: "")!
         if(nextUrl == ""){
             url = URL(string: MolocateBaseUrl + "place/api/get_followers/?place_id=" + (placeId as String) )!
         }else{
@@ -301,7 +308,7 @@ open class MolocatePlace {
                                 var friend = MoleUserFriend()
                                 let thing = results[i] as! [String:AnyObject]
                                 friend.username = thing["username"] as! String
-                                friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
+                                friend.picture_url = thing["picture_url"] is NSNull ? URL(string: "")!:URL(string: thing["picture_url"] as! String)!
                                 let thumbnail = thing["thumbnail_url"] as! String
                                 
                                 friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
@@ -319,18 +326,18 @@ open class MolocatePlace {
                         
                         followers.relations = friends
                         
-                        completionHandler(data: followers , response: response , error: nsError, count: count, next: next, previous: previous  )
+                        completionHandler(followers , response , nsError as NSError?, count, next, previous  )
                     }else{
-                        completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                        completionHandler(MoleUserRelations() , nil , nsError as NSError?, 0, nil, nil  )
                         if debug {print("ServerDataError:: in MolocatePlace.getFollowers()")}
 
                     }
                 } catch{
-                    completionHandler(data:  MoleUserRelations() , response: nil , error: nsError, count: 0, next: nil, previous: nil  )
+                    completionHandler(MoleUserRelations() , nil , nsError as NSError?, 0, nil, nil  )
                     if debug {print("JsonError:: in MolocatePlace.getFollowers()")}
                 }
             }else{
-                completionHandler(data:  MoleUserRelations() , response: nil , error: error, count: 0, next: nil, previous: nil  )
+                completionHandler(MoleUserRelations() , nil , error as NSError?, 0, nil, nil  )
                 if debug {print("RequestError:: in MolocatePlace.getFollowers()")}
             }
             

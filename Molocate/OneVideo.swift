@@ -373,7 +373,7 @@ class oneVideo: UIViewController,PlayerDelegate {
     }
     
     func pressedReport(_ sender: UIButton) {
-        let buttonRow = sender.tag
+        _ = sender.tag
         player.stop()
         
         MolocateVideo.reportAVideo(MoleGlobalVideo.id) { (data, response, error) -> () in

@@ -374,7 +374,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+    private func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         let locationAge = newLocation.timestamp.timeIntervalSinceNow
         
         //print(locationAge)
@@ -1194,9 +1194,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        
         switch context {
             
         case SessionRunningContext:
+        
             let isSessionRunning = change![NSKeyValueChangeKey.newKey]! as! Bool
             
             DispatchQueue.main.async {
@@ -1276,6 +1278,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 }
 
 extension CLLocation {
+    
     func parameters(bool: Bool) -> Parameters {
         let myll = parameters.ll
         let myllacc = parameters.llAcc

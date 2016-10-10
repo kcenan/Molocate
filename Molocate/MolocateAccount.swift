@@ -2,8 +2,8 @@
 import UIKit
 import RNCryptor
 //Globals
+ 
 let MolocateBaseUrl = "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/"
-let MolocateTestUrl = MolocateBaseUrl //"http://molocate-test.eu-central-1.elasticbeanstalk.com/"
 var IsExploreInProcess = false
 var MoleCurrentUser: MoleUser = MoleUser()
 var FaceUsername = ""
@@ -111,7 +111,7 @@ open class MolocateAccount {
                            
                                 friend.username = thing["username"] as! String
                                 friend.name =  thing["first_name"] as! String
-                                friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
+                                friend.picture_url = thing["picture_url"] is NSNull ? URL(string: ""):URL(string: thing["picture_url"] as! String)!
                                 let thumbnail = thing["thumbnail_url"] as! String
                    
                                 friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
@@ -127,7 +127,8 @@ open class MolocateAccount {
                         
                         completionHandler(followers , response , nsError as NSError?, count, next, previous)
                     }else{
-                        completionHandler(MoleUserRelations() , nil , nsError as NSError?, -1, nil, nil  ) //next is not nil, next should be previous next***************check count mines -1
+                        completionHandler(MoleUserRelations(), nil, nsError as NSError?, -1, nil, nil)
+                        
                         if debug { print("ServerDataError:: in mole.getFollowers()") }
                     }
                 } catch{
@@ -166,35 +167,28 @@ open class MolocateAccount {
                 
                 let response = String(data: data!, encoding: String.Encoding.utf8)
                 
-                if response!.characters(0)=="[" {
+                if response!.characters[response!.startIndex] == "[" {
                 
-                let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
+                let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Dictionary<String, AnyObject>]
                 
                 
                     var friends = MoleUserRelations()
                 
                     for i in 0..<result.count{
                         var friend = MoleUserFriend()
-                        let thing = result[i] as! [String:AnyObject]
+                        let thing = result[i] 
                         friend.username = thing["username"] as! String
                         friend.name =  thing["first_name"] as! String
-                        friend.picture_url = thing["picture_url"] is NSNull ? URL():URL(string: thing["picture_url"] as! String)!
+                        friend.picture_url = thing["picture_url"] is NSNull ? URL(string: ""):URL(string: thing["picture_url"] as! String)!
                         let thumbnail = thing["thumbnail_url"] as! String
                         
                         friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
                         let isfollowing = thing["is_following"] as! Int
                         
-                        
                         friend.is_following = isfollowing == 0 ? false:true
-                        
-                        
-                   
-                        
                         friends.relations.append(friend)
                     
                     }
-                
-                
                     
                     completionHandler(friends , nil, nsError as NSError?, 0, nil, nil )
                 }else{
@@ -241,13 +235,13 @@ open class MolocateAccount {
                     
                     if response![(response?.startIndex)!]=="[" {
                         
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Dictionary<String, AnyObject>]
                     
                     var followings = MoleUserRelations()
             
                         for i in 0..<result.count{
                             var friend = MoleUserFriend()
-                            let thing = result[i] as! [String:AnyObject]
+                            let thing = result[i] 
                             friend.username = thing["username"] as! String
                             friend.name =  thing["first_name"] as! String
                             friend.picture_url = thing["picture_url"] is NSNull ? URL(string:"")!:URL(string: thing["picture_url"] as! String)!
@@ -362,7 +356,7 @@ open class MolocateAccount {
     class func getFollowingPlaces(_ username: String, completionHandler: @escaping (_ data: [MolePlace], _ response: URLResponse?, _ error: NSError? ) -> ()) {
         
         let url: URL
-        url = URL(string: MolocateTestUrl + "/account/api/following_places/?username=" + (username as String) )!
+        url = URL(string: MolocateBaseUrl + "/account/api/following_places/?username=" + (username as String) )!
 
         
         var request = URLRequest(url: url)
@@ -377,22 +371,22 @@ open class MolocateAccount {
                 
                 do {
                      //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSArray
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Dictionary<String,String>]
                 //print(result.count)
                     if(result.count != 0){
                         var places = [MolePlace]()
                         for item in result {
                             var place = MolePlace()
-                            place.name = item["name"] as! String
-                            place.id = item["place_id"] as! String
-                            place.address = item["address"] as! String
+                            place.name = item["name"]!
+                            place.id = item["place_id"]!
+                            place.address = item["address"]!
                             places.append(place)
                             
                         }
                      
                         completionHandler(places , response , nsError as NSError?)
                    }else{
-                        completionHandler([MolePlace]() , nil , nsError as NSError? ) //next is not nil, next should be previous next***************check count mines -1
+                        completionHandler([MolePlace]() , nil , nsError as NSError? )
                         if debug { print("ServerDataError:: in mole.getFollowers()") }
                     }
                 } catch{
@@ -408,40 +402,40 @@ open class MolocateAccount {
         task.resume()
     }
     
-    class func getCheckedInPlaces(_ username: String, completionHandler: @escaping (_ data: [MolePlace], _ response: URLResponse?, _ error: NSError? ) -> ()) {
+    class func getCheckedInPlaces(username: String, completionHandler: @escaping (_ data: [MolePlace] ,_ response: URLResponse?,_ error: NSError? ) -> ()) {
         
         let url: URL
-        url = URL(string: MolocateTestUrl + "/account/api/checkedin_places/?username=" + (username as String) )!
+        url = URL(string: MolocateBaseUrl + "/account/api/checkedin_places/?username=" + username )!
         
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Token " + MoleUserToken!, forHTTPHeaderField: "Authorization")
         request.timeoutInterval = timeOut
-        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, Error in
             // print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             
-            if(error == nil){
-                let nsError = error;
+            if(Error == nil){
+                let nsError = Error;
                 
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Dictionary]
+                    let result = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Dictionary<String, String>]
                 
                     if(result.count != 0){
                         var places = [MolePlace]()
                         for item in result {
                             var place = MolePlace()
-                            place.name = item["name"] as! String
-                            place.id = item["place_id"] as! String
-                            place.address = item["address"] as! String
+                            place.name = item["name"]!
+                            place.id = item["place_id"]!
+                            place.address = item["address"]!
                             places.append(place)
-                            
                         }
                         
                         completionHandler(places , response , nsError as NSError?)
                     }else{
-                        completionHandler([MolePlace]() , nil , nsError as NSError?) //next is not nil, next should be previous next***************check count mines -1
+                        completionHandler([MolePlace]() , nil , nsError as NSError?)
+                        
                         if debug { print("ServerDataError:: in mole.getFollowers()") }
                     }
                 } catch{
@@ -449,7 +443,7 @@ open class MolocateAccount {
                     if debug { print("JSONCastError:: in mole.getFollowers()") }
                 }
             }else{
-                completionHandler([MolePlace]() , nil , error as NSError?)
+                completionHandler([MolePlace]() , nil , Error as NSError?)
                 if debug {print("RequestError:: in mole.getFollowers()")}
             }
             
@@ -957,7 +951,7 @@ open class MolocateAccount {
                         //print(item)
                         var user = MoleUser()
                         user.username = item["username"] as! String
-                        user.profilePic = item["thumbnail_url"] is NSNull ? URL():URL(string: item["thumbnail_url"] as! String)!
+                        user.profilePic = item["thumbnail_url"] is NSNull ? URL(string: "")!:URL(string: item["thumbnail_url"] as! String)!
                         user.first_name = item["first_name"] as! String
                         user.last_name = item["last_name"] as! String
                         user.isFollowing = item["is_following"] as! Int == 1 ? true:false
@@ -998,7 +992,7 @@ open class MolocateAccount {
                         user.username = result["username"] as! String
                         user.first_name = result["first_name"] as! String
                         user.last_name = result["last_name"] as! String
-                        user.profilePic = result["picture_url"] is NSNull ? URL():URL(string: result["picture_url"] as! String)!
+                        user.profilePic = result["picture_url"] is NSNull ? URL(string: "")!:URL(string: result["picture_url"] as! String)!
                         user.bio = result["caption"] is NSNull ? String() : result["caption"] as! String
                         user.follower_count = result["follower_count"] as! Int
                         user.following_count = result["following_count"] as! Int
@@ -1280,13 +1274,11 @@ open class MolocateAccount {
     }
     
     
-    class func getDataFromUrl(_ url: URL, completionHandler: @escaping (_ data: Data?, _ response: URLResponse?, _ error: NSError? ) -> ()) {
+    class func getDataFromUrl(_ url: URL, completionHandler: @escaping (_ data: Data?, _ response: URLResponse?, _ Error: NSError? ) -> ()) {
         
-        let task =  URLSession.sharedSession.dataTask(with: url, completionHandler: {
-            (data, response, error) in
-            completionHandler(data, response, error)
-        }) 
-        
+        let task = URLSession.shared.dataTask(with: url) { (data,response,error) in
+                completionHandler(data, response, error as? NSError)
+        }
         task.resume()
     }
     
@@ -1311,10 +1303,12 @@ open class MolocateAccount {
                         MoleCurrentUser.first_name = result["first_name"] as! String
                         MoleCurrentUser.last_name = result["last_name"] as! String
                         
-                        let profile_picture = result["picture_url"] is NSNull ? URL():URL(string: result["picture_url"] as! String)!
+                        let profile_picture = result["picture_url"] is NSNull ? URL(string: ""):URL(string: result["picture_url"] as! String)!
                         
-                        if profile_picture.absoluteString != MoleCurrentUser.profilePic.absoluteString{
-                            MoleCurrentUser.profilePic = result["picture_url"] is NSNull ? URL():URL(string: result["picture_url"] as! String)!
+                        if profile_picture?.absoluteString != MoleCurrentUser.profilePic.absoluteString{
+                           
+                            MoleCurrentUser.profilePic = result["picture_url"] is NSNull ? URL(string: "")!:URL(string: (result["picture_url"] as! String))!
+                            
                             MoleCurrentUser.thumbnailPic = result["thumbnail_url"] is NSNull ? MoleCurrentUser.profilePic :URL(string: result["picture_url"] as! String)!
                             setProfilePictures()
                         }

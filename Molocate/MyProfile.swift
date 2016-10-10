@@ -486,7 +486,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         UIApplication.shared.beginIgnoringInteractionEvents()
         let controller:findVenueController = self.storyboard!.instantiateViewController(withIdentifier: "findVenueController") as! findVenueController
         self.navigationController?.pushViewController(controller, animated: true)
-        MolocateAccount.getCheckedInPlaces(classUser.username) { (data, response, error) in
+        MolocateAccount.getCheckedInPlaces(username: classUser.username) { (data, response, error) in
             DispatchQueue.main.async{
                 controller.venues = data
                 controller.tableView.reloadData()

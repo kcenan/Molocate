@@ -36,7 +36,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
      @param error The error.
      */
     public func sharer(_ sharer: FBSDKSharing!, didFailWithError error: Error!) {
-        <#code#>
+        
     }
 
 
@@ -1026,7 +1026,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
     func sharerDidCancel(_ sharer: FBSDKSharing!) {
         
     }
-    func sharer(_ sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+    func sharer(sharer: FBSDKSharing!, didFailWithError error: NSError!) {
         
     }
 

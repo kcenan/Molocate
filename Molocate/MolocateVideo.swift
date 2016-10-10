@@ -177,7 +177,7 @@ open class MolocateVideo {
     
     class func getFilters(_ completionHandler: @escaping (_ data: [filter]?, _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        var request = URLRequest(url: URL(string: MolocateTestUrl+"video/api/video_filters/")!)
+        var request = URLRequest(url: URL(string: MolocateBaseUrl+"video/api/video_filters/")!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -300,7 +300,7 @@ open class MolocateVideo {
     class func getNearbyVideos(_ placeLat: Float,placeLon: Float, completionHandler: @escaping (_ data: [MoleVideoInformation]?, _ response: URLResponse?, _ error: NSError?, _ next: URL?) -> ()){
         
         
-        let url = URL(string: MolocateTestUrl + "/place/api/nearby_videos/?lat=\(placeLat)&lon=\(placeLon)")
+        let url = URL(string: MolocateBaseUrl + "/place/api/nearby_videos/?lat=\(placeLat)&lon=\(placeLon)")
         var request = URLRequest(url: url!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")

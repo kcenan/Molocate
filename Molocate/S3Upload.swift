@@ -152,36 +152,39 @@ open class S3Upload {
 
       
         let transferUtility = AWSS3TransferUtility.default()
-        
-        transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression) { (task, error) in
-
-            if ((error) != nil) {
+         transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression) { (task, Error) in
+            
+            if Error != nil {
                 //print("Error: %@", task.error)
-        
+                
             } else {
                 let uploadTask = task
                 // Do something with uploadTask.
-        
+                
                 let seconds = 100.0
                 let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                 let dispatchTime = DispatchTime.now() + Double(Int64(delay))
-                DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: { 
+                DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                     if !self.isUp && !self.isFailed{
                         //print("cancel")
                         uploadTask.cancel()
-                        let userinf = ["id":id]
+                        _ = ["id":id]
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "prepareForRetry"), object: nil)
                         MolocateVideo.encodeGlobalVideo()
                         
                     }
-
+                    
                 })
-              
-
+                
+                
             }
             
-          //  return nil
+            //  return nil
         }
+        
+        
+        
+
  
     }
     
@@ -252,7 +255,7 @@ open class S3Upload {
             body += "--\(boundary)\r\n"
             body += "Content-Disposition:form-data; name=\"\(paramName)\""
             
-            if let filename = param["fileName"] {
+            if param["fileName"] != nil {
                 let filename = param["fileName"]
                 let contentType = param["content-type"]!
                 

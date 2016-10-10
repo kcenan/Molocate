@@ -664,7 +664,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             if !isScrollingFast {
                 
             if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
-                trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as! URL
+                trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as? URL
             } else {
                 let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta.absoluteString
                 if(url[url.startIndex] == "h") {

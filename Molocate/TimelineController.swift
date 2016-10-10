@@ -106,7 +106,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 getPlaceData(placeId)
             case "filter":
                 if !isNearby {
-                    requestUrl = URL(string: MolocateTestUrl+"video/api/filtered_videos/?name="+filter_raw)!
+                    requestUrl = URL(string: MolocateBaseUrl+"video/api/filtered_videos/?name="+filter_raw)!
                     getExploreData(requestUrl)
                 } else {
                     getNearbyData(classLat, lon: classLon)
@@ -1363,7 +1363,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         let username = self.videoArray[Row].username
         var shareURL = URL(string:"")
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
-            shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
+            shareURL = dictionary.object(forKey: self.videoArray[Row].id) as? URL
         } else {
             let url = self.videoArray[Row].urlSta.absoluteString
             if(url[url.startIndex] == "h") {
