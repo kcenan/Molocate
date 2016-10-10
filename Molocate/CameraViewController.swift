@@ -6,7 +6,7 @@ import UIKit
 import AssetsLibrary
 import AVFoundation
 import Photos
-//import QuadratTouch
+import QuadratTouch
 import RecordButton
 import CoreLocation
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -52,7 +52,7 @@ struct locationss{
     var lon:Float!
     var adress = ""
 }
-private var SessionRunningContext = UnsafeMutableRawPointer.allocate(capacity: 1)
+private var SessionRunningContext = UnsafeMutableRawPointer.allocate(bytes: 10, alignedTo: 1)
 private enum AVCamSetupResult: Int {
     case success
     case cameraNotAuthorized
@@ -417,7 +417,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
     
         //var parameters = [Parameter.query:"moda sahil"]
-        let parameters = location.parameters(true)
+        let parameters = location.parameters(bool: true)
     
         
         let searchTask = session.venues.search(parameters) {
@@ -537,9 +537,11 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
             let currentPosition = currentVideoDevice?.position
             
             switch currentPosition {
-            case AVCaptureDevicePosition.unspecified, AVCaptureDevicePosition.front:
+            case AVCaptureDevicePosition.unspecified , AVCaptureDevicePosition.front:
                 preferredPosition = AVCaptureDevicePosition.back
             case AVCaptureDevicePosition.back:
+                preferredPosition = AVCaptureDevicePosition.front
+            default:
                 preferredPosition = AVCaptureDevicePosition.front
             }
             
@@ -1193,7 +1195,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         switch context {
-
+            
         case SessionRunningContext:
             let isSessionRunning = change![NSKeyValueChangeKey.newKey]! as! Bool
             

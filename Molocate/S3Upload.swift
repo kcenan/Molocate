@@ -72,26 +72,26 @@ open class S3Upload {
         
         let expression = AWSS3TransferUtilityUploadExpression()
         
-        expression.uploadProgress = {(task: AWSS3TransferUtilityTask, bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) in
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.uploadTask == nil {
-                    self.uploadTask = task
-                }
+//        expression.uploadProgress = {(task: AWSS3TransferUtilityTask, bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) in
+ //           dispatch_async(dispatch_get_main_queue(), {
+ //               if self.uploadTask == nil {
+ //                   self.uploadTask = task
+ //               }
                 //print(bytesSent)
-                if totalBytesSent <= totalBytesExpectedToSend {
-                    progressBar?.progress = Float(totalBytesSent)/Float(totalBytesExpectedToSend)
-                    var progressInfo = Dictionary<String, AnyObject>()
-                    progressInfo["progress"] =  Float(totalBytesSent)/Float(totalBytesExpectedToSend)
-                    progressInfo["id"] = id
-               
-                    print("progress updated with id:\(id)")
-                    NSNotificationCenter.defaultCenter().postNotificationName("updateProgress", object:nil, userInfo: progressInfo)
-                }else{
+ //               if totalBytesSent <= totalBytesExpectedToSend {
+ //                   progressBar?.progress = Float(totalBytesSent)/Float(totalBytesExpectedToSend)
+ //                   var progressInfo = Dictionary<String, AnyObject>()
+ //                   progressInfo["progress"] =  Float(totalBytesSent)/Float(totalBytesExpectedToSend)
+ //                   progressInfo["id"] = id
+ //
+ //                   print("progress updated with id:\(id)")
+ //                   NSNotificationCenter.defaultCenter().postNotificationName("updateProgress", object:nil, userInfo: progressInfo)
+   //             }else{
                     
-                }
+     //           }
                 
-            })
-        }
+       //     })
+       // }
         
         self.completionHandler = {(task, error) -> Void in
             DispatchQueue.main.async(execute: {
@@ -111,9 +111,7 @@ open class S3Upload {
                                 if let i = VideoUploadRequests.index(where: {$0.id == videoid}) {
                                     print("video deleted with id:\(id)")
                                     try FileManager.default.removeItem(at: VideoUploadRequests[i].uploadRequest.body)
-                                  
-                                    NotificationCenter.default.postNotificationName("uploadFinished", object: nil, userInfo: ["id":i])
-                                    
+                                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "uploadFinished"), object: nil)
                                     VideoUploadRequests.remove(at: i)
                                     
                                     MolocateVideo.encodeGlobalVideo()
@@ -154,38 +152,35 @@ open class S3Upload {
 
       
         let transferUtility = AWSS3TransferUtility.default()
-        transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression, completionHander: completionHandler).continue { (task) -> AnyObject? in
+        
+        transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression) { (task, error) in
 
-            if ((task.error) != nil) {
+            if ((error) != nil) {
                 //print("Error: %@", task.error)
         
-            }
-            if ((task.exception) != nil) {
-               // print("Exception: %@", task.exception)
-            }
-            if ((task.result) != nil) {
-                let uploadTask = task.result
+            } else {
+                let uploadTask = task
                 // Do something with uploadTask.
         
                 let seconds = 100.0
                 let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
-                let dispatchTime = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), Int64(delay))
-                dispatch_after(dispatchTime, DispatchQueue.main, {
-                    //print("18s passed")
+                let dispatchTime = DispatchTime.now() + Double(Int64(delay))
+                DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: { 
                     if !self.isUp && !self.isFailed{
                         //print("cancel")
-                        uploadTask?.cancel()
+                        uploadTask.cancel()
                         let userinf = ["id":id]
-                        NSNotificationCenter.defaultCenter().postNotificationName("prepareForRetry", object: nil, userInfo:userinf )
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "prepareForRetry"), object: nil)
                         MolocateVideo.encodeGlobalVideo()
                         
                     }
-                    
+
                 })
+              
 
             }
             
-            return nil
+          //  return nil
         }
  
     }

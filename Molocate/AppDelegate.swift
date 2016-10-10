@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
         }
         
-        if UserDefaults.standard.object(forKey: "profile_picture") == nil && MoleCurrentUser.profilePic != URL(){
+        if UserDefaults.standard.object(forKey: "profile_picture") == nil && MoleCurrentUser.profilePic != URL(string:""){
             MolocateAccount.setProfilePictures()
         }
         
@@ -219,7 +219,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (UIApplication.shared.applicationState == UIApplicationState.inactive || UIApplication.shared.applicationState == UIApplicationState.background) {
             
             choosedIndex = 3
-            NotificationCenter.defaultCenter().post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "pushNotification"), object: nil)
             UIApplication.shared.applicationIconBadgeNumber = 0
           
             
@@ -233,9 +233,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidReceiveMemoryWarning(application: UIApplication) {
-        SDImageCache.sharedImageCache().clearMemory()
-        if SDImageCache.sharedImageCache().getDiskCount() > 100 {
-            SDImageCache.sharedImageCache().cleanDisk()
+        SDImageCache.shared().clearMemory()
+        if SDImageCache.shared().getDiskCount() > 100 {
+            SDImageCache.shared().cleanDisk()
         }
         myCache.removeAll()
 
@@ -246,7 +246,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let location :CGPoint = (event?.allTouches?.first?.location(in: self.window))!
         if (location.y > 0) && (location.y < 16) {
-            NotificationCenter.defaultCenter().post(name: Notification.Name(rawValue: "scrollToTop"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "scrollToTop"), object: nil)
 //            switch (choosedIndex){
 //                case 0:
 //                case 1:

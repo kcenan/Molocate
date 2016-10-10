@@ -16,7 +16,6 @@
 		38E6210C1C90E49D00FB1AD5 /* ChangePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E6210B1C90E49D00FB1AD5 /* ChangePassword.swift */; };
 		38EAEA601CF10A5C0053249F /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EAEA5F1CF10A5B0053249F /* EventCell.swift */; };
 		38EAEA621CF111870053249F /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EAEA611CF111870053249F /* EventController.swift */; };
-		38F771041C9505670079FACD /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F771031C9505670079FACD /* Player.swift */; };
 		8BC101C91F384746AEB93FA5 /* Pods_Molocate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E3ACAA31AF21EFA58757234 /* Pods_Molocate.framework */; };
 		C60905361C4812A100614C7F /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60905351C4812A100614C7F /* ContainerController.swift */; };
 		C609053A1C48143C00614C7F /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60905391C48143C00614C7F /* MainController.swift */; };
@@ -33,6 +32,7 @@
 		C6287C471CFF54D2002C4B6B /* LogInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6287C461CFF54D2002C4B6B /* LogInController.swift */; };
 		C62B17F11D0B2EC8004CD060 /* shirt-2.png in Resources */ = {isa = PBXBuildFile; fileRef = C62B17F01D0B2EC8004CD060 /* shirt-2.png */; };
 		C62E31081D08F79200BE8377 /* venueInCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E31071D08F79200BE8377 /* venueInCamera.swift */; };
+		C6328DBB1DABA3AF008B204D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6328DBA1DABA3AF008B204D /* Player.swift */; };
 		C6350C221D3437C400A2398D /* profile2ndCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6350C211D3437C400A2398D /* profile2ndCell.swift */; };
 		C63629491CCCEE210071E6BF /* SearchUsername.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63629481CCCEE210071E6BF /* SearchUsername.swift */; };
 		C638AFF31C9C7E74003085E8 /* LikeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C638AFF21C9C7E74003085E8 /* LikeVideo.swift */; };
@@ -184,7 +184,6 @@
 		38E6210B1C90E49D00FB1AD5 /* ChangePassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePassword.swift; sourceTree = "<group>"; };
 		38EAEA5F1CF10A5B0053249F /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		38EAEA611CF111870053249F /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
-		38F771031C9505670079FACD /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		4E52B282C1DEE6A1AF3F3D83 /* Pods-Molocate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Molocate.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Molocate/Pods-Molocate.debug.xcconfig"; sourceTree = "<group>"; };
 		60A00617FF184E1B1A599F1F /* Pods-MolocateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MolocateUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MolocateUITests/Pods-MolocateUITests.release.xcconfig"; sourceTree = "<group>"; };
 		6D2F67643E17DDA2F1E2F8D5 /* Pods-MolocateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MolocateTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MolocateTests/Pods-MolocateTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -206,6 +205,7 @@
 		C6287C461CFF54D2002C4B6B /* LogInController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInController.swift; sourceTree = "<group>"; };
 		C62B17F01D0B2EC8004CD060 /* shirt-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shirt-2.png"; sourceTree = "<group>"; };
 		C62E31071D08F79200BE8377 /* venueInCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = venueInCamera.swift; sourceTree = "<group>"; };
+		C6328DBA1DABA3AF008B204D /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		C6350C211D3437C400A2398D /* profile2ndCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = profile2ndCell.swift; sourceTree = "<group>"; };
 		C63629481CCCEE210071E6BF /* SearchUsername.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchUsername.swift; sourceTree = "<group>"; };
 		C638AFF21C9C7E74003085E8 /* LikeVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeVideo.swift; sourceTree = "<group>"; };
@@ -676,9 +676,9 @@
 		E3F57EE11CFF3B5A007C3DF7 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				38F771031C9505670079FACD /* Player.swift */,
 				C61199BF1CCAD4FB00DF70F3 /* S3Upload.swift */,
 				C6BA05151D13F97900AB89FF /* ActionData.swift */,
+				C6328DBA1DABA3AF008B204D /* Player.swift */,
 				C6BA05111D13F90400AB89FF /* Twitter.swift */,
 				C6BA05131D13F90E00AB89FF /* TwitterCell.xib */,
 				E3F57EE21CFF3BB2007C3DF7 /* ActiveLabel.swift */,
@@ -1095,6 +1095,7 @@
 				C6F7B2651C134FAF0062E408 /* Tagged.swift in Sources */,
 				C60905361C4812A100614C7F /* ContainerController.swift in Sources */,
 				C6F9B5C81C80DD9300C7E9FC /* HomePageViewController.swift in Sources */,
+				C6328DBB1DABA3AF008B204D /* Player.swift in Sources */,
 				C63FBD071BF3E5B900DBB34C /* AppDelegate.swift in Sources */,
 				C6350C221D3437C400A2398D /* profile2ndCell.swift in Sources */,
 				C6BA05161D13F97900AB89FF /* ActionData.swift in Sources */,
@@ -1106,7 +1107,6 @@
 				C65CD04F1D8C3A8A008E264E /* FilterController.swift in Sources */,
 				3871AAA31C9488BA00DDD83E /* SideCell.swift in Sources */,
 				38EAEA601CF10A5C0053249F /* EventCell.swift in Sources */,
-				38F771041C9505670079FACD /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

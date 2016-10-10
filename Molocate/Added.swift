@@ -286,14 +286,14 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                 }
                                 let localID = videoAssetPlaceholder.localIdentifier
                                 let assetID =
-                                    localID.stringByReplacingOccurrencesOfString(
-                                        "/.*", withString: "",
-                                        options: NSString.CompareOptions.RegularExpressionSearch, range: nil)
+                                    localID.replacingOccurrences(
+                                        of: "/.*", with: "",
+                                        options: NSString.CompareOptions.regularExpression, range: nil)
                                 let ext = "mp4"
                                 let assetURLStr =
                                     "assets-library://asset/asset.\(ext)?id=\(assetID)&ext=\(ext)"
                                 let url = NSURL(string: assetURLStr)
-                                let video = FBSDKShareVideo(videoURL: url)
+                                let video = FBSDKShareVideo(videoURL: url as URL!)
                                 let content = FBSDKShareVideoContent()
                                 content.video = video
                                 FBSDKShareDialog.show(from: self, with: content, delegate: self)
@@ -364,15 +364,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                 }
                                 let localID = videoAssetPlaceholder.localIdentifier
                                 let assetID =
-                                    localID.stringByReplacingOccurrencesOfString(
-                                        "/.*", withString: "",
-                                        options: NSString.CompareOptions.RegularExpressionSearch, range: nil)
+                                    localID.replacingOccurrences(
+                                        of: "/.*", with: "",
+                                        options: NSString.CompareOptions.regularExpression, range: nil)
                                 let ext = "mp4"
                                 let assetURLStr =
                                     "assets-library://asset/asset.\(ext)?id=\(assetID)&ext=\(ext)"
                                 let instagramURL = NSURL(string:"instagram://library?AssetPath=\(assetURLStr)")
-                                if (UIApplication.sharedApplication().canOpenURL(instagramURL!)) {
-                                    UIApplication.sharedApplication().openURL(instagramURL!)
+                                if (UIApplication.shared.canOpenURL(instagramURL! as URL)) {
+                                    UIApplication.shared.openURL(instagramURL! as URL)
                                     self.activityIndicator.stopAnimating()
                                 }
                                 
@@ -674,9 +674,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                             ////print("hop")
                             let url = self.videoArray[indexPath.row].urlSta.absoluteString
                             let path = URL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
-                            let cached = DiskCache(path: path.absoluteString).path(url)
+                            let cached = DiskCache(path: path.absoluteString).path(forKey: url)
                             let file = URL(fileURLWithPath: cached)
-                            dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id)
+                            dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as NSCopying)
                             
                         }
                     }
