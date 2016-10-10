@@ -293,7 +293,7 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
             cell.profilePhotoPressed.addTarget(self, action: #selector(profileUser.photoPressed), for: UIControlEvents.touchUpInside)
             cell.profilePhoto.clipsToBounds = true
             cell.profilePhoto.tag = (indexPath as NSIndexPath).row
-            if(classUser.profilePic.absoluteString != ""){
+            if(classUser.profilePic?.absoluteString != ""){
                 cell.profilePhoto.sd_setImage(with: classUser.profilePic)
                 
             }else{

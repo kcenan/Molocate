@@ -17,7 +17,7 @@ struct MoleVideoInformation{
     var location:String = ""
     var locationID:String = ""
     var caption:String = ""
-    var urlSta:URL = URL(string:"")!
+    var urlSta:URL?
     var likeCount = 0
     var commentCount = 0
     var comments = [String]()

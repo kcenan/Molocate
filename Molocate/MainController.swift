@@ -317,7 +317,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
                 else{
                     cell.nameLabel.text = "\(searchedUsers[(indexPath as NSIndexPath).row].first_name) \(searchedUsers[(indexPath as NSIndexPath).row].last_name)"
                 }
-                if(searchedUsers[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
+                if(searchedUsers[(indexPath as NSIndexPath).row].profilePic?.absoluteString != ""){
                     cell.profilePhoto.sd_setImage(with: searchedUsers[indexPath.row].profilePic, for: UIControlState.normal)
                 }else{
                     cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())

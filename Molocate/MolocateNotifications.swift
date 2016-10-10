@@ -10,7 +10,7 @@ struct MoleUserNotifications{
     var actor:String = ""
     var target:String = ""
     var sentence:String = ""
-    var picture_url: URL = URL(string:"")!
+    var picture_url: URL?
 }
 
 open class MolocateNotifications{

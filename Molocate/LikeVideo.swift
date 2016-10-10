@@ -99,7 +99,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
             cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
             
 
-            if(users[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
+            if(users[(indexPath as NSIndexPath).row].profilePic?.absoluteString != ""){
                 cell.profileImage.sd_setBackgroundImage(with: users[indexPath.row].profilePic, for: .normal)
             }else{
                 cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, for:

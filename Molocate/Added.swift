@@ -123,7 +123,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                         queu.urlSta = (VideoUploadRequests[i].uploadRequest.body)!
                         //print("url:" + queu.urlSta.absoluteString)
                         queu.username = MoleCurrentUser.username
-                        queu.userpic = MoleCurrentUser.profilePic
+                        queu.userpic = MoleCurrentUser.profilePic!
                         queu.caption = json["caption"] as! String
                         // print(queu.caption                                 )
                         queu.location = loc[0]["name"] as! String
@@ -216,12 +216,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         player1.pause()
         player2.pause()
         let username = self.videoArray[Row].username
-        var shareURL = URL(string:"")!
+        var shareURL:URL?
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
-            shareURL = dictionary.object(forKey: self.videoArray[Row].id) as! URL
+            shareURL = dictionary.object(forKey: self.videoArray[Row].id) as? URL
         } else {
-            let url = self.videoArray[Row].urlSta.absoluteString
-            if(url[url.startIndex] == "h") {
+            let url = self.videoArray[Row].urlSta?.absoluteString
+            if(url?[(url?.startIndex)!] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -235,7 +235,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             parentLayer.frame = videoLayer.frame
             let sticker = UIImage(named: "videoSticker2")
             let string = username
-            let tempasset = AVAsset(url: shareURL)
+            let tempasset = AVAsset(url: shareURL!)
             let clipVideoTrack = (tempasset.tracks(withMediaType: AVMediaTypeVideo)[0]) as AVAssetTrack
             let composition = AVMutableVideoComposition()
             composition.frameDuration = CMTimeMake(1,30)
@@ -312,7 +312,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             parentLayer.frame = videoLayer.frame
             let sticker = UIImage(named: "videoSticker2")
             let string = username
-            let tempasset = AVAsset(url: shareURL)
+            let tempasset = AVAsset(url: shareURL!)
             let clipVideoTrack = (tempasset.tracks(withMediaType: AVMediaTypeVideo)[0]) as AVAssetTrack
             let composition = AVMutableVideoComposition()
             composition.frameDuration = CMTimeMake(1,30)
@@ -660,28 +660,28 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 cell.contentView.addSubview(progressBar!)
             }
             
-            var trueURL = URL(string:"")
+            var trueURL: URL?
             if !isScrollingFast {
                 
             if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
-                trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as? URL
+                trueURL = (dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as? URL)!
             } else {
-                let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta.absoluteString
-                if(url[url.startIndex] == "h") {
-                    trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
+                let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta?.absoluteString
+                if((url?[(url?.startIndex)!])! == "h") {
+                    trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta!
                     DispatchQueue.main.async {
-                        myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                        myCache.fetch(URL:self.videoArray[indexPath.row].urlSta! ).onSuccess{ NSData in
                             ////print("hop")
-                            let url = self.videoArray[indexPath.row].urlSta.absoluteString
+                            let url = self.videoArray[indexPath.row].urlSta?.absoluteString
                             let path = URL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
-                            let cached = DiskCache(path: path.absoluteString).path(forKey: url)
+                            let cached = DiskCache(path: path.absoluteString).path(forKey: url!)
                             let file = URL(fileURLWithPath: cached)
                             dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as NSCopying)
                             
                         }
                     }
                 }else{
-                    trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
+                    trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta!
                 }
             }
                 

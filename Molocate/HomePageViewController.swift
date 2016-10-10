@@ -214,8 +214,8 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
     
     @IBAction func openCamera(_ sender: AnyObject) {
         
-        self.tableController.player1.stop()
-        self.tableController.player2.stop()
+        self.tableController.player1?.stop()
+        self.tableController.player2?.stop()
         if CLLocationManager.locationServicesEnabled() {
             switch(CLLocationManager.authorizationStatus()) {
             case .notDetermined, .restricted, .denied:

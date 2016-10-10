@@ -35,8 +35,8 @@ struct MoleUserRelations{
 struct MoleUser{
     var username:String = ""
     var email : String = ""
-    var profilePic:URL = URL(string:"")!
-    var thumbnailPic:URL = URL(string:"")!
+    var profilePic:URL?
+    var thumbnailPic:URL?
     var token: String = ""
     var first_name = ""
     var last_name = ""
@@ -54,7 +54,7 @@ struct MoleUser{
     func printUser() -> Void {
         print("username: " + username)
         print("email: " + email)
-        print("profile_pic: " + profilePic.absoluteString)
+        print("profile_pic: " + (profilePic?.absoluteString)!)
         print("token: " + token)
         print("first_name: "+first_name)
         print("last_name: "+last_name)
@@ -1073,7 +1073,7 @@ open class MolocateAccount {
         
         do{
             
-            let Body = ["profile_pic": MoleCurrentUser.profilePic.absoluteString,
+            let Body = ["profile_pic": MoleCurrentUser.profilePic?.absoluteString,
                         "first_name": MoleCurrentUser.first_name,
                         "last_name": MoleCurrentUser.last_name,
                         "gender": MoleCurrentUser.gender,
@@ -1257,14 +1257,14 @@ open class MolocateAccount {
     }
     
     class func setProfilePictures(){
-        getDataFromUrl(MoleCurrentUser.profilePic) { (data, response, error) in
+        getDataFromUrl(MoleCurrentUser.profilePic!) { (data, response, error) in
             DispatchQueue.main.async(execute: {
                 if data != nil{
                     UserDefaults.standard.set(data, forKey: "profile_picture")
                 }
             })
         }
-        getDataFromUrl(MoleCurrentUser.thumbnailPic ) { (data, response, error) in
+        getDataFromUrl(MoleCurrentUser.thumbnailPic! ) { (data, response, error) in
             DispatchQueue.main.async(execute: {
                 if data != nil{
                     UserDefaults.standard.set(data, forKey: "thumbnail_picture")
@@ -1305,7 +1305,7 @@ open class MolocateAccount {
                         
                         let profile_picture = result["picture_url"] is NSNull ? URL(string: ""):URL(string: result["picture_url"] as! String)!
                         
-                        if profile_picture?.absoluteString != MoleCurrentUser.profilePic.absoluteString{
+                        if profile_picture?.absoluteString != MoleCurrentUser.profilePic?.absoluteString{
                            
                             MoleCurrentUser.profilePic = result["picture_url"] is NSNull ? URL(string: "")!:URL(string: (result["picture_url"] as! String))!
                             

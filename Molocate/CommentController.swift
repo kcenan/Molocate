@@ -128,7 +128,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 else{
                     cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
                 }
-                if(searchResults[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
+                if(searchResults[(indexPath as NSIndexPath).row].profilePic?.absoluteString != ""){
                     cell.profilePhoto.sd_setImage(with: searchResults[indexPath.row].profilePic, for: UIControlState.normal)
                 }else{
                     cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
@@ -271,7 +271,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             
             var mycomment = MoleVideoComment()
             mycomment.text = newComment.text
-            mycomment.photo = MoleCurrentUser.profilePic
+            mycomment.photo = MoleCurrentUser.profilePic!
             mycomment.username = MoleCurrentUser.username
             mycomment.deletable = true
             newComment.text = ""
@@ -401,8 +401,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.videoArray[videoIndex].commentCount += i
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.tableView.reloadRows(
                 at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.player1.stop()
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.player2.stop()
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.player1?.stop()
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! HomePageViewController).tableController.player2?.stop()
             //(navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileOther).AVc.player2.stop()
         }else if myViewController == "MyAdded"{
 //            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! MyProfile).AVc.videoArray[videoIndex].commentCount += i
@@ -434,8 +434,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.videoArray[videoIndex].commentCount += i
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.tableView.reloadRows(
                 at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.player1.stop()
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.player2.stop()
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.player1?.stop()
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.player2?.stop()
         }else if myViewController == "oneVideo"{
             MoleGlobalVideo.commentCount += i
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! oneVideo).tableView.reloadRows(

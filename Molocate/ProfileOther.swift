@@ -65,7 +65,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2
         profilePhoto.backgroundColor = profileBackgroundColor
         profilePhoto.clipsToBounds = true
-        if(classUser.profilePic.absoluteString != ""){
+        if(classUser.profilePic?.absoluteString != ""){
             profilePhoto.sd_setImage(with: classUser.profilePic)
            
         }else{
@@ -124,7 +124,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         addedButton.setTitle("▶︎GÖNDERİ(\(classUser.post_count))", for: UIControlState())
         taggedButton.setTitle("@ETİKET(\(classUser.tag_count))", for: UIControlState())
        
-        if(classUser.profilePic.absoluteString != ""){
+        if(classUser.profilePic?.absoluteString != ""){
             profilePhoto.sd_setImage(with: classUser.profilePic)
             ProfileButton.isEnabled = true
             

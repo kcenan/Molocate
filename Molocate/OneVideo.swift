@@ -80,8 +80,8 @@ class oneVideo: UIViewController,PlayerDelegate {
             
             playtap.require(toFail: tap)
             
-            if(MoleGlobalVideo.urlSta.absoluteString != ""){
-                self.player.setUrl(MoleGlobalVideo.urlSta)
+            if(MoleGlobalVideo.urlSta?.absoluteString != ""){
+                self.player.setUrl(MoleGlobalVideo.urlSta!)
                 self.player.playFromBeginning()
                 
             }

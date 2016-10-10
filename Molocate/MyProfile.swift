@@ -112,7 +112,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                             queu.dateStr = "0s"
                             queu.urlSta = (VideoUploadRequests[i].uploadRequest.body)!
                             queu.username = MoleCurrentUser.username
-                            queu.userpic = MoleCurrentUser.profilePic
+                            queu.userpic = MoleCurrentUser.profilePic!
                             queu.caption = json["caption"] as! String
                             queu.location = loc[0]["name"] as! String
                             queu.locationID = loc[0]["id"] as! String
@@ -326,7 +326,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 cell.profilePhotoPressed.addTarget(self, action: #selector(myProfile.photoPressed), for: UIControlEvents.touchUpInside)
                 cell.profilePhoto.clipsToBounds = true
                 cell.profilePhoto.tag = (indexPath as NSIndexPath).row
-                if(classUser.profilePic.absoluteString != ""){
+                if(classUser.profilePic?.absoluteString != ""){
                     cell.profilePhoto.sd_setImage(with: classUser.profilePic)
                     
                 }else{

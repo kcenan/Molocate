@@ -48,8 +48,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     var lastOffsetCapture:TimeInterval = TimeInterval()
     var isScrollingFast = false
     var pointNow:CGFloat = CGFloat()
-    var player1:Player = Player()
-    var player2: Player = Player()
+    var player1:Player?
+    var player2: Player?
     var likeorFollowClicked = false
     var refreshing = false
     var player1Turn = false
@@ -60,7 +60,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     var likeHeart = UIImageView()
     var myRefreshControl = UIRefreshControl()
     var isOnView = false
-    var requestUrl:URL = URL(string: "")!
+    var requestUrl:URL?
     var isNearby = false
     var classLat = Float()
     var classLon = Float()
@@ -80,12 +80,12 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     
         
         self.player1 = Player()
-        self.player1.delegate = self
-        self.player1.playbackLoops = true
+        self.player1?.delegate = self
+        self.player1?.playbackLoops = true
 
         self.player2 = Player()
-        self.player2.delegate = self
-        self.player2.playbackLoops = true
+        self.player2?.delegate = self
+        self.player2?.playbackLoops = true
 
         likeHeart.image = UIImage(named: "favorite")
         likeHeart.alpha = 1.0
@@ -101,13 +101,13 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             case "HomePage":
                 requestUrl = URL(string: MolocateBaseUrl + "video/api/news_feed/?category=all")!
                 self.myRefreshControl.attributedTitle = NSAttributedString(string: "Haber kaynağı güncelleniyor...")
-                getExploreData(requestUrl)
+                getExploreData(requestUrl!)
             case "profileVenue":
                 getPlaceData(placeId)
             case "filter":
                 if !isNearby {
                     requestUrl = URL(string: MolocateBaseUrl+"video/api/filtered_videos/?name="+filter_raw)!
-                    getExploreData(requestUrl)
+                    getExploreData(requestUrl!)
                 } else {
                     getNearbyData(classLat, lon: classLon)
                 }
@@ -174,7 +174,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                         queu.urlSta = (VideoUploadRequests[i].uploadRequest.body)!
                         //print("url:" + queu.urlSta.absoluteString)
                         queu.username = MoleCurrentUser.username
-                        queu.userpic = MoleCurrentUser.profilePic
+                        queu.userpic = MoleCurrentUser.profilePic!
                         queu.caption = json["caption"] as! String
                                  // print(queu.caption                                 )
                         queu.location = loc[0]["name"] as! String
@@ -245,17 +245,17 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
         
         refreshing = true
-        self.player1.stop()
-        self.player2.stop()
+        self.player1?.stop()
+        self.player2?.stop()
 
         switch type {
             case "HomePage":
-                getExploreData(requestUrl)
+                getExploreData(requestUrl!)
             case "ProfileVenue":
                 getPlaceData(placeId)
             case "filter":
                 if !isNearby {
-                    getExploreData(requestUrl)
+                    getExploreData(requestUrl!)
                 } else {
                     getNearbyData(classLat, lon: classLon)
             }
@@ -271,8 +271,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     }
     func refreshForNearby(_ sender:AnyObject, lat:Float,lon:Float) {
         refreshing = true
-        self.player1.stop()
-        self.player2.stop()
+        self.player1?.stop()
+        self.player2?.stop()
         getNearbyData(lat, lon: lon)
         
     }
@@ -337,15 +337,15 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
                     trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as? URL
                 } else {
-                    let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta.absoluteString
-                    if(url.characters.first! == "h") {
+                    let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta?.absoluteString
+                    if(url?.characters.first! == "h") {
                         trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
                         DispatchQueue.main.async {
-                            myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
+                            myCache.fetch(URL:self.videoArray[indexPath.row].urlSta! ).onSuccess{ NSData in
                                 ////print("hop")
-                                let url = self.videoArray[indexPath.row].urlSta.absoluteString
+                                let url = self.videoArray[indexPath.row].urlSta?.absoluteString
                                 let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
-                                let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url)
+                                let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url!)
                                 let file = URL(fileURLWithPath: cached)
                                 dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as NSCopying)
 
@@ -360,20 +360,20 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                     if (indexPath as NSIndexPath).row % 2 == 1 {
 
-                        self.player1.setUrl(trueURL!)
-                        self.player1.id = self.videoArray[(indexPath as NSIndexPath).row].id
-                        self.player1.view.frame = cell.newRect
-                        self.player1.view.layer.zPosition = 1111
-                        cell.contentView.addSubview(self.player1.view)
+                        self.player1?.setUrl(trueURL!)
+                        self.player1?.id = self.videoArray[(indexPath as NSIndexPath).row].id
+                        self.player1?.view.frame = cell.newRect
+                        self.player1?.view.layer.zPosition = 1111
+                        cell.contentView.addSubview((self.player1?.view)!)
                         cell.hasPlayer = true
 
                     }else{
 
-                        self.player2.setUrl(trueURL!)
-                        self.player2.id = self.videoArray[(indexPath as NSIndexPath).row].id
-                        self.player2.view.frame = cell.newRect
-                        self.player2.view.layer.zPosition = 1111
-                        cell.contentView.addSubview(self.player2.view)
+                        self.player2?.setUrl(trueURL!)
+                        self.player2?.id = self.videoArray[(indexPath as NSIndexPath).row].id
+                        self.player2?.view.frame = cell.newRect
+                        self.player2?.view.layer.zPosition = 1111
+                        cell.contentView.addSubview((self.player2?.view)!)
                         cell.hasPlayer = true
                     }
 
@@ -463,11 +463,11 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     }
 
     func playTheTruth(){
-        if (player1.playbackState.description != "Playing") && (player2.playbackState.description != "Playing") {
+        if (player1?.playbackState.description != "Playing") && (player2?.playbackState.description != "Playing") {
         if player1Turn {
-            player1.playFromBeginning()
+            player1?.playFromBeginning()
         } else {
-            player2.playFromBeginning()
+            player2?.playFromBeginning()
         }
         }
     }
@@ -537,7 +537,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            if self.player1.playbackState.description != "Playing" || self.player2.playbackState.description != "Playing" {
+            if self.player1?.playbackState.description != "Playing" || self.player2?.playbackState.description != "Playing" {
                 isScrollingFast = false
                 var ipArray = [IndexPath]()
                 for item in self.tableView.indexPathsForVisibleRows!{
@@ -550,12 +550,12 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                     self.tableView.reloadRows(at: ipArray, with: .none)
                 }
                 if player1Turn {
-                    if self.player1.playbackState.description != "Playing" {
-                        player1.playFromBeginning()
+                    if self.player1?.playbackState.description != "Playing" {
+                        player1?.playFromBeginning()
                     }
                 } else {
-                    if self.player2.playbackState.description != "Playing" {
-                        player2.playFromBeginning()
+                    if self.player2?.playbackState.description != "Playing" {
+                        player2?.playFromBeginning()
                     }
                 }
             }
@@ -625,20 +625,20 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                                 if (row) % 2 == 1{
                                     //self.tableView.visibleCells[1].reloadInputViews()
-                                    if self.player1.playbackState.description != "Playing" {
-                                        self.player2.stop()
+                                    if self.player1?.playbackState.description != "Playing" {
+                                        self.player2?.stop()
                                         if !isScrollingFast {
-                                            self.player1.playFromBeginning()
+                                            self.player1?.playFromBeginning()
                                         }
                                         player1Turn = true
                                         //////print(self.tableView.indexPathsForVisibleRows![0].row)
                                         //////////print("player1")
                                     }
                                 }else{
-                                    if self.player2.playbackState.description != "Playing"{
-                                        self.player1.stop()
+                                    if self.player2?.playbackState.description != "Playing"{
+                                        self.player1?.stop()
                                         if !isScrollingFast {
-                                            self.player2.playFromBeginning()
+                                            self.player2?.playFromBeginning()
                                         }
                                         player1Turn = false
                                         //////////print("player2")
@@ -658,19 +658,19 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                                 if (row) % 2 == 1{
 
-                                    if self.player1.playbackState.description != "Playing" {
-                                        self.player2.stop()
+                                    if self.player1?.playbackState.description != "Playing" {
+                                        self.player2?.stop()
                                         if !isScrollingFast {
-                                            self.player1.playFromBeginning()
+                                            self.player1?.playFromBeginning()
                                         }
                                         player1Turn = true
                                         //////////print("player1")
                                     }
                                 }else{
-                                    if self.player2.playbackState.description != "Playing"{
-                                        self.player1.stop()
+                                    if self.player2?.playbackState.description != "Playing"{
+                                        self.player1?.stop()
                                         if !isScrollingFast {
-                                            self.player2.playFromBeginning()
+                                            self.player2?.playFromBeginning()
                                         }
                                         player1Turn = false
                                         //////////print("player2")
@@ -701,10 +701,10 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                                 if (row) % 2 == 1{
                                     //self.tableView.visibleCells[1].reloadInputViews()
-                                    if self.player1.playbackState.description != "Playing" {
-                                        self.player2.stop()
+                                    if self.player1?.playbackState.description != "Playing" {
+                                        self.player2?.stop()
                                         if !isScrollingFast {
-                                            self.player1.playFromBeginning()
+                                            self.player1?.playFromBeginning()
 
                                         }
                                         player1Turn = true
@@ -712,10 +712,10 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                                         //////////print("player1")
                                     }
                                 }else{
-                                    if self.player2.playbackState.description != "Playing"{
-                                        self.player1.stop()
+                                    if self.player2?.playbackState.description != "Playing"{
+                                        self.player1?.stop()
                                         if !isScrollingFast {
-                                            self.player2.playFromBeginning()
+                                            self.player2?.playFromBeginning()
 
                                         }
                                         player1Turn = false
@@ -736,18 +736,18 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                                 if (row) % 2 == 1{
 
-                                    if self.player1.playbackState.description != "Playing" {
-                                        self.player2.stop()
+                                    if self.player1?.playbackState.description != "Playing" {
+                                        self.player2?.stop()
                                         if !isScrollingFast {
-                                            self.player1.playFromBeginning()
+                                            self.player1?.playFromBeginning()
                                         }
                                         player1Turn = true
                                     }
                                 }else{
-                                    if self.player2.playbackState.description != "Playing"{
-                                        self.player1.stop()
+                                    if self.player2?.playbackState.description != "Playing"{
+                                        self.player1?.stop()
                                         if !isScrollingFast {
-                                            self.player2.playFromBeginning()
+                                            self.player2?.playFromBeginning()
                                         }
                                         player1Turn = false
                                     }
@@ -819,20 +819,20 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                             if (row) % 2 == 1{
                                 //self.tableView.visibleCells[1].reloadInputViews()
-                                if self.player1.playbackState.description != "Playing" {
-                                    self.player2.stop()
+                                if self.player1?.playbackState.description != "Playing" {
+                                    self.player2?.stop()
                                     if !isScrollingFast {
-                                        self.player1.playFromBeginning()
+                                        self.player1?.playFromBeginning()
                                     }
                                     player1Turn = true
                                     ////print(self.tableView.indexPathsForVisibleRows![0].row)
                                     ////////print("player1")
                                 }
                             }else{
-                                if self.player2.playbackState.description != "Playing"{
-                                    self.player1.stop()
+                                if self.player2?.playbackState.description != "Playing"{
+                                    self.player1?.stop()
                                     if !isScrollingFast {
-                                        self.player2.playFromBeginning()
+                                        self.player2?.playFromBeginning()
                                     }
                                     player1Turn = false
                                     ////////print("player2")
@@ -852,19 +852,19 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                             if (row) % 2 == 1{
 
-                                if self.player1.playbackState.description != "Playing" {
-                                    self.player2.stop()
+                                if self.player1?.playbackState.description != "Playing" {
+                                    self.player2?.stop()
                                     if !isScrollingFast {
-                                        self.player1.playFromBeginning()
+                                        self.player1?.playFromBeginning()
                                     }
                                     player1Turn = true
                                     ////////print("player1")
                                 }
                             }else{
-                                if self.player2.playbackState.description != "Playing"{
-                                    self.player1.stop()
+                                if self.player2?.playbackState.description != "Playing"{
+                                    self.player1?.stop()
                                     if !isScrollingFast {
-                                        self.player2.playFromBeginning()
+                                        self.player2?.playFromBeginning()
                                     }
                                     player1Turn = false
                                     ////////print("player2")
@@ -971,19 +971,19 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                             if (row) % 2 == 1{
                                 
-                                if self.player1.playbackState.description != "Playing" {
-                                    self.player2.stop()
+                                if self.player1?.playbackState.description != "Playing" {
+                                    self.player2?.stop()
                                     if !isScrollingFast {
-                                        self.player1.playFromBeginning()
+                                        self.player1?.playFromBeginning()
                                     }
                                     player1Turn = true
 
                                 }
                             }else{
-                                if self.player2.playbackState.description != "Playing"{
-                                    self.player1.stop()
+                                if self.player2?.playbackState.description != "Playing"{
+                                    self.player1?.stop()
                                     if !isScrollingFast {
-                                        self.player2.playFromBeginning()
+                                        self.player2?.playFromBeginning()
                                     }
                                     player1Turn = false
                                     //////////print("player2")
@@ -1003,19 +1003,19 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
                             if (row) % 2 == 1{
 
-                                if self.player1.playbackState.description != "Playing" {
-                                    self.player2.stop()
+                                if self.player1?.playbackState.description != "Playing" {
+                                    self.player2?.stop()
                                     if !isScrollingFast {
-                                        self.player1.playFromBeginning()
+                                        self.player1?.playFromBeginning()
                                     }
                                     player1Turn = true
                                     //////////print("player1")
                                 }
                             }else{
-                                if self.player2.playbackState.description != "Playing"{
-                                    self.player1.stop()
+                                if self.player2?.playbackState.description != "Playing"{
+                                    self.player1?.stop()
                                     if !isScrollingFast {
-                                        self.player2.playFromBeginning()
+                                        self.player2?.playFromBeginning()
                                     }
                                     player1Turn = false
 
@@ -1066,36 +1066,36 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         if self.tableView.visibleCells.count < 3 {
             if (row) % 2 == 1{
 
-                if self.player1.playbackState.description != "Playing" {
-                    self.player2.stop()
-                    self.player1.playFromCurrentTime()
+                if self.player1?.playbackState.description != "Playing" {
+                    self.player2?.stop()
+                    self.player1?.playFromCurrentTime()
                 }else{
-                    self.player1.stop()
+                    self.player1?.stop()
                 }
 
             }else{
-                if self.player2.playbackState.description != "Playing" {
-                    self.player1.stop()
-                    self.player2.playFromCurrentTime()
+                if self.player2?.playbackState.description != "Playing" {
+                    self.player1?.stop()
+                    self.player2?.playFromCurrentTime()
                 }else{
-                    self.player2.stop()
+                    self.player2?.stop()
                 }
             }
         } else {
             let midrow =  (self.tableView.indexPathsForVisibleRows![1] as NSIndexPath).row
             if midrow % 2 == 1 {
-                if self.player1.playbackState.description != "Playing" {
-                    self.player2.stop()
-                    self.player1.playFromCurrentTime()
+                if self.player1?.playbackState.description != "Playing" {
+                    self.player2?.stop()
+                    self.player1?.playFromCurrentTime()
                 }else{
-                    self.player1.stop()
+                    self.player1?.stop()
                 }
             } else {
-                if self.player2.playbackState.description != "Playing" {
-                    self.player1.stop()
-                    self.player2.playFromCurrentTime()
+                if self.player2?.playbackState.description != "Playing" {
+                    self.player1?.stop()
+                    self.player2?.playFromCurrentTime()
                 }else{
-                    self.player2.stop()
+                    self.player2?.stop()
                 }
             }
         }
@@ -1292,8 +1292,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func pressedUsername(_ sender: UIButton) {
         let Row = sender.tag
         let isFollowing = videoArray[Row].isFollowing == 0 ? false:true
-        player1.pause()
-        player2.pause()
+        player1?.pause()
+        player2?.pause()
         //stop players
 
         delegate?.pressedUsername(videoArray[Row].username, profilePic: videoArray[Row].userpic as URL, isFollowing: isFollowing)
@@ -1303,8 +1303,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func pressedPlace(_ sender: UIButton) {
         let Row = sender.tag
         let placeId = videoArray[Row].locationID
-        player1.pause()
-        player2.pause()
+        player1?.pause()
+        player2?.pause()
         //stopplayers
         delegate?.pressedPlace(placeId, Row: Row)
     }
@@ -1312,8 +1312,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func pressedLikeCount(_ sender: UIButton) {
         let Row = sender.tag
         let videoId = videoArray[Row].id
-        player1.pause()
-        player2.pause()
+        player1?.pause()
+        player2?.pause()
         //stopplayers
         delegate?.pressedLikeCount(videoId,Row: Row)
     }
@@ -1322,8 +1322,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         //stopplayers
         let Row = sender.tag
         let videoId = videoArray[Row].id
-        player1.pause()
-        player2.pause()
+        player1?.pause()
+        player2?.pause()
 
         delegate?.pressedComment(videoId,Row: Row)
     }
@@ -1358,15 +1358,15 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     
     func pressedShare(_ sender: UIButton) {
         let Row = sender.tag
-        player1.pause()
-        player2.pause()
+        player1?.pause()
+        player2?.pause()
         let username = self.videoArray[Row].username
         var shareURL = URL(string:"")
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as? URL
         } else {
-            let url = self.videoArray[Row].urlSta.absoluteString
-            if(url[url.startIndex] == "h") {
+            let url = self.videoArray[Row].urlSta?.absoluteString
+            if(url?[(url?.startIndex)!] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }
@@ -1534,8 +1534,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func pressedReport(_ sender: UIButton) {
         //stop players
         let Row = sender.tag
-        player1.pause()
-        player2.pause()
+        player1?.pause()
+        player2?.pause()
 
         let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -1572,8 +1572,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        player1.pause()
-        player2.pause()
+        player1?.pause()
+        player2?.pause()
         isOnView = false
         // myCache.removeAll()
         // dictionary.removeAllObjects()
@@ -1585,21 +1585,21 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
 
     func pausePLayers(){
-        player1.pause()
-        player2.pause()
+        player1?.pause()
+        player2?.pause()
     }
     func playerReady(_ player: Player) {
         //check if it will be played
 
         if isOnView {
         if player == player1 {
-            if player2.playbackState.description != "Playing"{
+            if player2?.playbackState.description != "Playing"{
                 if player1Turn {
             player.playFromBeginning()
                 }
             }
         } else {
-            if player1.playbackState.description != "Playing"{
+            if player1?.playbackState.description != "Playing"{
                 if !player1Turn {
                     player.playFromBeginning()
                 }
@@ -1619,9 +1619,9 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
     func playerPlaybackWillStartFromBeginning(_ player: Player) {
         if player == player1 {
-            player2.stop()
+            player2?.stop()
         } else {
-            player1.stop()
+            player1?.stop()
         }
     }
 

@@ -110,7 +110,7 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
     func addPhotoPart(_ screenWidth: CGFloat, screenHeight: CGFloat){
         let scr = screenHeight-0
        
-        if(user.profilePic.absoluteString != ""){
+        if(user.profilePic?.absoluteString != ""){
             photo.image = UIImage(named: "profile")!
             photo.sd_setImage(with: user.profilePic)
             
@@ -357,8 +357,8 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
                 DispatchQueue.main.async { () -> Void in
                     
                     if data == "success"{
-                        SDImageCache.shared().removeImage(forKey: MoleCurrentUser.profilePic.absoluteString)
-                        SDImageCache.shared().removeImage(forKey: MoleCurrentUser.thumbnailPic.absoluteString)
+                        SDImageCache.shared().removeImage(forKey: MoleCurrentUser.profilePic?.absoluteString)
+                        SDImageCache.shared().removeImage(forKey: MoleCurrentUser.thumbnailPic?.absoluteString)
                         SDImageCache.shared().store(self.selected!, forKey: pictureUrl)
                         SDImageCache.shared().store(self.thumbnail!, forKey: thumbnailUrl)
                         MoleCurrentUser.profilePic = URL(string: pictureUrl)!

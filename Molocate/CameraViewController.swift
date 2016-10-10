@@ -78,7 +78,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     fileprivate var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     fileprivate var rootLayer = CALayer()
     fileprivate var camera = true
-    fileprivate var videoURL = URL(string:"")
+    fileprivate var videoURL:URL?
     fileprivate var sessionQueue: DispatchQueue?
     fileprivate var vurl: URL?
     fileprivate var topLayer = CALayer()

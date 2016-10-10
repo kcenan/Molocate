@@ -470,7 +470,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             else{
                 cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
             }
-            if(searchResults[(indexPath as NSIndexPath).row].profilePic.absoluteString != ""){
+            if(searchResults[(indexPath as NSIndexPath).row].profilePic?.absoluteString != ""){
                 cell.profilePhoto.sd_setImage(with: searchResults[indexPath.row].profilePic, for: UIControlState.normal)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())

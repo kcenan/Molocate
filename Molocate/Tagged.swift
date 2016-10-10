@@ -262,14 +262,14 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
                 trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as! URL
             } else {
-                trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
+                trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta!
                 DispatchQueue.main.async {
-                        myCache.fetch(URL:self.videoArray[indexPath.row].urlSta ).onSuccess{ NSData in
-                        let url = self.videoArray[indexPath.row].urlSta.absoluteString
+                        myCache.fetch(URL:self.videoArray[indexPath.row].urlSta! ).onSuccess{ NSData in
+                        let url = self.videoArray[indexPath.row].urlSta?.absoluteString
 
                             //DBG:hata verdi INDEX OUT OF RANGE WHY SO?
                         let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
-                        let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url)
+                        let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url!)
                         let file = NSURL(fileURLWithPath: cached)
                         dictionary.setObject(file, forKey: self.videoArray[indexPath.row].id as NSCopying)
                     }
@@ -530,8 +530,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as? URL
         } else {
-            let url = self.videoArray[Row].urlSta.absoluteString
-            if(url[url.startIndex] == "h") {
+            let url = self.videoArray[Row].urlSta?.absoluteString
+            if(url?[(url?.startIndex)!] == "h") {
                 shareURL = self.videoArray[Row].urlSta
             }
         }

@@ -46,7 +46,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     
     func getData(){
         //DBG: What should we do when error occurs
-        MolocateNotifications.getNotifications(URL(string:"")!) { (data, response, error) -> () in
+        MolocateNotifications.getNotifications(nil) { (data, response, error) -> () in
             DispatchQueue.main.async{
                 self.notificationArray = data!
                 self.tableView.reloadData()
@@ -93,7 +93,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         cell.fotoButton.clipsToBounds = true
         cell.fotoButton.tag = (indexPath as NSIndexPath).row
         
-        if(notificationArray[(indexPath as NSIndexPath).row].picture_url.absoluteString != ""){
+        if(notificationArray[(indexPath as NSIndexPath).row].picture_url?.absoluteString != ""){
             cell.fotoButton.sd_setImage(with: notificationArray[indexPath.row].picture_url, for: UIControlState.normal)
         } else {
             cell.fotoButton.setImage(UIImage(named: "profile"), for: UIControlState())
