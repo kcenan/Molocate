@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
         }
         
-        if UserDefaults.standard.object(forKey: "profile_picture") == nil && MoleCurrentUser.profilePic != URL(string:""){
+        if UserDefaults.standard.object(forKey: "profile_picture") == nil && MoleCurrentUser.profilePic != nil{
             MolocateAccount.setProfilePictures()
         }
         

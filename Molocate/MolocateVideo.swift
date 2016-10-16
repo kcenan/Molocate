@@ -61,7 +61,7 @@ struct MoleVideoComment{
     var id: String = ""
     var text: String = ""
     var username: String = ""
-    var photo: URL = URL(string:"")!
+    var photo: URL?
     var deletable = false
 }
 
@@ -147,7 +147,7 @@ open class MolocateVideo {
                             let thing = commentdata[i] as! [String:AnyObject]
                             //print(thing)
                             thecomment.username = thing["username"] as! String
-                            thecomment.photo = thing["picture_url"] is NSNull ? URL(string:"")!:URL(string: thing["picture_url"] as! String)! as URL
+                            thecomment.photo = thing["picture_url"] is NSNull ? nil:URL(string: thing["picture_url"] as! String)! as URL
                             thecomment.text = thing["comment"] as! String
                             thecomment.id = thing["comment_id"] as! String
                             thecomment.deletable = thing["is_deletable"] as! Bool
@@ -201,7 +201,7 @@ open class MolocateVideo {
                         }
                         filt.name = item["name"] as! String
                         filt.raw_name = item["name_raw"] as! String
-                        filt.thumbnail_url = URL(string: item["thumbnail_url"] as! String) == nil ? URL(string:""):URL(string: item["thumbnail_url"] as! String)!
+                        filt.thumbnail_url = URL(string: item["thumbnail_url"] as! String) == nil ? nil:URL(string: item["thumbnail_url"] as! String)!
                         filters.append(filt)
                     }
                     completionHandler(filters, response, nsError as NSError?)
@@ -435,7 +435,7 @@ open class MolocateVideo {
     
     class func getUserVideos(_ name: String,type:String , completionHandler: @escaping (_ data: [MoleVideoInformation]?, _ response: URLResponse?, _ error: NSError?) -> ()){
         
-        let nextURL:URL
+        var nextURL:URL?
         
         switch(type){
             case "user":
@@ -445,11 +445,11 @@ open class MolocateVideo {
                 nextURL = URL(string: MolocateBaseUrl+"video/api/tagged_videos/?username="+name)!
                 break
             default:
-                nextURL = URL(string:"")!
+                nextURL = nil
                 break
         }
         
-        var request = URLRequest(url: nextURL)
+        var request = URLRequest(url: nextURL!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")

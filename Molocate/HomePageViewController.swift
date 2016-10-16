@@ -67,7 +67,7 @@ class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineCon
     }
 
    
-    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool) {
+    func pressedUsername(_ username: String, profilePic: URL?, isFollowing: Bool) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()

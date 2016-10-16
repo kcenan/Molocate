@@ -35,7 +35,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
     }
     
     func refresh(_ sender: AnyObject){
-        MolocateNotifications.getNotifications(URL(string:"")!) { (data, response, error) -> () in
+        MolocateNotifications.getNotifications(nil) { (data, response, error) -> () in
             DispatchQueue.main.async{
                 self.notificationArray = data!
                 self.tableView.reloadData()

@@ -196,7 +196,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             
    
             
-            if(comments[(indexPath as NSIndexPath).row].photo.absoluteString != ""){
+            if(comments[(indexPath as NSIndexPath).row].photo?.absoluteString != ""){
                 cell.profilePhoto.sd_setImage(with: comments[indexPath.row].photo, for: UIControlState.normal)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile")!, for:

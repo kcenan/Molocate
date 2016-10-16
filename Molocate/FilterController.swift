@@ -48,7 +48,7 @@ class FilterController: UIViewController,TimelineControllerDelegate  {
         // Dispose of any resources that can be recreated.
     }
     
-    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool) {
+    func pressedUsername(_ username: String, profilePic: URL?, isFollowing: Bool) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()

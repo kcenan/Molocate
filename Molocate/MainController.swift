@@ -212,7 +212,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
 
     }
     
-    func toggleNavigationBar(direction: Bool) {
+    private func toggleNavigationBar(direction: Bool) {
         navigationController?.setNavigationBarHidden(direction, animated: true)
     }
     
@@ -263,12 +263,12 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         searchText.resignFirstResponder()
         //   Timelinecontrollerx da Main icin hide navigation bar farkli olmali
     }
     
-    func tableView(atableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    private func tableView(atableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         if !venueoruser {
             let rowHeight : CGFloat = 54
@@ -533,7 +533,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
     }
     
-    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool) {
+    func pressedUsername(_ username: String, profilePic: URL?, isFollowing: Bool) {
         
         
         activityIndicator.startAnimating()
@@ -1034,7 +1034,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         return true
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    private func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             textView.resignFirstResponder()
         }
@@ -1042,7 +1042,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     }
     
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         
         textField.resignFirstResponder()

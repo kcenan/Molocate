@@ -45,7 +45,7 @@ open class MolocateNotifications{
                         notification.date = item["date_str"] as! String
                         notification.sentence = item["sentence"] as! String
                         notification.target = item["target"] as! String
-                        notification.picture_url = item["picture_url"] is NSNull ? URL(string:"")!:URL(string: item["picture_url"] as! String)!
+                        notification.picture_url = item["picture_url"] is NSNull ? nil:URL(string: item["picture_url"] as! String)!
                         notificationArray.append(notification)
                     }
                     completionHandler(notificationArray, response, nsError as NSError?)

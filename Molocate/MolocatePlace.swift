@@ -11,7 +11,7 @@ struct MolePlace{
     var follower_count = 0;
     var following_count = 0;
     var tag_count = 0;
-    var picture_url:URL = URL(string:"")!
+    var picture_url:URL?
     var placeVideos: [MoleVideoInformation] = [MoleVideoInformation]()
     var city = ""
     var address = ""

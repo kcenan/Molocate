@@ -16,7 +16,7 @@ import FBSDKShareKit
 
 @objc protocol TimelineControllerDelegate:class {
 
-    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool)
+    func pressedUsername(_ username: String, profilePic: URL?, isFollowing: Bool)
 
     func pressedPlace(_ placeId: String, Row: Int)
 
@@ -315,7 +315,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
 
-            cell.videoComment.handleMentionTap { userHandle in  self.delegate?.pressedUsername(userHandle, profilePic: URL(string:"")!, isFollowing: false)}
+            cell.videoComment.handleMentionTap { userHandle in  self.delegate?.pressedUsername(userHandle, profilePic: nil, isFollowing: false)}
 
    
 
@@ -1361,7 +1361,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         player1?.pause()
         player2?.pause()
         let username = self.videoArray[Row].username
-        var shareURL = URL(string:"")
+        var shareURL: URL?
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as? URL
         } else {

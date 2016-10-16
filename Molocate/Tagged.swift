@@ -256,11 +256,11 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 cell.cellthumbnail.image = UIImage(named: "Mole")!
             }
 
-            var trueURL:URL = nil
+            var trueURL:URL? = nil
             if !isScrollingFast {
 
             if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
-                trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as! URL
+                trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as? URL
             } else {
                 trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta!
                 DispatchQueue.main.async {
@@ -279,7 +279,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 if !cell.hasPlayer {
             if (indexPath as NSIndexPath).row % 2 == 1 {
 
-                self.player1.setUrl(trueURL)
+                self.player1.setUrl(trueURL!)
                 self.player1.id = self.videoArray[(indexPath as NSIndexPath).row].id
                 self.player1.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player1.view)
@@ -287,7 +287,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
             }else{
 
-                self.player2.setUrl(trueURL)
+                self.player2.setUrl(trueURL!)
                 self.player2.id = self.videoArray[(indexPath as NSIndexPath).row].id
                 self.player2.view.frame = cell.newRect
                 cell.contentView.addSubview(self.player2.view)
@@ -526,7 +526,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         player1.pause()
         player2.pause()
         let username = self.videoArray[Row].username
-        var shareURL = URL(string:"")
+        var shareURL:URL?
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
             shareURL = dictionary.object(forKey: self.videoArray[Row].id) as? URL
         } else {

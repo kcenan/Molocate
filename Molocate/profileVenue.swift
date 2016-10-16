@@ -338,7 +338,7 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
     }
     
     
-    func pressedUsername(_ username: String, profilePic: URL, isFollowing: Bool) {
+    func pressedUsername(_ username: String, profilePic: URL?, isFollowing: Bool) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         activityIndicator.startAnimating()

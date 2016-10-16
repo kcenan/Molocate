@@ -16,7 +16,7 @@ let profileBackgroundColor = UIColor(netHex: 0xDCDDDF)
     var name = ""
     var raw_name = ""
     var isevent = false
-    var thumbnail_url = URL(string:"")
+    var thumbnail_url: URL?
     
  }
 struct MoleUserFriend {
@@ -244,7 +244,7 @@ open class MolocateAccount {
                             let thing = result[i] 
                             friend.username = thing["username"] as! String
                             friend.name =  thing["first_name"] as! String
-                            friend.picture_url = thing["picture_url"] is NSNull ? URL(string:"")!:URL(string: thing["picture_url"] as! String)!
+                            friend.picture_url = thing["picture_url"] is NSNull ? nil:URL(string: thing["picture_url"] as! String)!
                             let thumbnail = thing["thumbnail_url"] as! String
                             
                             friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
@@ -317,7 +317,7 @@ open class MolocateAccount {
                             let thing = results[i] as! [String:AnyObject]
                             friend.username = thing["username"] as! String
                             friend.name =  thing["first_name"] as! String
-                            friend.picture_url = thing["picture_url"] is NSNull ? URL(string:"")!:URL(string: thing["picture_url"] as! String)!
+                            friend.picture_url = thing["picture_url"] is NSNull ? nil:URL(string: thing["picture_url"] as! String)!
                             let thumbnail = thing["thumbnail_url"] as! String
                             
                             friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
