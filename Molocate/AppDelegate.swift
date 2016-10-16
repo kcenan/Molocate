@@ -8,8 +8,6 @@ import FBSDKLoginKit
 import Bolts
 import SDWebImage
 import AWSS3
-import Fabric
-import Crashlytics
 import AVFoundation
 import Haneke
 import QuadratTouch
@@ -29,9 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // [Optional] Power your app with Local Datastore. For more info, go to
         //setStatusBarBackgroundColor()
-        
-        Fabric.with([Crashlytics.self])
-        Fabric.sharedSDK().debug = false
+ 
         if(UserDefaults.standard.bool(forKey: "isRegistered")) {
             isRegistered = true
             DeviceToken = UserDefaults.standard.object(forKey: "DeviceToken") as? String

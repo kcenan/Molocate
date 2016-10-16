@@ -951,7 +951,7 @@ open class MolocateAccount {
                         //print(item)
                         var user = MoleUser()
                         user.username = item["username"] as! String
-                        user.profilePic = item["thumbnail_url"] is NSNull ? URL(string: "")!:URL(string: item["thumbnail_url"] as! String)!
+                        user.profilePic = item["thumbnail_url"] is NSNull ? nil:URL(string: item["thumbnail_url"] as! String)!
                         user.first_name = item["first_name"] as! String
                         user.last_name = item["last_name"] as! String
                         user.isFollowing = item["is_following"] as! Int == 1 ? true:false
