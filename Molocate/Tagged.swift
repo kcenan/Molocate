@@ -256,7 +256,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
                 cell.cellthumbnail.image = UIImage(named: "Mole")!
             }
 
-            var trueURL = URL(string:"")!
+            var trueURL:URL = nil
             if !isScrollingFast {
 
             if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {

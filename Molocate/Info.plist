@@ -85,8 +85,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Kamera video çekerken kullanılacaktır.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Show your location on the map</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Fotoğraf kütüphanesi erişimi videolarınızı kaydetmek için kullanılacaktır.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>LatoTR-Light.ttf</string>
