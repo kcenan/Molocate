@@ -31,7 +31,9 @@ var filters = [filter]()
 class MainController: UIViewController, UITableViewDelegate , UITableViewDataSource, UICollectionViewDelegate,CLLocationManagerDelegate, UICollectionViewDataSource, UISearchBarDelegate, TimelineControllerDelegate, UITextFieldDelegate{
     
     
-    
+    @IBOutlet var venueTable: UITableView!
+    @IBOutlet var collectionView: UICollectionView!
+
     var isSearching = false
     var locationManager: CLLocationManager!
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
@@ -49,16 +51,9 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     var linee: UILabel!
     var on = true
     var findfriendsVenue: UIButton!
-    
     let lineColor = UIColor(netHex: 0xCCCCCC)
-    @IBOutlet var venueTable: UITableView!
-    @IBOutlet var collectionView: UICollectionView!
-    
     var searchText:UISearchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: MolocateDevice.size.width/2, height: 36))
-    
     var refreshURL = URL(string: "http://molocate-py3.hm5xmcabvz.eu-central-1.elasticbeanstalk.com/video/api/explore/?category=all")
-    
-    
     var categories = ["HEPSİ","EĞLENCE","YEMEK","GEZİ","MODA" , "GÜZELLİK", "SPOR","ETKİNLİK","KAMPÜS","YAKINDA","TREND"]
     var categoryImagesWhite : [String]  = [ "all" , "fun", "food", "travel", "fashion", "beauty", "sport", "event", "campus", "nearby", "trend"]
     var categoryImagesBlack : [String]  = [ "allb" , "funb", "foodb", "travelb", "fashionb", "beautyb", "sportb", "eventb", "campusb", "nearbyb", "trendb"]
@@ -67,78 +62,56 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.automaticallyAdjustsScrollViewInsets = true
-        self.navigationController?.navigationBar.barTintColor = swiftColor
-        self.navigationController?.navigationBar.isTranslucent = false
+        automaticallyAdjustsScrollViewInsets = true
+        navigationController?.navigationBar.barTintColor = swiftColor
+        navigationController?.navigationBar.isTranslucent = false
         
         selectedCell = 0
-     
+        
         //tableController.tableView.makeoN
-      
         //venueTable.layer.zPosition = 10
+       
         tabBarController?.tabBar.isHidden = true
         
-
         searchText.layer.borderWidth = 0
         searchText.layer.cornerRadius = 5
         searchText.layer.borderColor = UIColor.white.cgColor
-        //searchText.barTintColor = swiftColor
         searchText.searchBarStyle = .minimal
-//        for subview in (searchText.subviews) {
-//            for subsubView in subview.subviews{
-//                if let textField = subsubView as? UITextField{
-//                    textField.attributedPlaceholder = NSAttributedString(string: "Ara", attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName:  UIFont(name: "AvenirNext-Regular", size: 14.0)])
-//                    textField.textColor = UIColor.white
-//                }
-//            }
-//        }
-        
-        
-        
+        searchText.returnKeyType = UIReturnKeyType.done
         let bartextField = searchText.value(forKey: "searchField") as! UITextField
         bartextField.backgroundColor = swiftColor2
         bartextField.font = UIFont(name: "AvenirNext-Regular", size: 14)
         bartextField.textColor = UIColor.white
         bartextField.attributedPlaceholder =  NSAttributedString(string: "Ara", attributes: [NSForegroundColorAttributeName:UIColor.white, NSFontAttributeName: UIFont(name: "AvenirNext-Regular", size: 14)! ])
-
         
         let magnifyingGlass = bartextField.leftView as! UIImageView
         magnifyingGlass.image = magnifyingGlass.image?.withRenderingMode(.alwaysTemplate)
         magnifyingGlass.tintColor = UIColor.white
-
+        
         //searchText.barTintColor = UIColor.whiteColor()
         let clearButton = bartextField.value(forKey: "clearButton") as! UIButton
         clearButton.setImage(clearButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .normal)
         clearButton.tintColor = UIColor.white
-        
-
 
         searchText.delegate = self
-        searchText.returnKeyType = UIReturnKeyType.done
-  
-  
-   
-        self.navigationItem.titleView = searchText
+
+        
+        navigationItem.titleView = searchText
         
         venueTable.separatorColor = UIColor.lightGray
         venueTable.tableFooterView = UIView()
+        venueTable.isHidden = true
         session = Session.sharedSession()
         session.logger = ConsoleLogger()
-        venueTable.isHidden = true
 
-        
         findfriendsVenue = UIButton()
         findfriendsVenue.frame = CGRect(x: self.view.center.x-70, y: self.view.frame.height*0.2, width: 140, height: 40)
         findfriendsVenue.backgroundColor = UIColor.blue
         findfriendsVenue.setTitle("Arkadaş bul", for: .normal)
         findfriendsVenue.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 14)
         findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindFriend(_:)), for: .touchUpInside)
-        
         findfriendsVenue.isHidden = true
-        
-        
-        
-        
+
         usernameButton2 = UIButton()
         usernameButton2.frame = CGRect(x: MolocateDevice.size.width / 2  , y: 2 , width: MolocateDevice.size.width / 2 , height: 40)
         usernameButton2.setTitleColor(lineColor, for: UIControlState())
@@ -147,7 +120,6 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         usernameButton2.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size:14)
         usernameButton2.addTarget(self, action: #selector(MainController.pressedUsernameButton(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(usernameButton2)
-        
         
         venueButton2 = UIButton()
         venueButton2.frame = CGRect(x: 0 ,y: 2 , width: MolocateDevice.size.width/2, height: 40)
@@ -172,29 +144,20 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         view.addSubview(redLabel)
         lineLabel.isHidden = true
         redLabel.isHidden = true
-        
-        
-            let rectShape3 = CAShapeLayer()
+
+        let rectShape3 = CAShapeLayer()
         rectShape3.bounds = self.findfriendsVenue.frame
         rectShape3.position = self.findfriendsVenue.center
         rectShape3.path = UIBezierPath(roundedRect: self.findfriendsVenue.bounds, byRoundingCorners: [.bottomRight , .topRight , .bottomLeft , .topLeft ] , cornerRadii: CGSize(width: 8, height: 8)).cgPath
         rectShape3.borderWidth = 1.0
         rectShape3.borderColor = swiftColor.cgColor
+        
         self.findfriendsVenue.layer.backgroundColor = swiftColor.cgColor
         //Here I'm masking the textView's layer with rectShape layer
         self.findfriendsVenue.layer.mask = rectShape3
-        
-
-        
-       
-        
-        
-        
-        
-        
         collectionView!.backgroundColor = UIColor.clear
         //collectionView!.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:0, right: 0)
-        // print("anan")
+
         MolocateVideo.getFilters { (data, response, error) in
             DispatchQueue.main.async{
                 filters = data!
@@ -209,7 +172,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         self.venueTable.addSubview(findfriendsVenue)
         NotificationCenter.default.addObserver(self, selector: #selector(MainController.showNavigationMain), name: NSNotification.Name(rawValue: "showNavigationMain"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(MainController.reloadMain), name:NSNotification.Name(rawValue: "reloadMain"), object: nil)
-
+        
     }
     
     private func toggleNavigationBar(direction: Bool) {
@@ -234,11 +197,6 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         }
         self.findfriendsVenue.removeTarget(self, action: #selector(MainController.pressedFindVenue(_:)), for: .touchUpInside)
         self.findfriendsVenue.addTarget(self, action: #selector(MainController.pressedFindFriend(_:)), for: .touchUpInside)
-        
-        
-        
-        
-        
     }
     
     func pressedUsernameButton(_ sender: UIButton) {
@@ -364,7 +322,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         }
     }
     
-
+    
     
     
     func pressedProfileSearch(_ sender:UIButton){
@@ -441,7 +399,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
         
     }
-
+    
     func changeView() {
         
     }
@@ -975,7 +933,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         
     }
     
-
+    
     
     
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

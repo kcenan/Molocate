@@ -1056,6 +1056,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             MoleCurrentUser.following_count += 1
         }
         likeorFollowClicked = false
+        
+        
 
     }
 
@@ -1292,8 +1294,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func pressedUsername(_ sender: UIButton) {
         let Row = sender.tag
         let isFollowing = videoArray[Row].isFollowing == 0 ? false:true
-        player1?.pause()
-        player2?.pause()
+        pausePLayers()
         //stop players
 
         delegate?.pressedUsername(videoArray[Row].username!, profilePic: videoArray[Row].userpic! as URL, isFollowing: isFollowing)
@@ -1303,8 +1304,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func pressedPlace(_ sender: UIButton) {
         let Row = sender.tag
         let placeId = videoArray[Row].locationID
-        player1?.pause()
-        player2?.pause()
+        pausePLayers()
         //stopplayers
         delegate?.pressedPlace(placeId!, Row: Row)
     }
@@ -1312,8 +1312,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func pressedLikeCount(_ sender: UIButton) {
         let Row = sender.tag
         let videoId = videoArray[Row].id
-        player1?.pause()
-        player2?.pause()
+        pausePLayers()
         //stopplayers
         delegate?.pressedLikeCount(videoId!,Row: Row)
     }
@@ -1322,8 +1321,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         //stopplayers
         let Row = sender.tag
         let videoId = videoArray[Row].id
-        player1?.pause()
-        player2?.pause()
+        pausePLayers()
 
         delegate?.pressedComment(videoId!,Row: Row)
     }
@@ -1358,8 +1356,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     
     func pressedShare(_ sender: UIButton) {
         let Row = sender.tag
-        player1?.pause()
-        player2?.pause()
+        pausePLayers()
         let username = self.videoArray[Row].username
         var shareURL: URL?
         if dictionary.object(forKey: self.videoArray[Row].id) != nil {
@@ -1534,8 +1531,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     func pressedReport(_ sender: UIButton) {
         //stop players
         let Row = sender.tag
-        player1?.pause()
-        player2?.pause()
+        pausePLayers()
 
         let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -1572,8 +1568,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        player1?.pause()
-        player2?.pause()
+        pausePLayers()
         isOnView = false
         // myCache.removeAll()
         // dictionary.removeAllObjects()

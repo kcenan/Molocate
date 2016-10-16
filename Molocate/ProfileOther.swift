@@ -168,10 +168,10 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         scrollView.setContentOffset(b.origin, animated: true)
     }
     @IBAction func followingsButton(_ sender: AnyObject) {
-        AVc.player2.stop()
-        AVc.player1.stop()
-        BVc.player2.stop()
-        BVc.player1.stop()
+        AVc.player2?.stop()
+        AVc.player1?.stop()
+        BVc.player2?.stop()
+        BVc.player1?.stop()
         
         let controller:Followers = self.storyboard!.instantiateViewController(withIdentifier: "Followers") as! Followers
         controller.classUser = classUser
@@ -235,10 +235,10 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
 
        
     @IBAction func followersButton(_ sender: AnyObject) {
-        AVc.player2.stop()
-        AVc.player1.stop()
-        BVc.player2.stop()
-        BVc.player1.stop()
+        AVc.player2?.stop()
+        AVc.player1?.stop()
+        BVc.player2?.stop()
+        BVc.player1?.stop()
         let controller:Followers = self.storyboard!.instantiateViewController(withIdentifier: "Followers") as! Followers
         controller.classUser = classUser
         controller.followersclicked = true
@@ -249,10 +249,10 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (scrollView.contentOffset.x < BVc.view.frame.origin.x/2){
             
-            BVc.player1.stop()
-            BVc.player2.stop()
-            AVc.player1.playFromCurrentTime()
-            AVc.player2.playFromCurrentTime()
+            BVc.player1?.stop()
+            BVc.player2?.stop()
+            AVc.player1?.playFromCurrentTime()
+            AVc.player2?.playFromCurrentTime()
             if(classUser.post_count != 0 || classUser.tag_count != 0 ) {
                 //errormessage.hidden = true
             }
@@ -262,10 +262,10 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
             taggedButton.titleLabel?.textColor = UIColor.black
         }
         else{
-            BVc.player1.playFromBeginning()
-            BVc.player2.playFromCurrentTime()
-            AVc.player1.stop()
-            AVc.player2.stop()
+            BVc.player1?.playFromBeginning()
+            BVc.player2?.playFromCurrentTime()
+            AVc.player1?.stop()
+            AVc.player2?.stop()
             if(classUser.tag_count != 0  && classUser.post_count != 0) {
                 //errormessage.hidden = true
             }
@@ -399,10 +399,10 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
        
     }
     override func viewWillDisappear(_ animated: Bool) {
-        AVc.player1.stop()
-        AVc.player2.stop()
-        BVc.player1.stop()
-        BVc.player2.stop()
+        AVc.player1?.stop()
+        AVc.player2?.stop()
+        BVc.player1?.stop()
+        BVc.player2?.stop()
     }
     
 

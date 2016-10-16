@@ -1,3 +1,4 @@
+
 import UIKit
 
 class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,UIScrollViewDelegate,  UIGestureRecognizerDelegate{
@@ -87,7 +88,7 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
             MolocateVideo.getUserVideos(classUser.username, type: "user", completionHandler: { (data, response, error) in
                 DispatchQueue.main.async {
                     self.AVc.videoArray = data!
-                    self.AVc.tableView.reloadData()
+                    self.AVc.tableView?.reloadData()
                     self.myRefreshControl.endRefreshing()
                 }
             })
@@ -96,7 +97,7 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
             MolocateVideo.getUserVideos(classUser.username, type: "tagged", completionHandler: { (data, response, error) in
                 DispatchQueue.main.async {
                     self.BVc.videoArray = data!
-                    self.BVc.tableView.reloadData()
+                    self.BVc.tableView?.reloadData()
                     self.myRefreshControl.endRefreshing()
                 }
             })
@@ -108,17 +109,17 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
     func adjustTable() {
         if page == 2 {
             if vidortag {
-                if BVc.tableView.contentOffset.y == 0 {
+                if BVc.tableView?.contentOffset.y == 0 {
                     estRowH = Double(tableView.contentSize.height)-Double(MolocateDevice.size.height)-50
-                    BVc.tableView.isScrollEnabled = false
+                    BVc.tableView?.isScrollEnabled = false
                     self.tableView.isPagingEnabled = true
                     //self.navigationController?.setNavigationBarHidden(false, animated: true)
                    // self.tableView.setContentOffset(CGPoint(x: 0,y:0), animated: true)
                 }
             } else {
-                if AVc.tableView.contentOffset.y == 0 {
+                if AVc.tableView?.contentOffset.y == 0 {
                     estRowH = Double(tableView.contentSize.height)-Double(MolocateDevice.size.height)-50
-                    AVc.tableView.isScrollEnabled = false
+                    AVc.tableView?.isScrollEnabled = false
                     self.tableView.isPagingEnabled = true
                     //self.navigationController?.setNavigationBarHidden(false, animated: true)
                    // self.tableView.setContentOffset(CGPoint(x: 0,y:0), animated: true)
@@ -388,10 +389,10 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
             }
             cell.scrollView.addSubview(AVc.view);
             cell.scrollView.addSubview(BVc.view);
-            AVc.tableView.isScrollEnabled = false
-            AVc.tableView.bounces = false
-            BVc.tableView.isScrollEnabled = false
-            BVc.tableView.bounces = false
+            AVc.tableView?.isScrollEnabled = false
+            AVc.tableView?.bounces = false
+            BVc.tableView?.isScrollEnabled = false
+            BVc.tableView?.bounces = false
             return cell
             
         }
@@ -409,10 +410,10 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
         navigationController?.pushViewController(controller, animated: true)
     }
     func followUserPressed(_ sender: UIButton){
-        AVc.player2.stop()
-        AVc.player1.stop()
-        BVc.player2.stop()
-        BVc.player1.stop()
+        AVc.player2?.stop()
+        AVc.player1?.stop()
+        BVc.player2?.stop()
+        BVc.player1?.stop()
         
         let controller:Followers = self.storyboard!.instantiateViewController(withIdentifier: "Followers") as! Followers
         controller.classUser = classUser
@@ -437,10 +438,10 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
     
     }
     func followersPressed(_ sender: UIButton){
-        AVc.player2.stop()
-        AVc.player1.stop()
-        BVc.player2.stop()
-        BVc.player1.stop()
+        AVc.player2?.stop()
+        AVc.player1?.stop()
+        BVc.player2?.stop()
+        BVc.player1?.stop()
         let controller:Followers = self.storyboard!.instantiateViewController(withIdentifier: "Followers") as! Followers
         controller.classUser = classUser
         controller.followersclicked = true
@@ -488,13 +489,13 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
                     if scrollView.contentOffset.x < MolocateDevice.size.width / 2{
                         vidortag = false
                       
-                        BVc.player2.stop()
-                        BVc.player1.stop()
+                        BVc.player2?.stop()
+                        BVc.player1?.stop()
                     }
                     else{
                         vidortag = true
-                        AVc.player2.stop()
-                        AVc.player1.stop()
+                        AVc.player2?.stop()
+                        AVc.player1?.stop()
                     }
 
                     tableView.reloadRows(at: [indexPath], with: .none)
@@ -506,14 +507,14 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
             
             if (scrollView.contentSize.height-scrollView.contentOffset.y < MolocateDevice.size.height+70) {
                 
-                BVc.tableView.isScrollEnabled = true
-                AVc.tableView.isScrollEnabled = true
+                BVc.tableView?.isScrollEnabled = true
+                AVc.tableView?.isScrollEnabled = true
                 tableView.isPagingEnabled = false
                 page = 2
                 
             } else {
-                BVc.tableView.isScrollEnabled = false
-                AVc.tableView.isScrollEnabled = false
+                BVc.tableView?.isScrollEnabled = false
+                AVc.tableView?.isScrollEnabled = false
                 tableView.isPagingEnabled = true
                 page = 1
             }
@@ -544,8 +545,8 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
         vidortag = false
         owntagged = true
         //print("bastı lan")
-        BVc.player2.stop()
-        BVc.player1.stop()
+        BVc.player2?.stop()
+        BVc.player1?.stop()
         let indexPath = IndexPath(row: 2, section: 0)
       
             self.redLabelOrigin = 0
@@ -631,8 +632,8 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
         vidortag = true
         owntagged = false
        // print("bastı lan2")
-        AVc.player2.stop()
-        AVc.player1.stop()
+        AVc.player2?.stop()
+        AVc.player1?.stop()
         let indexPath = IndexPath(row: 2, section: 0)
         //let cell = tableView.cellForRowAtIndexPath(indexPath) as! profile3thCell
         

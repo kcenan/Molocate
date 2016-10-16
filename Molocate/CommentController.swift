@@ -418,17 +418,17 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
 //            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! MyProfile).BVc.player2.stop()
 //            
         }else if myViewController == "Added"{
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.videoArray[videoIndex].commentCount += i
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.tableView.reloadRows(
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.videoArray?[videoIndex].commentCount += i
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.tableView?.reloadRows(
                 at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.player1.stop()
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.player2.stop()
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.player1?.stop()
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).AVc.player2?.stop()
         }else if myViewController == "Tagged"{
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.videoArray[videoIndex].commentCount += i
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.tableView.reloadRows(
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.videoArray?[videoIndex].commentCount += i
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.tableView?.reloadRows(
                 at: [IndexPath(row: videoIndex, section: 0)], with: UITableViewRowAnimation.left)
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.player1.stop()
-            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.player2.stop()
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.player1?.stop()
+            (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileUser).BVc.player2?.stop()
             
         }else if myViewController == "profileVenue"{
             (navigationController?.viewControllers[(navigationController?.viewControllers.endIndex)!-2] as! profileVenue).tableController.videoArray[videoIndex].commentCount += i
