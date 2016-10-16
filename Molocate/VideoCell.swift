@@ -204,7 +204,7 @@ class videoCell: UITableViewCell {
         
         likeButton.tag = row
         
-        likeCount.setTitle("\(likeCount)", for: UIControlState())
+        likeCount.setTitle("\(videoInfo.likeCount)", for: UIControlState())
         likeCount.tag = row
         
         placeName.setTitle(videoInfo.location, for: UIControlState())
@@ -216,7 +216,7 @@ class videoCell: UITableViewCell {
         
         commentButton.tag = row
         commentCount.tag = row
-        commentCount.setTitle("\(commentCount)", for: UIControlState())
+        commentCount.setTitle("\(videoInfo.commentCount)", for: UIControlState())
        
         reportButton.tag = row
         shareButton.tag = row
