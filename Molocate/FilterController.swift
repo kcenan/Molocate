@@ -61,7 +61,7 @@ class FilterController: UIViewController,TimelineControllerDelegate  {
         }else{
             controller.isItMyProfile = true
         }
-        
+      
         controller.classUser.username = username
         controller.classUser.profilePic = profilePic
         controller.classUser.isFollowing = isFollowing

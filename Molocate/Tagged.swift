@@ -236,14 +236,14 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         if !pressedLike && !pressedFollow {
             let cell = videoCell(style: UITableViewCellStyle.value1, reuseIdentifier: "customCell")
 
-            cell.initialize((indexPath as NSIndexPath).row, videoInfo: (videoArray?[(indexPath as NSIndexPath).row])!)
+            cell.initialize(indexPath.row, videoInfo: (videoArray?[indexPath.row])!)
 
             cell.Username.addTarget(self, action: #selector(Tagged.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
             cell.placeName.addTarget(self, action: #selector(Tagged.pressedPlace(_:)), for: UIControlEvents.touchUpInside)
             
             cell.profilePhoto.addTarget(self, action: #selector(Tagged.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
 
-            if(videoArray?[(indexPath as NSIndexPath).row].isFollowing==0 && videoArray?[(indexPath as NSIndexPath).row].username != MoleCurrentUser.username){
+            if(videoArray?[indexPath.row].isFollowing==0 && videoArray?[indexPath.row].username != MoleCurrentUser.username){
                 cell.followButton.addTarget(self, action: #selector(Tagged.pressedFollow(_:)), for: UIControlEvents.touchUpInside)
             }else{
                 cell.followButton.isHidden = true
@@ -251,9 +251,8 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
 
             cell.likeButton.addTarget(self, action: #selector(Tagged.pressedLike(_:)), for: UIControlEvents.touchUpInside)
 
-            cell.likeCount.setTitle("\(videoArray?[(indexPath as NSIndexPath).row].likeCount)", for: UIControlState())
             cell.commentCount.addTarget(self, action: #selector(Tagged.pressedComment(_:)), for: UIControlEvents.touchUpInside)
-            cell.commentCount.setTitle("\(videoArray?[(indexPath as NSIndexPath).row].commentCount)", for: UIControlState())
+
                         cell.commentButton.addTarget(self, action: #selector(Tagged.pressedComment(_:)), for: UIControlEvents.touchUpInside)
             cell.reportButton.addTarget(self, action: #selector(Tagged.pressedReport(_:)), for: UIControlEvents.touchUpInside)
             cell.likeCount.addTarget(self, action: #selector(Tagged.pressedLikeCount(_:)), for: UIControlEvents.touchUpInside)
@@ -261,14 +260,14 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             let tap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.doubleTapped(_:) ));
             tap.numberOfTapsRequired = 2
             cell.contentView.addGestureRecognizer(tap)
-            cell.contentView.tag = (indexPath as NSIndexPath).row
+            cell.contentView.tag = indexPath.row
             let playtap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.playTapped(_:) ));
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
 
             playtap.require(toFail: tap)
 
-            let thumbnailURL = self.videoArray?[(indexPath as NSIndexPath).row].thumbnailURL
+            let thumbnailURL = self.videoArray?[indexPath.row].thumbnailURL
             if(thumbnailURL?.absoluteString != ""){
                 cell.cellthumbnail.sd_setImage(with: thumbnailURL)
                 
@@ -280,10 +279,10 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             var trueURL:URL? = nil
             if !isScrollingFast {
 
-            if dictionary.object(forKey: self.videoArray?[(indexPath as NSIndexPath).row].id) != nil {
-                trueURL = dictionary.object(forKey: self.videoArray?[(indexPath as NSIndexPath).row].id) as? URL
+            if dictionary.object(forKey: self.videoArray?[indexPath.row].id) != nil {
+                trueURL = dictionary.object(forKey: self.videoArray?[indexPath.row].id) as? URL
             } else {
-                trueURL = self.videoArray?[(indexPath as NSIndexPath).row].urlSta!
+                trueURL = self.videoArray?[indexPath.row].urlSta!
                 DispatchQueue.main.async {
                         myCache.fetch(URL:(self.videoArray?[indexPath.row].urlSta!)! ).onSuccess{ NSData in
 
@@ -305,10 +304,10 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }
 
                 if !cell.hasPlayer {
-            if (indexPath as NSIndexPath).row % 2 == 1 {
+            if indexPath.row % 2 == 1 {
 
                 self.player1?.setUrl(trueURL!)
-                self.player1?.id = self.videoArray?[(indexPath as NSIndexPath).row].id
+                self.player1?.id = self.videoArray?[indexPath.row].id
                 self.player1?.view.frame = cell.newRect
                 cell.contentView.addSubview((self.player1?.view)!)
                 cell.hasPlayer = true
@@ -316,7 +315,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }else{
 
                 self.player2?.setUrl(trueURL!)
-                self.player2?.id = self.videoArray?[(indexPath as NSIndexPath).row].id
+                self.player2?.id = self.videoArray?[indexPath.row].id
                 self.player2?.view.frame = cell.newRect
                 cell.contentView.addSubview((self.player2?.view)!)
                 cell.hasPlayer = true
@@ -328,9 +327,9 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             let cell = tableView.cellForRow(at: indexPath) as! videoCell
             if pressedLike {
                 pressedLike = false
-                cell.likeCount.setTitle("\(videoArray?[(indexPath as NSIndexPath).row].likeCount)", for: UIControlState())
+                cell.likeCount.setTitle("\(videoArray?[indexPath.row].likeCount)", for: UIControlState())
 
-                if(videoArray?[(indexPath as NSIndexPath).row].isLiked == 0) {
+                if(videoArray?[indexPath.row].isLiked == 0) {
                     cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), for: UIControlState())
                 }else{
                     cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), for: UIControlState())
@@ -339,7 +338,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             }else if pressedFollow{
                 pressedFollow = true
 
-                if !cell.followButton.isHidden && videoArray?[(indexPath as NSIndexPath).row].isFollowing == 1{
+                if !cell.followButton.isHidden && videoArray?[indexPath.row].isFollowing == 1{
                     //add animation
                     cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
                 }
@@ -796,7 +795,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         if atableView == tableView{
 
 
-            if(((indexPath as NSIndexPath).row%10 == 8)&&(TaggedNextUserVideos != nil)&&(!IsExploreInProcess)){
+            if((indexPath.row%10 == 8)&&(TaggedNextUserVideos != nil)&&(!IsExploreInProcess)){
                 IsExploreInProcess = true
                 MolocateVideo.getExploreVideos(TaggedNextUserVideos, completionHandler: { (data, response, error,next) -> () in
                     TaggedNextUserVideos = next
