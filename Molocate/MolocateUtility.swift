@@ -61,9 +61,13 @@ open class MolocateUtility {
     
     class func setStatusBarBackgroundColor(_ color: UIColor) {
         
-        UINavigationBar.appearance().barStyle = .black
+
         
-        UINavigationBar.appearance().barTintColor = color
+        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+        if statusBar.responds(to: #selector(setter: UIView.backgroundColor)){
+                statusBar.backgroundColor = color
+        }
+        
     }
     
     class func animateLikeButton(heart:inout UIImageView){

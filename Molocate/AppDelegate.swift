@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configuration.shouldControllNetworkActivityIndicator = true
         Session.setupSharedSessionWithConfiguration(configuration)
         
-        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
+        UIApplication.shared.statusBarStyle = .lightContent
         UIApplication.shared.applicationIconBadgeNumber = 0
         
         if let _ = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [String: AnyObject] {
