@@ -348,6 +348,27 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         }
 
     }
+    
+    func animateLikeButton(){
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
+            self.likeHeart?.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
+            self.likeHeart?.alpha = 0.8;
+        }) { (finished1) in
+            UIView.animate(withDuration: 0.1, delay: 0, options: .allowUserInteraction, animations: {
+                self.likeHeart?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
+                }, completion: { (finished2) in
+                    UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
+                        self.likeHeart?.transform = CGAffineTransform(scaleX: 1.3, y: 1.3);
+                        self.likeHeart?.alpha = 0.0;
+                        }, completion: { (finished3) in
+                            self.likeHeart?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0);
+                    })
+            })
+        }
+        
+    }
+
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         pointNow = scrollView.contentOffset.y
@@ -916,7 +937,7 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         let imageSize = likeHeart?.image?.size.height
         likeHeart?.frame = CGRect(x: (likeHeart?.center.x)!-imageSize!/2 , y: (likeHeart?.center.y)!-imageSize!/2, width: imageSize!, height: imageSize!)
         cell?.addSubview(likeHeart!)
-        MolocateUtility.animateLikeButton(heart: &likeHeart!)
+        animateLikeButton()
         var indexes = [IndexPath]()
         indexes.append(indexpath)
 
