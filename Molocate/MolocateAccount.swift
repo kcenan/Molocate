@@ -948,7 +948,7 @@ open class MolocateAccount {
                     
                     var userArray = [MoleUser]()
                     for item in result {
-                        print(item)
+                        
                         var user = MoleUser()
                         user.username = item["username"] as! String
                         print(item["thumbnail_url"])

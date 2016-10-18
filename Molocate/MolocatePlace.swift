@@ -151,7 +151,7 @@ open class MolocatePlace {
                             videoStr.category = item["category"] as? String
                             videoStr.isLiked = item["is_liked"] as! Int
                             videoStr.isFollowing = owner_user["is_following"] as! Int
-                            videoStr.userpic = owner_user["picture_url"] is NSNull ? URL(string: "")!:URL(string: owner_user["picture_url"] as! String)!
+                            videoStr.userpic = owner_user["picture_url"] is NSNull ? nil:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as? String
                             videoStr.taggedUsers = item["tagged_users"] as? [String]
                             

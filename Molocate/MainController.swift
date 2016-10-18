@@ -226,8 +226,9 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         //   Timelinecontrollerx da Main icin hide navigation bar farkli olmali
     }
     
-    private func tableView(atableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
+    
+    func tableView(_ atableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
         if !venueoruser {
             let rowHeight : CGFloat = 54
             return rowHeight
@@ -764,9 +765,8 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
     
     
     
-    
-    
-    private func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let newLocation:CLLocation = locations.last!
         let locationAge = newLocation.timestamp.timeIntervalSinceNow
         
         //print(locationAge)
