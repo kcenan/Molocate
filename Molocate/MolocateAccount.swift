@@ -21,8 +21,8 @@ let profileBackgroundColor = UIColor(netHex: 0xDCDDDF)
  }
 struct MoleUserFriend {
     var is_following = false
-    var picture_url = URL(string: "")
-    var thumbnail_url = URL(string: "")
+    var picture_url: URL?
+    var thumbnail_url: URL?
     var username:String = ""
     var name: String = "Deneme Deneme"
 }

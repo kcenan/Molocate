@@ -31,9 +31,9 @@
         didSet {
             switch buttonState {
             case .idle:
-                self.alpha = 1.0
-                currentProgress = 0
-                setProgress(0)
+                //self.alpha = 1.0
+                //currentProgress = 0
+                //setProgress(0)
                 setRecording(false)
             case .recording:
                 self.alpha = 1.0
@@ -160,8 +160,8 @@
         fade.isRemovedOnCompletion = false
         
         circleLayer.add(circleAnimations, forKey: "circleAnimations")
-        progressLayer.add(fade, forKey: "fade")
-        circleBorder.add(borderAnimations, forKey: "borderAnimations")
+        //progressLayer.add(fade, forKey: "fade")
+        //circleBorder.add(borderAnimations, forKey: "borderAnimations")
         
     }
     
@@ -189,15 +189,11 @@
     }
     
     open func didTouchUp() {
+        buttonColor = progressColor
         if(closeWhenFinished) {
-            self.setProgress(1)
+           
             
-            UIView.animate(withDuration: 0.3, animations: {
-                self.buttonState = .hidden
-                }, completion: { completion in
-                    self.setProgress(0)
-                    self.currentProgress = 0
-            })
+
         } else {
             self.buttonState = .idle
         }

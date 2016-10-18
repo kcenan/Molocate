@@ -374,17 +374,19 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
     
     }
     
-    private func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
-        let locationAge = newLocation.timestamp.timeIntervalSinceNow
-        
-        //print(locationAge)
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let newLocation = locations.last
+        let locationAge = newLocation?.timestamp.timeIntervalSinceNow
+
         if locationAge > 5 {
             return
         }
 
-        if (bestEffortAtLocation == nil) || (bestEffortAtLocation.horizontalAccuracy > newLocation.horizontalAccuracy) {
+        if (bestEffortAtLocation == nil) || (bestEffortAtLocation.horizontalAccuracy > newLocation?.horizontalAccuracy) {
+
             self.bestEffortAtLocation = newLocation
-            if (newLocation.horizontalAccuracy <= locationManager.desiredAccuracy) {
+            if ((newLocation?.horizontalAccuracy)! <= locationManager.desiredAccuracy) {
                         CLGeocoder().reverseGeocodeLocation(manager.location!, completionHandler: {(placemarks, error) -> Void in
                             if (error != nil) {
                                 //print("Reverse geocoder failed with error" + error!.localizedDescription)
@@ -393,7 +395,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
                 
                             if placemarks!.count > 0 {
                                // let pm = placemarks![0] as CLPlacemark
-                                self.displayLocationInfo(newLocation)
+                                self.displayLocationInfo(newLocation!)
                 
                 
                                 
@@ -933,6 +935,7 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
     func holdDown(){
         if self.progress<1 {
+            print("heeey")
         self.videoDone.isEnabled = false
         self.progressTimer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(CameraViewController.updateProgress), userInfo: nil, repeats: true)
         self.cameraChange.isEnabled = false
@@ -1064,7 +1067,6 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
 
 
     func holdRelease(){
-        //print("hop")
         self.progressTimer.invalidate()
 
         if self.isFlashMode {
