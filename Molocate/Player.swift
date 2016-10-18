@@ -232,18 +232,16 @@ public class Player: UIViewController {
     }
 
     deinit {
+        if avplayer.currentItem != nil  {
         self.avplayer.removeTimeObserver(timeObserver)
         self.delegate = nil
-
         NotificationCenter.default.removeObserver(self)
-
         self.playerView.layer.removeObserver(self, forKeyPath: PlayerReadyForDisplayKey, context: &PlayerLayerObserverContext)
         self.playerView.player = nil
-        
         self.avplayer.removeObserver(self, forKeyPath: PlayerRateKey, context: &PlayerObserverContext)
-
         self.avplayer.pause()
         self.setupPlayerItem(nil)
+        }
     }
 
     // MARK: - view lifecycle

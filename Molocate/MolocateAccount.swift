@@ -943,15 +943,20 @@ open class MolocateAccount {
                 let nsError = error;
                 
                 do {
-                    //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                    //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [[String:AnyObject]]
                     
                     var userArray = [MoleUser]()
                     for item in result {
-                        //print(item)
+                        print(item)
                         var user = MoleUser()
                         user.username = item["username"] as! String
-                        user.profilePic = item["thumbnail_url"] is NSNull ? nil:URL(string: item["thumbnail_url"] as! String)!
+                        print(item["thumbnail_url"])
+                        if item["thumbnail_url"] as! String == "" {
+                           user.profilePic = item["picture_url"] is NSNull ? nil:URL(string:item["picture_url"] as! String)!
+                        } else {
+                            user.profilePic = item["thumbnail_url"] is NSNull ? nil:URL(string: item["thumbnail_url"] as! String)!
+                        }
                         user.first_name = item["first_name"] as! String
                         user.last_name = item["last_name"] as! String
                         user.isFollowing = item["is_following"] as! Int == 1 ? true:false
@@ -992,7 +997,7 @@ open class MolocateAccount {
                         user.username = result["username"] as! String
                         user.first_name = result["first_name"] as! String
                         user.last_name = result["last_name"] as! String
-                        user.profilePic = result["picture_url"] is NSNull ? URL(string: "")!:URL(string: result["picture_url"] as! String)!
+                        user.profilePic = result["picture_url"] is NSNull ? nil:URL(string: result["picture_url"] as! String)!
                         user.bio = result["caption"] is NSNull ? String() : result["caption"] as! String
                         user.follower_count = result["follower_count"] as! Int
                         user.following_count = result["following_count"] as! Int
