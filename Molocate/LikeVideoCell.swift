@@ -12,7 +12,7 @@ class likeVideoCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        profileImage.backgroundColor = profileBackgroundColor
+        //profileImage.backgroundColor = profileBackgroundColor
        
     }
 

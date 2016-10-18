@@ -76,7 +76,7 @@ class SideBarController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let screenSize: CGRect = UIScreen.main.bounds
-        if (indexPath as NSIndexPath).row == 0{
+        if indexPath.row == 0{
             
             return 86 + screenSize.size.width * 2 / 10
         }
@@ -96,7 +96,7 @@ class SideBarController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        if (indexPath as NSIndexPath).row == 0 {
+        if indexPath.row == 0 {
             let cell =  sideProfilePic(style: UITableViewCellStyle.value1, reuseIdentifier: "customCell")
             
             if profile_picture != nil {
@@ -124,14 +124,14 @@ class SideBarController: UITableViewController {
             bgColorView.backgroundColor = swiftColor
             
             cell.selectedBackgroundView = bgColorView
-            cell.label?.text = self.menuArray[(indexPath as NSIndexPath).row-1]
+            cell.label?.text = self.menuArray[indexPath.row-1]
             cell.backgroundColor = arkarenk
-            cell.imageFrame.image = UIImage(named: tableData[(indexPath as NSIndexPath).row-1 ])
+            cell.imageFrame.image = UIImage(named: tableData[indexPath.row-1 ])
             cell.label.textColor = UIColor.white
             
             //print(choosedIndex)
             //print(indexPath.row)
-            if choosedIndex == (indexPath as NSIndexPath).row {
+            if choosedIndex == indexPath.row {
                 cell.backgroundColor = swiftColor
             }else{
                 //cell.backgroundColor = swiftColor2
@@ -144,7 +144,7 @@ class SideBarController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        choosedIndex = (indexPath as NSIndexPath).row
+        choosedIndex = indexPath.row
         
   
         self.parent?.childViewControllers[1].childViewControllers[0].tabBarController?.selectedIndex = choosedIndex

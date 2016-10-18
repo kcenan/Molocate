@@ -51,7 +51,7 @@ class oneVideo: UIViewController,PlayerDelegate {
             
             let cell = videoCell(style: UITableViewCellStyle.value1, reuseIdentifier: "cell")
             
-            cell.initialize((indexPath as NSIndexPath).row, videoInfo:  MoleGlobalVideo)
+            cell.initialize(indexPath.row, videoInfo:  MoleGlobalVideo)
             
             cell.Username.addTarget(self, action: #selector(oneVideo.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
             cell.placeName.addTarget(self, action: #selector(oneVideo.pressedPlace(_:)), for: UIControlEvents.touchUpInside)

@@ -119,16 +119,16 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         if tableView == tagView{
             let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "mentionCell")
             
-            if (indexPath as NSIndexPath).row < searchResults.count {
+            if indexPath.row < searchResults.count {
                 cell.followButton.isHidden = true
-                cell.usernameLabel.text = "@\(searchResults[(indexPath as NSIndexPath).row].username)"
-                if searchResults[(indexPath as NSIndexPath).row].first_name == "" {
-                    cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].username)"
+                cell.usernameLabel.text = "@\(searchResults[indexPath.row].username)"
+                if searchResults[indexPath.row].first_name == "" {
+                    cell.nameLabel.text = "\(searchResults[indexPath.row].username)"
                 }
                 else{
-                    cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
+                    cell.nameLabel.text = "\(searchResults[indexPath.row].first_name) \(searchResults[indexPath.row].last_name)"
                 }
-                if(searchResults[(indexPath as NSIndexPath).row].profilePic?.absoluteString != ""){
+                if(searchResults[indexPath.row].profilePic?.absoluteString != ""){
                     cell.profilePhoto.sd_setImage(with: searchResults[indexPath.row].profilePic, for: UIControlState.normal)
                 }else{
                     cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
@@ -136,8 +136,8 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 
                 cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), for: UIControlEvents.touchUpInside)
                 //cell.followButton.addTarget(self, action: Selector("pressedFollowSearch"), forControlEvents: .TouchUpInside)
-                cell.followButton.tag = (indexPath as NSIndexPath).row
-                cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+                cell.followButton.tag = indexPath.row
+                cell.profilePhoto.tag = indexPath.row
                 
                 return cell
                 
@@ -153,13 +153,13 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! commentCell
             
-            cell.username.setTitle(comments[(indexPath as NSIndexPath).row].username, for: UIControlState())
+            cell.username.setTitle(comments[indexPath.row].username, for: UIControlState())
             cell.username.tintColor = swiftColor
         
      
             
             cell.username.contentHorizontalAlignment = .left
-            cell.username.tag = (indexPath as NSIndexPath).row
+            cell.username.tag = indexPath.row
             
            // cell.videoComment.frame = CGRectMake( 55 , 28 , 292 , 26)
             
@@ -176,11 +176,11 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             
             cell.comment.handleMentionTap { userHandle in  self.pressedMention(userHandle, profilePic: URL(string: "")!, isFollowing: false)}
 
-            cell.comment.text = comments[(indexPath as NSIndexPath).row].text
+            cell.comment.text = comments[indexPath.row].text
            
     
             
-            cell.deleteSupport.tag = (indexPath as NSIndexPath).row
+            cell.deleteSupport.tag = indexPath.row
             cell.deleteSupport.addTarget(self, action: #selector(commentController.pressedReport(_:)), for: UIControlEvents.touchUpInside)
             
             cell.profilePhoto.layer.borderWidth = 0.1
@@ -189,14 +189,14 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             cell.profilePhoto.backgroundColor = profileBackgroundColor
             cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
             cell.profilePhoto.clipsToBounds = true
-            cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+            cell.profilePhoto.tag = indexPath.row
             cell.profilePhoto.addTarget(self, action: #selector(commentController.pressedUsername(_:)), for: UIControlEvents.touchUpInside )
             
             cell.username.addTarget(self, action: #selector(commentController.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
             
    
             
-            if(comments[(indexPath as NSIndexPath).row].photo?.absoluteString != ""){
+            if(comments[indexPath.row].photo?.absoluteString != ""){
                 cell.profilePhoto.sd_setImage(with: comments[indexPath.row].photo, for: UIControlState.normal)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile")!, for:
@@ -471,9 +471,9 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             
          //   let cell = tableView.cellForRowAtIndexPath(indexPath) as! searchUsername
             
-            if (indexPath as NSIndexPath).row<searchResults.count {
+            if indexPath.row<searchResults.count {
                 
-                let username = searchResults[(indexPath as NSIndexPath).row].username
+                let username = searchResults[indexPath.row].username
                 var captiontext = newComment.attributedText.string
                 if mentionAreas[mentionModeIndex].location == 0 {
                     captiontext = captiontext.substring(to: captiontext.characters.index(captiontext.startIndex, offsetBy: mentionAreas[mentionModeIndex].location+1)) + username + " "

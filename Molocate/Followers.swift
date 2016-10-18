@@ -114,17 +114,17 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
         //let cell = TableViewCellFollowerFollowing(style: UITableViewCellStyle.Default, reuseIdentifier: "myIdentifier2")
         let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
-        cell.profilePhoto.tag = (indexPath as NSIndexPath).row
-        cell.nameLabel.tag = (indexPath as NSIndexPath).row
-        cell.followButton.tag = (indexPath as NSIndexPath).row
-        cell.usernameLabel.tag = (indexPath as NSIndexPath).row
-        cell.usernameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].username
-        cell.nameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].name
+        cell.profilePhoto.tag = indexPath.row
+        cell.nameLabel.tag = indexPath.row
+        cell.followButton.tag = indexPath.row
+        cell.usernameLabel.tag = indexPath.row
+        cell.usernameLabel.text = userRelations.relations[indexPath.row].username
+        cell.nameLabel.text = userRelations.relations[indexPath.row].name
         
        
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
        
-        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url?.absoluteString != ""){
+        if(userRelations.relations[indexPath.row].picture_url?.absoluteString != ""){
             cell.profilePhoto.sd_setImage(with: userRelations.relations[indexPath.row].picture_url, for: UIControlState.normal)
         }else{
             cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
@@ -132,7 +132,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         
        cell.profilePhoto.addTarget(self, action: #selector(Followers.pressedProfile(_:)), for: .touchUpInside)
 
-        if(!userRelations.relations[(indexPath as NSIndexPath).row].is_following){
+        if(!userRelations.relations[indexPath.row].is_following){
             cell.followButton.setBackgroundImage(UIImage(named: "follow"), for: UIControlState())
         } else {
             cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
@@ -184,7 +184,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
         //                cell.myButton1.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         //                cell.fotoButton.addTarget(self, action: #selector(Followers.pressedProfile(_:)), forControlEvents: UIControlEvents.TouchUpInside)
       
-        if(userRelations.relations[(indexPath as NSIndexPath).row].username == MoleCurrentUser.username){
+        if(userRelations.relations[indexPath.row].username == MoleCurrentUser.username){
             cell.followButton.isHidden = true
         }
         
@@ -205,18 +205,18 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
             
             let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
             
-            if userRelations.relations[(indexPath as NSIndexPath).row].username  != MoleCurrentUser.username{
+            if userRelations.relations[indexPath.row].username  != MoleCurrentUser.username{
                 controller.isItMyProfile = false
             }else{
                 controller.isItMyProfile = true
             }
         
-            controller.classUser.username =  userRelations.relations[(indexPath as NSIndexPath).row].username
-            controller.classUser.profilePic = userRelations.relations[(indexPath as NSIndexPath).row].picture_url!
-            controller.classUser.isFollowing = userRelations.relations[(indexPath as NSIndexPath).row].is_following
+            controller.classUser.username =  userRelations.relations[indexPath.row].username
+            controller.classUser.profilePic = userRelations.relations[indexPath.row].picture_url!
+            controller.classUser.isFollowing = userRelations.relations[indexPath.row].is_following
             
             self.navigationController?.pushViewController(controller, animated: true)
-            MolocateAccount.getUser(userRelations.relations[(indexPath as NSIndexPath).row].username) { (data, response, error) -> () in
+            MolocateAccount.getUser(userRelations.relations[indexPath.row].username) { (data, response, error) -> () in
                 DispatchQueue.main.async{
                     //DBG: If it is mine profile?
                     if data.username != ""{
@@ -240,7 +240,7 @@ class Followers: UIViewController ,  UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if(((indexPath as NSIndexPath).row%50 == 35)&&(relationNextUrl != "")){
+        if((indexPath.row%50 == 35)&&(relationNextUrl != "")){
             
             if(followersclicked){
                 MolocateAccount.getFollowers(relationNextUrl, username: classUser.username, completionHandler: { (data, response, error, count, next, previous) in

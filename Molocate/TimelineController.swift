@@ -281,9 +281,9 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if !likeorFollowClicked && (indexPath as NSIndexPath).row < videoArray.count {
+        if !likeorFollowClicked && indexPath.row < videoArray.count {
             let cell = videoCell(style: UITableViewCellStyle.value1, reuseIdentifier: "timelineCell")
-            cell.initialize((indexPath as NSIndexPath).row, videoInfo:  videoArray[(indexPath as NSIndexPath).row])
+            cell.initialize(indexPath.row, videoInfo:  videoArray[indexPath.row])
 
             cell.Username.addTarget(self, action: #selector(TimelineController.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
             cell.placeName.addTarget(self, action: #selector(TimelineController.pressedPlace(_:)), for: UIControlEvents.touchUpInside)
@@ -293,7 +293,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             cell.resendButton.addTarget(self, action: #selector(TimelineController.retryRequest(_:)), for: UIControlEvents.touchUpInside)
             cell.deleteButton.addTarget(self, action: #selector(TimelineController.deleteVideo(_:)), for: UIControlEvents.touchUpInside)
 
-            if(videoArray[(indexPath as NSIndexPath).row].isFollowing==0 && videoArray[(indexPath as NSIndexPath).row].username != MoleCurrentUser.username){
+            if(videoArray[indexPath.row].isFollowing==0 && videoArray[indexPath.row].username != MoleCurrentUser.username){
                 cell.followButton.addTarget(self, action: #selector(TimelineController.pressedFollow(_:)), for: UIControlEvents.touchUpInside)
             }else{
                 cell.followButton.isHidden = true
@@ -301,8 +301,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
             cell.likeButton.addTarget(self, action: #selector(TimelineController.pressedLike(_:)), for: UIControlEvents.touchUpInside)
 
-            cell.likeCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].likeCount)", for: UIControlState())
-            cell.commentCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].commentCount)", for: UIControlState())
+            cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", for: UIControlState())
+            cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", for: UIControlState())
             cell.commentButton.addTarget(self, action: #selector(TimelineController.pressedComment(_:)), for: UIControlEvents.touchUpInside)
             cell.reportButton.addTarget(self, action: #selector(TimelineController.pressedReport(_:)), for: UIControlEvents.touchUpInside)
             cell.shareButton.addTarget(self, action: #selector(TimelineController.pressedShare(_:)), for: UIControlEvents.touchUpInside)
@@ -310,7 +310,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             let tap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.doubleTapped(_:) ));
             tap.numberOfTapsRequired = 2
             cell.contentView.addGestureRecognizer(tap)
-            cell.contentView.tag = (indexPath as NSIndexPath).row
+            cell.contentView.tag = indexPath.row
             let playtap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.playTapped(_:) ));
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
@@ -322,7 +322,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             playtap.require(toFail: tap)
 
 
-            let thumbnailURL = self.videoArray[(indexPath as NSIndexPath).row].thumbnailURL
+            let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
 
             if(thumbnailURL?.absoluteString != ""){
                 cell.cellthumbnail.sd_setImage(with: thumbnailURL)
@@ -334,12 +334,12 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             if !isScrollingFast || (self.tableView.contentOffset.y == 0)  {
                
                 var trueURL = URL(string: "")
-                if dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) != nil {
-                    trueURL = dictionary.object(forKey: self.videoArray[(indexPath as NSIndexPath).row].id) as? URL
+                if dictionary.object(forKey: self.videoArray[indexPath.row].id) != nil {
+                    trueURL = dictionary.object(forKey: self.videoArray[indexPath.row].id) as? URL
                 } else {
-                    let url = self.videoArray[(indexPath as NSIndexPath).row].urlSta?.absoluteString
+                    let url = self.videoArray[indexPath.row].urlSta?.absoluteString
                     if(url?.characters.first! == "h") {
-                        trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
+                        trueURL = self.videoArray[indexPath.row].urlSta
                         DispatchQueue.main.async {
                             myCache.fetch(URL:self.videoArray[indexPath.row].urlSta! ).onSuccess{ NSData in
                                 ////print("hop")
@@ -352,16 +352,16 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                             }
                         }
                     }else{
-                        trueURL = self.videoArray[(indexPath as NSIndexPath).row].urlSta
+                        trueURL = self.videoArray[indexPath.row].urlSta
                     }
                 }
                 if !cell.hasPlayer {
 
 
-                    if (indexPath as NSIndexPath).row % 2 == 1 {
+                    if indexPath.row % 2 == 1 {
 
                         self.player1?.setUrl(trueURL!)
-                        self.player1?.id = self.videoArray[(indexPath as NSIndexPath).row].id
+                        self.player1?.id = self.videoArray[indexPath.row].id
                         self.player1?.view.frame = cell.newRect
                         self.player1?.view.layer.zPosition = 1111
                         cell.contentView.addSubview((self.player1?.view)!)
@@ -370,7 +370,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                     }else{
 
                         self.player2?.setUrl(trueURL!)
-                        self.player2?.id = self.videoArray[(indexPath as NSIndexPath).row].id
+                        self.player2?.id = self.videoArray[indexPath.row].id
                         self.player2?.view.frame = cell.newRect
                         self.player2?.view.layer.zPosition = 1111
                         cell.contentView.addSubview((self.player2?.view)!)
@@ -384,12 +384,12 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                 //  }
             }
             
-            if videoArray[(indexPath as NSIndexPath).row].isUploading {
+            if videoArray[indexPath.row].isUploading {
                 let myprogress = cell.progressBar.progress
                 cell.progressBar =  UIProgressView(frame: cell.label3.frame)
                 cell.progressBar.progress = myprogress
                 cell.contentView.addSubview(cell.progressBar)
-            }else if videoArray[(indexPath as NSIndexPath).row].isFailed {
+            }else if videoArray[indexPath.row].isFailed {
                 
                 let rect = cell.newRect
                 cell.blackView.frame = rect!
@@ -411,31 +411,31 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
             
                 
-                cell.resendButton.tag = (indexPath as NSIndexPath).row
-                cell.deleteButton.tag = (indexPath as NSIndexPath).row
+                cell.resendButton.tag = indexPath.row
+                cell.deleteButton.tag = indexPath.row
                 cell.resendButton.isEnabled = true
                 cell.deleteButton.isEnabled = true
                 cell.progressBar.isHidden = true
             }
             return cell
-        }else if (indexPath as NSIndexPath).row < videoArray.count{
+        }else if indexPath.row < videoArray.count{
             let cell = tableView.cellForRow(at: indexPath) as! videoCell
            // print("cell created")
-            if(videoArray[(indexPath as NSIndexPath).row].isLiked == 0) {
+            if(videoArray[indexPath.row].isLiked == 0) {
                 cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), for: UIControlState())
             }else{
                 cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), for: UIControlState())
                 cell.likeButton.tintColor = UIColor.white
             }
 
-            cell.likeCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].likeCount)", for: UIControlState())
+            cell.likeCount.setTitle("\(videoArray[indexPath.row].likeCount)", for: UIControlState())
 
-            if !cell.followButton.isHidden && videoArray[(indexPath as NSIndexPath).row].isFollowing == 1{
+            if !cell.followButton.isHidden && videoArray[indexPath.row].isFollowing == 1{
                 //add animation
                 cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
             }
             //cell.followButton.hidden = videoArray[indexPath.row].isFollowing == 1 ? true:false
-            cell.commentCount.setTitle("\(videoArray[(indexPath as NSIndexPath).row].commentCount)", for: UIControlState())
+            cell.commentCount.setTitle("\(videoArray[indexPath.row].commentCount)", for: UIControlState())
             return cell
 
 
@@ -487,7 +487,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     override func tableView(_ atableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         //print(nextUrl)
 
-        if((!refreshing)&&((indexPath as NSIndexPath).row%10 == 7)&&(nextUrl != nil)&&(!IsExploreInProcess)){
+        if((!refreshing)&&(indexPath.row%10 == 7)&&(nextUrl != nil)&&(!IsExploreInProcess)){
             IsExploreInProcess = true
             MolocateVideo.getExploreVideos(nextUrl, completionHandler: { (data, response, error, next) -> () in
                 self.nextUrl = next

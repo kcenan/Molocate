@@ -193,12 +193,12 @@ open class ActionController<ActionViewType: UICollectionViewCell, ActionDataType
     }
     
     open func actionForIndexPath(_ indexPath: IndexPath) -> Action<ActionDataType>? {
-        return _sections[(indexPath as NSIndexPath).section].actions[(indexPath as NSIndexPath).item]
+        return _sections[indexPath.section].actions[indexPath.item]
     }
     
     open func actionIndexPathFor(_ indexPath: IndexPath) -> IndexPath {
         if hasHeader() {
-            return IndexPath(item: (indexPath as NSIndexPath).item, section: (indexPath as NSIndexPath).section - 1)
+            return IndexPath(item: indexPath.item, section: indexPath.section - 1)
         }
         return indexPath
     }
@@ -349,13 +349,13 @@ open class ActionController<ActionViewType: UICollectionViewCell, ActionDataType
 
     open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
-            if (indexPath as NSIndexPath).section == 0 && hasHeader() {
+            if indexPath.section == 0 && hasHeader() {
                 let reusableview = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReusableViewIds.Header.rawValue, for: indexPath) as? HeaderViewType
                 onConfigureHeader?(reusableview!, headerData!)
                 return reusableview!
             } else {
                 let reusableview = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReusableViewIds.SectionHeader.rawValue, for: indexPath) as? SectionHeaderViewType
-                onConfigureSectionHeader?(reusableview!,  sectionForIndex(actionSectionIndexFor((indexPath as NSIndexPath).section))!.data!)
+                onConfigureSectionHeader?(reusableview!,  sectionForIndex(actionSectionIndexFor(indexPath.section))!.data!)
                 return reusableview!
             }
         }
@@ -574,11 +574,11 @@ open class ActionController<ActionViewType: UICollectionViewCell, ActionDataType
     
     func prevCell(_ indexPath: IndexPath) -> ActionViewType? {
         let prevPath: IndexPath?
-        switch (indexPath as NSIndexPath).item {
-        case 0 where (indexPath as NSIndexPath).section > 0:
-            prevPath = IndexPath(item: collectionView(collectionView, numberOfItemsInSection: (indexPath as NSIndexPath).section - 1) - 1, section: (indexPath as NSIndexPath).section - 1)
+        switch indexPath.item {
+        case 0 where indexPath.section > 0:
+            prevPath = IndexPath(item: collectionView(collectionView, numberOfItemsInSection: indexPath.section - 1) - 1, section: indexPath.section - 1)
         case let x where x > 0:
-            prevPath = IndexPath(item: x - 1, section: (indexPath as NSIndexPath).section)
+            prevPath = IndexPath(item: x - 1, section: indexPath.section)
         default:
             prevPath = nil
         }

@@ -461,16 +461,16 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchUsername(style: .default, reuseIdentifier: "mention")
         
-        if (indexPath as NSIndexPath).row < searchResults.count {
+        if indexPath.row < searchResults.count {
             cell.followButton.isHidden = true
-            cell.usernameLabel.text = "@\(searchResults[(indexPath as NSIndexPath).row].username)"
-            if searchResults[(indexPath as NSIndexPath).row].first_name == "" {
-                cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].username)"
+            cell.usernameLabel.text = "@\(searchResults[indexPath.row].username)"
+            if searchResults[indexPath.row].first_name == "" {
+                cell.nameLabel.text = "\(searchResults[indexPath.row].username)"
             }
             else{
-                cell.nameLabel.text = "\(searchResults[(indexPath as NSIndexPath).row].first_name) \(searchResults[(indexPath as NSIndexPath).row].last_name)"
+                cell.nameLabel.text = "\(searchResults[indexPath.row].first_name) \(searchResults[indexPath.row].last_name)"
             }
-            if(searchResults[(indexPath as NSIndexPath).row].profilePic?.absoluteString != ""){
+            if(searchResults[indexPath.row].profilePic?.absoluteString != ""){
                 cell.profilePhoto.sd_setImage(with: searchResults[indexPath.row].profilePic, for: UIControlState.normal)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
@@ -478,8 +478,8 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             
 //            cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             //cell.followButton.addTarget(self, action: Selector("pressedFollowSearch"), forControlEvents: .TouchUpInside)
-            cell.followButton.tag = (indexPath as NSIndexPath).row
-            cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+            cell.followButton.tag = indexPath.row
+            cell.profilePhoto.tag = indexPath.row
             
             return cell
             
@@ -493,9 +493,9 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-              if (indexPath as NSIndexPath).row<searchResults.count {
+              if indexPath.row<searchResults.count {
             
-            let username = searchResults[(indexPath as NSIndexPath).row].username
+            let username = searchResults[indexPath.row].username
             var captiontext = captionView.attributedText.string
             if mentionAreas[mentionModeIndex].location == 0 {
                 captiontext = captiontext.substring(to: captiontext.characters.index(captiontext.startIndex, offsetBy: mentionAreas[mentionModeIndex].location+1)) + username + " "

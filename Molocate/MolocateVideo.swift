@@ -408,6 +408,8 @@ open class MolocateVideo {
                                 var user = MoleUser()
                                 user.username = thing["username"] as! String
                                 user.profilePic = thing["picture_url"] is NSNull ? nil:URL(string: thing["picture_url"] as! String)!
+                                user.thumbnailPic = thing["thumbnail_url"] as! String == "" ? user.profilePic : URL(string: thing["thumbnail_url"] as! String)!
+
                                 user.isFollowing = thing["is_following"] as! Int == 1 ? true:false
                                 users.append(user)
                             }

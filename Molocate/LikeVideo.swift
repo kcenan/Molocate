@@ -62,18 +62,22 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
       
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! likeVideoCell
             
-            cell.username.setTitle("\(self.users[(indexPath as NSIndexPath).row].username)", for: UIControlState())
+            cell.username.setTitle("\(self.users[indexPath.row].username)", for: UIControlState())
             cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.left
-            cell.username.tag = (indexPath as NSIndexPath).row
+            cell.username.tag = indexPath.row
             cell.username.tintColor = swiftColor
             cell.username.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
             
-            //print("foloow:" + cell.followLike.hidden.description)
-            //print("users" + users[indexPath.row].isFollowing.description)
-        
-      //  print(pressedFollow.description)
-        if !pressedFollow {
-                if(!users[(indexPath as NSIndexPath).row].isFollowing && users[(indexPath as NSIndexPath).row].username != MoleCurrentUser.username){
+            cell.profileImage.layer.borderWidth = 0.1
+            cell.profileImage.layer.masksToBounds = true
+            cell.profileImage.layer.borderColor = UIColor.white.cgColor
+            cell.profileImage.backgroundColor = profileBackgroundColor
+            cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height/2
+            //cell.profileImage.clipsToBounds = true
+            cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
+            cell.profileImage.tag = indexPath.row
+    if !pressedFollow {
+                if(!users[indexPath.row].isFollowing && users[indexPath.row].username != MoleCurrentUser.username){
                     cell.followLike.isHidden = false
                 }else{
                     cell.followLike.isHidden = true
@@ -81,31 +85,22 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         }else{
             cell.followLike.isHidden = false
             //cell.followLike.enabled = false
-            cell.followLike.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
+            cell.followLike.setImage(UIImage(named: "followTicked"), for: UIControlState())
         }
-            
-            
-            
-            cell.followLike.tag = (indexPath as NSIndexPath).row
-            cell.followLike.addTarget(self, action: #selector(likeVideo.pressedFollow(_:)), for: UIControlEvents.touchUpInside)
+        
+        
+        if(users[indexPath.row].thumbnailPic != nil){
+        
+            cell.profileImage.sd_setImage(with: users[indexPath.row].thumbnailPic!, for: UIControlState.normal,placeholderImage: UIImage(named: "profile")!, options: [.continueInBackground, .lowPriority])
 
-            cell.profileImage.layer.borderWidth = 0.1
-            cell.profileImage.layer.masksToBounds = false
-            cell.profileImage.layer.borderColor = UIColor.white.cgColor
-            cell.profileImage.backgroundColor = profileBackgroundColor
-            cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height/2
-            cell.profileImage.clipsToBounds = true
-            cell.profileImage.tag = (indexPath as NSIndexPath).row
-            cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
-            
+        }else{
+            cell.profileImage.setImage(UIImage(named: "profile")!, for:
+                .normal)
+        }
+        
+        
+        
 
-            if(users[(indexPath as NSIndexPath).row].profilePic?.absoluteString != ""){
-                cell.profileImage.sd_setBackgroundImage(with: users[indexPath.row].profilePic, for: .normal)
-            }else{
-                cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, for:
-                    UIControlState())
-            }
-            
             return cell
        
     }

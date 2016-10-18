@@ -260,28 +260,28 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         if venueoruser {
             let cell = searchVenue(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
             //            let cell = venueTable.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
-            let venue = venues[(indexPath as NSIndexPath).row]
+            let venue = venues[indexPath.row]
             cell.addressNameLabel.text = venue.address
             cell.nameLabel.text = venue.name
             cell.distanceLabel.text = venue.distance
             return cell
         } else {
             let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
-            if searchedUsers[(indexPath as NSIndexPath).row].isFollowing {
+            if searchedUsers[indexPath.row].isFollowing {
                 cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
                 cell.followButton.addTarget(self, action: #selector(MainController.pressedUnfollowSearch(_:)), for: .touchUpInside)
             } else {
                 cell.followButton.setBackgroundImage(UIImage(named: "follow"), for: UIControlState())
                 cell.followButton.addTarget(self, action: #selector(MainController.pressedFollowSearch(_:)), for: .touchUpInside)
             }
-            cell.usernameLabel.text = "@\(searchedUsers[(indexPath as NSIndexPath).row].username)"
-            if searchedUsers[(indexPath as NSIndexPath).row].first_name == "" {
-                cell.nameLabel.text = "\(searchedUsers[(indexPath as NSIndexPath).row].username)"
+            cell.usernameLabel.text = "@\(searchedUsers[indexPath.row].username)"
+            if searchedUsers[indexPath.row].first_name == "" {
+                cell.nameLabel.text = "\(searchedUsers[indexPath.row].username)"
             }
             else{
-                cell.nameLabel.text = "\(searchedUsers[(indexPath as NSIndexPath).row].first_name) \(searchedUsers[(indexPath as NSIndexPath).row].last_name)"
+                cell.nameLabel.text = "\(searchedUsers[indexPath.row].first_name) \(searchedUsers[indexPath.row].last_name)"
             }
-            if(searchedUsers[(indexPath as NSIndexPath).row].profilePic?.absoluteString != ""){
+            if(searchedUsers[indexPath.row].profilePic?.absoluteString != ""){
                 cell.profilePhoto.sd_setImage(with: searchedUsers[indexPath.row].profilePic, for: UIControlState.normal)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
@@ -289,8 +289,8 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             
             cell.profilePhoto.addTarget(self, action: #selector(MainController.pressedProfileSearch(_:)), for: UIControlEvents.touchUpInside)
             //cell.followButton.addTarget(self, action: Selector("pressedFollowSearch"), forControlEvents: .TouchUpInside)
-            cell.followButton.tag = (indexPath as NSIndexPath).row
-            cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+            cell.followButton.tag = indexPath.row
+            cell.profilePhoto.tag = indexPath.row
             
             return cell
         }
@@ -305,7 +305,7 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
             let controller:profileVenue = self.storyboard!.instantiateViewController(withIdentifier: "profileVenue") as! profileVenue
             
             self.navigationController?.pushViewController(controller, animated: true)
-            MolocatePlace.getPlace(self.venues[(indexPath as NSIndexPath).row].id) { (data, response, error) -> () in
+            MolocatePlace.getPlace(self.venues[indexPath.row].id) { (data, response, error) -> () in
                 DispatchQueue.main.async{
                     thePlace = data
                     controller.classPlace = data
@@ -724,10 +724,10 @@ class MainController: UIViewController, UITableViewDelegate , UITableViewDataSou
         UIApplication.shared.beginIgnoringInteractionEvents()
         
         let controller:FilterController = self.storyboard!.instantiateViewController(withIdentifier: "FilterController") as! FilterController
-        controller.filter_raw = filters[(indexPath as NSIndexPath).row].raw_name
-        controller.filter_name = filters[(indexPath as NSIndexPath).row].name
+        controller.filter_raw = filters[indexPath.row].raw_name
+        controller.filter_name = filters[indexPath.row].name
         
-        if filters[(indexPath as NSIndexPath).row].raw_name == "nearby" {
+        if filters[indexPath.row].raw_name == "nearby" {
             if CLLocationManager.locationServicesEnabled() {
                 switch(CLLocationManager.authorizationStatus()) {
                 case .notDetermined, .restricted, .denied:

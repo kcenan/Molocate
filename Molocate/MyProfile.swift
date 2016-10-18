@@ -193,13 +193,13 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         
     }
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath as NSIndexPath).row == 1{
+        if indexPath.row == 1{
             return 80
         }
-        else if (indexPath as NSIndexPath).row == 2{
+        else if indexPath.row == 2{
             return 45
         }
-        else if (indexPath as NSIndexPath).row == 0 {
+        else if indexPath.row == 0 {
             return CGFloat(estRowH)}
         else{
             return MolocateDevice.size.height - 75
@@ -208,7 +208,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == optionsTable {
-            if (indexPath as NSIndexPath).row == 0{
+            if indexPath.row == 0{
                 return 90
             }
             else{
@@ -217,13 +217,13 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         }
             
         else {
-            if (indexPath as NSIndexPath).row == 1{
+            if indexPath.row == 1{
                 return 80
             }
-            else if (indexPath as NSIndexPath).row == 2{
+            else if indexPath.row == 2{
                 return 45
             }
-            else if (indexPath as NSIndexPath).row == 0 {
+            else if indexPath.row == 0 {
                 return UITableViewAutomaticDimension}
             else{
                 return MolocateDevice.size.height-25
@@ -239,7 +239,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
             
             self.tableView.isScrollEnabled = true
             //???What is doing that animation
-            if((indexPath as NSIndexPath).row == 0){
+            if(indexPath.row == 0){
                 UIView.animate(withDuration: 0.75, animations: { () -> Void in
                     self.tableView.isUserInteractionEnabled = true
                     self.tableView.alpha = 1
@@ -250,13 +250,13 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                     
                 }) 
             }
-            if (indexPath as NSIndexPath).row == 1 {
+            if indexPath.row == 1 {
                 self.tableView.isUserInteractionEnabled = true
                 self.tableView.alpha = 1
                 self.performSegue(withIdentifier: "goEditProfile", sender: self)
                 self.optionsTable.isHidden = true
             }
-            if (indexPath as NSIndexPath).row == 2 {
+            if indexPath.row == 2 {
                 MolocateAccount.unregisterDevice({ (data, response, error) in
                 })
                 UserDefaults.standard.set(nil, forKey: "userToken")
@@ -290,7 +290,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
             
             let cell = optionCell(style: UITableViewCellStyle.default, reuseIdentifier: "myIdentifier")
             
-            if (indexPath as NSIndexPath).row == 0 {
+            if indexPath.row == 0 {
                 cell.nameOption.frame = CGRect(x: MolocateDevice.size.width / 2 - 50, y: 40 , width: 100, height: 30)
                 cell.nameOption.textAlignment = .center
                 cell.nameOption.textColor = UIColor.black
@@ -299,7 +299,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
             }else {
                 cell.cancelLabel.isHidden = true
             }
-            cell.nameOption.text = names[(indexPath as NSIndexPath).row]
+            cell.nameOption.text = names[indexPath.row]
             cell.backgroundColor = UIColor.white
             
             return cell
@@ -312,7 +312,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
             
             
         else {
-            if (indexPath as NSIndexPath).row == 0 {
+            if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! profile1stCell
                 
                 cell.userCaption.numberOfLines = 0
@@ -325,7 +325,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
                 cell.profilePhotoPressed.addTarget(self, action: #selector(myProfile.photoPressed), for: UIControlEvents.touchUpInside)
                 cell.profilePhoto.clipsToBounds = true
-                cell.profilePhoto.tag = (indexPath as NSIndexPath).row
+                cell.profilePhoto.tag = indexPath.row
                 if(classUser.profilePic?.absoluteString != ""){
                     cell.profilePhoto.sd_setImage(with: classUser.profilePic)
                     
@@ -345,7 +345,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 
             }
                 
-            else if (indexPath as NSIndexPath).row == 1 {
+            else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell2", for: indexPath) as! profile2ndCell
                 cell.numberFollower.text = "\(classUser.follower_count)"
                 cell.numberFollowUser.text = "\(classUser.following_count)"
@@ -359,7 +359,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                 
             }
                 
-            else if (indexPath as NSIndexPath).row == 2 {
+            else if indexPath.row == 2 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell3", for: indexPath) as! profile3thCell
                 cell.videosButton.setTitle("VİDEOLAR(\(classUser.post_count))", for: UIControlState())
                 cell.taggedButton.setTitle("ETİKET(\(classUser.tag_count))", for: UIControlState())

@@ -133,17 +133,17 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
         
         let cell = searchUsername(style: UITableViewCellStyle.default, reuseIdentifier: "cellface")
         
-        cell.profilePhoto.tag = (indexPath as NSIndexPath).row
-        cell.nameLabel.tag = (indexPath as NSIndexPath).row
-        cell.followButton.tag = (indexPath as NSIndexPath).row
-        cell.usernameLabel.tag = (indexPath as NSIndexPath).row
-        cell.usernameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].username
-        cell.nameLabel.text = userRelations.relations[(indexPath as NSIndexPath).row].name
+        cell.profilePhoto.tag = indexPath.row
+        cell.nameLabel.tag = indexPath.row
+        cell.followButton.tag = indexPath.row
+        cell.usernameLabel.tag = indexPath.row
+        cell.usernameLabel.text = userRelations.relations[indexPath.row].username
+        cell.nameLabel.text = userRelations.relations[indexPath.row].name
         
         
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
         
-        if(userRelations.relations[(indexPath as NSIndexPath).row].picture_url?.absoluteString != ""){
+        if(userRelations.relations[indexPath.row].picture_url?.absoluteString != ""){
             cell.profilePhoto.sd_setImage(with: userRelations.relations[indexPath.row].picture_url, for: UIControlState.normal)
         }else{
             cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
@@ -152,7 +152,7 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
         cell.profilePhoto.addTarget(self, action: #selector(findFriendController.pressedProfileSearch(_:)), for: UIControlEvents.touchUpInside)
         
         
-        if(!userRelations.relations[(indexPath as NSIndexPath).row].is_following){
+        if(!userRelations.relations[indexPath.row].is_following){
             cell.followButton.setBackgroundImage(UIImage(named: "follow"), for: UIControlState())
 
         } else {
@@ -162,7 +162,7 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
         
         
         
-        if(userRelations.relations[(indexPath as NSIndexPath).row].username == MoleCurrentUser.username){
+        if(userRelations.relations[indexPath.row].username == MoleCurrentUser.username){
             cell.followButton.isHidden = true
         }
         

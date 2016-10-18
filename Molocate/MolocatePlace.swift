@@ -115,7 +115,7 @@ open class MolocatePlace {
                         place.video_count = item["video_count"] as! Int
                         place.follower_count = item["follower_count"] as! Int
                         place.caption = item["caption"] as! String
-                        place.picture_url = item["picture_url"] is NSNull ? nil: URL(string: item["picture_url"] as! String)!
+              //          place.picture_url = item["picture_url"] is NSNull ? nil: URL(string: item["picture_url"] as! String)!
                         place.phone = item["phone"] as! String
                         place.web_site = item["web_site"] as! String
                         let lon = item["longitude"] as! String

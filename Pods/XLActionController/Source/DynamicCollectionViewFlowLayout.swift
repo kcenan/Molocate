@@ -119,13 +119,13 @@ open class DynamicCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
         
         // Top within item's section
-        var top = CGFloat((indexPath as NSIndexPath).item) * itemSize.height
+        var top = CGFloat(indexPath.item) * itemSize.height
         
-        if (indexPath as NSIndexPath).section > 0 {
-            let lastItemOfPrevSection = unwrappedCollectionView.numberOfItems(inSection: (indexPath as NSIndexPath).section - 1)
+        if indexPath.section > 0 {
+            let lastItemOfPrevSection = unwrappedCollectionView.numberOfItems(inSection: indexPath.section - 1)
             // Add previous sections height recursively. We have to add the sectionInsets and the last section's item height
-            let inset = (unwrappedCollectionView.delegate as? UICollectionViewDelegateFlowLayout)?.collectionView?(unwrappedCollectionView, layout: self, insetForSectionAt: (indexPath as NSIndexPath).section) ?? sectionInset
-            top += topForItemAt(indexPath: IndexPath(item: lastItemOfPrevSection - 1, section: (indexPath as NSIndexPath).section - 1)) + inset.bottom + inset.top + itemSize.height
+            let inset = (unwrappedCollectionView.delegate as? UICollectionViewDelegateFlowLayout)?.collectionView?(unwrappedCollectionView, layout: self, insetForSectionAt: indexPath.section) ?? sectionInset
+            top += topForItemAt(indexPath: IndexPath(item: lastItemOfPrevSection - 1, section: indexPath.section - 1)) + inset.bottom + inset.top + itemSize.height
         }
         
         return top
@@ -172,13 +172,13 @@ open class DynamicCollectionViewFlowLayout: UICollectionViewFlowLayout {
         let itemBehavior = UIDynamicItemBehavior(items: [attributes])
         itemBehavior.allowsRotation = false
 
-        if (indexPath as NSIndexPath).item == 0 {
-            let mass = CGFloat(collectionView.numberOfItems(inSection: (indexPath as NSIndexPath).section))
+        if indexPath.item == 0 {
+            let mass = CGFloat(collectionView.numberOfItems(inSection: indexPath.section))
 
             itemBehavior.elasticity = (0.70 / mass)
 
             var topMargin = CGFloat(1.5)
-            if (indexPath as NSIndexPath).section > 0 {
+            if indexPath.section > 0 {
                 topMargin -= sectionInset.top + sectionInset.bottom
             }
             let fromPoint = CGPoint(x: frame.minX, y: frame.minY + topMargin)
@@ -197,7 +197,7 @@ open class DynamicCollectionViewFlowLayout: UICollectionViewFlowLayout {
             let toPoint = CGPoint(x: frame.maxX, y: fromPoint.y)
             collisionBehavior.addBoundary(withIdentifier: "top" as NSCopying, from: fromPoint, to: toPoint)
 
-            let prevPath = IndexPath(item: (indexPath as NSIndexPath).item - 1, section: (indexPath as NSIndexPath).section)
+            let prevPath = IndexPath(item: indexPath.item - 1, section: indexPath.section)
             let prevItemAttributes = layoutAttributesForItem(at: prevPath)!
             attachmentBehavior = UIAttachmentBehavior(item: attributes, attachedTo: prevItemAttributes)
             attachmentBehavior.length = itemSize.height

@@ -169,11 +169,11 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
 //            return 200
 //        }
 //        else{
-        if (indexPath as NSIndexPath).row == 0{
+        if indexPath.row == 0{
             return UITableViewAutomaticDimension
         }
         else {
-            if (indexPath as NSIndexPath).row == 1 {
+            if indexPath.row == 1 {
             return 76
                 
             } else {
@@ -188,7 +188,7 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         
         
         
-        if (indexPath as NSIndexPath).row == 0 {
+        if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! profileVenue1stCell
            
             let longitude :CLLocationDegrees = thePlace.lon
@@ -211,7 +211,7 @@ class profileVenue: UIViewController, UICollectionViewDelegateFlowLayout,NSURLCo
         }
             
         else  {
-            if (indexPath as NSIndexPath).row == 1 {
+            if indexPath.row == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell2", for: indexPath) as! profileVenue2ndCell
             cell.numberVideo.text = "\(thePlace.video_count)"
             cell.numberFollower.text = "\(thePlace.follower_count)"

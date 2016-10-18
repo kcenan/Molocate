@@ -54,9 +54,9 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = searchVenue(style: .default, reuseIdentifier: "cellface")
-        cell.nameLabel.text = venues[(indexPath as NSIndexPath).row].name
-        cell.addressNameLabel.text = venues[(indexPath as NSIndexPath).row].address
-        cell.distanceLabel.text = venues[(indexPath as NSIndexPath).row].distance
+        cell.nameLabel.text = venues[indexPath.row].name
+        cell.addressNameLabel.text = venues[indexPath.row].address
+        cell.distanceLabel.text = venues[indexPath.row].distance
 //        cell.profilePhoto.tag = indexPath.row
 //        cell.nameLabel.tag = indexPath.row
 //        cell.followButton.tag = indexPath.row
@@ -72,7 +72,7 @@ class findVenueController: UIViewController,UITableViewDelegate , UITableViewDat
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let cell = tableView.cellForRowAtIndexPath(indexPath) as! searchUsername
-        pressedPlace(placeId: venues[(indexPath as NSIndexPath).row].id)
+        pressedPlace(placeId: venues[indexPath.row].id)
         
     }
     

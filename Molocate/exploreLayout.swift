@@ -84,14 +84,14 @@ class exploreLayout: UICollectionViewLayout {
 //        let annotationHeight = delegate.collectionView(collectionView!, heightForAnnotationAtIndexPath: indexPath, withWidth: width)
         
         var height = cellPadding + width + cellPadding
-        var rest = (indexPath as NSIndexPath).row % (10+eventcount)
-        let part = CGFloat((indexPath as NSIndexPath).row/(10+eventcount))
+        var rest = indexPath.row % (10+eventcount)
+        let part = CGFloat(indexPath.row/(10+eventcount))
         var contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
         if part == 1  {
             if iseventhere {
             eventcount = 0
             contentLong = contentLong + contentWidth*9/16 + cellPadding
-            rest = ((indexPath as NSIndexPath).row-11) % 10
+            rest = (indexPath.row-11) % 10
             } else {
             contentLong = 2*(16*scalew3+3*scalew2+2*cellPadding)
             }

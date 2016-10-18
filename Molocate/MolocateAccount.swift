@@ -24,7 +24,7 @@ struct MoleUserFriend {
     var picture_url: URL?
     var thumbnail_url: URL?
     var username:String = ""
-    var name: String = "Deneme Deneme"
+    var name: String = ""
 }
 
 struct MoleUserRelations{

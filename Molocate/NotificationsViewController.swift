@@ -91,9 +91,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         cell.fotoButton.backgroundColor = profileBackgroundColor
         cell.fotoButton.layer.cornerRadius = cell.fotoButton.frame.height/2
         cell.fotoButton.clipsToBounds = true
-        cell.fotoButton.tag = (indexPath as NSIndexPath).row
+        cell.fotoButton.tag = indexPath.row
         
-        if(notificationArray[(indexPath as NSIndexPath).row].picture_url?.absoluteString != ""){
+        if(notificationArray[indexPath.row].picture_url?.absoluteString != ""){
             cell.fotoButton.sd_setImage(with: notificationArray[indexPath.row].picture_url, for: UIControlState.normal)
         } else {
             cell.fotoButton.setImage(UIImage(named: "profile"), for: UIControlState())
@@ -102,23 +102,23 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         var multipleAttributes = [String : NSObject]()
         multipleAttributes[NSForegroundColorAttributeName] = swiftColor2
         multipleAttributes[NSFontAttributeName] =  UIFont(name: "AvenirNext-Regular", size: 14.0)
-        let usernameAttributedString =  NSMutableAttributedString(string:  notificationArray[(indexPath as NSIndexPath).row].actor , attributes: multipleAttributes)
+        let usernameAttributedString =  NSMutableAttributedString(string:  notificationArray[indexPath.row].actor , attributes: multipleAttributes)
         
         var multipleAttributes2 = [String : NSObject]()
         multipleAttributes2[NSFontAttributeName] =  UIFont(name: "AvenirNext-Regular", size: 12.0)
         multipleAttributes2[NSForegroundColorAttributeName] = UIColor.black
-        let notificationAttributedString = NSAttributedString(string:  notificationArray[(indexPath as NSIndexPath).row].sentence, attributes:  multipleAttributes2)
+        let notificationAttributedString = NSAttributedString(string:  notificationArray[indexPath.row].sentence, attributes:  multipleAttributes2)
         usernameAttributedString.append(notificationAttributedString)
         
         var multipleAttributes3 = [String : NSObject]()
         multipleAttributes3[NSFontAttributeName] =  UIFont(name: "AvenirNext-Medium", size: 10.0)
         multipleAttributes3[NSForegroundColorAttributeName] = UIColor.darkGray
-        let timeAttributedString = NSAttributedString(string:  "  " + notificationArray[(indexPath as NSIndexPath).row].date  , attributes:  multipleAttributes3)
+        let timeAttributedString = NSAttributedString(string:  "  " + notificationArray[indexPath.row].date  , attributes:  multipleAttributes3)
         usernameAttributedString.append(timeAttributedString)
         
         cell.myLabel.textAlignment = .left
         cell.myLabel.attributedText = usernameAttributedString
-        cell.myLabel.tag = (indexPath as NSIndexPath).row
+        cell.myLabel.tag = indexPath.row
         let labeltap = UITapGestureRecognizer(target: self, action:#selector(NotificationsViewController.labelTapped(_:) ));
         labeltap.numberOfTapsRequired = 1
         cell.myLabel.addGestureRecognizer(labeltap)

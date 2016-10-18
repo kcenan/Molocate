@@ -131,7 +131,7 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
      
         let cell = searchCameraCell(style: UITableViewCellStyle.value1, reuseIdentifier: "cell")
         
-        let index = (indexPath as NSIndexPath).row as Int
+        let index = indexPath.row as Int
         
         if isSearch {
             let correctedRow = placeOrder.object(forKey: autocompleteUrls[index]) as! Int
@@ -187,7 +187,7 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
             let correctedRow = placeOrder.object(forKey: selectedCell.nameLabel.text!) as! Int
             videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
         } else {
-            videoLocation = searchDict[(indexPath as NSIndexPath).row][searchArray[(indexPath as NSIndexPath).row]]
+            videoLocation = searchDict[indexPath.row][searchArray[indexPath.row]]
         }
         //print(videoLocation.id)
         selectedVenue = videoLocation.name

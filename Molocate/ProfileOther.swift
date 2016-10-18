@@ -292,7 +292,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         self.taggedButton.isEnabled = true
         self.scrollView.isScrollEnabled = true
         //???What is doing that animation
-        if((indexPath as NSIndexPath).row == 0){
+        if(indexPath.row == 0){
             UIView.animate(withDuration: 0.75, animations: { () -> Void in
                 self.scrollView.isUserInteractionEnabled = true
                 self.scrollView.alpha = 1
@@ -303,13 +303,13 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
 
             }) 
         }
-        if (indexPath as NSIndexPath).row == 1 {
+        if indexPath.row == 1 {
             self.scrollView.isUserInteractionEnabled = true
             self.scrollView.alpha = 1
             self.performSegue(withIdentifier: "goEditProfile", sender: self)
             self.settings.isHidden = true
         }
-        if (indexPath as NSIndexPath).row == 2 {
+        if indexPath.row == 2 {
             MolocateAccount.unregisterDevice({ (data, response, error) in
             })
             UserDefaults.standard.set(nil, forKey: "userToken")
@@ -340,7 +340,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath as NSIndexPath).row == 0{
+        if indexPath.row == 0{
             return 90
         }
         else{
@@ -358,7 +358,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         
         let cell = optionCell(style: UITableViewCellStyle.default, reuseIdentifier: "myIdentifier")
         
-        if (indexPath as NSIndexPath).row == 0 {
+        if indexPath.row == 0 {
             cell.nameOption.frame = CGRect(x: MolocateDevice.size.width / 2 - 50, y: 40 , width: 100, height: 30)
             cell.nameOption.textAlignment = .center
             cell.nameOption.textColor = UIColor.black
@@ -367,7 +367,7 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
         }else {
             cell.cancelLabel.isHidden = true
         }
-        cell.nameOption.text = names[(indexPath as NSIndexPath).row]
+        cell.nameOption.text = names[indexPath.row]
         cell.backgroundColor = UIColor.white
         
         return cell

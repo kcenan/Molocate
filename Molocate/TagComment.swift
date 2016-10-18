@@ -92,17 +92,17 @@ class tagComment: UIViewController, UITextViewDelegate {
         
         cell.textLabel!.font = UIFont(name: "Lato-Regular", size: 16)
         
-        if numbers.contains((indexPath as NSIndexPath).row) {
-        cell.textLabel?.text = "⚫         " + userRelations.relations[(indexPath as NSIndexPath).row].username
+        if numbers.contains(indexPath.row) {
+        cell.textLabel?.text = "⚫         " + userRelations.relations[indexPath.row].username
         }else{
-        cell.textLabel?.text = "⚪         " + userRelations.relations[(indexPath as NSIndexPath).row].username
+        cell.textLabel?.text = "⚪         " + userRelations.relations[indexPath.row].username
         }
             return cell
     }
     
     
     func tableView(_ tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath) {
-        if(((indexPath as NSIndexPath).row%50 == 35)&&(relationNextUrl != nil)){
+        if((indexPath.row%50 == 35)&&(relationNextUrl != nil)){
             MolocateAccount.getFollowers(relationNextUrl!, username: MoleCurrentUser.username, completionHandler: { (data, response, error, count, next, previous) in
                 if next != nil {
                     self.relationNextUrl = next!
@@ -142,7 +142,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         if firstChar == "⚪" {
             newChar = "⚫         "
            //checkedSymptom = true
-            numbers.append((indexPath as NSIndexPath).row)
+            numbers.append(indexPath.row)
             //print(numbers)
            
            
@@ -152,14 +152,14 @@ class tagComment: UIViewController, UITextViewDelegate {
             var xAppears = false
             
             for number in numbers {
-                if number == (indexPath as NSIndexPath).row {
+                if number == indexPath.row {
                     xAppears = true
                 }
             }
             
             if xAppears {
                 //print("yes")
-                let indexOfA = numbers.index(of: (indexPath as NSIndexPath).row)
+                let indexOfA = numbers.index(of: indexPath.row)
                 numbers.remove(at: indexOfA!)
             } else {
                 //print("no")
@@ -168,7 +168,7 @@ class tagComment: UIViewController, UITextViewDelegate {
         }
         
         // change the cell and text of the tapped row with the new "checkbox"
-        cell!.textLabel!.text = newChar + " " + userRelations.relations[(indexPath as NSIndexPath).row].username
+        cell!.textLabel!.text = newChar + " " + userRelations.relations[indexPath.row].username
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {
