@@ -94,7 +94,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
             
             cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, for:
                UIControlState())
-            cell.profileImage.sd_setBackgroundImage(with: users[indexPath.row].thumbnailPic!, for: UIControlState())
+            cell.profileImage.sd_setBackgroundImage(with: users[indexPath.row].thumbnailPic!, for: UIControlState(), placeholderImage: UIImage(named: "profile")!)
         }else{
             cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, for:
                  UIControlState())

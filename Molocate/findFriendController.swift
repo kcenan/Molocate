@@ -144,7 +144,7 @@ class findFriendController: UIViewController,UITableViewDelegate , UITableViewDa
         //bak bunaaaa  cell.nameLabel.text = userRelations.relations[indexPath.row]
         
         if(userRelations.relations[indexPath.row].picture_url?.absoluteString != ""){
-            cell.profilePhoto.sd_setImage(with: userRelations.relations[indexPath.row].picture_url, for: UIControlState.normal)
+            cell.profilePhoto.sd_setImage(with: userRelations.relations[indexPath.row].picture_url, for: UIControlState.normal, placeholderImage: UIImage(named: "profile"))
         }else{
             cell.profilePhoto.setImage(UIImage(named: "profile"), for: UIControlState())
         }

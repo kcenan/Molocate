@@ -191,15 +191,15 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
    
             
             if(comments[indexPath.row].photo?.absoluteString != ""){
-                cell.profilePhoto.sd_setImage(with: comments[indexPath.row].photo, for: UIControlState.normal)
+                cell.profilePhoto.sd_setImage(with: comments[indexPath.row].photo, for: UIControlState.normal, placeholderImage: UIImage(named: "profile")!)
             }else{
                 cell.profilePhoto.setImage(UIImage(named: "profile")!, for:
                     UIControlState())
             }
             cell.profilePhoto.layer.borderWidth = 0.1
             cell.profilePhoto.layer.borderColor = UIColor.white.cgColor
-            
             cell.profilePhoto.layer.masksToBounds = false
+            cell.profilePhoto.backgroundColor = UIColor.lightGray
             cell.profilePhoto.layoutIfNeeded()
             cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
             cell.profilePhoto.clipsToBounds = true

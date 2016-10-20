@@ -478,6 +478,11 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
         
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        AVc.pausePlayers()
+        BVc.pausePlayers()
+    }
+    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         

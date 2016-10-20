@@ -278,7 +278,8 @@ class profileOther: UIViewController , UIScrollViewDelegate, UITableViewDelegate
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        
+        AVc.pausePlayers()
+        BVc.pausePlayers()
     }
     
     override func didReceiveMemoryWarning() {
