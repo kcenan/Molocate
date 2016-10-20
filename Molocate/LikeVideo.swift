@@ -1,4 +1,5 @@
 import UIKit
+import SDWebImage
 
 class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
@@ -9,6 +10,7 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     @IBOutlet var tableView: UITableView!
     let refreshControl: UIRefreshControl = UIRefreshControl()
     var pressedFollow: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,23 +61,23 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-      
-            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! likeVideoCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! likeVideoCell
             
             cell.username.setTitle("\(self.users[indexPath.row].username)", for: UIControlState())
             cell.username.contentHorizontalAlignment = UIControlContentHorizontalAlignment.left
             cell.username.tag = indexPath.row
             cell.username.tintColor = swiftColor
             cell.username.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
-            
-            cell.profileImage.layer.borderWidth = 0.1
-            cell.profileImage.layer.masksToBounds = true
-            cell.profileImage.layer.borderColor = UIColor.white.cgColor
-            cell.profileImage.backgroundColor = profileBackgroundColor
-            cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height/2
-            //cell.profileImage.clipsToBounds = true
-            cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
-            cell.profileImage.tag = indexPath.row
+            cell.profileImage.isHidden = false
+           // cell.profileImage.layer.borderWidth = 0.1
+          // cell.profileImage.layer.masksToBounds = false
+        //cell.profileImage.layer.borderColor = UIColor.white.cgColor
+         //   cell.profileImage.backgroundColor = profileBackgroundColor
+        //cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height/2
+           //cell.profileImage.clipsToBounds = true
+        
+        cell.profileImage.addTarget(self, action: #selector(likeVideo.pressedProfile(_:)), for: UIControlEvents.touchUpInside)
+        cell.profileImage.tag = indexPath.row
     if !pressedFollow {
                 if(!users[indexPath.row].isFollowing && users[indexPath.row].username != MoleCurrentUser.username){
                     cell.followLike.isHidden = false
@@ -85,20 +87,25 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         }else{
             cell.followLike.isHidden = false
             //cell.followLike.enabled = false
-            cell.followLike.setImage(UIImage(named: "followTicked"), for: UIControlState())
+            cell.followLike.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
         }
-        
-        
+   
         if(users[indexPath.row].thumbnailPic != nil){
-        
-            cell.profileImage.sd_setImage(with: users[indexPath.row].thumbnailPic!, for: UIControlState.normal,placeholderImage: UIImage(named: "profile")!, options: [.continueInBackground, .lowPriority])
-
+            
+            cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, for:
+               UIControlState())
+            cell.profileImage.sd_setBackgroundImage(with: users[indexPath.row].thumbnailPic!, for: UIControlState())
         }else{
-            cell.profileImage.setImage(UIImage(named: "profile")!, for:
-                .normal)
+            cell.profileImage.setBackgroundImage(UIImage(named: "profile")!, for:
+                 UIControlState())
         }
+        cell.profileImage.layer.borderWidth = 0.1
+        cell.profileImage.layer.borderColor = UIColor.white.cgColor
         
-        
+        cell.profileImage.layer.masksToBounds = false
+        cell.profileImage.layoutIfNeeded()
+        cell.profileImage.layer.cornerRadius = cell.profileImage.frame.height/2
+        cell.profileImage.clipsToBounds = true
         
 
             return cell

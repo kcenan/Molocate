@@ -182,13 +182,7 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
             
             cell.deleteSupport.tag = indexPath.row
             cell.deleteSupport.addTarget(self, action: #selector(commentController.pressedReport(_:)), for: UIControlEvents.touchUpInside)
-            
-            cell.profilePhoto.layer.borderWidth = 0.1
-            cell.profilePhoto.layer.masksToBounds = false
-            cell.profilePhoto.layer.borderColor = UIColor.white.cgColor
-            cell.profilePhoto.backgroundColor = profileBackgroundColor
-            cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
-            cell.profilePhoto.clipsToBounds = true
+    
             cell.profilePhoto.tag = indexPath.row
             cell.profilePhoto.addTarget(self, action: #selector(commentController.pressedUsername(_:)), for: UIControlEvents.touchUpInside )
             
@@ -202,6 +196,13 @@ class commentController: UIViewController,UITableViewDelegate , UITableViewDataS
                 cell.profilePhoto.setImage(UIImage(named: "profile")!, for:
                     UIControlState())
             }
+            cell.profilePhoto.layer.borderWidth = 0.1
+            cell.profilePhoto.layer.borderColor = UIColor.white.cgColor
+            
+            cell.profilePhoto.layer.masksToBounds = false
+            cell.profilePhoto.layoutIfNeeded()
+            cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
+            cell.profilePhoto.clipsToBounds = true
             
             return cell
         }
