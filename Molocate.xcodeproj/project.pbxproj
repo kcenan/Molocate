@@ -14,7 +14,6 @@
 		388173F71C97ABE20064EBB5 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388173F61C97ABE20064EBB5 /* CommentCell.swift */; };
 		38E621061C90D9AB00FB1AD5 /* EditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E621051C90D9AB00FB1AD5 /* EditProfile.swift */; };
 		38E6210C1C90E49D00FB1AD5 /* ChangePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E6210B1C90E49D00FB1AD5 /* ChangePassword.swift */; };
-		38EAEA601CF10A5C0053249F /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EAEA5F1CF10A5B0053249F /* EventCell.swift */; };
 		8BC101C91F384746AEB93FA5 /* Pods_Molocate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E3ACAA31AF21EFA58757234 /* Pods_Molocate.framework */; };
 		C60905361C4812A100614C7F /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60905351C4812A100614C7F /* ContainerController.swift */; };
 		C609053A1C48143C00614C7F /* ExploreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60905391C48143C00614C7F /* ExploreController.swift */; };
@@ -52,7 +51,6 @@
 		C65A450F1C694AFC00E9DA6F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65A450C1C694AFC00E9DA6F /* FBSDKLoginKit.framework */; };
 		C65A45101C694AFC00E9DA6F /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65A450D1C694AFC00E9DA6F /* FBSDKShareKit.framework */; };
 		C65A45141C694E8D00E9DA6F /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65A45131C694E8D00E9DA6F /* Bolts.framework */; };
-		C65C4F751C8E20B300DB5068 /* CaptureCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65C4F741C8E20B300DB5068 /* CaptureCollectionCell.swift */; };
 		C65CD04F1D8C3A8A008E264E /* FilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65CD04E1D8C3A8A008E264E /* FilterController.swift */; };
 		C66743831CEB84410020D514 /* SideProfilePic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66743821CEB84410020D514 /* SideProfilePic.swift */; };
 		C66E37DF1D52306F0015F602 /* collection3thCameraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66E37DE1D52306F0015F602 /* collection3thCameraCell.swift */; };
@@ -179,7 +177,6 @@
 		388173F61C97ABE20064EBB5 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		38E621051C90D9AB00FB1AD5 /* EditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfile.swift; sourceTree = "<group>"; };
 		38E6210B1C90E49D00FB1AD5 /* ChangePassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangePassword.swift; path = Molocate/ChangePassword.swift; sourceTree = "<group>"; };
-		38EAEA5F1CF10A5B0053249F /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		4E52B282C1DEE6A1AF3F3D83 /* Pods-Molocate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Molocate.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Molocate/Pods-Molocate.debug.xcconfig"; sourceTree = "<group>"; };
 		60A00617FF184E1B1A599F1F /* Pods-MolocateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MolocateUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MolocateUITests/Pods-MolocateUITests.release.xcconfig"; sourceTree = "<group>"; };
 		6D2F67643E17DDA2F1E2F8D5 /* Pods-MolocateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MolocateTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MolocateTests/Pods-MolocateTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -228,7 +225,6 @@
 		C65A450C1C694AFC00E9DA6F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../../Downloads/FacebookSDKs-iOS-20160115/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		C65A450D1C694AFC00E9DA6F /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../Downloads/FacebookSDKs-iOS-20160115/FBSDKShareKit.framework"; sourceTree = "<group>"; };
 		C65A45131C694E8D00E9DA6F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		C65C4F741C8E20B300DB5068 /* CaptureCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureCollectionCell.swift; sourceTree = "<group>"; };
 		C65CD04E1D8C3A8A008E264E /* FilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterController.swift; path = Molocate/FilterController.swift; sourceTree = "<group>"; };
 		C66743821CEB84410020D514 /* SideProfilePic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideProfilePic.swift; sourceTree = "<group>"; };
 		C66E37DE1D52306F0015F602 /* collection3thCameraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = collection3thCameraCell.swift; sourceTree = "<group>"; };
@@ -405,7 +401,6 @@
 			children = (
 				C6F9B5C91C80DDF400C7E9FC /* NotificationsViewController.swift */,
 				E3F4673C1CC03F02005F8434 /* MolocateNotificationCell.swift */,
-				C68872851C8CED2800BDBE00 /* OptionCell.swift */,
 			);
 			name = NotificationsView;
 			sourceTree = "<group>";
@@ -608,6 +603,7 @@
 		C6F7B26E1C1351CF0062E408 /* ProfileViews */ = {
 			isa = PBXGroup;
 			children = (
+				C68872851C8CED2800BDBE00 /* OptionCell.swift */,
 				E38CFE0B1DB904ED0013C2FD /* Cells */,
 				38E621051C90D9AB00FB1AD5 /* EditProfile.swift */,
 				C69B823E1CA0D6F5008658CF /* OneVideo.swift */,
@@ -670,7 +666,6 @@
 				C638AFF61C9C80B3003085E8 /* LikeVideoCell.swift */,
 				C6DA6BE11C4332D100E24392 /* VideoCell.swift */,
 				C67C444E1C75D69700FCB157 /* MyCollectionViewCell.swift */,
-				38EAEA5F1CF10A5B0053249F /* EventCell.swift */,
 				388173F61C97ABE20064EBB5 /* CommentCell.swift */,
 			);
 			name = Cells;
@@ -703,7 +698,6 @@
 			isa = PBXGroup;
 			children = (
 				C6D4C18D1D55F0F3005FBC9D /* searchCameraCell.swift */,
-				C65C4F741C8E20B300DB5068 /* CaptureCollectionCell.swift */,
 				C66E37DE1D52306F0015F602 /* collection3thCameraCell.swift */,
 			);
 			name = Cells;
@@ -1119,7 +1113,6 @@
 				C6D2BB3B1D4A6FE9000AE25E /* profileVenue.swift in Sources */,
 				C67787421D50279B00DF8AED /* profileVenue3rdCell.swift in Sources */,
 				E3A2CD841D14630200CB4C7A /* FacebookFriends.swift in Sources */,
-				C65C4F751C8E20B300DB5068 /* CaptureCollectionCell.swift in Sources */,
 				C63629491CCCEE210071E6BF /* SearchUsername.swift in Sources */,
 				E3F57EE51CFF3BFD007C3DF7 /* ActiveType.swift in Sources */,
 				C66743831CEB84410020D514 /* SideProfilePic.swift in Sources */,
@@ -1160,7 +1153,6 @@
 				C6D0CDF31C44200F006AAFF0 /* TableViewCellFollowerFollowing.swift in Sources */,
 				C65CD04F1D8C3A8A008E264E /* FilterController.swift in Sources */,
 				3871AAA31C9488BA00DDD83E /* SideCell.swift in Sources */,
-				38EAEA601CF10A5C0053249F /* EventCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
