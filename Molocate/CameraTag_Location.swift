@@ -155,8 +155,8 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
         updateSearch(word: "")
         super.touchesBegan(touches, with: event)
     }
-    
-    @IBAction func backButton(sender: AnyObject) {
+    @IBAction func backButton(_ sender: AnyObject) {
+ 
         //        let alertController = UIAlertController(title: "Emin misiniz?", message: "Geriye giderseniz videonuz silinecektir.", preferredStyle: .Alert)
         //
         //        let cancelAction = UIAlertAction(title: "Vazgeç", style: .Cancel) { (action) in
