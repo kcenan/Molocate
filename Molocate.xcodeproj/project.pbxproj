@@ -85,7 +85,6 @@
 		C6BA0A151BFA422B0091E088 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BA0A141BFA422B0091E088 /* libz.tbd */; };
 		C6BA0A171BFA423E0091E088 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BA0A161BFA423E0091E088 /* libsqlite3.tbd */; };
 		C6C5DA4C1C951B6F00DC16EF /* leftarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C6C5DA4B1C951B6F00DC16EF /* leftarrow.png */; };
-		C6CBA4FF1C876EC300AE65AD /* ProfileOther.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CBA4FE1C876EC300AE65AD /* ProfileOther.swift */; };
 		C6D06F151D52263D00B8DEC4 /* CameraTag_Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D06F141D52263D00B8DEC4 /* CameraTag_Location.swift */; };
 		C6D0CDF31C44200F006AAFF0 /* TableViewCellFollowerFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D0CDF21C44200F006AAFF0 /* TableViewCellFollowerFollowing.swift */; };
 		C6D0D2B81C8BD74F00462BB7 /* FacebookButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C6D0D2B71C8BD74F00462BB7 /* FacebookButton.png */; };
@@ -255,7 +254,6 @@
 		C6BA0A141BFA422B0091E088 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C6BA0A161BFA423E0091E088 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C6C5DA4B1C951B6F00DC16EF /* leftarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leftarrow.png; sourceTree = "<group>"; };
-		C6CBA4FE1C876EC300AE65AD /* ProfileOther.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileOther.swift; sourceTree = "<group>"; };
 		C6D06F141D52263D00B8DEC4 /* CameraTag_Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraTag_Location.swift; sourceTree = "<group>"; };
 		C6D0CDF21C44200F006AAFF0 /* TableViewCellFollowerFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCellFollowerFollowing.swift; sourceTree = "<group>"; };
 		C6D0D2B71C8BD74F00462BB7 /* FacebookButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FacebookButton.png; sourceTree = "<group>"; };
@@ -597,7 +595,6 @@
 				C69B823E1CA0D6F5008658CF /* OneVideo.swift */,
 				C61023151C1B407600E9CA73 /* Followers.swift */,
 				E333A2231CEB7B0D0003D781 /* MyProfile.swift */,
-				C6CBA4FE1C876EC300AE65AD /* ProfileOther.swift */,
 				C6D785421D05FB3000DA59B3 /* profileUser.swift */,
 				C6F7B2641C134FAF0062E408 /* Tagged.swift */,
 				C6F7B26C1C1351BB0062E408 /* Tagged.xib */,
@@ -1092,7 +1089,6 @@
 				E3BF835D1CFC613A00EC508A /* TimelineController.swift in Sources */,
 				C6DA6BE21C4332D100E24392 /* VideoCell.swift in Sources */,
 				C61199C01CCAD4FB00DF70F3 /* S3Upload.swift in Sources */,
-				C6CBA4FF1C876EC300AE65AD /* ProfileOther.swift in Sources */,
 				C62E31081D08F79200BE8377 /* venueInCamera.swift in Sources */,
 				C6D2BB3B1D4A6FE9000AE25E /* profileVenue.swift in Sources */,
 				C67787421D50279B00DF8AED /* profileVenue3rdCell.swift in Sources */,

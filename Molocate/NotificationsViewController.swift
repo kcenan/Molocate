@@ -89,12 +89,13 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         cell.fotoButton.layer.masksToBounds = false
         cell.fotoButton.layer.borderColor = profileBackgroundColor.cgColor
         cell.fotoButton.backgroundColor = profileBackgroundColor
+        cell.fotoButton.layoutIfNeeded()
         cell.fotoButton.layer.cornerRadius = cell.fotoButton.frame.height/2
         cell.fotoButton.clipsToBounds = true
         cell.fotoButton.tag = indexPath.row
         
         if(notificationArray[indexPath.row].picture_url?.absoluteString != ""){
-            cell.fotoButton.sd_setImage(with: notificationArray[indexPath.row].picture_url, for: UIControlState.normal)
+            cell.fotoButton.sd_setImage(with: notificationArray[indexPath.row].picture_url, for: UIControlState.normal, placeholderImage: UIImage(named: "profile")!)
         } else {
             cell.fotoButton.setImage(UIImage(named: "profile"), for: UIControlState())
         }
@@ -168,7 +169,8 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.shared.beginIgnoringInteractionEvents()
-        mine = false
+        
+        
         
         let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
@@ -225,7 +227,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate , UITabl
             activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
             self.view.addSubview(activityIndicator)
             activityIndicator.startAnimating()
-            mine = false
+            
             
             UIApplication.shared.beginIgnoringInteractionEvents()
             

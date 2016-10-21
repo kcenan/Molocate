@@ -133,14 +133,15 @@ class likeVideo: UIViewController, UITableViewDelegate, UITableViewDataSource  {
         activityIndicator.startAnimating()
         
         UIApplication.shared.beginIgnoringInteractionEvents()
+        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
         
         if users[buttonRow].username != MoleCurrentUser.username{
-            mine = false
+            controller.isItMyProfile = false
         }else{
-            mine = true
+            controller.isItMyProfile = true
         }
         
-        let controller:profileUser = self.storyboard!.instantiateViewController(withIdentifier: "profileUser") as! profileUser
+
         
         self.navigationController?.pushViewController(controller, animated: true)
         MolocateAccount.getUser(users[buttonRow].username) { (data, response, error) -> () in
