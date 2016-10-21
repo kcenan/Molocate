@@ -94,7 +94,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             NotificationCenter.default.post(name: Notification.Name(rawValue: "closeProfile"), object: nil)
         }
         self.myRefreshControl = UIRefreshControl()
-        self.myRefreshControl.addTarget(self, action: #selector(TimelineController.refresh(_:refreshUrl:)), for: UIControlEvents.valueChanged)
+        self.myRefreshControl.addTarget(self, action: #selector(TimelineController.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(myRefreshControl)
 
         switch type {
@@ -241,8 +241,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         }
     }
 
-    func refresh(_ sender:AnyObject, refreshUrl: URL = URL(string: "")!){
-
+    func refresh(){
+        
         
         refreshing = true
         self.player1?.stop()
