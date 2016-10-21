@@ -42,10 +42,11 @@ class sideProfilePic: UITableViewCell {
         contentView.addSubview(username)
         
         profilePhoto = UIImageView()
-        let image: UIImage = UIImage(named: "profilepic.png")!
+        let image: UIImage = UIImage(named: "profile")!
         profilePhoto = UIImageView(image: image)
         profilePhoto.layer.borderWidth = 0.5
         profilePhoto.layer.masksToBounds = false
+        profilePhoto.layoutIfNeeded()
         profilePhoto.layer.borderColor = UIColor.clear.cgColor
         profilePhoto.frame = CGRect (x: screenSize.size.width / 10 , y: 36 , width: screenSize.size.width * 2 / 10 ,  height: screenSize.size.width * 2 / 10)
         profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2

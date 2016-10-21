@@ -292,12 +292,13 @@ class profileUser: UIViewController,UITableViewDelegate , UITableViewDataSource,
             cell.profilePhoto.layer.masksToBounds = false
             cell.profilePhoto.layer.borderColor = UIColor.white.cgColor
             cell.profilePhoto.backgroundColor = profileBackgroundColor
+            cell.profilePhoto.layoutIfNeeded()
             cell.profilePhoto.layer.cornerRadius = cell.profilePhoto.frame.height/2
             cell.profilePhotoPressed.addTarget(self, action: #selector(profileUser.photoPressed), for: UIControlEvents.touchUpInside)
             cell.profilePhoto.clipsToBounds = true
             cell.profilePhoto.tag = indexPath.row
             if(classUser.profilePic?.absoluteString != ""){
-                cell.profilePhoto.sd_setImage(with: classUser.profilePic)
+                cell.profilePhoto.sd_setImage(with: classUser.profilePic, placeholderImage: UIImage(named: "profile")!)
                 
             }else{
                 cell.profilePhoto.image = UIImage(named: "profile")!
