@@ -67,6 +67,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     func initGui(){
+       
         view.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-190)
         likeHeart = UIImageView(image:
             UIImage(named: "favorite"))
@@ -103,7 +104,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
    
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.scrollToTop), name: "scrollToTop", object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimelineController.prepareForRetry), name: "prepareForRetry", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Added.prepareForRetry), name: "prepareForRetry", object: nil)
 
     }
     
@@ -635,109 +636,109 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if !pressedLike && !pressedFollow {
-            let cell = videoCell(style: UITableViewCellStyle.value1, reuseIdentifier: "customCell")
+        if !pressedLike && !pressedFollow && indexPath.row < videoArray?.count {
+            let cell = videoCell(style: UITableViewCellStyle.value1, reuseIdentifier: "timelineCell")
+            cell.initialize(indexPath.row, videoInfo:  (videoArray?[indexPath.row])!)
             
-            
-            cell.initialize(indexPath.row, videoInfo: (videoArray?[indexPath.row])!)
-            
-            cell.shareButton.addTarget(self, action: #selector(Added.pressedShare(_:)), for: .touchUpInside)
-            
-            cell.placeName.addTarget(self, action: #selector(Added.pressedPlace(_:)), for: UIControlEvents.touchUpInside)
-            
-           
-            if !isItMyProfile{
             cell.Username.addTarget(self, action: #selector(Added.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
+            cell.placeName.addTarget(self, action: #selector(Added.pressedPlace(_:)), for: UIControlEvents.touchUpInside)
             cell.profilePhoto.addTarget(self, action: #selector(Added.pressedUsername(_:)), for: UIControlEvents.touchUpInside)
-            }
             cell.commentCount.addTarget(self, action: #selector(Added.pressedComment(_:)), for: UIControlEvents.touchUpInside)
-         
-         
-            cell.followButton.isHidden = true
-            cell.followButton.isEnabled = false
+            
+            cell.resendButton.addTarget(self, action: #selector(Added.retryRequest(_:)), for: UIControlEvents.touchUpInside)
+            cell.deleteButton.addTarget(self, action: #selector(Added.deleteVideo(_:)), for: UIControlEvents.touchUpInside)
+            
+            if(videoArray?[indexPath.row].isFollowing==0 && videoArray?[indexPath.row].username != MoleCurrentUser.username){
+                cell.followButton.addTarget(self, action: #selector(Added.pressedFollow(_:)), for: UIControlEvents.touchUpInside)
+            }else{
+                cell.followButton.isHidden = true
+            }
             
             cell.likeButton.addTarget(self, action: #selector(Added.pressedLike(_:)), for: UIControlEvents.touchUpInside)
             
-            
+            cell.likeCount.setTitle("\(videoArray?[indexPath.row].likeCount)", for: UIControlState())
+            cell.commentCount.setTitle("\(videoArray?[indexPath.row].commentCount)", for: UIControlState())
             cell.commentButton.addTarget(self, action: #selector(Added.pressedComment(_:)), for: UIControlEvents.touchUpInside)
             cell.reportButton.addTarget(self, action: #selector(Added.pressedReport(_:)), for: UIControlEvents.touchUpInside)
+            cell.shareButton.addTarget(self, action: #selector(Added.pressedShare(_:)), for: UIControlEvents.touchUpInside)
             cell.likeCount.addTarget(self, action: #selector(Added.pressedLikeCount(_:)), for: UIControlEvents.touchUpInside)
-            let tap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.doubleTapped(_:) ));
+            let tap = UITapGestureRecognizer(target: self, action:#selector(Added.doubleTapped(_:) ));
             tap.numberOfTapsRequired = 2
             cell.contentView.addGestureRecognizer(tap)
             cell.contentView.tag = indexPath.row
-            let playtap = UITapGestureRecognizer(target: self, action:#selector(TimelineController.playTapped(_:) ));
+            let playtap = UITapGestureRecognizer(target: self, action:#selector(Added.playTapped(_:) ));
             playtap.numberOfTapsRequired = 1
             cell.contentView.addGestureRecognizer(playtap)
             
+            //cell.videoComment.handleMentionTap { userHandle in Added.pressedUsername(userHandle, profilePic: nil, isFollowing: false)}
+            
+            
+            
             playtap.require(toFail: tap)
-
+            
+            
             let thumbnailURL = self.videoArray?[indexPath.row].thumbnailURL
+            
             if(thumbnailURL?.absoluteString != ""){
                 cell.cellthumbnail.sd_setImage(with: thumbnailURL)
-                //print("burda")
+                //////print("burda")
             }else{
                 cell.cellthumbnail.image = UIImage(named: "Mole")!
             }
             
-            
-            if (videoArray?[indexPath.row].isUploading)! {
-                let myprogress = progressBar==nil ? 0.0:(progressBar?.progress)!
-                progressBar = UIProgressView(frame: cell.label3.frame)
-                progressBar?.progress = myprogress
-                cell.contentView.addSubview(progressBar!)
-            }
-            
-            var trueURL: URL?
-            if !isScrollingFast {
+            if !isScrollingFast || (self.tableView?.contentOffset.y == 0)  {
                 
-            if dictionary.object(forKey: self.videoArray?[indexPath.row].id) != nil {
-                trueURL = (dictionary.object(forKey: self.videoArray?[indexPath.row].id) as? URL)!
-            } else {
-                let url = self.videoArray?[indexPath.row].urlSta?.absoluteString
-                if((url?[(url?.startIndex)!])! == "h") {
-                    trueURL = self.videoArray?[indexPath.row].urlSta!
-                    DispatchQueue.main.async {
-                        myCache.fetch(URL:(self.videoArray?[indexPath.row].urlSta!)!).onSuccess{ NSData in
-                            ////print("hop")
-                            let url = self.videoArray?[indexPath.row].urlSta?.absoluteString
-                            let path = URL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
-                            let cached = DiskCache(path: path.absoluteString).path(forKey: url!)
-                            let file = URL(fileURLWithPath: cached)
-                            dictionary.setObject(file, forKey: self.videoArray?[indexPath.row].id as! NSCopying)
-                            
+                var trueURL = URL(string: "")
+                if dictionary.object(forKey: self.videoArray?[indexPath.row].id) != nil {
+                    trueURL = dictionary.object(forKey: self.videoArray?[indexPath.row].id) as? URL
+                } else {
+                    let url = self.videoArray?[indexPath.row].urlSta?.absoluteString
+                    if(url?.characters.first! == "h") {
+                        trueURL = self.videoArray?[indexPath.row].urlSta
+                        DispatchQueue.main.async {
+                            myCache.fetch(URL:(self.videoArray?[indexPath.row].urlSta!)! ).onSuccess{ NSData in
+                                ////print("hop")
+                                let url = self.videoArray?[indexPath.row].urlSta?.absoluteString
+                                let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
+                                let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url!)
+                                let file = URL(fileURLWithPath: cached)
+                                dictionary.setObject(file, forKey: self.videoArray?[indexPath.row].id as! NSCopying)
+                                
+                            }
                         }
+                    }else{
+                        trueURL = self.videoArray?[indexPath.row].urlSta
                     }
-                }else{
-                    trueURL = self.videoArray?[indexPath.row].urlSta!
                 }
-            }
-                
                 if !cell.hasPlayer {
+                    
+                    
+                    if indexPath.row % 2 == 1 {
+                        
+                        self.player1?.setUrl(trueURL!)
+                        self.player1?.id = self.videoArray?[indexPath.row].id
+                        self.player1?.view.frame = cell.newRect
+                        self.player1?.view.layer.zPosition = 1111
+                        cell.contentView.addSubview((self.player1?.view)!)
+                        cell.hasPlayer = true
+                        
+                    }else{
+                        
+                        self.player2?.setUrl(trueURL!)
+                        self.player2?.id = self.videoArray?[indexPath.row].id
+                        self.player2?.view.frame = cell.newRect
+                        self.player2?.view.layer.zPosition = 1111
+                        cell.contentView.addSubview((self.player2?.view)!)
+                        cell.hasPlayer = true
+                    }
+                    
+                }
+                
+                //}
+                
+                //  }
+            }
             
-            if indexPath.row % 2 == 1 {
-                
-                self.player1?.setUrl(trueURL!)
-                self.player1?.id = self.videoArray?[indexPath.row].id
-                self.player1?.view.frame = cell.newRect
-                cell.contentView.addSubview((self.player1?.view)!)
-                cell.hasPlayer = true
-                
-            }else{
-                
-                self.player2?.setUrl(trueURL!)
-                self.player2?.id = self.videoArray?[indexPath.row].id
-                self.player2?.view.frame = cell.newRect
-                cell.contentView.addSubview((self.player2?.view)!)
-                cell.hasPlayer = true
-            }
-                }
-            if indexPath.row == 0 && on {
-                if self.player2?.playbackState.description != "Playing" {
-                self.player2?.playFromBeginning()
-                }
-            }
-            }
             if (videoArray?[indexPath.row].isUploading)! {
                 let myprogress = cell.progressBar.progress
                 cell.progressBar =  UIProgressView(frame: cell.label3.frame)
@@ -771,23 +772,33 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 cell.deleteButton.isEnabled = true
                 cell.progressBar.isHidden = true
             }
-
             return cell
-        } else {
+        }else if indexPath.row < videoArray?.count{
             let cell = tableView.cellForRow(at: indexPath) as! videoCell
-            if pressedLike {
-                pressedLike = false
-                cell.likeCount.setTitle("\(videoArray?[indexPath.row].likeCount)", for: UIControlState())
-                
-                if(videoArray?[indexPath.row].isLiked == 0) {
-                    cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), for: UIControlState())
-                }else{
-                    cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), for: UIControlState())
-                    cell.likeButton.tintColor = UIColor.white
-                }
+            // print("cell created")
+            if(videoArray?[indexPath.row].isLiked == 0) {
+                cell.likeButton.setBackgroundImage(UIImage(named: "likeunfilled"), for: UIControlState())
+            }else{
+                cell.likeButton.setBackgroundImage(UIImage(named: "likefilled"), for: UIControlState())
+                cell.likeButton.tintColor = UIColor.white
             }
+            
+            cell.likeCount.setTitle("\(videoArray?[indexPath.row].likeCount)", for: UIControlState())
+            
+            if !cell.followButton.isHidden && videoArray?[indexPath.row].isFollowing == 1{
+                //add animation
+                cell.followButton.setBackgroundImage(UIImage(named: "followTicked"), for: UIControlState())
+            }
+            //cell.followButton.hidden = videoArray[indexPath.row].isFollowing == 1 ? true:false
+            cell.commentCount.setTitle("\(videoArray?[indexPath.row].commentCount)", for: UIControlState())
+            return cell
+            
+            
+        }else{
+            let cell = tableView.cellForRow(at: indexPath) as! videoCell
             return cell
         }
+
         
     }
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -1289,12 +1300,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     
     override func viewDidDisappear(_ animated: Bool) {
         //self.tableView.removeFromSuperview()
-        SDImageCache.shared().cleanDisk()
-        SDImageCache.shared().clearMemory()
-        player1?.stop()
-        player1?.removeFromParentViewController()
-        player2?.stop()
-        player2?.removeFromParentViewController()
+
+
     }
     
     func sharer(_ sharer: FBSDKSharing!, didCompleteWithResults results: [AnyHashable: Any]!) {

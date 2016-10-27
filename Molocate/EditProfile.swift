@@ -365,9 +365,19 @@ class editProfile: UIViewController , UIImagePickerControllerDelegate ,UINavigat
                         MoleCurrentUser.thumbnailPic = URL(string: thumbnailUrl)!
 
                         choosedIndex = 0
-                        self.navigationController?.popViewController(animated: true)
                         self.selected = nil
                         self.thumbnail = nil
+                        MolocateAccount.EditUser({ (data, response, error) in
+                            DispatchQueue.main.async { () -> Void in
+                                if data == "success"{
+                                    choosedIndex = 0
+                                    self.navigationController?.popViewController(animated: true)
+                                }else{
+                                    self.displayAlert("Tamam", message: "Kullanıcı bilgileri değiştirilirken bir hata oluştu")
+                                    sender.isHidden = false
+                                }
+                            }
+                        })
                     }else{
                         self.displayAlert("Tamam", message: "Kullanıcı bilgileri değiştirilirken bir hata oluştu")
                         sender.isHidden = false

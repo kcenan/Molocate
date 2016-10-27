@@ -1078,7 +1078,8 @@ open class MolocateAccount {
         
         do{
             
-            let Body = ["profile_pic": MoleCurrentUser.profilePic?.absoluteString,
+        
+            let Body = [
                         "first_name": MoleCurrentUser.first_name,
                         "last_name": MoleCurrentUser.last_name,
                         "gender": MoleCurrentUser.gender,
@@ -1086,7 +1087,7 @@ open class MolocateAccount {
                         "caption":MoleCurrentUser.bio
             ]
             
-            let jsonData = try JSONSerialization.data(withJSONObject: Body, options: JSONSerialization.WritingOptions())
+            let jsonData = try JSONSerialization.data(withJSONObject: Body, options: .prettyPrinted)
             let url = URL(string: MolocateBaseUrl + "account/api/edit_user/")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -1101,7 +1102,7 @@ open class MolocateAccount {
                 let nsError = error
                     do {
                         //check result if it is succed
-                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! Dictionary<String,AnyObject>
                     
                         if result.index(forKey: "following_count") != nil {
                             

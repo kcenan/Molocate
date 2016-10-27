@@ -180,7 +180,7 @@ class videoCell: UITableViewCell {
         
         newRect = CGRect(x: 0, y: 54, width: screenSize.width, height: screenSize.width)
         cellthumbnail = UIImageView(frame: newRect)
-        self.contentView.layer.addSublayer(cellthumbnail.layer)
+        self.contentView.addSubview(cellthumbnail)
     
     }
     
