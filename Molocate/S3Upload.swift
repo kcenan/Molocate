@@ -13,204 +13,136 @@ let CognitoRegionType = AWSRegionType.usEast1
 let DefaultServiceRegionType = AWSRegionType.euCentral1
 let CognitoIdentityPoolId: String = "us-east-1:721a27e4-d95e-4586-a25c-83a658a1c7cc"
 let S3BucketName: String = "molocatebucket"
-var n = 0
 
 open class S3Upload {
+   
     var isUp = false
     var isFailed = false
-    var uploadTask:AWSS3TransferUtilityTask?
+
     var completionHandler:AWSS3TransferUtilityUploadCompletionHandlerBlock?
-    var key_id = 0
+    var expression: AWSS3TransferUtilityUploadExpression?
+    var video_id = 0
     var theRequest:VideoUploadRequest?
+    
+    init(){
+        
+        self.expression = AWSS3TransferUtilityUploadExpression()
+        self.expression?.progressBlock = { (task: AWSS3TransferUtilityTask, progress: Progress) in
+            DispatchQueue.main.async(execute: {
+                
+                if debug{print(progress.fractionCompleted)}
+                var progressInfo = Dictionary<String, Any>()
+                progressInfo["progress"] =  Float(progress.fractionCompleted)
+                progressInfo["id"] = self.video_id
+                if let i = VideoUploadRequests.index(where: {$0.id == self.video_id}) {
+                    VideoUploadRequests[i].progress = Float(progress.fractionCompleted)
+                }
+                NotificationCenter.default.post(name: TimelineController.updateProgressNotification, object:nil, userInfo: progressInfo)
+                
+            })
+        }
+        
+        self.completionHandler = {(task, error) -> Void in
+            
+            DispatchQueue.main.async(execute: {
+                if (error != nil){
+                    if !self.isFailed{
+                        self.isFailed = true
+                        let userinf = ["id":self.video_id]
+                        task.cancel()
+                        NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo:userinf )
+                        MolocateVideo.encodeGlobalVideo()
+                    }
+                    
+                    if debug {
+                        print("Failed with error")
+                        print("Error: %@",error!);
+                        
+                    }
+                }else{
+                    print(self.theRequest?.thumbnail)
+                    
+                    self.sendThumbnailandData(self.theRequest!.thumbnail, info: (self.theRequest?.JsonData)!, videoid: self.video_id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
+                        
+                        if data == "success" {
+                            self.isUp = true
+                            
+                            DispatchQueue.main.async(execute: {
+                                
+                                do {
+                                    if let i = VideoUploadRequests.index(where: {$0.id == videoid}) {
+                                        
+                                        if debug { print("video deleted with id:\(videoid)") }
+                                        try FileManager.default.removeItem(at: VideoUploadRequests[i].uploadRequest.body)
+                                        
+                                        NotificationCenter.default.post(name: TimelineController.uploadFinishedNotification, object: nil, userInfo: ["id": i])
+                                        VideoUploadRequests.remove(at: i)
+                                        MolocateVideo.encodeGlobalVideo()
+                                        
+                                        if VideoUploadRequests.count == 0 {
+                                            UserDefaults.standard.set(false, forKey: "isStuck")
+                                        }
+                                        MyS3Uploads.remove(at: i)
+                                    }
+                                } catch _ {
+                                    if debug { print(error) }
+                                }
+                                
+                            })
+                            
+                        }else if !self.isFailed{
+                            self.isFailed = true
+                            let userinf = ["id":videoid]
+                            task.cancel()
+                            NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo:userinf )
+                            MolocateVideo.encodeGlobalVideo()
+                        }
+                        
+                    })
+                    
+                }
+                
+            })
+        }
+
+    }
+    
+    
     
     func upload(_ retry:Bool = false, id:Int,uploadRequest: AWSS3TransferManagerUploadRequest, fileURL: String, fileID: String, json:  [String:AnyObject], thumbnail_image: Data) {
         
-        print("upload started with id:\(id)")
-        isUp = false
-        isFailed = false
-        key_id = id
-       
+        if debug { print("upload started with id:\(id)")};
+        
+        self.isUp = false
+        self.isFailed = false
+        self.video_id = id
+        
         if !retry {
             do{
-                
-                //var image = thumbnail_image
-//                
-//                if image == nil {
-//                    let data = NSData(contentsOfURL: (VideoUploadRequests[id].thumbUrl))
-//                    let nimage = UIImage(data: data!)
-//                    image = UIImageJPEGRepresentation(nimage!, 0.5)
-//
-//                }
-                let outputFileName = "thumbnail.jpg"
-        
-                let outputFilePath: String = (NSTemporaryDirectory() as NSString).appendingPathComponent(outputFileName)
-                
-                try thumbnail_image.write(to: URL(fileURLWithPath: outputFilePath), options: .atomicWrite )
-                
-                let thumb = URL(fileURLWithPath: outputFilePath)
-                
-              
-                
-
-                print("VideoUploadRequest created with id:\(id)")
-                
-                theRequest = VideoUploadRequest(filePath: fileURL,thumbUrl: thumb, thumbnail: thumbnail_image, JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false)
+                self.theRequest = VideoUploadRequest(filePath: fileURL, thumbnail: thumbnail_image, JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false, progress: 0.0)
                 
                 VideoUploadRequests.insert(theRequest!, at:0)
-              
                 
                 MolocateVideo.encodeGlobalVideo()
                 
             }catch{
-               // print("uploadRequest cannot created")
+                if debug { print("uploadRequest cannot created") }
             }
         }
         
         if VideoUploadRequests.count != 0 {
             UserDefaults.standard.set(false, forKey: "isStuck")
         }
-        
-        let expression = AWSS3TransferUtilityUploadExpression()
-      
-        expression.progressBlock = { (task: AWSS3TransferUtilityTask, progress: Progress) in
-            
-            DispatchQueue.main.async(execute: {
-               
-                if self.uploadTask == nil {
-                    self.uploadTask = task
-                }
-               // print("Progress: \(Float(progress.fractionCompleted))")
-                
-                
-                if progress.fractionCompleted <= 1.0 {
-       
-                    var progressInfo = Dictionary<String, Any>()
-                    
-                    progressInfo["progress"] =  Float(progress.fractionCompleted)
-                    progressInfo["id"] = id
-                    
-                   //print("progress updated with id:\(id)")
-                    
-                
-                    NotificationCenter.default.post(name: TimelineController.updateProgressNotification, object:nil, userInfo: progressInfo)
-                    
-  
-                }else{
-                    
-                }
-                
-            })
-        }
-        
-        self.completionHandler = {(task, error) -> Void in
-            DispatchQueue.main.async(execute: {
-                if ((error) != nil){
-                    print("Failed with error")
-                    print("Error: %@",error!);
-                }else{
-                    let uploadTask = task
-                    // Do something with uploadTask.
-    
-           
-                    print("No error")
-                    self.sendThumbnailandData(self.theRequest!.thumbnail, info: json, videoid:id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
-                        if data == "success" {
-                            self.isUp = true
-                         DispatchQueue.main.async(execute: {
-                            do {
-                              
-                                CaptionText = ""
-                 
-                                if let i = VideoUploadRequests.index(where: {$0.id == videoid}) {
-                                    print("video deleted with id:\(id)")
-                                    try FileManager.default.removeItem(at: VideoUploadRequests[i].uploadRequest.body)
-                                   
-                                    NotificationCenter.default.post(name: TimelineController.uploadFinishedNotification, object: nil, userInfo: ["id": videoid])
-                                    VideoUploadRequests.remove(at: i)
-                                    
-                                    MolocateVideo.encodeGlobalVideo()
-                                    
-                                    if VideoUploadRequests.count == 0 {
-                                        UserDefaults.standard.set(false, forKey: "isStuck")
-                                    }
-                                    
-                                    
-                                    MyS3Uploads.remove(at: i)
-                                   
-                                    
-                                }
-                                
-                                
-                                
-                                n = 0
-               
-                            
-                               
-                            } catch _ {
-                        print(error)
-                            }
-                            
-                         })
-                        }else if !self.isFailed{
-                            self.isFailed = true
-                            let userinf = ["id":videoid]
-                            NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo:userinf )
-                            MolocateVideo.encodeGlobalVideo()
-                        }
-                    })
-
-                }
-            
-            })
-        }
-
       
         let transferUtility = AWSS3TransferUtility.default()
         transferUtility.configuration.timeoutIntervalForResource = 50.0
+        
         transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression, completionHander: completionHandler)
-       
-//        let seconds = 50.0
-//        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-//            // your function here
-//            if !self.isUp && !self.isFailed{
-//                //print("cancel")
-//                if (transferUtility.getUploadTasks().result?.count)! >= 0 {
-//                    
-//                    let user_info = ["id":id]
-//                    NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo: user_info)
-//                    MolocateVideo.encodeGlobalVideo()
-//                }
-//                
-//            }
-//            
-//        }
 
-
-        
-
- 
     }
     
 
-    
-    
-    func cancelUploadRequest(_ uploadRequest: AWSS3TransferManagerUploadRequest) {
-    
-        uploadRequest.cancel().continue({ (task) -> AnyObject! in
-            if task.error != nil {
-                print("cancel() failed: [\(task.error)]")
-            }
-            if task.exception != nil {
-               print("cancel() failed: [\(task.exception)]")
-            }
-            return nil
-        })
-        
-    }
-    
     func sendThumbnailandData(_ thumbnail: Data, info: [String:AnyObject], videoid: Int, completionHandler: @escaping (_ data: String?, _ thumbnailUrl: String, _ videoid: Int, _ response: URLResponse?, _ error: NSError?) -> ()){
-        
         
         var string_info:Data = Data()
         
@@ -218,10 +150,8 @@ open class S3Upload {
              string_info = try JSONSerialization.data(withJSONObject: info, options:  JSONSerialization.WritingOptions.prettyPrinted)
         }catch{
             
-           // print("Errrorororororo")
+            print("Error in senThumbnailanData Json Serialization")
         }
-        
-    
         
         let headers = [
             "content-type": "multipart/form-data; boundary=---011000010111000001101001",
@@ -247,7 +177,6 @@ open class S3Upload {
         ]
         
         let boundary = "---011000010111000001101001"
-        
         
         let postData = NSMutableData()
         
@@ -286,19 +215,18 @@ open class S3Upload {
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             do{
-                progressBar?.isHidden = true
+                
                 let data_string  = String(data: data!, encoding: String.Encoding.utf8)!
-               // print("data_string:" + data_string)
                 if data_string[data_string.startIndex] == "{" {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
-                    
                     if (error != nil) {
                         completionHandler("error" , "",0,response , error as NSError?  )
                     } else {
                         if result.index(forKey: "thumbnail") != nil {
-                        completionHandler("success", result["thumbnail"]! as! String,videoid,response , error as NSError?  )
+                            
+                            completionHandler("success", result["thumbnail"]! as! String,videoid,response , error as NSError?  )
                         }else{
-                        completionHandler("error" , "",0,response , nil  )
+                            completionHandler("error" , "",0,response , nil  )
                         }
                     }
                 }else{
@@ -313,9 +241,22 @@ open class S3Upload {
         
     }
     
-
-
-
-
+    
+    //
+    //
+    //    func cancelUploadRequest(_ uploadRequest: AWSS3TransferManagerUploadRequest) {
+    //
+    //        uploadRequest.cancel().continue({ (task) -> AnyObject! in
+    //            if task.error != nil {
+    //                print("cancel() failed: [\(task.error)]")
+    //            }
+    //            if task.exception != nil {
+    //               print("cancel() failed: [\(task.exception)]")
+    //            }
+    //            return nil
+    //        })
+    //        
+    //    }
+    //    
 
 }

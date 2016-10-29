@@ -135,7 +135,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                         queu.location = loc[0]["name"] as? String
                         queu.locationID = loc[0]["id"] as? String
                         queu.isFollowing = 1
-                        queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
+                        //queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
+                        queu.thumbnailImage = UIImage(data: VideoUploadRequests[i].thumbnail)
                         queu.id = "\(VideoUploadRequests[i].id)"
                         if VideoUploadRequests[i].isFailed {
                             queu.isFailed = VideoUploadRequests[i].isFailed

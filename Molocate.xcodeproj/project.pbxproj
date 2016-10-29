@@ -698,6 +698,7 @@
 		E3F57EE01CFF3AED007C3DF7 /* MolocateClasses */ = {
 			isa = PBXGroup;
 			children = (
+				C61199BF1CCAD4FB00DF70F3 /* S3Upload.swift */,
 				E33DCC701CB3FE5D0081C0DF /* MolocateDevice.swift */,
 				E33DCC6A1CB3F73C0081C0DF /* MolocatePlace.swift */,
 				E33DCC681CB3F5250081C0DF /* MolocateVideo.swift */,
@@ -712,7 +713,6 @@
 		E3F57EE11CFF3B5A007C3DF7 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				C61199BF1CCAD4FB00DF70F3 /* S3Upload.swift */,
 				C6BA05151D13F97900AB89FF /* ActionData.swift */,
 				C6328DBA1DABA3AF008B204D /* Player.swift */,
 				C6BA05111D13F90400AB89FF /* Twitter.swift */,

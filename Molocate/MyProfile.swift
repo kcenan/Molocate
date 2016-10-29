@@ -117,7 +117,8 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
                             queu.location = loc[0]["name"] as? String
                             queu.locationID = loc[0]["id"] as? String
                             queu.isFollowing = 1
-                            queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
+                            //queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
+                            queu.thumbnailImage = UIImage(data: VideoUploadRequests[i].thumbnail)
                             queu.isUploading = true
                             self.AVc.videoArray?.append(queu)
                             
@@ -176,9 +177,10 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
         return true
     }
     
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        
+
+    func viewWillDisappear(animated: Bool) {
+        self.AVc.pausePlayers()
+        self.BVc.pausePlayers()
     }
     
     func RefreshGuiWithData(){
@@ -1022,9 +1024,7 @@ class myProfile: UIViewController,UITableViewDelegate , UITableViewDataSource,UI
 //        }
 //    }
 //
-//    override func viewDidDisappear(animated: Bool) {
-//        
-//    }
+
 //    
 //    override func didReceiveMemoryWarning() {
 //        super.didReceiveMemoryWarning()

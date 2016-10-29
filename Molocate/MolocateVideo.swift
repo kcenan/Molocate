@@ -30,21 +30,21 @@ struct MoleVideoInformation{
     var isUploading = false
     var isFailed = false
     var deletable = false
+    var thumbnailImage: UIImage?
 }
 
 struct VideoUploadRequest{
     var filePath:String?
-    var thumbUrl: URL?
     var thumbnail:Data
     var JsonData: [String:AnyObject]
     var fileId:String?
     var uploadRequest: AWSS3TransferManagerUploadRequest
     var id = 0
     var isFailed = false
+    var progress:Float = 0.0
     func encode() -> Dictionary<String, AnyObject> {
         var dictionary : Dictionary = Dictionary<String, AnyObject>()
         dictionary["filePath"] = filePath as AnyObject?
-        dictionary["thumbUrl"] = thumbUrl?.absoluteString as AnyObject?
         dictionary["JsonData"] = JsonData as AnyObject?
         dictionary["thumbnail"] = thumbnail as AnyObject?
         dictionary["uploadRequestBody"] = uploadRequest.body.absoluteString as AnyObject?
@@ -104,7 +104,6 @@ open class MolocateVideo {
     class func decodeVideoUploadRequest(_ dictionary: Dictionary<String, AnyObject>) -> VideoUploadRequest{
        
         let filePath = dictionary["filePath"] as! String
-        let thumbUrl:URL = URL(string: dictionary["thumbUrl"] as! String)!
         let JsonData = dictionary["JsonData"] as! [String:AnyObject]
         let thumbnail = dictionary["thumbnail"] as! Data
         let uploadRequest = AWSS3TransferManagerUploadRequest()
@@ -115,7 +114,7 @@ open class MolocateVideo {
         let id = dictionary["id"] as! Int
         let isFailed = true
         
-        return VideoUploadRequest(filePath: filePath, thumbUrl: thumbUrl, thumbnail: thumbnail, JsonData: JsonData, fileId: fileId, uploadRequest: uploadRequest!, id: id, isFailed: isFailed )
+        return VideoUploadRequest(filePath: filePath,  thumbnail: thumbnail, JsonData: JsonData, fileId: fileId, uploadRequest: uploadRequest!, id: id, isFailed: isFailed, progress: 0.0)
         
     }
     class func getComments(_ videoId: String, completionHandler: @escaping (_ data: Array<MoleVideoComment>, _ response: URLResponse?, _ error: NSError?, _ count: Int?, _ next: String?, _ previous: String?) -> ()) {

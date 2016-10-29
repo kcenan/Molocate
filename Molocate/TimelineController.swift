@@ -182,7 +182,8 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                         queu.location = loc[0]["name"] as? String
                         queu.locationID = loc[0]["id"] as? String
                         queu.isFollowing = 1
-                        queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
+                        //queu.thumbnailURL = (VideoUploadRequests[i].thumbUrl)!
+                        queu.thumbnailImage = UIImage(data: VideoUploadRequests[i].thumbnail)
                         queu.id = "\(VideoUploadRequests[i].id)"
                         if VideoUploadRequests[i].isFailed {
                             queu.isFailed = VideoUploadRequests[i].isFailed
@@ -190,6 +191,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
                         }else{
                             queu.isUploading = true
                         }
+                
              
                         self.videoArray.append(queu)
                     }
@@ -324,14 +326,14 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             playtap.require(toFail: tap)
 
 
-            let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL
-
-            if(thumbnailURL?.absoluteString != ""){
+            if let thumbnailURL = self.videoArray[indexPath.row].thumbnailURL{
                 cell.cellthumbnail.sd_setImage(with: thumbnailURL)
-                //////print("burda")
+            }else if let image = self.videoArray[indexPath.row].thumbnailImage{
+                cell.cellthumbnail.image = image
             }else{
-                cell.cellthumbnail.image = UIImage(named: "Mole")!
+                cell.cellthumbnail.image = UIImage(named: "Mole")
             }
+
 
             if !isScrollingFast || (self.tableView.contentOffset.y == 0)  {
                
@@ -385,9 +387,9 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
             }
             
             if videoArray[indexPath.row].isUploading {
-                let myprogress = cell.progressBar.progress
+            
                 cell.progressBar =  UIProgressView(frame: cell.label3.frame)
-                cell.progressBar.progress = myprogress
+                cell.progressBar.progress =  VideoUploadRequests[indexPath.row].progress
                 cell.contentView.addSubview(cell.progressBar)
             }else if videoArray[indexPath.row].isFailed {
                 

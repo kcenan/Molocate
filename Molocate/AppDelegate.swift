@@ -59,12 +59,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let credentialProvider = AWSCognitoCredentialsProvider(
             regionType: CognitoRegionType,
             identityPoolId: CognitoIdentityPoolId)
+        
         let configuration1 = AWSServiceConfiguration(
             region: DefaultServiceRegionType,
             credentialsProvider: credentialProvider)
         
         AWSServiceManager.default().defaultServiceConfiguration = configuration1
-        AWSLogger.default().logLevel = .none
+        AWSLogger.default().logLevel = .debug
         // [Optional] Track statistics around application opens.
         let client = Client(clientID: "HKPVG4H554DNGF002XP30XKS1UL1MLX1XLRPZIZVBVMET5HX",
             clientSecret:   "1XXP2QTMACGMW5GSU4GRXZ2PZRLM5G1WEFM5EWQCBWKWCYRG",
