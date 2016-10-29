@@ -69,7 +69,9 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
     var type = ""
     var placeId = ""
 
-
+    static let updateProgressNotification = Notification.Name("updateProgressNotification")
+    static let uploadFinishedNotification = Notification.Name("uploadFinishedNotification")
+    static let prepareForRetryNotification = Notification.Name("prepeareForRetryNotification")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,11 +122,11 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
         NotificationCenter.default.addObserver(self, selector: #selector(TimelineController.scrollToTop), name: NSNotification.Name(rawValue: "scrollToTop"), object: self)
 
      
-        NotificationCenter.default.addObserver(self, selector: #selector(TimelineController.prepareForRetry), name: NSNotification.Name(rawValue: "prepareForRetry"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TimelineController.prepareForRetry(_:)), name: TimelineController.prepareForRetryNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(TimelineController.updateProgress), name: NSNotification.Name(rawValue: "updateProgress"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TimelineController.updateProgress(_:)), name: TimelineController.updateProgressNotification, object: nil)
         
-          NotificationCenter.default.addObserver(self, selector: #selector(TimelineController.uploadFinished), name: NSNotification.Name(rawValue: "uploadFinished"), object: nil)
+          NotificationCenter.default.addObserver(self, selector: #selector(TimelineController.uploadFinished(_:)), name: TimelineController.uploadFinishedNotification, object: nil)
     }
     
 //    
@@ -1109,7 +1111,7 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
    
     func prepareForRetry(_ notification: Notification){
         let userInfo = (notification as NSNotification).userInfo
-        if let video_id = userInfo!["id"] as? Int{
+        if let video_id = userInfo?["id"] as? Int{
             if let i = VideoUploadRequests.index(where: {$0.id == video_id}) {
                 VideoUploadRequests[i].isFailed = true
                 if type == "HomePage"{

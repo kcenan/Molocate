@@ -69,9 +69,7 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
     var categ:String!
     var kbHeight: CGFloat!
     
-    @IBAction func postVideo(sender: AnyObject) {
-        
-        
+    @IBAction func postVideo(_ sender: AnyObject) {
         if (!isLocationSelected){
             //self.postO.enabled = false
             displayAlert(title: "Dikkat", message: "Lütfen konum seçiniz.")

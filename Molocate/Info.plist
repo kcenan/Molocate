@@ -87,6 +87,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Kamera video çekerken kullanılacaktır.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Mikrofon ses kaydi için kullanılacktır.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Show your location on the map</string>
 	<key>NSPhotoLibraryUsageDescription</key>

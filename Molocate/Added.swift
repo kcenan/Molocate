@@ -119,7 +119,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                     self.videoArray = data!
                 }else if self.isItMyProfile{
                     self.videoArray?.removeAll()
-                    
+                    self.videoArray = [MoleVideoInformation]()
                     for i in 0..<VideoUploadRequests.count{
                         
                         var queu = MoleVideoInformation()

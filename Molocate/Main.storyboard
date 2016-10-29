@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Uek-31-GU9">
@@ -22,6 +23,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Uek-31-GU9">
 >>>>>>> a45d0dd... camera views some errors fix
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Uek-31-GU9">
+>>>>>>> 757b4f6... video upload
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -1386,7 +1391,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <viewControllerLayoutGuide type="bottom" id="eGN-Y7-U7W"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Mqg-1C-VJM">
-                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sN-1G-lCt">
@@ -2507,7 +2512,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <viewControllerLayoutGuide type="bottom" id="2eY-wg-2li"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ws2-r3-6sW">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -2877,7 +2882,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                                     <barButtonItem title="PAYLAŞ" id="uIe-wj-t7Q">
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="postVideo:" destination="KJV-8O-3Zu" id="9H4-ww-GJd"/>
+                                            <action selector="postVideo:" destination="KJV-8O-3Zu" id="bIF-gc-Hc1"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="0SS-DJ-q01"/>
@@ -2893,7 +2898,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                                     <barButtonItem image="leftArrow" id="rPw-x2-xdO">
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="backButton:" destination="KJV-8O-3Zu" id="P1S-Wd-UFc"/>
+                                            <action selector="backButton:" destination="KJV-8O-3Zu" id="QzC-Ex-hT5"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Y8c-iv-TgA"/>
@@ -2946,11 +2951,11 @@ These Services are operated and provided by Molocate. If you have any questions 
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="jzX-zo-IHS"/>
-                                <exclude reference="Roc-1d-PqX"/>
-                                <exclude reference="e4i-QQ-uVB"/>
                                 <exclude reference="iiU-of-9lk"/>
                                 <exclude reference="lwY-e9-68R"/>
+                                <exclude reference="Roc-1d-PqX"/>
+                                <exclude reference="e4i-QQ-uVB"/>
+                                <exclude reference="jzX-zo-IHS"/>
                             </mask>
                         </variation>
                     </view>
@@ -2958,11 +2963,11 @@ These Services are operated and provided by Molocate. If you have any questions 
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="bottomToolbar" destination="2jw-0r-CNC" id="G9u-NB-B5n"/>
-                        <outlet property="captionView" destination="G5R-7N-4H1" id="oAC-K0-mxa"/>
-                        <outlet property="mentionTable" destination="W2u-eW-Zth" id="M7r-sE-vs7"/>
-                        <outlet property="selectVenue" destination="OZ5-mm-La3" id="gSZ-YT-JnL"/>
-                        <outlet property="toolBar" destination="fqw-ly-Me1" id="asa-Fr-NbZ"/>
-                        <outlet property="venueName" destination="ONe-Gp-iLb" id="ffv-Su-tgc"/>
+                        <outlet property="captionView" destination="G5R-7N-4H1" id="u61-lR-KIi"/>
+                        <outlet property="mentionTable" destination="W2u-eW-Zth" id="AGq-Wx-mbk"/>
+                        <outlet property="selectVenue" destination="OZ5-mm-La3" id="ZhL-Rs-p57"/>
+                        <outlet property="toolBar" destination="fqw-ly-Me1" id="6K7-u5-bY5"/>
+                        <outlet property="venueName" destination="ONe-Gp-iLb" id="B8R-Rj-UVv"/>
                         <segue destination="KaE-bU-5kG" kind="show" identifier="backFrom3th" id="Dku-Wb-Giu"/>
                         <segue destination="zUC-Ih-PbK" kind="show" identifier="goTo4th" id="JHu-Fr-nOH"/>
                         <segue destination="XJp-AN-JyV" kind="show" identifier="finishUpdate" id="SZn-yz-fad"/>
@@ -3063,15 +3068,15 @@ These Services are operated and provided by Molocate. If you have any questions 
             <objects>
                 <tableViewController id="hGb-1k-zG5" customClass="SideBarController" customModule="Molocate" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="91" sectionHeaderHeight="28" sectionFooterHeight="28" id="3JI-O2-u1D">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="anM-Ny-BXk" customClass="sideCell" customModule="Molocate" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="240" height="91"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="91"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="anM-Ny-BXk" id="E3e-QF-pdg">
-                                    <frame key="frameInset" width="240" height="90"/>
+                                    <frame key="frameInset" width="375" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILq-mB-5vY">
@@ -3130,17 +3135,17 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <viewControllerLayoutGuide type="bottom" id="Deb-mb-xaX"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="m12-dZ-uLK">
-                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="54" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dol-HI-Bn0">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="8g7-hu-PdX" customClass="molocateNotificationCell" customModule="Molocate" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="54"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8g7-hu-PdX" id="FgD-9L-RNP">
-                                            <frame key="frameInset" width="600" height="53"/>
+                                            <frame key="frameInset" width="375" height="53"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UWm-na-zuH">
@@ -3228,17 +3233,17 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <viewControllerLayoutGuide type="bottom" id="OSz-RY-fS1"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5sS-Sg-M13">
-                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S2W-SU-W1a" userLabel="venueTable">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="nRD-f7-FQk">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nRD-f7-FQk" id="apf-PQ-g2y">
-                                            <frame key="frameInset" width="600" height="43"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -3760,7 +3765,7 @@ These Services are operated and provided by Molocate. If you have any questions 
                         <viewControllerLayoutGuide type="bottom" id="f1A-CJ-oPU"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pfc-9b-pOn">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CeO-Ab-j7e">
@@ -4190,7 +4195,7 @@ These Services are operated and provided by Molocate. If you have any questions 
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="SZn-yz-fad"/>
-        <segue reference="zTj-B7-GEc"/>
+        <segue reference="Czt-sH-vGP"/>
         <segue reference="Dku-Wb-Giu"/>
         <segue reference="iX5-7U-zGl"/>
         <segue reference="ON5-bH-Lzp"/>
