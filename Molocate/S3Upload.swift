@@ -9,10 +9,7 @@
 import Foundation
 import AWSS3
 
-let CognitoRegionType = AWSRegionType.usEast1
-let DefaultServiceRegionType = AWSRegionType.euCentral1
-let CognitoIdentityPoolId: String = "us-east-1:721a27e4-d95e-4586-a25c-83a658a1c7cc"
-let S3BucketName: String = "molocatebucket"
+
 
 open class S3Upload {
    
@@ -46,6 +43,7 @@ open class S3Upload {
             
             DispatchQueue.main.async(execute: {
                 if (error != nil){
+                    
                     if !self.isFailed{
                         self.isFailed = true
                         let userinf = ["id":self.video_id]
@@ -60,10 +58,10 @@ open class S3Upload {
                         
                     }
                 }else{
-                    print(self.theRequest?.thumbnail)
+
                     
                     self.sendThumbnailandData(self.theRequest!.thumbnail, info: (self.theRequest?.JsonData)!, videoid: self.video_id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
-                        
+                        print(data)
                         if data == "success" {
                             self.isUp = true
                             
@@ -77,11 +75,9 @@ open class S3Upload {
                                         
                                         NotificationCenter.default.post(name: TimelineController.uploadFinishedNotification, object: nil, userInfo: ["id": i])
                                         VideoUploadRequests.remove(at: i)
+                                       
                                         MolocateVideo.encodeGlobalVideo()
                                         
-                                        if VideoUploadRequests.count == 0 {
-                                            UserDefaults.standard.set(false, forKey: "isStuck")
-                                        }
                                         MyS3Uploads.remove(at: i)
                                     }
                                 } catch _ {
@@ -92,7 +88,7 @@ open class S3Upload {
                             
                         }else if !self.isFailed{
                             self.isFailed = true
-                            let userinf = ["id":videoid]
+                            let userinf = ["id":self.video_id]
                             task.cancel()
                             NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo:userinf )
                             MolocateVideo.encodeGlobalVideo()
@@ -107,9 +103,7 @@ open class S3Upload {
 
     }
     
-    
-    
-    func upload(_ retry:Bool = false, id:Int,uploadRequest: AWSS3TransferManagerUploadRequest, fileURL: String, fileID: String, json:  [String:AnyObject], thumbnail_image: Data) {
+    func upload(_ retry:Bool = false, id:Int,uploadRequest: AWSS3TransferManagerUploadRequest, fileURL: String, fileID: String, json:  [String:Any], thumbnail_image: Data) {
         
         if debug { print("upload started with id:\(id)")};
         
@@ -118,31 +112,19 @@ open class S3Upload {
         self.video_id = id
         
         if !retry {
-            do{
                 self.theRequest = VideoUploadRequest(filePath: fileURL, thumbnail: thumbnail_image, JsonData: json, fileId: fileID, uploadRequest: uploadRequest, id:id, isFailed: false, progress: 0.0)
-                
                 VideoUploadRequests.insert(theRequest!, at:0)
-                
                 MolocateVideo.encodeGlobalVideo()
-                
-            }catch{
-                if debug { print("uploadRequest cannot created") }
-            }
         }
-        
-        if VideoUploadRequests.count != 0 {
-            UserDefaults.standard.set(false, forKey: "isStuck")
-        }
-      
+    
         let transferUtility = AWSS3TransferUtility.default()
         transferUtility.configuration.timeoutIntervalForResource = 50.0
-        
         transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression, completionHander: completionHandler)
 
     }
     
 
-    func sendThumbnailandData(_ thumbnail: Data, info: [String:AnyObject], videoid: Int, completionHandler: @escaping (_ data: String?, _ thumbnailUrl: String, _ videoid: Int, _ response: URLResponse?, _ error: NSError?) -> ()){
+    func sendThumbnailandData(_ thumbnail: Data, info: [String:Any], videoid: Int, completionHandler: @escaping (_ data: String?, _ thumbnailUrl: String, _ videoid: Int, _ response: URLResponse?, _ error: NSError?) -> ()){
         
         var string_info:Data = Data()
         
@@ -160,7 +142,7 @@ open class S3Upload {
         
         let parameters = [
             
-            [
+            [ 
                 "name": "file",
                 "fileName": ["0": []],
                 "content-type" : "image/jpeg",

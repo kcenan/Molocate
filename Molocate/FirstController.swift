@@ -54,12 +54,7 @@ class firstController: UIViewController , CLLocationManagerDelegate {
     }
     
     
-    func stuckedVideoConfiguration(){
-        if UserDefaults.standard.bool(forKey: "isStuck"){
-            MolocateVideo.decodeGlobalVideo()
-        }
-    }
-    
+  
     
     func displayAlert(_ title: String, message: String) {
         UIApplication.shared.endIgnoringInteractionEvents()
@@ -133,6 +128,7 @@ class firstController: UIViewController , CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         
+        
         logInButton.layer.cornerRadius = 5
         logInButton.layer.borderWidth = 1
         logInButton.layer.borderColor = UIColor.clear.cgColor
@@ -150,7 +146,7 @@ class firstController: UIViewController , CLLocationManagerDelegate {
       
         //gerek var mı?
 
-        stuckedVideoConfiguration()
+   
         //bunlara?
     }
     override func viewWillAppear(_ animated: Bool) {

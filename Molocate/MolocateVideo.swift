@@ -36,23 +36,23 @@ struct MoleVideoInformation{
 struct VideoUploadRequest{
     var filePath:String?
     var thumbnail:Data
-    var JsonData: [String:AnyObject]
+    var JsonData: [String:Any]
     var fileId:String?
     var uploadRequest: AWSS3TransferManagerUploadRequest
     var id = 0
     var isFailed = false
     var progress:Float = 0.0
-    func encode() -> Dictionary<String, AnyObject> {
-        var dictionary : Dictionary = Dictionary<String, AnyObject>()
-        dictionary["filePath"] = filePath as AnyObject?
-        dictionary["JsonData"] = JsonData as AnyObject?
-        dictionary["thumbnail"] = thumbnail as AnyObject?
-        dictionary["uploadRequestBody"] = uploadRequest.body.absoluteString as AnyObject?
-        dictionary["uploadRequestBucket"] = uploadRequest.bucket as AnyObject?
-        dictionary["uploadRequestKey"] = uploadRequest.key as AnyObject?
-        dictionary["fileId"] = fileId as AnyObject?
-        dictionary["id"] = id as AnyObject?
-        dictionary["isFailed"] = isFailed as AnyObject?
+    func encode() -> Dictionary<String, Any> {
+        var dictionary : Dictionary = Dictionary<String, Any>()
+        dictionary["filePath"] = filePath
+        dictionary["JsonData"] = JsonData
+        dictionary["thumbnail"] = thumbnail
+        dictionary["uploadRequestBody"] = uploadRequest.body.absoluteString
+        dictionary["uploadRequestBucket"] = uploadRequest.bucket
+        dictionary["uploadRequestKey"] = uploadRequest.key
+        dictionary["fileId"] = fileId
+        dictionary["id"] = id
+        dictionary["isFailed"] = true
         return dictionary
     }
 }
@@ -70,27 +70,29 @@ open class MolocateVideo {
     static let timeout = 8.0
     
     class func encodeGlobalVideo(){
-        let ud = UserDefaults.standard
+        if debug {print("enocdeGlobalVideo()")}
+       
         if VideoUploadRequests.count == 0 {
-            ud.set(false, forKey: "isStuck")
+            UserDefaults.standard.set(false, forKey: "isStuck")
+            UserDefaults.standard.set(nil, forKey: "videoRequests")
         }else{
-            ud.set(true, forKey: "isStuck")
+            UserDefaults.standard.set(true, forKey: "isStuck")
             let dataUploadRequests = VideoUploadRequests.map({
-                (value: VideoUploadRequest) -> Dictionary<String, AnyObject> in
+                (value: VideoUploadRequest) -> Dictionary<String, Any> in
                 return value.encode()
             })
-            ud.set(dataUploadRequests, forKey: "videoRequests")
+            UserDefaults.standard.set(dataUploadRequests, forKey: "videoRequests")
         }
         // print(fileURL)
         
         
     }
     class func decodeGlobalVideo(){
-        let ud = UserDefaults.standard
-        if ud.object(forKey: "videoRequests") != nil {
-            let dataUploadRequests  = ud.object(forKey: "videoRequests") as! [Dictionary<String, AnyObject>]
+    
+        if UserDefaults.standard.object(forKey: "videoRequests") != nil {
+            let dataUploadRequests  = UserDefaults.standard.object(forKey: "videoRequests") as! [Dictionary<String, Any>]
             VideoUploadRequests = dataUploadRequests.map({
-                (value:Dictionary<String, AnyObject> ) -> VideoUploadRequest in
+                (value:Dictionary<String, Any> ) -> VideoUploadRequest in
                 //print("decoding")
                 MyS3Uploads.append(S3Upload())
                 return self.decodeVideoUploadRequest(value)
@@ -101,10 +103,10 @@ open class MolocateVideo {
         
     }
     
-    class func decodeVideoUploadRequest(_ dictionary: Dictionary<String, AnyObject>) -> VideoUploadRequest{
+    class func decodeVideoUploadRequest(_ dictionary: Dictionary<String, Any>) -> VideoUploadRequest{
        
         let filePath = dictionary["filePath"] as! String
-        let JsonData = dictionary["JsonData"] as! [String:AnyObject]
+        let JsonData = dictionary["JsonData"] as! [String:Any]
         let thumbnail = dictionary["thumbnail"] as! Data
         let uploadRequest = AWSS3TransferManagerUploadRequest()
         uploadRequest?.body = URL(string:  dictionary["uploadRequestBody"] as! String)

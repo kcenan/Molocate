@@ -19,8 +19,12 @@ var is4s = false
 let debug  = true
 
 var dictionary = Dictionary<String, URL>()
-
 var myCache = Shared.dataCache
+let CognitoRegionType = AWSRegionType.usEast1
+let DefaultServiceRegionType = AWSRegionType.euCentral1
+let CognitoIdentityPoolId: String = "us-east-1:721a27e4-d95e-4586-a25c-83a658a1c7cc"
+let S3BucketName: String = "molocatebucket"
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -32,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // [Optional] Power your app with Local Datastore. For more info, go to
         //setStatusBarBackgroundColor()
  
+        
         if(UserDefaults.standard.bool(forKey: "isRegistered")) {
             isRegistered = true
             DeviceToken = UserDefaults.standard.object(forKey: "DeviceToken") as? String
@@ -46,6 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults.standard.object(forKey: "profile_picture") == nil && MoleCurrentUser.profilePic != nil{
             MolocateAccount.setProfilePictures()
         }
+        
+        stuckedVideoConfiguration()
         
         registerForPushNotifications(application: application)
         
@@ -65,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             credentialsProvider: credentialProvider)
         
         AWSServiceManager.default().defaultServiceConfiguration = configuration1
-        AWSLogger.default().logLevel = .debug
+
         // [Optional] Track statistics around application opens.
         let client = Client(clientID: "HKPVG4H554DNGF002XP30XKS1UL1MLX1XLRPZIZVBVMET5HX",
             clientSecret:   "1XXP2QTMACGMW5GSU4GRXZ2PZRLM5G1WEFM5EWQCBWKWCYRG",
@@ -91,6 +98,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
        
     }
+    
+    func stuckedVideoConfiguration(){
+        if UserDefaults.standard.bool(forKey: "isStuck"){
+            MolocateVideo.decodeGlobalVideo()
+        }
+    }
+    
     
     
     

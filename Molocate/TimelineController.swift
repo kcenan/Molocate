@@ -1110,9 +1110,12 @@ class TimelineController: UITableViewController,PlayerDelegate, FBSDKSharingDele
 
    
     func prepareForRetry(_ notification: Notification){
+        
         let userInfo = (notification as NSNotification).userInfo
         if let video_id = userInfo?["id"] as? Int{
+            if debug{ print("Prepare fore retry outside")}
             if let i = VideoUploadRequests.index(where: {$0.id == video_id}) {
+                if debug{ print("Prepare fore retry inside")}
                 VideoUploadRequests[i].isFailed = true
                 if type == "HomePage"{
                     videoArray[i].isFailed = true
