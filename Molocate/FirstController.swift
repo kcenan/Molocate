@@ -149,8 +149,7 @@ class firstController: UIViewController , CLLocationManagerDelegate {
         
       
         //gerek var mı?
-        dictionary.removeAllObjects()
-        myCache.removeAll()
+
         stuckedVideoConfiguration()
         //bunlara?
     }

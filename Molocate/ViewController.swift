@@ -47,8 +47,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         initGui()
         
         stuckedVideoConfiguration()
-        myCache.removeAll()
-        dictionary.removeAllObjects()
+     
     }
     
     override func viewWillAppear(_ animated: Bool) {

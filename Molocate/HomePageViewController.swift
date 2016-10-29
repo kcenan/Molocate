@@ -8,8 +8,10 @@ import QuadratTouch
 import MapKit
 import Haneke
 import AVFoundation
-var dictionary = NSMutableDictionary()
-var myCache = Shared.dataCache
+
+
+
+
 var progressBar: UIProgressView?
 
 class HomePageViewController: UIViewController, UITextFieldDelegate, TimelineControllerDelegate {

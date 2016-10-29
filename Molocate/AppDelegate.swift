@@ -18,6 +18,10 @@ var MoleUserToken: String?
 var is4s = false
 let debug  = true
 
+var dictionary = Dictionary<String, URL>()
+
+var myCache = Shared.dataCache
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -234,6 +238,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SDImageCache.shared().cleanDisk()
         }
         myCache.removeAll()
+        dictionary.removeAll()
 
     }
     

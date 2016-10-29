@@ -285,22 +285,21 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
             
             if !isScrollingFast || (self.tableView?.contentOffset.y == 0)  {
                 
-                var trueURL = URL(string: "")
-                if dictionary.object(forKey: self.videoArray?[indexPath.row].id) != nil {
-                    trueURL = dictionary.object(forKey: self.videoArray?[indexPath.row].id) as? URL
+                
+                var trueURL:URL?
+                
+                if let myurl = dictionary[(self.videoArray?[indexPath.row].id!)!]{
+                    trueURL = myurl
                 } else {
                     let url = self.videoArray?[indexPath.row].urlSta?.absoluteString
                     if(url?.characters.first! == "h") {
                         trueURL = self.videoArray?[indexPath.row].urlSta
                         DispatchQueue.main.async {
                             myCache.fetch(URL:(self.videoArray?[indexPath.row].urlSta!)! ).onSuccess{ NSData in
-                                ////print("hop")
-                                let url = self.videoArray?[indexPath.row].urlSta?.absoluteString
                                 let path = NSURL(string: DiskCache.basePath())!.appendingPathComponent("shared-data/original")
-                                let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: url!)
+                                let cached = DiskCache(path: (path?.absoluteString)!).path(forKey: (self.videoArray?[indexPath.row].urlSta!.absoluteString)!)
                                 let file = URL(fileURLWithPath: cached)
-                                dictionary.setObject(file, forKey: self.videoArray?[indexPath.row].id as! NSCopying)
-                                
+                                dictionary[(self.videoArray?[indexPath.row].id!)!] = file
                             }
                         }
                     }else{
@@ -624,9 +623,9 @@ class Tagged: UIViewController, UITableViewDelegate, UITableViewDataSource,Playe
         pausePlayers()
         let username = self.videoArray?[Row].username
         var shareURL:URL?
-        if dictionary.object(forKey: self.videoArray?[Row].id) != nil {
-            shareURL = dictionary.object(forKey: self.videoArray?[Row].id) as? URL
-        } else {
+        if let myurl = dictionary[(self.videoArray?[Row].id!)!]{
+            shareURL = myurl
+        }else {
             let url = self.videoArray?[Row].urlSta?.absoluteString
             if(url?[(url?.startIndex)!] == "h") {
                 shareURL = self.videoArray?[Row].urlSta
