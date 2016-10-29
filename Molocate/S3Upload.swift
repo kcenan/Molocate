@@ -89,7 +89,7 @@ open class S3Upload {
                     progressInfo["progress"] =  Float(progress.fractionCompleted)
                     progressInfo["id"] = id
                     
-                   // print("progress updated with id:\(id)")
+                   //print("progress updated with id:\(id)")
                     
                 
                     NotificationCenter.default.post(name: TimelineController.updateProgressNotification, object:nil, userInfo: progressInfo)
@@ -108,6 +108,10 @@ open class S3Upload {
                     print("Failed with error")
                     print("Error: %@",error!);
                 }else{
+                    let uploadTask = task
+                    // Do something with uploadTask.
+    
+           
                     print("No error")
                     self.sendThumbnailandData(self.theRequest!.thumbnail, info: json, videoid:id, completionHandler: { (data, thumbnailUrl, videoid, response, error) in
                         if data == "success" {
@@ -143,7 +147,7 @@ open class S3Upload {
                             
                                
                             } catch _ {
-                        
+                        print(error)
                             }
                             
                          })
@@ -162,37 +166,27 @@ open class S3Upload {
 
       
         let transferUtility = AWSS3TransferUtility.default()
-         transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression) { (task, Error) in
-            
-            if Error != nil {
-                //print("Error: %@", task.error)
-                
-            } else {
-                let uploadTask = task
-                // Do something with uploadTask.
-                
-                let seconds = 100.0
-          
-                DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-                    // your function here
-                    if !self.isUp && !self.isFailed{
-                        //print("cancel")
-                        uploadTask.cancel()
-                        let user_info = ["id":id]
-                        NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo: user_info)
-                        MolocateVideo.encodeGlobalVideo()
-                        
-                    }
-                    
-                }
-                
-                
-            }
-            
-            //  return nil
-        }
-        
-        
+        transferUtility.configuration.timeoutIntervalForResource = 50.0
+        transferUtility.uploadFile(uploadRequest.body, bucket: uploadRequest.bucket!, key: uploadRequest.key!, contentType: "text/plain", expression: expression, completionHander: completionHandler)
+       
+//        let seconds = 50.0
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+//            // your function here
+//            if !self.isUp && !self.isFailed{
+//                //print("cancel")
+//                if (transferUtility.getUploadTasks().result?.count)! >= 0 {
+//                    
+//                    let user_info = ["id":id]
+//                    NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo: user_info)
+//                    MolocateVideo.encodeGlobalVideo()
+//                }
+//                
+//            }
+//            
+//        }
+
+
         
 
  
@@ -205,10 +199,10 @@ open class S3Upload {
     
         uploadRequest.cancel().continue({ (task) -> AnyObject! in
             if task.error != nil {
-               // print("cancel() failed: [\(error)]")
+                print("cancel() failed: [\(task.error)]")
             }
             if task.exception != nil {
-              //  print("cancel() failed: [\(exception)]")
+               print("cancel() failed: [\(task.exception)]")
             }
             return nil
         })
@@ -284,7 +278,7 @@ open class S3Upload {
         
         postData.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
         
-        var request = URLRequest(url: URL(string:  MolocateBaseUrl + "video/api/upload_video_thumbnail/")!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 5.0)
+        var request = URLRequest(url: URL(string:  MolocateBaseUrl + "video/api/upload_video_thumbnail/")!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 50.0)
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
         request.httpBody = postData as Data

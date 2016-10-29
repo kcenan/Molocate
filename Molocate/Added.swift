@@ -656,8 +656,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             
             cell.likeButton.addTarget(self, action: #selector(Added.pressedLike(_:)), for: UIControlEvents.touchUpInside)
             
-            cell.likeCount.setTitle("\(videoArray?[indexPath.row].likeCount)", for: UIControlState())
-            cell.commentCount.setTitle("\(videoArray?[indexPath.row].commentCount)", for: UIControlState())
+            //cell.likeCount.setTitle("\(videoArray?[indexPath.row].likeCount)", for: UIControlState())
+            //cell.commentCount.setTitle("\(videoArray?[indexPath.row].commentCount)", for: UIControlState())
             cell.commentButton.addTarget(self, action: #selector(Added.pressedComment(_:)), for: UIControlEvents.touchUpInside)
             cell.reportButton.addTarget(self, action: #selector(Added.pressedReport(_:)), for: UIControlEvents.touchUpInside)
             cell.shareButton.addTarget(self, action: #selector(Added.pressedShare(_:)), for: UIControlEvents.touchUpInside)
