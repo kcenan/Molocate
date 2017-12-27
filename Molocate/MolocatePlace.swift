@@ -110,10 +110,10 @@ open class MolocatePlace {
                         place.id = placeid
                         place.name = item["name"] as! String
                         place.city = item["city"] as! String
-                        place.is_following = item["is_following"] as! Int
+                        place.is_following = (item["is_following"] as? Int)!
                         place.address = item["address"] as! String
-                        place.video_count = item["video_count"] as! Int
-                        place.follower_count = item["follower_count"] as! Int
+                        place.video_count = (item["video_count"] as? Int)!
+                        place.follower_count = (item["follower_count"] as? Int)!
                         place.caption = item["caption"] as! String
               //          place.picture_url = item["picture_url"] is NSNull ? nil: URL(string: item["picture_url"] as! String)!
                         place.phone = item["phone"] as! String
@@ -146,11 +146,11 @@ open class MolocatePlace {
                             videoStr.location = placeTaken["name"]!
                             videoStr.locationID = placeTaken["place_id"]!
                             videoStr.caption = item["caption"] as? String
-                            videoStr.likeCount = item["like_count"] as! Int
-                            videoStr.commentCount = item["comment_count"] as! Int
+                            videoStr.likeCount = (item["like_count"] as? Int)!
+                            videoStr.commentCount = (item["comment_count"] as? Int)!
                             videoStr.category = item["category"] as? String
-                            videoStr.isLiked = item["is_liked"] as! Int
-                            videoStr.isFollowing = owner_user["is_following"] as! Int
+                            videoStr.isLiked = (item["is_liked"] as? Int)!
+                            videoStr.isFollowing = (owner_user["is_following"] as? Int)!
                             videoStr.userpic = owner_user["picture_url"] is NSNull ? nil:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as? String
                             videoStr.taggedUsers = item["tagged_users"] as? [String]
@@ -296,7 +296,7 @@ open class MolocatePlace {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                     if result.index(forKey: "results") != nil{
-                        let count: Int = result["count"] as! Int
+                        let count: Int = (result["count"] as? Int)!
                         let next =  result["next"] is NSNull ? "":result["next"] as? String
                         let previous =  result["previous"] is NSNull ? "":result["previous"] as? String
                         let results = result["results"] as! NSArray
@@ -312,7 +312,7 @@ open class MolocatePlace {
                                 let thumbnail = thing["thumbnail_url"] as! String
                                 
                                 friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
-                                let isfollowing = thing["is_following"] as! Int
+                                let isfollowing = thing["is_following"] as? Int
                                 
                                 friend.is_following = isfollowing == 0 ? false:true
                                 if(friend.username==MoleCurrentUser.username){

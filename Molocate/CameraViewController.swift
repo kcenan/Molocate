@@ -1251,8 +1251,8 @@ class CameraViewController: UIViewController,CLLocationManagerDelegate, AVCaptur
         
         // In iOS 9 and later, the userInfo dictionary contains information on why the session was interrupted.
         if #available(iOS 9.0, *) {
-            let reason = (notification as NSNotification).userInfo![AVCaptureSessionInterruptionReasonKey]! as! Int
-            NSLog("Capture session was interrupted with reason %ld", reason)
+            let reason = (notification as NSNotification).userInfo![AVCaptureSessionInterruptionReasonKey]! as? Int
+            NSLog("Capture session was interrupted with reason %ld")
             
             if reason == AVCaptureSessionInterruptionReason.audioDeviceInUseByAnotherClient.rawValue ||
                 reason == AVCaptureSessionInterruptionReason.videoDeviceInUseByAnotherClient.rawValue {

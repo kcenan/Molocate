@@ -115,7 +115,7 @@ open class MolocateAccount {
                                 let thumbnail = thing["thumbnail_url"] as! String
                    
                                 friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
-                                    let isfollowing = thing["is_following"] as! Int
+                                    let isfollowing = thing["is_following"] as? Int
                           
                                 friend.is_following = isfollowing == 0 ? false:true
                             
@@ -183,7 +183,7 @@ open class MolocateAccount {
                         let thumbnail = thing["thumbnail_url"] as! String
                         
                         friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
-                        let isfollowing = thing["is_following"] as! Int
+                        let isfollowing = thing["is_following"] as? Int
                         
                         friend.is_following = isfollowing == 0 ? false:true
                         friends.relations.append(friend)
@@ -248,7 +248,7 @@ open class MolocateAccount {
                             let thumbnail = thing["thumbnail_url"] as! String
                             
                             friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
-                            let isfollowing = thing["is_following"] as! Int
+                            let isfollowing = thing["is_following"] as? Int
                             
                             
                             friend.is_following = isfollowing == 0 ? false:true
@@ -303,7 +303,7 @@ open class MolocateAccount {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                    
                     if(result.index(forKey: "results") != nil){
-                        let count: Int = result["count"] as! Int
+                        let count: Int = (result["count"] as? Int)!
                         let next =  result["next"] is NSNull ? "":result["next"] as? String
                         let previous =  result["previous"] is NSNull ? "":result["previous"] as? String
                         let results = result["results"] as! NSArray
@@ -321,7 +321,7 @@ open class MolocateAccount {
                             let thumbnail = thing["thumbnail_url"] as! String
                             
                             friend.thumbnail_url = thumbnail == "" ? friend.picture_url:URL(string: thumbnail)!
-                            let isfollowing = thing["is_following"] as! Int
+                            let isfollowing = thing["is_following"] as? Int
                             
                            
                             friend.is_following = isfollowing == 0 ? false:true
@@ -543,7 +543,7 @@ open class MolocateAccount {
                         
                         let resultJson = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                         if(resultJson.index(forKey: "logged_in") != nil){
-                            let logging = resultJson["logged_in"] as! Int
+                            let logging = resultJson["logged_in"] as? Int
                             let loggedIn = logging == 1
                             
                             if loggedIn {
@@ -608,7 +608,7 @@ open class MolocateAccount {
                         
                         let result = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
                         if(result.index(forKey: "logged_in") != nil){
-                            let logging = result["logged_in"] as! Int
+                            let logging = result["logged_in"] as? Int
                             let notloggedin = logging == 0
                             
                             if notloggedin{
@@ -959,7 +959,7 @@ open class MolocateAccount {
                         }
                         user.first_name = item["first_name"] as! String
                         user.last_name = item["last_name"] as! String
-                        user.isFollowing = item["is_following"] as! Int == 1 ? true:false
+                        user.isFollowing = item["is_following"] as? Int == 1 ? true:false
                         userArray.append(user)
                         
                     }
@@ -999,13 +999,15 @@ open class MolocateAccount {
                         user.last_name = result["last_name"] as! String
                         user.profilePic = result["picture_url"] is NSNull ? nil:URL(string: result["picture_url"] as! String)!
                         user.bio = result["caption"] is NSNull ? String() : result["caption"] as! String
-                        user.follower_count = result["follower_count"] as! Int
-                        user.following_count = result["following_count"] as! Int
-                        user.place_following_count = result["place_count"] as! Int
-                        user.different_checkins = result["check_in_count"] as! Int
-                        user.tag_count = result["tag_count"] as! Int
-                        user.post_count = result["post_count"]as! Int
-                        user.isFollowing = result["is_following"] as! Int == 1 ? true:false
+                        user.follower_count = (result["follower_count"] as? Int)!
+                        user.following_count = (result["following_count"] as? Int)!
+                        print( user.follower_count )
+                        print(   user.following_count )
+                        user.place_following_count = (result["place_count"] as? Int)!
+                        user.different_checkins = (result["check_in_count"] as? Int)!
+                        user.tag_count = (result["tag_count"] as? Int)!
+                        user.post_count = (result["post_count"]as? Int)!
+                        user.isFollowing = result["is_following"] as? Int == 1 ? true:false
                         completionHandler(user, response , nsError as NSError? )
                     }else{
                         completionHandler(MoleUser() , nil , nsError  as NSError?)
@@ -1319,16 +1321,16 @@ open class MolocateAccount {
                             setProfilePictures()
                         }
                         MoleCurrentUser.bio = result["caption"] is NSNull ? String() : result["caption"] as! String
-                        MoleCurrentUser.tag_count = result["tag_count"] as! Int
-                        MoleCurrentUser.post_count = result["post_count"] as! Int
-                        MoleCurrentUser.follower_count = result["follower_count"] as! Int
-                        MoleCurrentUser.following_count = result["following_count"]as! Int
-                        MoleCurrentUser.place_following_count = result["place_count"] as! Int
-                        MoleCurrentUser.different_checkins = result["check_in_count"] as! Int
+                        MoleCurrentUser.tag_count = (result["tag_count"] as? Int)!
+                        MoleCurrentUser.post_count = (result["post_count"] as? Int)!
+                        MoleCurrentUser.follower_count = (result["follower_count"] as? Int)!
+                        MoleCurrentUser.following_count = (result["following_count"]as? Int)!
+                        MoleCurrentUser.place_following_count = (result["place_count"] as? Int)!
+                        MoleCurrentUser.different_checkins = (result["check_in_count"] as? Int)!
                         MoleCurrentUser.gender =  result["gender"] is NSNull ? "": (result["gender"] as! String)
                         MoleCurrentUser.birthday = result["birthday"] is NSNull || (result["birthday"] as! String)   == "" ? "1970-01-01" : result["birthday"] as! String
-                        
-                        if result["is_facebook_created_user"] as! Int == 0 {
+                       
+                        if result["is_facebook_created_user"] as? Int == 0 {
                             MoleCurrentUser.isFaceUser = false
                         } else {
                             MoleCurrentUser.isFaceUser = true

@@ -1,7 +1,3 @@
-//  MolocateNetwork.swift
-//  Molocate
-
-
 import Foundation
 import SystemConfiguration
 import UIKit

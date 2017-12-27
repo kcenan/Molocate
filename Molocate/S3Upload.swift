@@ -1,15 +1,5 @@
-//
-//  S3upload.swift
-//  Molocate
-//
-//  Created by Kagan Cenan on 23.04.2016.
-//  Copyright © 2016 MellonApp. All rights reserved.
-//
-
 import Foundation
 import AWSS3
-
-
 
 open class S3Upload {
    
@@ -49,7 +39,6 @@ open class S3Upload {
                         let userinf = ["id":self.video_id]
                         task.cancel()
                         NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo:userinf )
-                        MolocateVideo.encodeGlobalVideo()
                     }
                     
                     if debug {
@@ -91,7 +80,6 @@ open class S3Upload {
                             let userinf = ["id":self.video_id]
                             task.cancel()
                             NotificationCenter.default.post(name: TimelineController.prepareForRetryNotification, object: nil, userInfo:userinf )
-                            MolocateVideo.encodeGlobalVideo()
                         }
                         
                     })
@@ -199,6 +187,7 @@ open class S3Upload {
             do{
                 
                 let data_string  = String(data: data!, encoding: String.Encoding.utf8)!
+
                 if data_string[data_string.startIndex] == "{" {
                     let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
                     if (error != nil) {
@@ -222,23 +211,4 @@ open class S3Upload {
         dataTask.resume()
         
     }
-    
-    
-    //
-    //
-    //    func cancelUploadRequest(_ uploadRequest: AWSS3TransferManagerUploadRequest) {
-    //
-    //        uploadRequest.cancel().continue({ (task) -> AnyObject! in
-    //            if task.error != nil {
-    //                print("cancel() failed: [\(task.error)]")
-    //            }
-    //            if task.exception != nil {
-    //               print("cancel() failed: [\(task.exception)]")
-    //            }
-    //            return nil
-    //        })
-    //        
-    //    }
-    //    
-
 }

@@ -113,10 +113,10 @@ open class MolocateVideo {
         uploadRequest?.bucket = dictionary["uploadRequestBucket"] as? String
         uploadRequest?.key = dictionary["uploadRequestKey"] as? String
         let fileId = dictionary["fileId"] as! String
-        let id = dictionary["id"] as! Int
+        let id = dictionary["id"] as? Int
         let isFailed = true
         
-        return VideoUploadRequest(filePath: filePath,  thumbnail: thumbnail, JsonData: JsonData, fileId: fileId, uploadRequest: uploadRequest!, id: id, isFailed: isFailed, progress: 0.0)
+        return VideoUploadRequest(filePath: filePath,  thumbnail: thumbnail, JsonData: JsonData, fileId: fileId, uploadRequest: uploadRequest!, id: id!, isFailed: isFailed, progress: 0.0)
         
     }
     class func getComments(_ videoId: String, completionHandler: @escaping (_ data: Array<MoleVideoComment>, _ response: URLResponse?, _ error: NSError?, _ count: Int?, _ next: String?, _ previous: String?) -> ()) {
@@ -133,10 +133,10 @@ open class MolocateVideo {
                 let nsError = error;
                 do {
                     //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
                     if result.index(forKey: "results") != nil {
                         let commentdata = result["results"] as!  NSArray
-                        let count: Int = result["count"] as! Int
+                        let count: Int = (result["count"] as? Int)!
                         let next =  result["next"] is NSNull ? nil:result["next"] as? String
                         let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
                     
@@ -145,7 +145,7 @@ open class MolocateVideo {
                         
                         for i in 0..<commentdata.count{
                             var thecomment = MoleVideoComment()
-                            let thing = commentdata[i] as! [String:AnyObject]
+                            let thing = commentdata[i] as! [String:Any]
                             //print(thing)
                             thecomment.username = thing["username"] as! String
                             thecomment.photo = thing["picture_url"] is NSNull ? nil:URL(string: thing["picture_url"] as! String)! as URL
@@ -190,13 +190,13 @@ open class MolocateVideo {
                 let nsError = error
                 
                 do {
-                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [[String:AnyObject]]
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [[String:Any]]
                    // print(result)
                     var filters = [filter]()
                     for item in result {
                         var filt = filter()
-                        filt.isevent = (item["is_event"] as! Int) == 0 ? false:true
-                        if (item["is_event"] as! Int) == 1 {
+                        filt.isevent = (item["is_event"] as? Int) == 0 ? false:true
+                        if (item["is_event"] as? Int) == 1 {
                             eventcount += 1
                             iseventhere = true
                         }
@@ -233,7 +233,7 @@ open class MolocateVideo {
                 let nsError = error
                 
                 do {
-                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [String: AnyObject]
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [String: Any]
                     
                     if result.index(forKey: "results") != nil {
                         
@@ -253,8 +253,8 @@ open class MolocateVideo {
                         
                         for i in 0..<videos.count{
                             
-                            let item = videos[i] as! [String:AnyObject]
-                            let owner_user = item["owner_user"] as! [String:AnyObject]
+                            let item = videos[i] as! [String:Any]
+                            let owner_user = item["owner_user"] as! [String:Any]
                             let place_taken = item["place_taken"] as! [String:String]
                             var videoStr = MoleVideoInformation()
                             
@@ -264,11 +264,11 @@ open class MolocateVideo {
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
                             videoStr.caption = item["caption"] as? String
-                            videoStr.likeCount = item["like_count"] as! Int
-                            videoStr.commentCount = item["comment_count"] as! Int
+                            videoStr.likeCount = (item["like_count"] as? Int)!
+                            videoStr.commentCount = (item["comment_count"] as? Int)!
                             videoStr.category = item["category"] as? String
-                            videoStr.isLiked = item["is_liked"] as! Int
-                            videoStr.isFollowing = owner_user["is_following"] as! Int
+                            videoStr.isLiked = (item["is_liked"] as! Int)
+                            videoStr.isFollowing = (owner_user["is_following"] as! Int)
                             videoStr.userpic = owner_user["picture_url"] is NSNull ? nil:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as? String
                             videoStr.taggedUsers = item["tagged_users"] as? [String]
@@ -315,7 +315,7 @@ open class MolocateVideo {
                 let nsError = error
                 
                 do {
-                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [String: AnyObject]
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers ) as! [String: Any]
                     if result.index(forKey: "results") != nil {
                         
                         let videos = result["results"] as! NSArray
@@ -334,8 +334,8 @@ open class MolocateVideo {
                         
                         for i in 0..<videos.count{
                             
-                            let item = videos[i] as! [String:AnyObject]
-                            let owner_user = item["owner_user"] as! [String:AnyObject]
+                            let item = videos[i] as! [String:Any]
+                            let owner_user = item["owner_user"] as! [String:Any]
                             let place_taken = item["place_taken"] as! [String:String]
                             var videoStr = MoleVideoInformation()
                             
@@ -345,11 +345,11 @@ open class MolocateVideo {
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
                             videoStr.caption = item["caption"] as? String
-                            videoStr.likeCount = item["like_count"] as! Int
-                            videoStr.commentCount = item["comment_count"] as! Int
+                            videoStr.likeCount = (item["like_count"] as? Int)!
+                            videoStr.commentCount = (item["comment_count"] as? Int)!
                             videoStr.category = item["category"] as? String
-                            videoStr.isLiked = item["is_liked"] as! Int
-                            videoStr.isFollowing = owner_user["is_following"] as! Int
+                            videoStr.isLiked = (item["is_liked"] as! Int)
+                            videoStr.isFollowing = (owner_user["is_following"] as? Int)!
                             videoStr.userpic = owner_user["picture_url"] is NSNull ? nil:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as? String
                             videoStr.taggedUsers = item["tagged_users"] as? [String]
@@ -395,23 +395,23 @@ open class MolocateVideo {
                 //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 do {
                     
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
                     if result.index(forKey: "results") != nil {
                       
-                        let count: Int = result["count"] as! Int
+                        let count: Int = (result["count"] as? Int)!
                         let next =  result["next"] is NSNull ? nil:result["next"] as? String
                         let previous =  result["previous"] is NSNull ? nil:result["previous"] as? String
                         let likers = result["results"] as! NSArray
                         var users = [MoleUser]()
                         
                             for i in 0..<likers.count{
-                                let thing = likers[i] as! [String:AnyObject]
+                                let thing = likers[i] as! [String:Any]
                                 var user = MoleUser()
                                 user.username = thing["username"] as! String
                                 user.profilePic = thing["picture_url"] is NSNull ? nil:URL(string: thing["picture_url"] as! String)!
                                 user.thumbnailPic = thing["thumbnail_url"] as! String == "" ? user.profilePic : URL(string: thing["thumbnail_url"] as! String)!
 
-                                user.isFollowing = thing["is_following"] as! Int == 1 ? true:false
+                                user.isFollowing = thing["is_following"] as? Int == 1 ? true:false
                                 users.append(user)
                             }
                         
@@ -463,7 +463,7 @@ open class MolocateVideo {
             if error == nil {
                 let nsError = error
                 do {
-                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String:AnyObject]
+                    let result = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String:Any]
                     if result.index(forKey: "results") != nil{
                         
                         switch(type){
@@ -496,8 +496,8 @@ open class MolocateVideo {
                         var videoArray = [MoleVideoInformation]()
                         
                         for i in 0..<videos.count{
-                            let item = videos[i] as! [String:AnyObject]
-                            let owner_user = item["owner_user"] as! [String:AnyObject]
+                            let item = videos[i] as! [String:Any]
+                            let owner_user = item["owner_user"] as! [String:Any]
                             let place_taken = item["place_taken"] as! [String:String]
                             
                             var videoStr = MoleVideoInformation()
@@ -507,11 +507,10 @@ open class MolocateVideo {
                             videoStr.location = place_taken["name"]!
                             videoStr.locationID = place_taken["place_id"]!
                             videoStr.caption = item["caption"] as? String
-                            videoStr.likeCount = item["like_count"] as! Int
-                            videoStr.commentCount = item["comment_count"] as! Int
+                            videoStr.likeCount = (item["like_count"] as? Int)!
+                            videoStr.commentCount = (item["comment_count"] as? Int)!
                             videoStr.category = item["category"] as? String
-                            videoStr.isLiked = item["is_liked"] as! Int
-                            videoStr.isFollowing = owner_user["is_following"] as! Int
+                            videoStr.isLiked = (item["is_liked"] as! Int)
                             videoStr.userpic = owner_user["picture_url"] is NSNull ? nil:URL(string: owner_user["picture_url"] as! String)!
                             videoStr.dateStr = item["date_str"] as? String
                             videoStr.taggedUsers = item["tagged_users"] as? [String]
@@ -556,10 +555,10 @@ open class MolocateVideo {
             if error == nil {
             let nsError = error
                 do {
-                    let item = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as![String: AnyObject]
+                    let item = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as![String: Any]
                     if item.index(forKey: "owner_user") != nil {
                         var videoStr = MoleVideoInformation()
-                        let owner_user = item["owner_user"] as! [String:AnyObject]
+                        let owner_user = item["owner_user"] as! [String:Any]
                         let placeTaken = item["place_taken"] as! [String:String]
                         
                         videoStr.id = item["video_id"] as? String
@@ -568,11 +567,11 @@ open class MolocateVideo {
                         videoStr.location = placeTaken["name"]!
                         videoStr.locationID = placeTaken["place_id"]!
                         videoStr.caption = item["caption"] as? String
-                        videoStr.likeCount = item["like_count"] as! Int
-                        videoStr.commentCount = item["comment_count"] as! Int
+                        videoStr.likeCount = (item["like_count"] as? Int)!
+                        videoStr.commentCount = (item["comment_count"] as? Int)!
                         videoStr.category = item["category"] as? String
-                        videoStr.isLiked = item["is_liked"] as! Int
-                        videoStr.isFollowing = owner_user["is_following"] as! Int
+                        videoStr.isLiked = (item["is_liked"] as? Int)!
+                        videoStr.isFollowing = (owner_user["is_following"] as? Int)!
                         videoStr.userpic = owner_user["picture_url"] is NSNull ? nil:URL(string: owner_user["picture_url"] as! String)!
                         videoStr.dateStr = item["date_str"] as? String
                         videoStr.taggedUsers = item["tagged_users"] as? [String]
@@ -615,7 +614,7 @@ open class MolocateVideo {
                 let nsError = error
                 
                 do {
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: Any]
                     if result.index(forKey: "result") != nil{
                         completionHandler(result["result"] as? String , response , nsError as NSError?)
                     }else{
@@ -648,7 +647,7 @@ open class MolocateVideo {
                 let nsError = error
                 
                 do {
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
                     if result.index(forKey: "result") != nil{
                         completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
@@ -681,7 +680,7 @@ open class MolocateVideo {
                 let nsError = error
                 
                 do {
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
                     if result.index(forKey: "result") != nil{
                         completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
@@ -716,7 +715,7 @@ open class MolocateVideo {
                 let nsError = error
                 
                 do {
-                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                    let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
                     if result.index(forKey: "result") != nil{
                         completionHandler(result["result"] as? String , response , nsError as NSError? )
                     }else{
@@ -762,7 +761,7 @@ open class MolocateVideo {
                     
                     do {
                         
-                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
                         //print(result)
                         if result.index(forKey: "result") != nil{
                             completionHandler(result["comment_id"] as? String , response , nsError as NSError? )
@@ -831,7 +830,7 @@ open class MolocateVideo {
                     
                     do {
                         
-                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:AnyObject]
+                        let result = try JSONSerialization.jsonObject( with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
                         if result.index(forKey: "result") != nil{
                            completionHandler(result["result"] as? String , response , nsError as NSError? )
                         }else{

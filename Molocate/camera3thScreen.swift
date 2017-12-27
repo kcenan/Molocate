@@ -244,8 +244,8 @@ class camera3thScreen: UIViewController,UITextViewDelegate, UITableViewDelegate,
             } else {
                 selectedVenue = placesArray[0]
                 venueName.text = selectedVenue
-                let correctedRow = placeOrder.object(forKey: placesArray[0]) as! Int
-                videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
+                let correctedRow = placeOrder.object(forKey: placesArray[0]) as? Int
+                videoLocation = locationDict[correctedRow!][placesArray[correctedRow!]]
                 isLocationSelected = true
             }
             

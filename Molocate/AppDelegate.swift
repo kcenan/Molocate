@@ -20,9 +20,10 @@ let debug  = true
 
 var dictionary = Dictionary<String, URL>()
 var myCache = Shared.dataCache
-let CognitoRegionType = AWSRegionType.usEast1
+
+let CognitoRegionType = AWSRegionType.euCentral1
 let DefaultServiceRegionType = AWSRegionType.euCentral1
-let CognitoIdentityPoolId: String = "us-east-1:721a27e4-d95e-4586-a25c-83a658a1c7cc"
+let CognitoIdentityPoolId: String = "eu-central-1:54e09788-412d-4311-8dc5-29f21d6031c7"
 let S3BucketName: String = "molocatebucket"
 
 
@@ -62,17 +63,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //SDImageCache.sharedImageCache().clearDisk()
         SDImageCache.shared().maxMemoryCountLimit = 100
 
-       
+        
         let credentialProvider = AWSCognitoCredentialsProvider(
             regionType: CognitoRegionType,
             identityPoolId: CognitoIdentityPoolId)
-        
+
         let configuration1 = AWSServiceConfiguration(
             region: DefaultServiceRegionType,
             credentialsProvider: credentialProvider)
         
         AWSServiceManager.default().defaultServiceConfiguration = configuration1
-
+     AWSLogger.default().logLevel = .verbose
         // [Optional] Track statistics around application opens.
         let client = Client(clientID: "HKPVG4H554DNGF002XP30XKS1UL1MLX1XLRPZIZVBVMET5HX",
             clientSecret:   "1XXP2QTMACGMW5GSU4GRXZ2PZRLM5G1WEFM5EWQCBWKWCYRG",

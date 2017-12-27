@@ -72,8 +72,8 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
             textField.text = "Konum ara"
         } else {
             //textField.text = "📌"+placesArray[0]
-            let correctedRow = placeOrder.object(forKey: placesArray[0]) as! Int
-            videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
+            let correctedRow = placeOrder.object(forKey: placesArray[0]) as? Int
+            videoLocation = locationDict[correctedRow!][placesArray[correctedRow!]]
             isLocationSelected = true
         }
         NotificationCenter.default.addObserver(self, selector: #selector(cameraSearchVenue.reloadPlaces), name: NSNotification.Name(rawValue: "reloadPlaces"), object: nil)
@@ -118,8 +118,8 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
         self.activityIndicator.stopAnimating()
         if placesArray.count > 0 {
             textField.text = "📌"+placesArray[0]
-            let correctedRow = placeOrder.object(forKey: placesArray[0]) as! Int
-            videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
+            let correctedRow = placeOrder.object(forKey: placesArray[0]) as? Int
+            videoLocation = locationDict[correctedRow!][placesArray[correctedRow!]]
             //print(videoLocation.name)
             isLocationSelected = true
         }
@@ -134,8 +134,8 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
         let index = indexPath.row as Int
         
         if isSearch {
-            let correctedRow = placeOrder.object(forKey: autocompleteUrls[index]) as! Int
-            let place = locationDict[correctedRow][autocompleteUrls[index]]
+            let correctedRow = placeOrder.object(forKey: autocompleteUrls[index]) as? Int
+            let place = locationDict[correctedRow!][autocompleteUrls[index]]
             cell.nameLabel.text = place?.name
             cell.addressNameLabel.text = place?.adress
         } else {
@@ -184,8 +184,8 @@ class cameraSearchVenue: UIViewController, UITextFieldDelegate, UITableViewDeleg
         //self.view.endEditing(true)
         //print(selectedCell.nameLabel.text!)
         if isSearch {
-            let correctedRow = placeOrder.object(forKey: selectedCell.nameLabel.text!) as! Int
-            videoLocation = locationDict[correctedRow][placesArray[correctedRow]]
+            let correctedRow = placeOrder.object(forKey: selectedCell.nameLabel.text!) as? Int
+            videoLocation = locationDict[correctedRow!][placesArray[correctedRow!]]
         } else {
             videoLocation = searchDict[indexPath.row][searchArray[indexPath.row]]
         }
